@@ -6,3 +6,6 @@ class Exercicio(models.Model):
     descricao = models.TextField()
     tipo = models.CharField(max_length=50, choices=[('mcq', 'Múltipla Escolha'), ('code', 'Código')])
     dificuldade = models.IntegerField(default=1)
+
+    class Meta:
+        db_table = 'exercicio'

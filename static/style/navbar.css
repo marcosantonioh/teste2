@@ -11,7 +11,7 @@ body {
   justify-content: space-between;
   align-items: center;
   gap: 20px ;
-  padding: 10px 70px;
+  padding: 20px 70px;
 }
 
 .logo{
@@ -39,6 +39,7 @@ body {
   }
 }
 
+
 .user-profile{
   display: flex;
   gap: 30px;
@@ -48,6 +49,22 @@ body {
   font-size: 1rem;
   cursor: pointer;
   text-align: center;
+
+  & .user-stats{
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    text-decoration: none;
+    color: #141414;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+
+    & p{
+      font-size: 1.5em;
+    }
+
+  }
 
   & user{
     display: flex;

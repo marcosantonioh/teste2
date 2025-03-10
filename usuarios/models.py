@@ -1,10 +1,14 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-# Create your models here.
-class Usuario(models.Model):
-    nome = models.CharField(max_length=100)  # Nome do usuário
-    email = models.EmailField(unique=True)  # E-mail único
-    pontuacao = models.IntegerField(default=0)  # Pontos acumulados
+class PerfilUsuario(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    pontos = models.IntegerField(default=0)
+    vidas = models.IntegerField(default=5)
+    sequencia_dias = models.IntegerField(default=0)
+
+    class Meta:
+        db_table = 'perfil_usuario'  # Nome personalizado para a tabela
 
     def __str__(self):
-        return self.nome  # Retorna o nome do usuário ao listar no Django Admin
+        return self.user.username

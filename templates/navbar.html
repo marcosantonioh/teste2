@@ -24,7 +24,15 @@
           <li><a href="{% url 'ranking' %}">Ranking</a></li>
         </ul>
 
+        
+
         <div class="user-profile">
+          <div class="user-stats">
+            <p>❤️ {{ perfil.vidas }}</p>
+            <p>⭐ {{ perfil.pontos }}</p>
+            <p>🔥 {{ perfil.sequencia_dias }}</p>
+          </div>
+          
           <div class="user">
             <i class="bx bx-user"></i>
             <span>{{ user.username }}</span>
@@ -33,7 +41,6 @@
           <a href="{% url 'usuarios:logout_usuario' %}">Logout</a>
         </div>
       </nav>
-
     </header>
 
     <div class="content">{% block content %} {% endblock %}</div>

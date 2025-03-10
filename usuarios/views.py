@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
-
+from .models import PerfilUsuario
 
 def cadastrar_usuario(request):
     if request.method == "POST":
@@ -29,8 +29,15 @@ def cadastrar_usuario(request):
 
         # Criando o usuário
         user = User.objects.create_user(username=username, email=email, password=password)
+        user.save()
+
+        # Criar o perfil associado ao usuário
+        PerfilUsuario.objects.create(user=user)  
+        
         messages.success(request, "Cadastro realizado com sucesso!")
         return redirect("usuarios:login_usuario")  # Redireciona para a página de login após o cadastro
+
+
 
     return render(request, "usuarios/cadastro.html")
 
