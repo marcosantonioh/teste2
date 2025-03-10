@@ -1,0 +1,85 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cadastro</title>
+    <link rel="stylesheet" href="{% static 'style/auth.css' %}" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <form method="POST">
+        {% csrf_token %}
+        <h3>Cadastro de Usuário</h3>
+
+        {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+          <li class="message-alert {{ message.tags }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+
+        <div class="input-box">
+          <label for="username">Nome</label>
+          <div class="input-icon">
+            <input
+              type="text"
+              name="username"
+              placeholder="Digite seu nome"
+              required
+            />
+            <i class="bx bx-user"></i>
+          </div>
+        </div>
+        <div class="input-box">
+          <label for="email">E-mail</label>
+          <div class="input-icon">
+            <input
+              type="email"
+              name="email"
+              placeholder="Digite seu E-mail"
+              required
+            />
+            <i class="bx bx-envelope"></i>
+          </div>
+        </div>
+        <div class="input-box">
+          <label for="password">Senha</label>
+          <div class="input-icon">
+            <input
+              type="password"
+              name="password"
+              placeholder="Criar Senha"
+              required
+            />
+            <i class="bx bx-lock"></i>
+          </div>
+        </div>
+        <div class="input-box">
+          <label for="password2">Confirmar senha</label>
+          <div class="input-icon">
+            <input
+              type="password"
+              name="password2"
+              placeholder="Confirmar Senha"
+              required
+            />
+            <i class="bx bx-lock"></i>
+          </div>
+        </div>
+        <button>Cadastrar</button>
+        <div class="text">
+          <a class="register" href="{% url 'usuarios:login_usuario' %}"
+            >Já possui uma conta? Entrar</a
+          >
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

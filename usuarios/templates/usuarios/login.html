@@ -1,0 +1,64 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'style/auth.css' %}" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <form method="POST">
+        {% csrf_token %}
+        <h3>Login</h3>
+
+        {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+          <li class="message-alert {{ message.tags }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+
+        <div class="input-box">
+          <label for="username">Nome</label>
+          <div class="input-icon">
+            <input
+              type="text"
+              placeholder="Nome ou E-mail"
+              name="username"
+              id="username"
+              required
+            />
+            <i class="bx bx-user"></i>
+          </div>
+        </div>
+        <div class="input-box">
+          <label for="password">Senha</label>
+          <div class="input-icon-password">
+            <input
+              type="password"
+              placeholder="Digite sua senha"
+              name="password"
+              id="password"
+              required
+            />
+            <i class="bx bx-show" id="togglePassword"></i>
+          </div>
+        </div>
+
+        <button>Entrar</button>
+        <a class="register" href="{% url 'usuarios:cadastro_usuario' %}"
+          >Ainda não tem conta? Cadastre-se</a
+        >
+      </form>
+    </div>
+  </body>
+
+  <script src="{% static 'js/script.js' %}"></script>
+</html>

@@ -1,0 +1,26 @@
+{% extends 'navbar.html' %} 
+{% load static %} 
+
+{% block content %}
+
+<style>
+  .container-main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+
+    & > div {
+      text-align: center;
+    }
+  }
+
+</style>
+
+<div class="container-main">
+  <div>
+    <h1>Bem-vindo à Página Principal</h1>
+  </div>
+</div>
+
+{% endblock %}

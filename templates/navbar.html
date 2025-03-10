@@ -1,0 +1,41 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GameLoops</title>
+    <link rel="stylesheet" href="{% static 'style/navbar.css' %}" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+        <div class="logo">
+          <h1>GameLoops</h1>
+        </div>
+
+        <ul class="box-links">
+          <li><a href="{% url 'lista_exercicios' %}">Exercícios</a></li>
+          <li><a href="{% url 'ranking' %}">Ranking</a></li>
+        </ul>
+
+        <div class="user-profile">
+          <div class="user">
+            <i class="bx bx-user"></i>
+            <span>{{ user.username }}</span>
+          </div>
+
+          <a href="{% url 'usuarios:logout_usuario' %}">Logout</a>
+        </div>
+      </nav>
+
+    </header>
+
+    <div class="content">{% block content %} {% endblock %}</div>
+  </body>
+</html>

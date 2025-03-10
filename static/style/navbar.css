@@ -1,0 +1,64 @@
+@import url("/static/style/global/global.css");
+
+body {
+  background-color: #d8d8d8;
+  color: #141414;
+}
+
+.navbar{
+  display: flex;
+  background-color: rgb(241, 241, 241);
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px ;
+  padding: 10px 70px;
+}
+
+.logo{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  text-decoration: none;
+  color: #141414;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.box-links{
+  display: flex;
+  gap: 20px;  
+
+  & li{
+    list-style: none;
+
+    & a{
+      text-decoration: none;
+      color: #141414;
+      font-size: 1.2rem;
+    }
+  }
+}
+
+.user-profile{
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  text-decoration: none;
+  color: #141414;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: center;
+
+  & user{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  & a{
+    text-decoration: none;
+    color: #141414;
+    font-size: 1rem;
+  }
+}
