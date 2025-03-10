@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-class PerfilUsuario(models.Model):
+class Perfil(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     pontos = models.IntegerField(default=0)
     vidas = models.IntegerField(default=5)
