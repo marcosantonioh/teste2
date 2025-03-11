@@ -1,0 +1,52 @@
+{% load static %} {% block content %} {% include 'navbar.html' %}
+
+<style>
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .exercicio-card {
+    width: 50%;
+    padding: 20px;
+    border: 1px solid #838383;
+    border-radius: 5px;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  li {
+    margin-bottom: 10px;
+  }
+
+  a {
+    text-decoration: none;
+    color: #333;
+  }
+
+  a:hover {
+    color: #666;
+  }
+</style>
+
+<div class="container">
+  <div class="exercicio-card">
+    <ul>
+      {% for exercicio in exercicios %}
+      <li>
+        <a href="{% url 'exercicios:submeter' exercicio.id %}"
+          >{{ exercicio.titulo }}</a
+        >
+        - Nível: {{ exercicio.nivel }}
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+{% endblock %}
