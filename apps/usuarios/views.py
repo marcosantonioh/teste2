@@ -52,7 +52,7 @@ def login_usuario(request):
         
         if user is not None:
             login(request, user)
-            return redirect("main")  # Redirecione para a página desejada
+            return redirect("exercicios:main")  # Redirecione para a página desejada
         else:
             messages.error(request, "Usuário ou senha incorretos.")
     return render(request, "usuarios/login.html")

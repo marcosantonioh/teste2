@@ -1,0 +1,41 @@
+@import url("/static/style/global/global.css");
+
+body {
+  background-color: #dbdbdb;
+}
+
+.container {
+  margin: 0 auto;
+  padding: 20px;
+  max-width: 800px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.ranking-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.ranking-table th,
+.ranking-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.ranking-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.ranking-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.ranking-table tr:hover {
+  background-color: #ddd;
+}
