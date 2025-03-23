@@ -1,21 +1,43 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
+
 
 # Create your models here.
 class Exercicio(models.Model):
+    
+    MODULOS_CHOICES = [
+        ('while','While'),
+        ('do-while','Do-While'),
+        ('for','For'),
+    ]
+    
+    CATEGORIA_CHOICES = [
+        ('aula', 'Aula'),
+        ('quiz', 'Quiz'),
+    ]
+
+    TIPO_CHOICES = [
+        ('mcq', 'Múltipla Escolha'),
+        ('code', 'Código'),
+    ]
+
     titulo = models.CharField(max_length=200)
     descricao = models.TextField()
-    tipo = models.CharField(max_length=50, choices=[('mcq', 'Múltipla Escolha'), ('code', 'Código')])
-    categoria = models.CharField(max_length=100)  # Ex: "Aula" ou "Quiz"
-    dificuldade = models.IntegerField(default=1)
+    tipo = models.CharField(max_length=50, choices=TIPO_CHOICES)
+    categoria = models.CharField(max_length=100, choices=CATEGORIA_CHOICES)
+    dificuldade = models.IntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(5)])
     xp = models.IntegerField(default=10)
     bloqueado = models.BooleanField(default=True)
-    
+    modulo = models.CharField(max_length=50, choices=MODULOS_CHOICES)
+
     class Meta:
         db_table = 'exercicio'
         
     def __str__(self):
-        return self.titulo
+        return f"{self.titulo} ({self.get_modulo_display()} - Dificuldade {self.dificuldade})"
+
+
 
 class Submission(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)

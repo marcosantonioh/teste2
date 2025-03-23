@@ -35,22 +35,21 @@ def modulos(request):
 
 # views.py
 
-def lista_exercicios(request):
+def lista_exercicios(request, modulo):
     try:
         perfil = Perfil.objects.get(user=request.user)
     except ObjectDoesNotExist:
         perfil = Perfil.objects.create(user=request.user)
 
-    modulo = request.GET.get('modulo')  # Pega o módulo selecionado da query string
-    if modulo:
-        exercicios = Exercicio.objects.filter(categoria=modulo)  # Filtra os exercícios pela categoria do módulo
-    else:
-        exercicios = Exercicio.objects.all()
+     # Filtra os exercícios com base no módulo selecionado
+    exercicios = Exercicio.objects.filter(modulo=modulo)
 
     context = {
         'perfil': perfil,
+        'modulo': modulo,
         'exercicios': exercicios
     }
+    
     return render(request, 'exercicios/listar.html', context)
 
 
