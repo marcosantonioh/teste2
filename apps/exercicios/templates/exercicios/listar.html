@@ -7,42 +7,55 @@
 <div class="container">
   <div class="exercicio-card">
     <h1>{{ modulo }}</h1>
+
     {% for exercicio in exercicios %}
-    <div
-      class="card {% if exercicio.bloqueado %}bloqueado{% else %}disponivel{% endif %}"
-    >
-      <div class="card-icon">
-        {% if exercicio.categoria == "Aula" %}
-          <img src="{% static 'img/tarefa.svg' %}" alt="loop" />
-        {% elif exercicio.categoria == "Quiz" %}
-          <img src="{% static 'img/alvo.svg' %}" alt="alvo" />
-        {% else %}
-          <img src="{% static 'img/default.svg' %}" alt="default" />
-        {% endif %}
+    <div class="card {% if exercicio.bloqueado %}bloqueado{% else %}disponivel{% endif %}">
+      
+      <div class="card-header">
+        
+        <div class="card-icon">
+          {% if exercicio.categoria == "aula" %}
+            <img src="{% static 'img/tarefa.svg' %}" alt="loop" />
+          {% elif exercicio.categoria == "quiz" %}
+            <img src="{% static 'img/alvo.svg' %}" alt="alvo" />
+          {% else %}
+            <img src="{% static 'img/default.svg' %}" alt="default" />
+          {% endif %}
+        </div>
+  
+        <div class="card-info">
+          <p class="categoria">{{ exercicio.categoria }}</p>
+          <p class="titulo">{{ exercicio.titulo }}</p>
+  
+          {% if not exercicio.concluido %}
+            <p class="xp">{{ exercicio.xp }} XP</p>
+          {% endif %}
+        </div>
+  
+        <div class="card-nivel">
+          <p>Nível: {{ exercicio.nivel }}</p>
+        </div>
+  
+        <div class="card-status">
+          {% if exercicio.bloqueado %}
+              <img src="{% static 'img/lock.svg' %}" alt="Bloqueado" />
+          {% elif exercicio.concluido %}
+              <img src="{% static 'img/ok.svg' %}" alt="Concluído" />
+          {% else %}
+          {% endif %}
+        </div>
+
       </div>
 
-      <div class="card-info">
-        <p class="categoria">{{ exercicio.categoria }}</p>
-        <p class="titulo">{{ exercicio.titulo }}</p>
+      {% if not exercicio.bloqueado and not exercicio.concluido %}
+        <div class="card-btn">
+          <a href="#" class="btn btn-primary">Iniciar Exercício</a>
+        </div>
+      {% endif %}
 
-        {% if not exercicio.bloqueado %}
-        <p class="xp">{{ exercicio.xp }} XP</p>
-        {% endif %}
-      </div>
-
-      <div class="card-nivel">
-        <p>Nível: {{ exercicio.nivel }}</p>
-      </div>
-
-      <div class="card-status">
-        {% if exercicio.bloqueado %}
-        <img src="{% static 'img/lock.svg' %}" alt="Bloqueado" />
-        {% else %}
-        <img src="{% static 'img/ok.svg' %}" alt="Disponível" />
-        {% endif %}
-      </div>
     </div>
     {% endfor %}
+
   </div>
 </div>
 

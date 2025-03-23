@@ -1,3 +1,6 @@
+@import url('/static/style/global/global.css');
+
+
 * {
   margin: 0;
   padding: 0;
@@ -18,19 +21,24 @@
 .exercicio-card {
   width: 50%;
   padding: 20px;
-  border: 1px solid #838383;
+  /* border: 1px solid #838383; */
   border-radius: 5px;
-  background-color: #a8a8a8;
+  /* background-color: #a8a8a8; */
   height: 100%;
 }
 
 .card {
   display: flex;
+  flex-direction: column;
+}
+
+.card-header{
+  display: flex;
   align-items: center;
   justify-content: space-between;
   text-align: center;
-  padding: 20px;
-  border: 1px solid #838383;
+  padding: 10px 20px;
+  /* border: 1px solid #838383; */
   border-radius: 5px;
   background-color: #f1f1f1;
   margin-top: 20px;
@@ -102,11 +110,28 @@
   /* background-color: #666; */
 }
 
+.card-btn {
+  text-align: center; 
+  background-color: #0285ff;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 1em;
+  cursor: pointer;
+  font-weight: bold;
+
+  &:hover {
+    background-color: #0055ff;
+  }
+
+  & a {
+    text-decoration: none;
+    color: white;
+  }
+}
+
 ul {
   list-style-type: none;
   padding: 0;
 }
 
-a:hover {
-  color: #666;
-}

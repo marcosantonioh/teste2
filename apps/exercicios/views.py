@@ -42,7 +42,7 @@ def lista_exercicios(request, modulo):
         perfil = Perfil.objects.create(user=request.user)
 
      # Filtra os exercícios com base no módulo selecionado
-    exercicios = Exercicio.objects.filter(modulo=modulo)
+    exercicios = Exercicio.objects.filter(modulo=modulo).order_by('bloqueado')
 
     context = {
         'perfil': perfil,

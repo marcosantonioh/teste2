@@ -29,6 +29,7 @@ class Exercicio(models.Model):
     dificuldade = models.IntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(5)])
     xp = models.IntegerField(default=10)
     bloqueado = models.BooleanField(default=True)
+    concluido = models.BooleanField(default=False)
     modulo = models.CharField(max_length=50, choices=MODULOS_CHOICES)
 
     class Meta:
