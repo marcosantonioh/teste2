@@ -14,6 +14,10 @@ body {
   padding: 20px 70px;
 }
 
+.navbar a{
+  text-decoration: none;
+}
+
 .logo{
   display: flex;
   gap: 10px;
@@ -22,6 +26,10 @@ body {
   color: #141414;
   font-size: 1rem;
   cursor: pointer;
+}
+
+.logo a{
+  text-decoration: none;
 }
 
 .box-links{
@@ -62,6 +70,10 @@ body {
 
     & p{
       font-size: 1.5em;
+    }
+
+    & img{
+      width: 1.5em;
     }
 
   }

@@ -1,16 +1,32 @@
-{% extends "nabar.html" %}
+<!-- filepath: /home/marcos-rocha/Git-hub/Django/teste2/apps/exercicios/templates/exercicios/submeter.html -->
+{% extends "navbar.html" %}
+{% load static %}
 
 {% block content %}
-<h1>{{ exercicio.titulo }}</h1>
-<p>{{ exercicio.descricao }}</p>
+<link rel="stylesheet" href="{% static 'style/partials/exercicios/submit.css' %}">
 
-<h3>Código Inicial:</h3>
-<pre>{{ exercicio.codigo_inicial }}</pre>
+<div class="container">
+    <h1>{{ exercicio.titulo }}</h1>
+    <p>{{ exercicio.descricao }}</p>
 
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Enviar Resposta</button>
-</form>
+    <h3>Código Inicial:</h3>
+    <pre>{{ exercicio.codigo_inicial }}</pre>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <textarea name="codigo" rows="6" cols="50">{{ exercicio.codigo_inicial }}</textarea><br>
+        <button type="submit">Responder</button>
+
+        <div class="message">
+            {% if correta %}
+                <p class="green">✅ Parabéns! Você acertou!</p>
+            {% else %}
+                <p class="red">❌ Resposta incorreta. Tente novamente.</p>
+            {% endif %}
+        </div>
+        <a class="back-link" href="{% url 'exercicios:lista_exercicios' %}">Voltar para a lista</a>
+    </form>
+</div>
 
 {% endblock %}

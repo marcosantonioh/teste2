@@ -1,0 +1,78 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* width: 50%; */
+  height: 100vh;
+  flex-direction: column;
+  /* background-color: #666; */
+}
+
+.exercicio-card {
+  width: 50%;
+  padding: 20px;
+  border: 1px solid #838383;
+  border-radius: 5px;
+  background-color: #a8a8a8;
+  height: 100%;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  padding: 20px;
+  border: 1px solid #838383;
+  border-radius: 5px;
+  background-color: #f1f1f1;
+  margin-top: 20px;
+
+  & a {
+    text-decoration: none;
+    color: #ff5555;
+  }
+}
+
+.card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20%;
+  background-color: #666;
+
+  & img {
+    width: 40px;
+  }
+}
+.card-info {
+  display: flex;
+  background-color: #666;
+}
+
+.card-status {
+  width: 20px;
+  display: flex;
+  background-color: #666;
+}
+
+.card-nivel {
+  display: flex;
+  background-color: #666;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+a:hover {
+  color: #666;
+}

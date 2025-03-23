@@ -13,10 +13,9 @@
     />
   </head>
   <body>
-    <header>
       <nav class="navbar">
         <div class="logo">
-          <h1>GameLoops</h1>
+          <a href="{% url 'exercicios:main' %}"><h1>GameLoops</h1></a>
         </div>
 
         <ul class="box-links">
@@ -24,13 +23,12 @@
           <li><a href="{% url 'ranking:ranking' %}">Ranking</a></li>
         </ul>
 
-        
 
         <div class="user-profile">
           <div class="user-stats">
-            <p>❤️ {{ perfil.vidas }}</p>
+            <p><img src="{% static 'img/heart.svg' %}"> {{ perfil.vidas }}</p>
             <p>⭐ {{ perfil.pontos }}</p>
-            <p>🔥 {{ perfil.sequencia_dias }}</p>
+            <p><img src="{% static 'img/fire.svg' %}"> {{ perfil.sequencia_dias }}</p>
           </div>
           
           <div class="user">
@@ -41,7 +39,6 @@
           <a href="{% url 'usuarios:logout_usuario' %}">Logout</a>
         </div>
       </nav>
-    </header>
 
     <div class="content">{% block content %} {% endblock %}</div>
   </body>

@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from apps.usuarios.models import Perfil
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Exercicio
+from .models import Exercicio, Submission
 from .forms import SubmissaoForm
 from django.contrib import messages
 
@@ -37,22 +37,21 @@ def lista_exercicios(request):
 def submeter_exercicio(request, exercicio_id):
     exercicio = get_object_or_404(Exercicio, id=exercicio_id)
 
-    if request.method == "POST":
-        form = SubmissaoForm(request.POST)
-        if form.is_valid():
-            resposta_usuario = form.cleaned_data["resposta"]
-            
-            if resposta_usuario.strip() == exercicio.resposta_correta.strip():
-                messages.success(request, "Resposta correta! 🎉")
-            else:
-                messages.error(request, "Resposta incorreta. Tente novamente.")
+    if request.method == 'POST':
+        codigo_usuario = request.POST.get('codigo')
+        correta = codigo_usuario.strip() == exercicio.resposta_correta.strip()
 
-            return redirect("exercicios:listar")
+        # Salva a submissão no banco
+        Submission.objects.create(
+            usuario=request.user,
+            exercicio=exercicio,
+            codigo_submetido=codigo_usuario,
+            correta=correta
+        )
+        
+        return render(request, 'exercicios/resultado.html', {'correta': correta, 'exercicio': exercicio})
 
-    else:
-        form = SubmissaoForm()
-
-    return render(request, "exercicios/submeter.html", {"exercicio": exercicio, "form": form})
+    return render(request, 'exercicios/submeter.html', {'exercicio': exercicio})
 
 
 

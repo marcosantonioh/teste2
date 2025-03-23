@@ -1,51 +1,42 @@
-{% load static %} {% block content %} {% include 'navbar.html' %}
-
-<style>
-  .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-
-  .exercicio-card {
-    width: 50%;
-    padding: 20px;
-    border: 1px solid #838383;
-    border-radius: 5px;
-  }
-
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
-
-  li {
-    margin-bottom: 10px;
-  }
-
-  a {
-    text-decoration: none;
-    color: #333;
-  }
-
-  a:hover {
-    color: #666;
-  }
-</style>
+{% extends 'navbar.html' %} {% load static %} {% block content %}
+<link
+  rel="stylesheet"
+  href="{% static 'style/partials/exercicios/listar.css' %}"
+/>
 
 <div class="container">
   <div class="exercicio-card">
-    <ul>
-      {% for exercicio in exercicios %}
-      <li>
-        <a href="{% url 'exercicios:submeter' exercicio.id %}"
-          >{{ exercicio.titulo }}</a
-        >
-        - Nível: {{ exercicio.nivel }}
-      </li>
-      {% endfor %}
-    </ul>
+    <h1>while</h1>
+    {% for exercicio in exercicios %}
+    <div
+      class="card {% if exercicio.bloqueado %}bloqueado{% else %}disponivel{% endif %}"
+    >
+      <div class="card-icon">
+        <img src="{% static 'img/tarefa.svg' %}" alt="loop" />
+      </div>
+
+      <div class="card-info">
+        <p class="titulo">{{ exercicio.titulo }}</p>
+        <p class="categoria">{{ exercicio.categoria }}</p>
+
+        {% if not exercicio.bloqueado %}
+        <p class="xp">{{ exercicio.xp }} XP</p>
+        {% endif %}
+      </div>
+
+      <div class="card-nivel">
+        <p>Nível: {{ exercicio.nivel }}</p>
+      </div>
+
+      <div class="card-status">
+        {% if exercicio.bloqueado %}
+          <img src="{% static 'img/lock.svg' %}" alt="Bloqueado" />
+        {% else %} 
+          <img src="{% static 'img/ok.svg' %}" alt="Disponível">
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
   </div>
 </div>
 
