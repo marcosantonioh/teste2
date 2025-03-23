@@ -12,12 +12,18 @@
       class="card {% if exercicio.bloqueado %}bloqueado{% else %}disponivel{% endif %}"
     >
       <div class="card-icon">
-        <img src="{% static 'img/tarefa.svg' %}" alt="loop" />
+        {% if exercicio.categoria == "Aula" %}
+          <img src="{% static 'img/tarefa.svg' %}" alt="loop" />
+        {% elif exercicio.categoria == "Quiz" %}
+          <img src="{% static 'img/alvo.svg' %}" alt="alvo" />
+        {% else %}
+          <img src="{% static 'img/default.svg' %}" alt="default" />
+        {% endif %}
       </div>
 
       <div class="card-info">
-        <p class="titulo">{{ exercicio.titulo }}</p>
         <p class="categoria">{{ exercicio.categoria }}</p>
+        <p class="titulo">{{ exercicio.titulo }}</p>
 
         {% if not exercicio.bloqueado %}
         <p class="xp">{{ exercicio.xp }} XP</p>
@@ -30,9 +36,9 @@
 
       <div class="card-status">
         {% if exercicio.bloqueado %}
-          <img src="{% static 'img/lock.svg' %}" alt="Bloqueado" />
-        {% else %} 
-          <img src="{% static 'img/ok.svg' %}" alt="Disponível">
+        <img src="{% static 'img/lock.svg' %}" alt="Bloqueado" />
+        {% else %}
+        <img src="{% static 'img/ok.svg' %}" alt="Disponível" />
         {% endif %}
       </div>
     </div>

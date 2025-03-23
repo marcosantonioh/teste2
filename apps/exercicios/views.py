@@ -20,18 +20,39 @@ def main_view(request):
     return render( request, 'exercicios/main.html', context)
 
 
-def lista_exercicios(request):
+@login_required(login_url="login_usuario")
+def modulos(request):
     try:
         perfil = Perfil.objects.get(user=request.user)
     except ObjectDoesNotExist:
         perfil = Perfil.objects.create(user=request.user)
     
-    exercicios = Exercicio.objects.all()
+    context = {
+        'perfil': perfil,
+        'modulos': ['While', 'Do-While', 'For']  # Definindo os módulos
+    }
+    return render(request, 'exercicios/modulos.html', context)
+
+# views.py
+
+def lista_exercicios(request):
+    try:
+        perfil = Perfil.objects.get(user=request.user)
+    except ObjectDoesNotExist:
+        perfil = Perfil.objects.create(user=request.user)
+
+    modulo = request.GET.get('modulo')  # Pega o módulo selecionado da query string
+    if modulo:
+        exercicios = Exercicio.objects.filter(categoria=modulo)  # Filtra os exercícios pela categoria do módulo
+    else:
+        exercicios = Exercicio.objects.all()
+
     context = {
         'perfil': perfil,
         'exercicios': exercicios
     }
     return render(request, 'exercicios/listar.html', context)
+
 
 
 def submeter_exercicio(request, exercicio_id):
@@ -54,7 +75,3 @@ def submeter_exercicio(request, exercicio_id):
     return render(request, 'exercicios/submeter.html', {'exercicio': exercicio})
 
 
-
-def ranking(request):
-    # Adicione a lógica para a view ranking aqui
-    return render(request, 'exercicios/ranking.html')

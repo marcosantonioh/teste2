@@ -45,27 +45,61 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 20%;
-  background-color: #666;
+  width: 10%;
+  /* background-color: #666; */
 
   & img {
     width: 40px;
   }
 }
 .card-info {
+  width: 40%;
   display: flex;
-  background-color: #666;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  gap: 10px;
+  /* background-color: #aaaaaa; */
+
+  & .categoria{
+    font-size: 0.9em;
+    color: #838383;
+  }
+
+  & .titulo{
+    font-size: 1.2em;
+    color: #303030;
+  }
+
+  & .xp{
+    font-size: 0.8em;
+    color: #0285ff;
+    background-color: transparent;
+    border: solid 1px blue;
+    border-radius: 5px;
+    padding: 5px 20px;
+  }
+
 }
 
 .card-status {
-  width: 20px;
+  width: 10%;
   display: flex;
-  background-color: #666;
+  /* background-color: #666; */
+  align-items: center;
+  justify-content: center;
+
+  & img {
+    width: 30px;
+  }
 }
 
 .card-nivel {
+  width: 20%;
   display: flex;
-  background-color: #666;
+  align-items: center;
+  justify-content: flex-start;
+  /* background-color: #666; */
 }
 
 ul {

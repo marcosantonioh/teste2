@@ -19,16 +19,16 @@
         </div>
 
         <ul class="box-links">
-          <li><a href="{% url 'exercicios:lista_exercicios' %}">Exercícios</a></li>
+          <li><a href="{% url 'exercicios:modulos' %}">Exercícios</a></li>
           <li><a href="{% url 'ranking:ranking' %}">Ranking</a></li>
+          <li><a href="{% url 'desafios:desafios' %}">Desafios</a></li>
         </ul>
-
 
         <div class="user-profile">
           <div class="user-stats">
-            <p><img src="{% static 'img/heart.svg' %}"> {{ perfil.vidas }}</p>
-            <p>⭐ {{ perfil.pontos }}</p>
-            <p><img src="{% static 'img/fire.svg' %}"> {{ perfil.sequencia_dias }}</p>
+            <div class="group"><img src="{% static 'img/heart.svg' %}"><p>{{ perfil.vidas }}</p></div>
+            <div class="group"><img src="{% static 'img/alvo.svg' %}"><p>{{ perfil.pontos }}</p></div>
+            <div class="group"><img src="{% static 'img/fire.svg' %}"> <p>{{ perfil.sequencia_dias }}</p></div>
           </div>
           
           <div class="user">

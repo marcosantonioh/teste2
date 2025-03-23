@@ -1,0 +1,86 @@
+/* modulos.css */
+
+/* Estilos gerais */
+body {
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+  }
+  
+  .container {
+    margin-top: 50px;
+    /* background-color: #cccccc; */
+    height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 20px;
+  }
+  
+  /* Layout responsivo */
+  .row {
+    /* background-color: #5fa1e7; */
+    display: flex;
+    width: 80%;
+    justify-content: space-around;
+    align-items: center;
+    height: 60%;
+  }
+
+  /* Estilo dos cards */
+  .card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .card:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+  }
+  
+  .card-body {
+    padding: 20px;
+  }
+  
+  .card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #343a40;
+  }
+  
+  .card-text {
+    color: #6c757d;
+    margin-bottom: 20px;
+  }
+  
+  /* Botões */
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    font-weight: 600;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+  }
+  
+  
+  /* Adicionando espaçamento e borda aos links dos módulos */
+  .card-body a {
+    text-decoration: none;
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  .card-body a:hover {
+    background-color: #218838;
+  }
+  
