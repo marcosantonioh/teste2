@@ -31,15 +31,26 @@
             <div class="group"><img src="{% static 'img/fire.svg' %}"> <p>{{ perfil.sequencia_dias }}</p></div>
           </div>
           
-          <div class="user">
-            <i class="bx bx-user"></i>
-            <span>{{ user.username }}</span>
+          <div class="user-dropdown">
+            <!-- Exibe a imagem e o nome do usuário -->
+            <div class="user" onclick="toggleDropdown()">
+                <img src="{% static 'img/user.svg' %}" alt="Usuário">
+                <span>{{ user.username }}</span>
+            </div>
+            
+            <!-- Menu dropdown (exibido ao clicar) -->
+            <div class="dropdown-menu">
+                <a href="{% url 'usuarios:logout_usuario' %}" class="dropdown-item">Logout</a>
+            </div>
           </div>
 
-          <a href="{% url 'usuarios:logout_usuario' %}">Logout</a>
         </div>
       </nav>
 
     <div class="content">{% block content %} {% endblock %}</div>
+
+
+<script src="{% static 'js/dropdown.js' %}"></script>
   </body>
+
 </html>

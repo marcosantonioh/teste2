@@ -91,17 +91,66 @@ body {
     }
 
   }
-
-  & user{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-  }
   
   & a{
     text-decoration: none;
     color: #141414;
     font-size: 1rem;
   }
+}
+
+.user-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.user{
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 10px;
+  /* background-color: aqua; */
+  padding: 5px 10px;
+
+  & img{
+    width: 2em;
+  }
+
+  & span {
+    font-size: 1em;
+  }
+}
+
+/* Menu do dropdown - inicialmente escondido */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 160px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+/* Estilo para o item de logout */
+.dropdown-menu .dropdown-item {
+  padding: 8px 16px;
+  color: #000;
+  text-decoration: none;
+  display: block;
+}
+
+/* Mudança de cor do item de logout quando o mouse passa por cima */
+.dropdown-menu .dropdown-item:hover {
+  background-color: #f1f1f1;
+}
+
+/* Exibe o menu quando a classe 'show' é adicionada */
+.dropdown-menu.show {
+  display: block;
 }
