@@ -7,31 +7,64 @@
 <link rel="stylesheet" href="{% static 'style/partials/exercicios/modulos.css' %}">
 
   <div class="container">
+
+
     <div class="row">
-        <div class="card">
-          <div class="card-body">
+
+      <div class="card">
+        <div class="card-body">
+          <div>
             <h5 class="card-title">While</h5>
             <p class="card-text">Aprenda o loop While em C.</p>
-            <a href="{% url 'exercicios:lista_exercicios' modulo='while' %}" class="btn btn-primary">Ver Exercícios</a>
           </div>
+          <a href="{% url 'exercicios:lista_exercicios' modulo='while' %}" class="btn btn-primary">Ver Exercícios</a>
         </div>
+      </div>
 
-        <div class="card">
-          <div class="card-body">
+      <div class="card">
+        <div class="card-body">
+          <div>
             <h5 class="card-title">Do-While</h5>
             <p class="card-text">Aprenda o loop Do-While em C.</p>
-            <a href="{% url 'exercicios:lista_exercicios' modulo='do-while'%}" class="btn btn-primary">Ver Exercícios</a>
           </div>
+          <a href="{% url 'exercicios:lista_exercicios' modulo='do-while'%}" class="btn btn-primary">Ver Exercícios</a>
         </div>
+      </div>
 
-        <div class="card">
-          <div class="card-body">
+      <div class="card">
+        <div class="card-body">
+          <div>
             <h5 class="card-title">For</h5>
             <p class="card-text">Aprenda o loop For em C.</p>
-            <a href="{% url 'exercicios:lista_exercicios' modulo='for' %}" class="btn btn-primary">Ver Exercícios</a>
           </div>
+          <a href="{% url 'exercicios:lista_exercicios' modulo='for' %}" class="btn btn-primary">Ver Exercícios</a>
+        </div>
+      </div>
+
+  </div>
+
+
+    <div class="random">
+
+      <div class="card">
+
+        <div class="img">
+          <img src="{% static 'img/bola_cristal.svg' %}" alt="Random">
         </div>
 
+        <div class="card-body">
+          <div>
+            <h5 class="card-title">Aleatorio</h5>
+            <p class="card-text">Loop aleatorio.</p>
+          </div>
+          <a href="{% url 'exercicios:lista_exercicios' modulo='while' %}" class="btn btn-primary">Ver Exercícios</a>
+        </div>
+        
+      </div>
+    
     </div>
+
+    
+
   </div>
 {% endblock %}

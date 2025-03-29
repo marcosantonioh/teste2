@@ -13,44 +13,64 @@
     />
   </head>
   <body>
-      <nav class="navbar">
-        <div class="logo">
-          <a href="{% url 'exercicios:main' %}"><h1>GameLoops</h1></a>
+    <nav class="navbar">
+      <div class="logo">
+        <a href="{% url 'exercicios:main' %}"><h1>GameLoops</h1></a>
+      </div>
+
+      <div class="menu-toggle" onclick="toggleMenu()">
+        <i class="bx bx-menu"></i>
+      </div>
+
+      <ul class="box-links">
+        <li><a href="{% url 'exercicios:modulos' %}">Exercícios</a></li>
+        <li><a href="{% url 'ranking:ranking' %}">Ranking</a></li>
+        <li><a href="{% url 'desafios:desafios' %}">Desafios</a></li>
+      </ul>
+
+      <div class="user-profile">
+        <div class="user-stats">
+          <div class="group">
+            <img src="{% static 'img/heart.svg' %}" />
+            <p>{{ perfil.vidas }}</p>
+          </div>
+          <div class="group">
+            <img src="{% static 'img/alvo.svg' %}" />
+            <p>{{ perfil.pontos }}</p>
+          </div>
+          <div class="group">
+            <img src="{% static 'img/fire.svg' %}" />
+            <p>{{ perfil.sequencia_dias }}</p>
+          </div>
         </div>
 
-        <ul class="box-links">
-          <li><a href="{% url 'exercicios:modulos' %}">Exercícios</a></li>
-          <li><a href="{% url 'ranking:ranking' %}">Ranking</a></li>
-          <li><a href="{% url 'desafios:desafios' %}">Desafios</a></li>
-        </ul>
-
-        <div class="user-profile">
-          <div class="user-stats">
-            <div class="group"><img src="{% static 'img/heart.svg' %}"><p>{{ perfil.vidas }}</p></div>
-            <div class="group"><img src="{% static 'img/alvo.svg' %}"><p>{{ perfil.pontos }}</p></div>
-            <div class="group"><img src="{% static 'img/fire.svg' %}"> <p>{{ perfil.sequencia_dias }}</p></div>
-          </div>
-          
-          <div class="user-dropdown">
-            <!-- Exibe a imagem e o nome do usuário -->
-            <div class="user" onclick="toggleDropdown()">
-                <img src="{% static 'img/user.svg' %}" alt="Usuário">
-                <span>{{ user.username }}</span>
-            </div>
-            
-            <!-- Menu dropdown (exibido ao clicar) -->
-            <div class="dropdown-menu">
-                <a href="{% url 'usuarios:logout_usuario' %}" class="dropdown-item">Logout</a>
-            </div>
+        <div class="dropdown">
+          <!-- Exibe a imagem e o nome do usuário -->
+          <div class="user" onclick="toggleDropdown()">
+            <img src="{% static 'img/user.svg' %}" alt="Usuário" />
+            <span>{{ user.username }}</span>
           </div>
 
+          <div class="dropdown-menu" id="dropdownMenu">
+            <div class="option">
+              <img src="{% static 'img/user.svg' %}" alt="" />
+              <a href="{% url 'usuarios:logout_usuario' %}">Configurações</a>
+            </div>
+            <div class="option">
+              <img src="{% static 'img/user.svg' %}" alt="" />
+              <a href="{% url 'usuarios:logout_usuario' %}">Ajuda</a>
+            </div>
+            <div class="option">
+              <img src="{% static 'img/user.svg' %}" alt="" />
+              <a href="{% url 'usuarios:logout_usuario' %}">Logout</a>
+            </div>
+          </div>
         </div>
-      </nav>
+      </div>
+    </nav>
 
     <div class="content">{% block content %} {% endblock %}</div>
 
-
-<script src="{% static 'js/dropdown.js' %}"></script>
+    <script src="{% static 'js/dropdown.js' %}"></script>
   </body>
-
 </html>

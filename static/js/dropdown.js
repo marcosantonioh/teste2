@@ -1,14 +1,17 @@
-// Função para alternar a visibilidade do dropdown
 function toggleDropdown() {
-    const dropdownMenu = document.querySelector('.dropdown-menu');
-    dropdownMenu.classList.toggle('show');
+  document.getElementById("dropdownMenu").classList.toggle("show");
 }
 
-// Fecha o dropdown se clicar fora da área do usuário
-document.addEventListener('click', function(event) {
-    const userDropdown = document.querySelector('.user-dropdown');
-    const dropdownMenu = document.querySelector('.dropdown-menu');
-    if (!userDropdown.contains(event.target)) {
-        dropdownMenu.classList.remove('show');
-    }
+// Fecha o menu ao clicar fora dele
+document.addEventListener("click", function (event) {
+  var dropdown = document.getElementById("dropdownMenu");
+  var userDiv = document.querySelector(".user");
+  if (!userDiv.contains(event.target)) {
+    dropdown.classList.remove("show");
+  }
 });
+
+
+function toggleMenu() {
+  document.querySelector(".box-links").classList.toggle("active");
+}

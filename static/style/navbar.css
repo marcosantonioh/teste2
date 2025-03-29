@@ -5,20 +5,20 @@ body {
   color: #141414;
 }
 
-.navbar{
+.navbar {
   display: flex;
   background-color: rgb(241, 241, 241);
   justify-content: space-between;
   align-items: center;
-  gap: 20px ;
+  gap: 20px;
   padding: 20px 70px;
 }
 
-.navbar a{
+.navbar a {
   text-decoration: none;
 }
 
-.logo{
+.logo {
   display: flex;
   gap: 10px;
   align-items: center;
@@ -28,18 +28,18 @@ body {
   cursor: pointer;
 }
 
-.logo a{
+.logo a {
   text-decoration: none;
 }
 
-.box-links{
+.box-links {
   display: flex;
-  gap: 20px;  
+  gap: 20px;
 
-  & li{
+  & li {
     list-style: none;
 
-    & a{
+    & a {
       text-decoration: none;
       color: #141414;
       font-size: 1.2rem;
@@ -47,8 +47,7 @@ body {
   }
 }
 
-
-.user-profile{
+.user-profile {
   display: flex;
   gap: 30px;
   align-items: center;
@@ -58,53 +57,67 @@ body {
   cursor: pointer;
   text-align: center;
 
-  & .user-stats{
+  & a {
+    text-decoration: none;
+    color: #141414;
+    font-size: 1rem;
+  }
+}
+
+.user-stats {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  text-decoration: none;
+  color: #141414;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: center;
+
+  & p {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.5em;
+    font-weight: bold;
+  }
+
+  & img {
+    width: 1.5em;
+  }
+
+  & .group {
     display: flex;
-    gap: 40px;
+    /* background-color: rgb(143, 115, 79); */
+    flex-direction: row;
+    gap: 5px;
     align-items: center;
     text-decoration: none;
     color: #141414;
     font-size: 1rem;
-    cursor: pointer;
     text-align: center;
-
-    & p{
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 1.5em;
-      font-weight: bold;
-    }
-
-    & img{
-      width: 1.5em;
-    }
-
-    & .group{
-      display: flex;
-      /* background-color: rgb(143, 115, 79); */
-      flex-direction:row;
-      gap: 5px;
-      align-items: center;
-      text-decoration: none;
-      color: #141414;
-      font-size: 1rem;
-      text-align: center;
-    }
-
-  }
-  
-  & a{
-    text-decoration: none;
-    color: #141414;
-    font-size: 1rem;
   }
 }
-
-.user-dropdown {
+.dropdown {
   position: relative;
   display: inline-block;
+  cursor: pointer;
 }
 
-.user{
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  width: 150%;
+  right: 0;
+  top: 50px;
+  background-color: red;
+  padding: 10px;
+}
+
+.dropdown-menu.show {
+  display: block;
+}
+
+.user {
+  background-color: red;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -114,7 +127,7 @@ body {
   /* background-color: aqua; */
   padding: 5px 10px;
 
-  & img{
+  & img {
     width: 2em;
   }
 
@@ -123,34 +136,82 @@ body {
   }
 }
 
-/* Menu do dropdown - inicialmente escondido */
-.dropdown-menu {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  min-width: 160px;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  z-index: 1;
+.option {
+  display: flex;
+  width: 100%;
+  padding: 10px 0;
+  background-color: aquamarine;
+  /* margin: 0; */
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
 }
 
-/* Estilo para o item de logout */
-.dropdown-menu .dropdown-item {
-  padding: 8px 16px;
-  color: #000;
+.option img {
+  background-color: rgb(127, 202, 77);
+  width: 2em;
+}
+
+.option a {
   text-decoration: none;
-  display: block;
+  color: #333;
 }
 
-/* Mudança de cor do item de logout quando o mouse passa por cima */
-.dropdown-menu .dropdown-item:hover {
-  background-color: #f1f1f1;
+.option:hover {
+  background: #f0f0f0;
+  /* border-radius: 5px; */
 }
 
-/* Exibe o menu quando a classe 'show' é adicionada */
-.dropdown-menu.show {
-  display: block;
+.menu-toggle {
+  display: none;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  /* NAVBAR INFERIOR */
+  .navbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgb(241, 241, 241);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+
+    & .logo {
+      display: none;
+    }
+  }
+
+  /* NAVBAR SUPERIOR */
+  .user-stats {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgb(248, 248, 248); /* Cor de fundo visível */
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+    /* flex-direction: column; */
+    /* padding: 20px 0; */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    padding: calc(20px + env(safe-area-inset-top)) 0;
+
+    & .group {
+      /* background-color: rgb(143, 115, 79); */
+      padding: 0px 20px;
+
+      & img {
+        width: 2em;
+      }
+    }
+  }
 }
