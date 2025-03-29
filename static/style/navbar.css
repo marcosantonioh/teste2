@@ -105,11 +105,15 @@ body {
 .dropdown-menu {
   display: none;
   position: absolute;
-  width: 150%;
+  width: 200px;
   right: 0;
   top: 50px;
-  background-color: red;
-  padding: 10px;
+  background-color: rgb(247, 247, 247);
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Adiciona sombra suave */
+  /* padding: 5px; */
+  /* border: solid 0.1em ; */
+  /* border-radius: 10px; */
 }
 
 .dropdown-menu.show {
@@ -117,7 +121,9 @@ body {
 }
 
 .user {
-  background-color: red;
+  /* background-color: red; */
+  border: solid 1px black;
+  border-radius: 50px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -136,29 +142,35 @@ body {
   }
 }
 
+
+
 .option {
   display: flex;
   width: 100%;
   padding: 10px 0;
-  background-color: aquamarine;
-  /* margin: 0; */
+  background-color: rgb(255, 255, 255);
   align-items: center;
-  justify-content: space-between;
-  gap: 30px;
+  justify-content: start;
+  /* margin-bottom: 5px; */
 }
 
 .option img {
-  background-color: rgb(127, 202, 77);
-  width: 2em;
+  /* background-color: rgb(127, 202, 77); */
+  margin-left: 10px;
+  width: 1.5em;
 }
 
 .option a {
+  margin-left: 10px;
   text-decoration: none;
   color: #333;
+  display: flex;
+  width: 100%;
 }
 
 .option:hover {
-  background: #f0f0f0;
+  background: #e6e6e6;
+  /* border-radius: 10px; */
   /* border-radius: 5px; */
 }
 
