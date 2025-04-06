@@ -1,0 +1,109 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <title>GameLoops - Aprenda Algoritmos com Gamificação</title>
+    <link
+      rel="stylesheet"
+      href="{% static 'style/partials/landing/lp.css' %}"
+    />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <h1 class="logo">GameLoops</h1>
+      <div class="header-actions">
+        <a href="#" class="start">Começar</a>
+        <a href="#" class="login">Login</a>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-image">
+        <img
+          src="{% static 'img/lp-hero.svg' %}"
+          alt="GameLoops - Aprenda Algoritmos com Gamificação"
+        />
+      </div>
+      <div class="hero-content">
+        <h2>O jeito fácil e divertido de aprender a programar!</h2>
+        <!-- <p>Aprenda lógica de programação com desafios, níveis e recompensas.</p> -->
+        <a href="#" class="btn">Comece agora</a>
+      </div>
+    </section>
+
+    <!-- Benefícios -->
+    <section class="section">
+      <div class="benefits">
+
+        <section class="benefit">
+          <div class="benefit-img">
+            <img src="{% static 'img/gamificado.svg' %}" alt="Gamificação" />
+          </div>
+          <div class="benefit-content">
+            <h4>Interativo e Gamificado</h4>
+            <p>
+              Resolva desafios, ganhe pontos, avance de nível e desbloqueie
+              conquistas.
+            </p>
+          </div>
+        </section>
+
+        <section class="benefit">
+          
+          <div class="benefit-content">
+            <h4>Trilhas claras de aprendizagem</h4>
+            <p>
+              Siga um caminho guiado com desafios progressivos, do básico ao avançado..
+            </p>
+          </div>
+          <div class="benefit-img">
+            <img src="{% static 'img/percurso.svg' %}" alt="Aprendizado Flexível" />
+          </div>
+        </section>
+
+        <section class="benefit">
+          <div class="benefit-img">
+            <img src="{% static 'img/pratica.svg' %}" alt="Código na prática" />
+          </div>
+          <div class="benefit-content">
+            <h4>Prática real</h4>
+            <p>
+              Aprender código na prática é a melhor forma de dominar a lógica.
+            </p>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- Como funciona -->
+    <!-- <section class="section light-bg">
+      <h3>Veja como funciona</h3>
+      <ol class="steps">
+        <li>Escolha um desafio (ex: “Encontre o erro”)</li>
+        <li>Resolva com código na prática</li>
+        <li>Receba feedback, aprenda e avance de nível</li>
+      </ol>
+    </section> -->
+
+    <!-- Call to Action -->
+    <section class="cta">
+      <h3>Pronto para começar?</h3>
+      <p>Crie sua conta e comece a aprender de forma divertida e eficaz.</p>
+      <a href="#" class="btn">Começar agora</a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>&copy; 2025 GameLoops. Todos os direitos reservados.</p>
+      <div class="footer-links">
+        <a href="#">Sobre</a>
+        <a href="#">Contato</a>
+        <a href="#">Termos</a>
+      </div>
+    </footer>
+  </body>
+</html>
