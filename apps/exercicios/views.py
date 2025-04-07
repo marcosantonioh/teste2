@@ -9,22 +9,23 @@ from django.contrib import messages
 
 # @login_required(login_url="usuarios:login_usuario")
 def main_view(request):
-    # Se o usuário estiver logado, carrega ou cria o perfil
     perfil = None
     if request.user.is_authenticated:
         try:
             perfil = Perfil.objects.get(user=request.user)
         except ObjectDoesNotExist:
             perfil = Perfil.objects.create(user=request.user)
-            
+
+    # Caso o usuário não esteja logado e não tenha feito o onboarding, redireciona
     elif not request.session.get('onboarding_concluido'):
-        return redirect('etapa', numero=1)  # Redireciona para a primeira se não existir
+        return redirect('etapas_onboarding')  # ou qual for o nome da sua view inicial
 
     
     context = {
         'perfil': perfil
     }
     return render( request, 'exercicios/main.html', context)
+
 
 
 @login_required(login_url="usuarios:login_usuario")

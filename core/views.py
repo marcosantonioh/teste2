@@ -55,6 +55,9 @@ def etapa(request, numero):
         request.session[f'resposta_etapa_{numero}'] = resposta
         return redirect('etapa', numero + 1)
 
+    # ✅ Marcar que concluiu o onboarding na última etapa
+    if numero == 6:
+        request.session['onboarding_concluido'] = True
 
     contexto = {
         'titulo': etapa_info.get("titulo"),

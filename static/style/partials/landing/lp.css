@@ -125,18 +125,16 @@ header a:hover {
 
 .hero-image {
   flex: 1;
-  min-width: 300px;
+  /* min-width: 300px; */
   text-align: center;
   /* background-color: #0e5729; */
-  width: 50%;
-  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .hero-image img {
-  width: 75%;
+  width: 450px;
 }
 
 .hero-content {
