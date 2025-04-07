@@ -15,7 +15,7 @@
     <header class="header">
       <h1 class="logo">GameLoops</h1>
       <div class="header-actions">
-        <a href="{% url 'acesso_sem_login' %}" class="start">Começar</a>
+        <a href="{% url 'etapa' 1 %}" class="start">Começar</a>
         <a href="#" class="login">Login</a>
       </div>
     </header>
@@ -31,7 +31,8 @@
       <div class="hero-content">
         <h2>O jeito fácil e divertido de aprender a programar!</h2>
         <!-- <p>Aprenda lógica de programação com desafios, níveis e recompensas.</p> -->
-        <a href="#" class="btn">Comece agora</a>
+        <a href="{% url 'etapa' 1 %}" class="btn">Comece agora</a>
+        <a href="{% url 'usuarios:login_usuario' %}" class="btn-login">Já tenho uma conta</a>
       </div>
     </section>
 
@@ -93,7 +94,7 @@
     <section class="cta">
       <h3>Pronto para começar?</h3>
       <p>Crie sua conta e comece a aprender de forma divertida e eficaz.</p>
-      <a href="#" class="btn">Começar agora</a>
+      <a href="{% url 'etapa' 1 %}" class="btn">Começar agora</a>
     </section>
 
     <!-- Footer -->

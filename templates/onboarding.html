@@ -1,0 +1,60 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'style/partials/landing/etapa.css' %}" />
+
+{% block content %}
+
+<div class="container">
+  <h2>{{ titulo }}</h2>
+
+  {% if tipo == "texto" %}
+  <p>{{ mensagem }}</p>
+  <a href="{% url 'etapa' proxima_etapa %}" class="btn">Continuar</a>
+
+  {% elif tipo == "opcoes" %}
+  <form method="post" class="etapa-form">
+    {% csrf_token %} {% for valor, label in opcoes %}
+    <label class="option-box">
+      <input type="radio" name="tempo" value="{{ valor }}" required />
+      <span>{{ label }}</span>
+    </label>
+    {% endfor %}
+    <button type="submit" class="btn">Continuar</button>
+  </form>
+
+  {% elif tipo == "notification" %}
+  <div class="notificacao-box">
+    <p class="mensagem-notificacao">{{ mensagem }}</p>
+
+    <div class="botoes-notificacao">
+      <a href="{% url 'etapa' proxima_etapa %}" class="btn btn-permitir"
+        >Permitir notificações</a
+      >
+      <a href="{% url 'etapa' proxima_etapa %}" class="btn btn-negar"
+        >Agora não</a
+      >
+    </div>
+  </div>
+
+  {% elif tipo == "carregamento" %}
+  
+    <div class="last-page" >
+        <img src="{% static 'img/last-page.svg' %}" alt="last-page">
+        <p class="message">{{ mensagem }}</p>
+        <div class="dot-loader">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+    </div>
+
+    <script>
+        setTimeout(() => {
+            window.location.href = "{% url 'exercicios:main' %}";
+        }, 3000);
+    </script>
+
+  {% endif %}
+</div>
+
+{%endblock%}

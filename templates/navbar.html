@@ -28,6 +28,9 @@
         <li><a href="{% url 'desafios:desafios' %}">Desafios</a></li>
       </ul>
 
+
+      {% if user.is_authenticated %}
+
       <div class="user-profile">
         <div class="user-stats">
           <div class="group">
@@ -68,6 +71,14 @@
         </div>
       </div>
     </nav>
+
+    {% else %}
+    <!-- Usuário anônimo -->
+      <div class="auth-buttons">
+        <a href="{% url 'usuarios:cadastro_usuario' %}" class="btn">Criar Perfil</a>
+        <a href="{% url 'usuarios:login_usuario' %}" class="btn">Entrar</a>
+      </div>
+    {% endif %}
 
     <div class="content">{% block content %} {% endblock %}</div>
 

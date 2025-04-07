@@ -11,6 +11,6 @@ urlpatterns = [
     path("desafios/", include("apps.desafios.urls",)),
     path("ranking/", include("apps.ranking.urls")),
     path("login/", include("apps.usuarios.urls")),
-    path('teste/', views.acesso_sem_login, name='acesso_sem_login'),
+    path('etapa/<int:numero>/', views.etapa, name='etapa'),
     # path('', include('apps.usuarios.urls')),
 ]

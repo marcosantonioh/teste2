@@ -70,6 +70,17 @@ header a:hover {
   background-color: #1b5fe7;
 }
 
+
+
+
+
+
+
+
+
+
+
+
 /* Hero section */
 .hero {
   display: flex;
@@ -143,13 +154,13 @@ header a:hover {
 }
 
 .hero-content .btn {
-  padding: 10px 40px;
+  width: 250px;
+  height: 45px;
   border-radius: 90px;
   text-decoration: none;
   font-size: 1rem;
   font-weight: 400;
   color: white;
-  height: auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -163,13 +174,27 @@ header a:hover {
   background-color: #0f3c96;
 }
 
+.btn-login{
+  width: 250px;
+  height: 45px;
+  border-radius: 90px;
+  border: solid 1px rgba(0, 0, 0, 0.3);
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 400;
+  color: rgb(22, 22, 22);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  margin-top: 1rem;
+  transition: background-color 0.3s;
+  background-color: none;
+}
 
-
-
-
-
-
-
+.btn-login:hover {
+  border: solid 1px rgba(0, 0, 0); /* preto com 50% de opacidade */
+}
 
 
 /* Benefícios */

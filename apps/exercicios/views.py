@@ -7,12 +7,19 @@ from .forms import SubmissaoForm
 from django.contrib import messages
 
 
-@login_required(login_url="login_usuario")
+# @login_required(login_url="usuarios:login_usuario")
 def main_view(request):
-    try:
-        perfil = Perfil.objects.get(user=request.user)
-    except ObjectDoesNotExist:
-        perfil = Perfil.objects.create(user=request.user)
+    # Se o usuário estiver logado, carrega ou cria o perfil
+    perfil = None
+    if request.user.is_authenticated:
+        try:
+            perfil = Perfil.objects.get(user=request.user)
+        except ObjectDoesNotExist:
+            perfil = Perfil.objects.create(user=request.user)
+            
+    elif not request.session.get('onboarding_concluido'):
+        return redirect('etapa', numero=1)  # Redireciona para a primeira se não existir
+
     
     context = {
         'perfil': perfil
@@ -20,7 +27,7 @@ def main_view(request):
     return render( request, 'exercicios/main.html', context)
 
 
-@login_required(login_url="login_usuario")
+@login_required(login_url="usuarios:login_usuario")
 def modulos(request):
     try:
         perfil = Perfil.objects.get(user=request.user)
