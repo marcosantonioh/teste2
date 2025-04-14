@@ -13,18 +13,28 @@ def obter_amigos(user):
 
 # @login_required(login_url="login_usuario")@login_required(login_url="usuarios:login_usuario")
 def ranking(request):
-    perfil = Perfil.objects.get(user=request.user)
+    
+    perfil = None
+    perfis_amigos = []
+
+    usuario_logado = request.user.is_authenticated
+
+    if usuario_logado:
+        try:
+            perfil = Perfil.objects.get(user=request.user)
+        except ObjectDoesNotExist:
+            perfil = Perfil.objects.create(user=request.user)
+
+        amigos = obter_amigos(request.user)
+        perfis_amigos = Perfil.objects.filter(user__in=amigos).order_by('-pontos')
+
     
     perfis_globais = Perfil.objects.all().order_by('-pontos')
     
-    # Obtém amigos do usuário
-    amigos = obter_amigos(request.user)
-    perfis_amigos = Perfil.objects.filter(user__in=amigos).order_by('-pontos')
-
     context = {
         'perfil': perfil,
         'perfis_globais': perfis_globais,
         'perfis_amigos': perfis_amigos,
-        'usuario_logado': True,
+        'usuario_logado': usuario_logado,
     }
     return render(request, 'ranking/ranking.html', context)
