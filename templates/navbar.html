@@ -56,12 +56,13 @@
             <div class="dropdown-menu" id="dropdownMenu">
               <div class="option">
                 <img src="{% static 'img/settings.svg' %}" alt="" />
-                <a href="{% url 'usuarios:logout_usuario' %}">Configurações</a>
+                <a href="{% url 'usuarios:perfil_usuario' %}">Perfil</a>
               </div>
               <div class="option">
                 <img src="{% static 'img/ajuda.svg' %}" alt="" />
                 <a href="{% url 'usuarios:logout_usuario' %}">Ajuda</a>
               </div>
+              <hr class="separador-linha">
               <div class="option">
                 <img src="{% static 'img/sair.svg' %}" alt="" />
                 <a href="{% url 'usuarios:logout_usuario' %}">Logout</a>

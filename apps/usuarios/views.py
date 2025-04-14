@@ -4,6 +4,23 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from .models import Perfil, Amizade
 from django.db.models import Q
+from django.core.exceptions import ObjectDoesNotExist
+
+
+def perfil_view(request):
+    try:
+        perfil = Perfil.objects.get(user=request.user)
+    except ObjectDoesNotExist:
+        perfil = Perfil.objects.create(user=request.user)
+
+    context = {
+        'perfil': perfil
+    }
+
+    return render(request, 'usuarios/perfil.html', context)
+
+
+
 
 def cadastrar_usuario(request):
     if request.method == "POST":
