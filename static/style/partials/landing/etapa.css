@@ -9,7 +9,7 @@ body{
 .container {
   overflow-x:hidden;
   padding: 2rem;
-  background-color: #f37171;
+  /* background-color: #f37171; */
   width: 100%;
   height: auto;
   display: flex;

@@ -1,13 +1,14 @@
 @import url("/static/style/global/global.css");
 
 body {
-  background-color: #dbdbdb;
+  background-color: #ffffff;
 }
 
+
 .container {
+  max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  max-width: 800px;
 }
 
 .text-center {
@@ -18,24 +19,137 @@ body {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.ranking-table thead {
+  background-color: #007bff;
+  color: white;
 }
 
 .ranking-table th,
 .ranking-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
+  /* background-color: aqua; */
+  padding: 10px 15px;
   text-align: center;
+  /* border-bottom: 1px solid #ddd; */
 }
 
-.ranking-table th {
-  background-color: #f2f2f2;
-  font-weight: bold;
+.foto-cell {
+  text-align: center;
+  vertical-align: middle;
 }
 
 .ranking-table tr:nth-child(even) {
-  background-color: #f9f9f9;
+  background-color: #f2f2f2;
 }
 
-.ranking-table tr:hover {
+.profile-pic {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  /* object-fit: cover; */
+  /* border: 2px solid #007bff; */
+}
+
+
+
+
+
+
+
+
+
+.ranking-switch {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.btn-ranking {
+  padding: 10px 20px;
+  margin: 0 5px;
+  border: none;
   background-color: #ddd;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.btn-ranking.ativo {
+  background-color: #007bff;
+  color: white;
+}
+
+
+
+
+
+
+
+
+
+
+
+.div1 {
+  padding-top: 40px;
+  width: 100%;
+  height: 80vh;
+  /* background-color: #c9c9c9; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.div2 {
+  width: 100%;
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  /* background-color: #b4b4b4; */
+  gap: 10px;
+  margin-top: 40px;
+}
+
+.div3 {
+  width: 50%;
+  height: 80px;
+  background-color: #c9c9c9;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  
+}
+
+.forma {
+  background-color: #a5a5a5;
+  /* margin: 10px; */
+  overflow: hidden;
+  /* display: inline-block; */
+}
+
+.f1 {
+  width: 60px;
+  height: 60px;
+  border-radius: 10%;
+}
+
+.f2 {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}
+
+.f3 {
+  width: 190px;
+  height: 20px;
+  /* border-radius: 10%; */
+}
+
+.f4 {
+  width: 90px;
+  height: 20px;
 }

@@ -4,25 +4,140 @@
 {% block content %}
 
 <link rel="stylesheet" href="{% static 'style/partials/ranking/ranking.css' %}">
-<div class="container">
-    <h2 class="text-center">Ranking</h2>
-    <table class="ranking-table">
-        <thead>
-            <tr>
-                <th>Posição</th>
-                <th>Nome</th>
-                <th>Pontuação</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for perfil in perfis %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ perfil.user.username }}</td>
-                <td>{{ perfil.pontos }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+
+
+    {%if usuario_logado%}
+
+        <div class="container">
+            <h2 class="text-center">Ranking</h2>
+
+            <div class="ranking-switch">
+                <button class="btn-ranking ativo" onclick="mostrarRanking('global')">Global</button>
+                <button class="btn-ranking" onclick="mostrarRanking('amigos')">Amigos</button>
+            </div>
+
+            <!-- Ranking Global -->
+            <div id="ranking-global" class="ranking-content">
+                <table class="ranking-table">
+                    <thead>
+                        <tr>
+                            <th>Posição</th>
+                            <th>Perfil</th>
+                            <th>Nome</th>
+                            <th>Pontuação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for perfil in perfis_globais %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td class="foto-cell">
+                                {% if perfil.foto and perfil.foto.url %}
+                                    <img src="{{ perfil.foto.url }}" class="profile-pic">
+                                {% else %}
+                                    <img src="/media/fotos_perfil/default.png" class="profile-pic">
+                                {% endif %}
+                            </td>
+                            <td>{{ perfil.user.username }}</td>
+                            <td>{{ perfil.pontos }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Ranking Amigos -->
+            <div id="ranking-amigos" class="ranking-content" style="display: none;">
+                <table class="ranking-table">
+                    <thead>
+                        <tr>
+                            <th>Posição</th>
+                            <th>Perfil</th>
+                            <th>Nome</th>
+                            <th>Pontuação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for perfil in perfis_amigos %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td class="foto-cell">
+                                {% if perfil.foto and perfil.foto.url %}
+                                    <img src="{{ perfil.foto.url }}" class="profile-pic">
+                                {% else %}
+                                    <img src="/media/fotos_perfil/default.png" class="profile-pic">
+                                {% endif %}
+                            </td>
+                            <td>{{ perfil.user.username }}</td>
+                            <td>{{ perfil.pontos }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="4">Você ainda não tem amigos no ranking.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    {%else%}
+
+        <div class="div1">
+            <h2>Ranking</h2>
+            <p>Faça login para participar do ranking!</p>
+            
+            <div class="div2">
+                
+                <div class="div3">
+                    <div class="forma f1"></div>
+                    <div class="forma f2"></div>
+                    <div class="forma f3"></div>
+                    <div class="forma f4"></div>
+                </div>
+                <div class="div3">
+                    <div class="forma f1"></div>
+                    <div class="forma f2"></div>
+                    <div class="forma f3"></div>
+                    <div class="forma f4"></div>
+                </div>
+                <div class="div3">
+                    <div class="forma f1"></div>
+                    <div class="forma f2"></div>
+                    <div class="forma f3"></div>
+                    <div class="forma f4"></div>
+                </div>
+                <div class="div3">
+                    <div class="forma f1"></div>
+                    <div class="forma f2"></div>
+                    <div class="forma f3"></div>
+                    <div class="forma f4"></div>
+                </div>
+                
+            </div>
+
+        </div>
+
+    {%endif%}
+
+
+<script>
+    function mostrarRanking(tipo) {
+        const btns = document.querySelectorAll('.btn-ranking');
+        btns.forEach(btn => btn.classList.remove('ativo'));
+
+        const globalDiv = document.getElementById('ranking-global');
+        const amigosDiv = document.getElementById('ranking-amigos');
+
+        if (tipo === 'global') {
+            globalDiv.style.display = 'block';
+            amigosDiv.style.display = 'none';
+            btns[0].classList.add('ativo');
+        } else {
+            globalDiv.style.display = 'none';
+            amigosDiv.style.display = 'block';
+            btns[1].classList.add('ativo');
+        }
+    }
+</script>
+
 {% endblock %}

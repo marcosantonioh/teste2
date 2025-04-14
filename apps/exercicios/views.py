@@ -3,9 +3,6 @@ from apps.usuarios.models import Perfil
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Exercicio, Submission
-from .forms import SubmissaoForm
-from django.contrib import messages
-
 
 # @login_required(login_url="usuarios:login_usuario")
 def main_view(request):
@@ -18,7 +15,7 @@ def main_view(request):
 
     # Caso o usuário não esteja logado e não tenha feito o onboarding, redireciona
     elif not request.session.get('onboarding_concluido'):
-        return redirect('etapas_onboarding')  # ou qual for o nome da sua view inicial
+        return redirect('etapa', 1)  # ou qual for o nome da sua view inicial
 
     
     context = {
@@ -27,21 +24,25 @@ def main_view(request):
     return render( request, 'exercicios/main.html', context)
 
 
-
-@login_required(login_url="usuarios:login_usuario")
+# @login_required(login_url="usuarios:login_usuario")
 def modulos(request):
-    try:
-        perfil = Perfil.objects.get(user=request.user)
-    except ObjectDoesNotExist:
-        perfil = Perfil.objects.create(user=request.user)
-    
+    perfil = None
+
+    if request.user.is_authenticated:
+        try:
+            perfil = Perfil.objects.get(user=request.user)
+        except ObjectDoesNotExist:
+            perfil = Perfil.objects.create(user=request.user)
+
     context = {
-        'perfil': perfil,
-        'modulos': ['While', 'Do-While', 'For']  # Definindo os módulos
+        'perfil': perfil,  # Vai ser None se o usuário for anônimo
+        'modulos': ['While', 'Do-While', 'For']
     }
     return render(request, 'exercicios/modulos.html', context)
 
-# views.py
+
+
+
 
 def lista_exercicios(request, modulo):
     try:
@@ -49,7 +50,7 @@ def lista_exercicios(request, modulo):
     except ObjectDoesNotExist:
         perfil = Perfil.objects.create(user=request.user)
 
-     # Filtra os exercícios com base no módulo selecionado
+    # Filtra os exercícios com base no módulo selecionado
     exercicios = Exercicio.objects.filter(modulo=modulo).order_by('bloqueado')
 
     context = {
