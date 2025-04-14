@@ -8,8 +8,13 @@
   <h2>{{ titulo }}</h2>
 
   {% if tipo == "texto" %}
-  <p>{{ mensagem }}</p>
-  <a href="{% url 'etapa' proxima_etapa %}" class="btn">Continuar</a>
+    {%if etapa_atual == 1%}
+      <div class="logo-container">
+        <img src="{% static 'img/c-programming.svg' %}" alt="Logo da Linguagem C" class="logo-c">
+      </div>
+    {% endif %}
+    <p>{{ mensagem }}</p>
+    <a href="{% url 'etapa' proxima_etapa %}" class="btn">Continuar</a>
 
   {% elif tipo == "opcoes" %}
   <form method="post" class="etapa-form">

@@ -6,6 +6,15 @@ body{
   justify-content: center;
 }
 
+
+.logo-c{
+  width: 100px;
+  height: auto;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+
+}
+
 .container {
   overflow-x:hidden;
   padding: 2rem;

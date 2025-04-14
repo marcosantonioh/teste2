@@ -11,7 +11,7 @@ def etapa(request, numero):
     etapas = {
         1: {
             "titulo": "Bem-vindo ao GameLoops!",
-            "mensagem": "Vamos começar sua jornada no mundo da lógica de programação.",
+            "mensagem": "Vamos começar sua jornada no mundo da lógica de programação em C.",
             "tipo": "texto",
         },
         2: {
@@ -58,6 +58,7 @@ def etapa(request, numero):
     # ✅ Marcar que concluiu o onboarding na última etapa
     if numero == 6:
         request.session['onboarding_concluido'] = True
+        
 
     contexto = {
         'titulo': etapa_info.get("titulo"),
