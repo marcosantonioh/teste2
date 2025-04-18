@@ -40,7 +40,10 @@ def editar_perfil(request):
                 perfil.foto = nova_foto
             perfil.save()
 
-            return redirect('usuarios:perfil_usuario')  # <- precisa existir uma rota com name="perfil"
+            messages.success(request, "Perfil atualizado com sucesso!")
+
+
+            # return redirect('usuarios:perfil_usuario')  # <- precisa existir uma rota com name="perfil"
 
         if action == "deletar_foto":
             if perfil.foto:
@@ -48,6 +51,9 @@ def editar_perfil(request):
                 perfil.foto = None              # remove do modelo
                 perfil.save()
             return redirect('usuarios:editar_perfil')
+    
+    
+    
     
     return render(request, 'usuarios/editar_perfil.html', {'perfil': perfil})
 

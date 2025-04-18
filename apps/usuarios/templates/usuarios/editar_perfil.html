@@ -4,6 +4,18 @@
 <link rel="stylesheet" href="{% static 'style/partials/usuarios/editar_perfil.css' %}" />
 
 {% block content %}
+
+{% if messages %}
+    <div class="mensagens">
+      {% for message in messages %}
+        <div class="alert">
+          {{ message }}
+          <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+        </div>
+      {% endfor %}
+    </div>
+{% endif %}
+
 <div class="container">
   <h3>Account settings</h3>
   <div class="account-layout">
