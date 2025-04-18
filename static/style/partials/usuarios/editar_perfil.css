@@ -1,0 +1,170 @@
+@import url("static/style/global/global.css");
+
+/* Estrutura geral */
+.container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Layout em colunas */
+  .account-layout {
+    display: flex;
+  }
+  
+  /* Sidebar lateral esquerda */
+  .sidebar {
+    width: 250px;
+    background-color: #f1f3f5;
+    padding: 20px;
+    border-right: 1px solid #ddd;
+  }
+  
+  .nav {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .nav-item {
+    margin-bottom: 12px;
+  }
+  
+  .nav-link {
+    display: block;
+    text-decoration: none;
+    color: #333;
+    padding: 10px 15px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+  }
+  
+  .nav-link:hover,
+  .nav-link.active {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  /* Conteúdo principal à direita */
+  .main-content {
+    flex-grow: 1;
+    padding: 30px;
+  }
+  
+
+  .profile-photo-section{
+    display: flex;
+    gap: 20px;
+  }
+
+
+  .profile-photo-section img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+    border: 2px solid #ccc;
+  }
+  
+  input[type="file"] {
+    margin-top: 10px;
+  }
+  
+  .bio-section label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .bio-section textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    resize: vertical;
+  }
+  .form-group {
+    margin-top: 20px;
+  }
+  
+  .form-group label,
+  .bio-section label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .form-group input,
+  .bio-section textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }
+  
+  /* Botões de foto */
+  .foto-botoes {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .btn-foto {
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    transition: background-color 0.3s;
+  }
+  
+  .btn-foto:hover {
+    background-color: #0056b3;
+  }
+  
+  .btn-foto.btn-danger {
+    background-color: #dc3545;
+  }
+  
+  .btn-foto.btn-danger:hover {
+    background-color: #b52a37;
+  }
+  
+  /* Botão salvar */
+  .btn-salvar {
+    margin-top: 30px;
+    background-color: #28a745;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .btn-salvar:hover {
+    background-color: #218838;
+  }
+  
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .account-layout {
+      flex-direction: column;
+    }
+  
+    .sidebar {
+      width: 100%;
+      border-right: none;
+      border-bottom: 1px solid #ddd;
+    }
+  }
+  

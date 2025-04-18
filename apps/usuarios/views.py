@@ -17,6 +17,41 @@ def perfil_view(request):
 
 
 
+def editar_perfil(request):
+    perfil = request.user.perfil  # ou como você estiver buscando o perfil
+
+    if request.method == 'POST':
+        action = request.POST.get('action')
+
+        if action == 'salvar_perfil':
+            # Atualiza os dados
+            nome = request.POST.get('Nome')
+            email = request.POST.get('email')
+            bio = request.POST.get('bio')
+            nova_foto = request.FILES.get('foto')
+
+            user = request.user
+            user.username = nome
+            user.email = email
+            user.save()
+
+            perfil.bio = bio
+            if nova_foto:
+                perfil.foto = nova_foto
+            perfil.save()
+
+            return redirect('usuarios:perfil_usuario')  # <- precisa existir uma rota com name="perfil"
+
+        if action == "deletar_foto":
+            if perfil.foto:
+                perfil.foto.delete(save=False)  # deleta o arquivo físico
+                perfil.foto = None              # remove do modelo
+                perfil.save()
+            return redirect('usuarios:editar_perfil')
+    
+    return render(request, 'usuarios/editar_perfil.html', {'perfil': perfil})
+
+
 
 
 def cadastrar_usuario(request):

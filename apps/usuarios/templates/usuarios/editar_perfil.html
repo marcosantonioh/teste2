@@ -1,0 +1,96 @@
+{% load static %}
+{% include "navbar.html" %}
+
+<link rel="stylesheet" href="{% static 'style/partials/usuarios/editar_perfil.css' %}" />
+
+{% block content %}
+<div class="container">
+  <h3>Account settings</h3>
+  <div class="account-layout">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <ul class="nav">
+        <li class="nav-item"><a class="nav-link active" href="#">Informações</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Preferência</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Mudar Senha</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Links</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Conecções</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Notificações</a></li>
+      </ul>
+    </div>
+
+    <!-- Conteúdo principal -->
+    <div class="main-content">
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+
+        <!-- Foto de Perfil -->
+        <div class="profile-photo-section">
+          {% if perfil.foto %}
+            <img id="preview-img" src="{{ perfil.foto.url }}" alt="Foto de Perfil" />
+          {% else %}
+            <img id="preview-img" src="{% static 'img/default.png' %}" alt="Foto padrão" />
+          {% endif %}
+          <div class="foto-actions">
+            <label for="id_foto">Foto de perfil</label><br>
+        
+            <!-- Input file escondido -->
+            <input type="file" name="foto" id="id_foto" class="input-foto" style="display: none;" accept="image/*" />
+        
+            <div class="foto-botoes">
+              <!-- Botão para abrir seletor de arquivo -->
+              <button type="button" class="btn-foto" onclick="document.getElementById('id_foto').click();">Alterar</button>
+        
+              <!-- Botão para deletar -->
+              <button type="submit" name="action" value="deletar_foto" class="btn-foto btn-danger">Deletar</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nome -->
+        <div class="name-section">
+          <label for="Nome">Nome</label>
+          <input id="Nome" name="Nome" value="{{ perfil.user.username }}" required>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label for="id_email">Email</label>
+          <input type="email" id="id_email" name="email" value="{{ perfil.user.email }}" required />
+        </div>
+
+        <!-- Bio -->
+        <div class="bio-section">
+          <label for="id_bio">Biografia</label>
+          <textarea id="id_bio" name="bio">{{ perfil.bio }}</textarea>
+        </div>
+
+        <button type="submit" name="action" value="salvar_perfil" class="btn-salvar">Salvar alterações</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  const inputFoto = document.getElementById('id_foto');
+  const previewImg = document.getElementById('preview-img');
+
+  inputFoto.addEventListener('change', function () {
+    const file = this.files[0];
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        previewImg.src = e.target.result;
+      };
+
+      reader.readAsDataURL(file); // converte a imagem para base64 temporário
+    }
+  });
+</script>
+
+
+
+{% endblock %}
