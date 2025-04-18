@@ -1,23 +1,20 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
 from .models import Perfil, Amizade
 from django.db.models import Q
-from django.core.exceptions import ObjectDoesNotExist
+from django.views.decorators.http import require_POST
 
 
 def perfil_view(request):
-    try:
-        perfil = Perfil.objects.get(user=request.user)
-    except ObjectDoesNotExist:
-        perfil = Perfil.objects.create(user=request.user)
+    perfil = Perfil.objects.filter(user=request.user).first()
+    if not perfil:
+        messages.warning(request, "Perfil não encontrado.")
+        return redirect("usuarios:cadastro_usuario")  # ou outra ação apropriada
 
-    context = {
-        'perfil': perfil
-    }
+    return render(request, 'usuarios/perfil.html', {'perfil': perfil})
 
-    return render(request, 'usuarios/perfil.html', context)
 
 
 
@@ -47,7 +44,7 @@ def cadastrar_usuario(request):
         if User.objects.filter(email=email).exists():
             messages.error(request, "Este e-mail já está cadastrado!")
             return redirect("usuarios:cadastro_usuario")
-
+    
         # Criando o usuário
         user = User.objects.create_user(username=username, email=email, password=password)
         user.save()
@@ -101,7 +98,7 @@ def enviar_solicitacao(remetente, destinatario):
 
 
 def aceitar_solicitacao(amizade_id):
-    amizade = Amizade.objects.get(id=amizade_id)
+    amizade = get_object_or_404(Amizade, id=amizade_id)
     if amizade.status == 'pendente':
         amizade.status = 'aceita'
         amizade.save()
@@ -115,6 +112,8 @@ def solicitacoes_pendentes(request):
     pendentes = Amizade.objects.filter(destinatario=request.user, status='pendente')
     return render(request, "usuarios/solicitacoes.html", {"pendentes": pendentes})
 
+
+@require_POST
 def remover_amigo(request, amigo_id):
     Amizade.objects.filter(
         Q(remetente=request.user, destinatario_id=amigo_id) |

@@ -1,4 +1,6 @@
 {% load static %}
+{% include "navbar.html" %}
+
 
 <link
   rel="stylesheet"
@@ -9,52 +11,51 @@
 
 <div class="container">
   <div class="content-perfil">
-    <form method="post">
-      {% csrf_token %}
+    <div class="head">
+      <!-- <div class="infos"> -->
+      <!-- Foto de Perfil -->
+      <div class="perfil-photo">
+        {% if perfil.foto %}
+        <img src="{{ perfil.foto.url }}" alt="Foto de Perfil" />
+        {% else %}
+        <img src="{% static 'img/default.png' %}" alt="Foto padrão" />
+        {% endif %}
+      </div>
 
-      <div class="head">
-        <div class="infos">
-          <!-- Foto de Perfil -->
-          <div class="form-group">
-            <label>Foto de Perfil</label>
-            <img src="{{ perfil.foto_perfil.url }}" alt="Foto de Perfil" />
+      <div class="parte2">
+        <div class="form-group name">
+          <p>{{ user.username }}</p>
+        </div>
+
+        <div class="form-group pontos">
+          <p>{{ perfil.pontos }} XP</p>
+        </div>
+
+        <!-- Seguidores e Seguidos -->
+        <div class="form-group seguidores">
+          <div class="box">
+            <p>Seguidos {{ perfil.seguidos }}</p>
           </div>
 
-          <div class="form-group">
-            <label>Nome</label>
-            <p>{{ user.username }}</p>
+          <div class="box">
+            <p>Seguidores {{ perfil.seguidores }}</p>
           </div>
+        </div>
 
-          <div class="form-group">
-            <label>Pontos</label>
-            <p>{{ perfil.pontos }}</p>
-
-          </div>
-
-          <!-- Bio -->
-          <div class="form-group">
-            <label>Bio</label>
-            <p>{{ perfil.bio }}</p>
-          </div>
-
-          <!-- Seguidores e Seguidos -->
-          <div class="form-group">
-            <label>Seguidores</label>
-            <p>{{ perfil.seguidores }}</p>
-            <label>Seguidos</label>
-            <p>{{ perfil.seguidos }}</p>
-          </div>
-
-          <!-- Data de Início -->
-          <div class="form-group">
-            <label>Data de Início</label>
-            <p>{{ perfil.data_inicio|date:"d/m/Y H:i" }}</p>
-            <!-- Formato de data e hora -->
-          </div>
+        <!-- Data de Início -->
+        <div class="form-group data">
+          <p>Data de Início {{ perfil.data_inicio|date:"d/m/Y" }}</p>
+          <!-- Formato de data e hora -->
         </div>
       </div>
 
-    </form>
+      <!-- </div> -->
+    </div>
+
+    <!-- Bio -->
+    <div class="form-group">
+      <p>{{ perfil.bio }}</p>
+    </div>
   </div>
 </div>
 

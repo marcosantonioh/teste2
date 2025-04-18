@@ -29,6 +29,12 @@ class Perfil(models.Model):
 
     genero = models.CharField(max_length=1, choices=GÊNEROS, null=True, blank=True)
 
+    STATUS_CHOICES = [
+        ('pendente', 'Pendente'),
+        ('aceita', 'Aceita'),
+    ]
+
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pendente')
 
 
 

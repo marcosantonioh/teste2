@@ -1,38 +1,84 @@
 @import url("/static/style/global/global.css");
- 
-.container{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100vh;
+
+.container {
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+  background-color: aliceblue;
 }
 
-.content-perfil{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 70%;
-    height: 100vh;
-    background-color: rgb(201, 201, 226);
-    margin-top: 5em;
-    padding: 0;
+.content-perfil {
+  width: 70%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  background-color: rgb(51, 51, 101);
+  margin-top: 5em;
+  padding: 20px 0px;
 }
 
-.head{
-    background-color: aqua;
-    width: 100%;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.head {
+  /* background-color: aqua; */
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: start;
+  justify-content: space-around;
+  color: aliceblue;
+  /* gap: 1em; */
+  /* margin-top: 2em; */
 }
 
-.infos{
-    display: flex;
+.form-group {
+  /* display: flex;
     align-items: center;
-    justify-content: center;
-    width: 90%;
-    height: 100%;
-    background-color: blue;
+    justify-content: center; */
+  /* width: 90%;
+    height: 100%; */
+  /* background-color: blue; */
+}
+
+.perfil-photo {
+  top: 0;
+  width: 30%;
+  /* background-color: rgb(238, 106, 106); */
+  display: flex;
+  justify-content: end;
+}
+.perfil-photo img {
+  width: 50%;
+  height: auto;
+  border-radius: 50%;
+}
+
+
+
+
+.parte2 {
+  /* background-color: brown; */
+  width: 60%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+}
+
+.name {
+  color: antiquewhite;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.seguidores .box {
+  display: flex;
+}
+
+.data {
+  display: flex;
 }
