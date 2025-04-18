@@ -29,8 +29,19 @@
                     </thead>
                     <tbody>
                         {% for perfil in perfis_globais %}
-                        <tr>
-                            <td>{{ forloop.counter }}</td>
+                        <tr {% if perfil.user == request.user %}class="meu-perfil"{% endif %}>
+                            <td>
+                                {% if forloop.counter == 1 %}
+                                    <span class="medalha medalha-ouro">🥇</span>
+                                {% elif forloop.counter == 2 %}
+                                    <span class="medalha medalha-prata">🥈</span>
+                                {% elif forloop.counter == 3 %}
+                                    <span class="medalha medalha-bronze">🥉</span>
+                                {% else %}
+                                    <span class="posicao">{{ forloop.counter }}</span>
+                                {% endif %}
+                                                            
+                            </td>
                             <td class="foto-cell">
                                 {% if perfil.foto and perfil.foto.url %}
                                     <img src="{{ perfil.foto.url }}" class="profile-pic">

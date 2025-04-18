@@ -3,11 +3,23 @@ from apps.usuarios.models import Perfil, Amizade
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 def obter_amigos(user):
-    amizades_enviadas = Amizade.objects.filter(remetente=user, status='aceita').values_list('destinatario', flat=True)
-    amizades_recebidas = Amizade.objects.filter(destinatario=user, status='aceita').values_list('remetente', flat=True)
-    return User.objects.filter(id__in=list(amizades_enviadas) + list(amizades_recebidas))
+    
+    amizades = Amizade.objects.filter(
+        Q(remetente=user) | Q(destinatario=user),
+        status='aceita'
+    )
+    amigos_ids = []
+
+    for amizade in amizades:
+        if amizade.remetente == user:
+            amigos_ids.append(amizade.destinatario.id)
+        else:
+            amigos_ids.append(amizade.remetente.id)
+
+    return User.objects.filter(id__in=amigos_ids)
 
 
 
@@ -29,8 +41,8 @@ def ranking(request):
         perfis_amigos = Perfil.objects.filter(user__in=amigos).order_by('-pontos')
 
     
-    perfis_globais = Perfil.objects.all().order_by('-pontos')
-    
+    perfis_globais = Perfil.objects.all().order_by('-pontos')[:20]
+
     context = {
         'perfil': perfil,
         'perfis_globais': perfis_globais,

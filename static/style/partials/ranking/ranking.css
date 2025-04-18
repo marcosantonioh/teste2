@@ -31,7 +31,7 @@ body {
 .ranking-table th,
 .ranking-table td {
   /* background-color: aqua; */
-  padding: 10px 15px;
+  padding: 10px 0px;
   text-align: center;
   /* border-bottom: 1px solid #ddd; */
 }
@@ -86,8 +86,18 @@ body {
 
 
 
+.ranking-table tbody tr.meu-perfil {
+  background-color: #a3caff !important;
+  font-weight: bold;
+  /* border-left: 4px solid #28a745; */
+}
 
 
+.medalha{
+    font-size: 2rem; /* ou 20px, 24px, etc. */
+    font-weight: bold;
+  
+}
 
 
 
