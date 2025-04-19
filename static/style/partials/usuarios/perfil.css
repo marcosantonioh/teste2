@@ -16,7 +16,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: start;
-  background-color: rgb(51, 51, 101);
+  /* background-color: rgb(51, 51, 101); */
+  background-color:var(--primary-color);
   margin-top: 5em;
   padding: 20px 0px;
 }
