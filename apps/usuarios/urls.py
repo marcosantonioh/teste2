@@ -9,4 +9,8 @@ urlpatterns = [
     path("cadastro/", views.cadastrar_usuario, name="cadastro_usuario"),
     path("perfil/", views.perfil_view, name="perfil_usuario"),
     path("perfil/editar/", views.editar_perfil, name="editar_perfil"),
+    path("perfil/amigos/", views.amigos, name="amigos"),
+    path("perfil/amigos/encontrar", views.encontrar_amigos, name="encontrar_amigos"),
+    path("perfil/amigos/convidar", views.convidar_amigos, name="convidar_amigos"),
+
 ]

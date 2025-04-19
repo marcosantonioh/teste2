@@ -4,7 +4,10 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from .models import Perfil, Amizade
 from django.db.models import Q
+from django.db import models
 from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
+
 
 
 def perfil_view(request):
@@ -112,7 +115,7 @@ def login_usuario(request):
         
         if user is not None:
             login(request, user)
-            return redirect("exercicios:main")  # Redirecione para a página desejada
+            return redirect("exercicios:modulos")  # Redirecione para a página desejada
         else:
             messages.error(request, "Usuário ou senha incorretos.")
     return render(request, "usuarios/login.html")
@@ -123,6 +126,36 @@ def logout_usuario(request):
     logout(request)
     return redirect("usuarios:login_usuario")
 
+
+
+@login_required
+def amigos(request):
+    user = request.user
+    perfil = Perfil.objects.get(user=user)
+    amizades = Amizade.objects.filter(
+        (Q(remetente=user) | Q(destinatario=user)) & 
+        Q(status='aceita')
+    )
+    amigos = []
+    for amizade in amizades:
+        if amizade.remetente == user:
+            amigos.append(amizade.destinatario)
+        else:
+            amigos.append(amizade.remetente)
+
+    return render(request, 'usuarios/amigos.html', {
+        'amigos': amigos,
+        'perfil': perfil
+    })
+
+
+
+
+def encontrar_amigos(request):
+    return render(request, 'usuarios/encontrar_amigos.html')
+    
+def convidar_amigos(request):
+    return render(request, 'usuarios/convidar_amigos.html')
 
 
 def enviar_solicitacao(remetente, destinatario):

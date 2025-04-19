@@ -1,0 +1,25 @@
+{% load static %}
+{% include 'navbar.html' %}
+
+{% block content %}
+<!-- emcima -->
+<div>
+    Encontrar amigos
+
+    <!-- Barra de search (adicionar aqui a implementação da barra) -->
+    <input type="text" placeholder="Pesquisar amigos...">
+</div>
+
+<!-- embaixo -->
+<div>
+    #lado esqruedo
+    <img src="" alt="">
+
+    #lado dierito
+    <!-- Link para convidar amigos -->
+    <div>
+        <a href="{% url 'usuarios:convidar_amigos' %}">Convidar amigos</a>
+    </div>
+</div>
+
+{% endblock %}

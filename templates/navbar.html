@@ -15,7 +15,7 @@
   <body>
     <nav class="navbar">
       <div class="logo">
-        <a href="{% url 'exercicios:main' %}"><h1>GameLoops</h1></a>
+        <a href="{% url 'exercicios:modulos' %}"><h1>GameLoops</h1></a>
       </div>
 
       <div class="menu-toggle" onclick="toggleMenu()">
@@ -57,6 +57,10 @@
               <div class="option">
                 <img src="{% static 'img/user.svg' %}" alt="" />
                 <a href="{% url 'usuarios:perfil_usuario' %}">Perfil</a>
+              </div>
+              <div class="option">
+                <img src="{% static 'img/user.svg' %}" alt="" />
+                <a href="{% url 'usuarios:amigos' %}">Amigos</a>
               </div>
               <div class="option">
                 <img src="{% static 'img/ajuda.svg' %}" alt="" />
