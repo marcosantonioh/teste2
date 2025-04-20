@@ -13,7 +13,7 @@
 /* BOX GERAL */
 .box {
   width: 40%;
-  min-height: 450px;
+  height: 450px;
   background-color: #fff;
   /* border-radius: 10px; */
   /* border: 1px solid #ddd; */
@@ -112,22 +112,42 @@
 
 /* BOX ADICIONAR AMIGOS */
 .box.adicionar-amigos {
+  width: 30%;
+  height: auto;
   align-items: center;
   text-align: center;
+  box-sizing: border-box;
+  padding: 1em;
+  border-radius: 10px;
+}
+
+/* BOX ADICIONAR AMIGOS */
+.box.adicionar-amigos h4{
+  margin-top: 1.5em;
 }
 
 .opcoes-amigos {
+  width: 90%;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   margin-top: 1rem;
 }
 
+.opcoes-amigos img{
+  width: 30px;
+}
+
 .botao-opcao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   padding: 0.75rem 1rem;
   background-color: var(--azul);
   color: white;
   border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
   text-decoration: none;
   font-weight: bold;
   transition: background-color 0.3s ease;
