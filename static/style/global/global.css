@@ -2,19 +2,22 @@
 
 :root{
     /* Cores principais */
-  --primary-color: #2C3E50;
-  --secondary-color: #3498DB;
-  --accent-color: #E74C3C;
-
+  --secondary-color: #2C3E50;
+  --azul: #3498DB;
+  --azul_hover: #217cba;
+  
   /* Fundo e textos */
   --background-color: #F5F5F5;
   --text-color: #333333;
   --muted-text-color: #777777;
 
   /* Estados */
-  --success-color: #2ECC71;
-  --warning-color: #F1C40F;
-  --error-color: #E74C3C;
+  --green: #2ECC71;
+  --green_hover: #17954c;
+  --yellow: #F1C40F;
+  --yellow_hover: #c6a600;
+  --red: #E74C3C;
+  --red_hover: #af3022;
 }
 
 *{

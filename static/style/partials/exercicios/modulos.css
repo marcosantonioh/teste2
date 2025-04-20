@@ -114,7 +114,7 @@ body {
   display: inline-block;
   padding: 10px 20px;
   /* background-color: #28a745; */
-  background-color: var(--success-color) ;
+  background-color: var(--green);
   color: white;
   border-radius: 4px;
   text-align: center;
@@ -123,5 +123,5 @@ body {
 }
 
 .card-body a:hover {
-  background-color: #218838;
+  background-color: var(--green_hover);
 }

@@ -21,6 +21,12 @@ class Exercicio(models.Model):
         ('mcq', 'Múltipla Escolha'),
         ('code', 'Código'),
     ]
+    
+    ORIGEM_CHOICES = [
+        ('estatica', 'Estática'),
+        ('ia', 'Gerada por IA'),
+    ]
+
 
     titulo = models.CharField(max_length=200)
     descricao = models.TextField()
@@ -31,6 +37,13 @@ class Exercicio(models.Model):
     bloqueado = models.BooleanField(default=True)
     concluido = models.BooleanField(default=False)
     modulo = models.CharField(max_length=50, choices=MODULOS_CHOICES)
+    origem = models.CharField(max_length=10, choices=ORIGEM_CHOICES, default='estatica')
+
+    # Campos novos para múltipla escolha
+    alternativas = models.JSONField(null=True, blank=True)  # {"A": "texto", "B": "texto"...}
+    resposta_correta = models.CharField(max_length=255, null=True, blank=True)
+    explicacao = models.TextField(null=True, blank=True)
+
 
     class Meta:
         db_table = 'exercicio'

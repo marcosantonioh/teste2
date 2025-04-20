@@ -1,25 +1,44 @@
 {% load static %}
 {% include 'navbar.html' %}
 
+<link rel="stylesheet" href="{% static 'style/partials/usuarios/encontrar_amigos.css' %}">
+
 {% block content %}
-<!-- emcima -->
-<div>
-    Encontrar amigos
 
-    <!-- Barra de search (adicionar aqui a implementação da barra) -->
-    <input type="text" placeholder="Pesquisar amigos...">
-</div>
+<div class="container">
+   
+    <!-- emcima -->
+    <div class="box1">
+        <h2>Encontrar amigos</h2>
 
-<!-- embaixo -->
-<div>
-    #lado esqruedo
-    <img src="" alt="">
-
-    #lado dierito
-    <!-- Link para convidar amigos -->
-    <div>
-        <a href="{% url 'usuarios:convidar_amigos' %}">Convidar amigos</a>
+        <div class="search-container">
+            <!-- Barra de search (adicionar aqui a implementação da barra) -->
+            <img src="/static/img/lupa.svg" alt="lupa" class="search-icon">
+            <input type="text" placeholder="Pesquisar amigos...">
+        </div>
     </div>
+
+    <!-- embaixo -->
+    <div class="box2">
+
+        <div class="left">
+            <img src="/static/img/equipe.svg" alt="equipe" >
+            <h2>Aprender é mais divertido e eficaz quando a gente se junta!</h2>
+        </div>
+
+        <div class="right">
+            <h2>Outras formas de convidar amigos</h2>
+            <div class="right-content">
+                <img src="" alt="">
+                <div class="text">
+
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
 </div>
+
 
 {% endblock %}

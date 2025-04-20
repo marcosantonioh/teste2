@@ -15,8 +15,8 @@
   width: 40%;
   min-height: 450px;
   background-color: #fff;
-  border-radius: 10px;
-  border: 1px solid #ddd;
+  /* border-radius: 10px; */
+  /* border: 1px solid #ddd; */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   /* padding: 1.5rem; */
   display: flex;
@@ -36,7 +36,6 @@
   justify-content: center;
   gap: 0.5rem;
   /* background-color: #c0c0c0; */
-  /* border-radius: 8px; */
   /* padding: 0.5rem 1rem; */
   border-bottom: 1px solid #ddd;
 }
@@ -44,22 +43,25 @@
 .tab {
   width: 100%;
   padding: 0.8rem 1rem;
-  border-radius: 10px 10px 0px 0px;
   background-color: transparent;
+  border: none;
   /* background-color: red; */
   cursor: pointer;
-  /* border-radius: 6px; */
   transition: background-color 0.3s ease;
   font-weight: bold;
 }
 
 .tab:hover {
-  background-color: #a0e0e0;
+  /* background-color: #a0e0e0; */
+  color: var(--azul);
+  border-bottom: 2px solid var(--azul);
+
 }
 
 .tab.active {
-  background-color: #65caca;
-  color: white;
+  /* background-color: var(--secondary-color); */
+  color: var(--azul);
+  border-bottom: 2px solid var(--azul);
 }
 
 /* CONTEÚDO DAS ABAS */
@@ -123,7 +125,7 @@
 
 .botao-opcao {
   padding: 0.75rem 1rem;
-  background-color: #65caca;
+  background-color: var(--azul);
   color: white;
   border-radius: 8px;
   text-decoration: none;
@@ -132,7 +134,7 @@
 }
 
 .botao-opcao:hover {
-  background-color: #4bb0b0;
+  background-color: var(--azul_hover);
 }
 
 /* MODAL */
