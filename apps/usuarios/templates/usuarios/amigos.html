@@ -9,77 +9,69 @@
 
 <div class="container">
     
-  <div class="seguidores-container">
+  <div class="box lista">
     <!-- Abas -->
     <div class="tabs">
       <button class="tab active" onclick="mostrarAba('segue')">Segue</button>
       <button class="tab" onclick="mostrarAba('seguidores')">Seguidores</button>
     </div>
 
+
     <!-- Conteúdo das Abas -->
     <div id="segue" class="tab-content active">
       {% for perfil in seguindo|slice:":3" %}
-      <div class="perfil-item">
-        <img
-          src="{{ perfil.foto.url }}"
-          alt="Foto de {{ perfil.user.username }}"
-        />
-        <div>
-          <strong>{{ perfil.user.get_full_name }}</strong><br />
-          <span>{{ perfil.pontos }} XP</span>
+        <div class="perfil-item">
+          <img src="{{ perfil.foto.url }}" alt="Foto de {{ perfil.user.username }}"/>
+          <div>
+            <strong>{{ perfil.user.get_full_name }}</strong><br />
+            <span>{{ perfil.pontos }} XP</span>
+          </div>
         </div>
-      </div>
       {% empty %}
-      <p>Você não segue ninguém ainda.</p>
-      {% endfor %} {% if seguindo|length > 3 %}
-      <div class="ver-mais">
-        <a href="#">Ver mais {{ seguindo|length|add:"-3" }}</a>
-      </div>
+        <p>Você não segue ninguém ainda.</p>
+      {% endfor %} 
+      {% if seguindo|length > 3 %}
+        <div class="ver-mais">
+          <a href="#">Ver mais {{ seguindo|length|add:"-3" }}</a>
+        </div>
       {% endif %}
     </div>
 
     <div id="seguidores" class="tab-content">
       {% for perfil in seguidores|slice:":3" %}
-      <div class="perfil-item">
-        <img
-          src="{{ perfil.foto.url }}"
-          alt="Foto de {{ perfil.user.username }}"
-        />
-        <div>
-          <strong>{{ perfil.user.get_full_name }}</strong><br />
-          <span>{{ perfil.pontos }} XP</span>
+        <div class="perfil-item">
+          <img src="{{ perfil.foto.url }}" alt="Foto de {{ perfil.user.username }}"/>
+          <div>
+            <strong>{{ perfil.user.get_full_name }}</strong><br />
+            <span>{{ perfil.pontos }} XP</span>
+          </div>
         </div>
-      </div>
       {% empty %}
-      <p>Você ainda não tem seguidores.</p>
-      {% endfor %} {% if seguidores|length > 3 %}
-      <div class="ver-mais">
-        <a href="#">Ver mais {{ seguidores|length|add:"-3" }}</a>
-      </div>
+        <p>Você ainda não tem seguidores.</p>
+      {% endfor %} 
+      {% if seguidores|length > 3 %}
+        <div class="ver-mais">
+          <a href="#">Ver mais {{ seguidores|length|add:"-3" }}</a>
+        </div>
       {% endif %}
     </div>
+
   </div>
 
-  <!-- Seção: Adicionar amigos -->
-  <div class="adicionar-amigos">
+
+
+  <div class="box adicionar-amigos">
     <h4>Adicionar amigos</h4>
     <div class="opcoes-amigos">
       <!-- Link direto para página -->
-      <a href="{% url 'usuarios:encontrar_amigos' %}" class="botao-opcao"
-        >🔍 Encontrar</a
-      >
-
+      <a href="{% url 'usuarios:encontrar_amigos' %}" class="botao-opcao">🔍 Encontrar</a>
       <!-- Botão para abrir o modal -->
-      <a
-        href="javascript:void(0)"
-        onclick="abrirModalConvidar()"
-        class="botao-opcao"
-        >✉️ Convidar</a
-      >
+      <a href="javascript:void(0)" onclick="abrirModalConvidar()" class="botao-opcao">✉️ Convidar</a>
     </div>
   </div>
-  
+
 </div>
+
 
 <!-- Modal oculto inicialmente -->
 <div id="modal-convidar" class="modal">
@@ -94,6 +86,9 @@
       </form>
     </div>
   </div>
+
+
+
 <!-- Script de abas -->
 <script>
   function mostrarAba(id) {
