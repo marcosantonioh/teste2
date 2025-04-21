@@ -1,0 +1,7 @@
+<h2>Confirmar Exclusão</h2>
+<p>Deseja excluir "{{ exercicio.titulo }}"?</p>
+<form method="POST">
+  {% csrf_token %}
+  <button type="submit">Sim, excluir</button>
+</form>
+<a href="{% url 'lista_exercicios' %}">Cancelar</a>

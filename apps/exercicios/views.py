@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from apps.usuarios.models import Perfil
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Exercicio, Submission
+from apps.exercicios.models import Exercicio, Submission
 
 # @login_required(login_url="usuarios:login_usuario")
 def main_view(request):
@@ -81,5 +81,3 @@ def submeter_exercicio(request, exercicio_id):
         return render(request, 'exercicios/resultado.html', {'correta': correta, 'exercicio': exercicio})
 
     return render(request, 'exercicios/submeter.html', {'exercicio': exercicio})
-
-

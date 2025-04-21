@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Editando: {{ exercicio.titulo }}</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Atualizar</button>
+    <a href="{% url 'lista_exercicios' %}">Cancelar</a>
+</form>
+{% endblock %}

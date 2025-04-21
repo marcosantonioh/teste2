@@ -7,13 +7,13 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('', views.landing_page, name='landing'),
     path('admin/', admin.site.urls),
-    path('usuarios/', include("apps.usuarios.urls")),
-    path("exercicios/", include("apps.exercicios.urls",)),
-    path("desafios/", include("apps.desafios.urls",)),
-    path("ranking/", include("apps.ranking.urls")),
     path("login/", include("apps.usuarios.urls")),
+    path("ranking/", include("apps.ranking.urls")),
+    path('usuarios/', include("apps.usuarios.urls")),
+    path("desafios/", include("apps.desafios.urls",)),
+    path("exercicios/", include("apps.exercicios.urls",)),
     path('etapa/<int:numero>/', views.etapa, name='etapa'),
-    # path('', include('apps.usuarios.urls')),
+    path('adminpainel/', include('apps.painel_admin.urls')),
 ]
 
    

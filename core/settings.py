@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'apps.usuarios',
     'apps.ranking',
     'apps.desafios',
+    'apps.painel_admin',
     'livereload',
 ]
 

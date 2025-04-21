@@ -1,0 +1,37 @@
+{% load static %}
+
+{% block content %}
+<h2>Lista de Exercícios Cadastrados</h2>
+
+<a href="{% url 'painel_admin:novo_exercicio' %}" class="btn btn-success">+ Novo Exercício</a>
+
+<table border="1" cellpadding="10">
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Categoria</th>
+            <th>Tipo</th>
+            <th>Módulo</th>
+            <th>Dificuldade</th>
+            <th>XP</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ex in exercicios %}
+        <tr>
+            <td>{{ ex.titulo }}</td>
+            <td>{{ ex.get_categoria_display }}</td>
+            <td>{{ ex.get_tipo_display }}</td>
+            <td>{{ ex.get_modulo_display }}</td>
+            <td>{{ ex.dificuldade }}</td>
+            <td>{{ ex.xp }}</td>
+            <td>
+                <a href="{% url 'painel_admin:editar_exercicio' ex.id %}">Editar</a> |
+                <a href="{% url 'painel_admin:deletar_exercicio' ex.id %}" onclick="return confirm('Tem certeza?')">Excluir</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
