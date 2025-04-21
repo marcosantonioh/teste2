@@ -13,7 +13,14 @@ class Perfil(models.Model):
     seguidores = models.IntegerField(default=0)
     seguidos = models.IntegerField(default=0)
     data_inicio = models.DateTimeField(default=timezone.now)
+    tema = models.CharField(max_length=20, default='claro')
     
+    visibilidade = models.CharField(
+        max_length=10,
+        choices=[('publico', 'Público'), ('privado', 'Privado')],
+        default='publico'
+    )
+
     foto = models.ImageField(
         upload_to='fotos_perfil/',
         default='fotos_perfil/default.png',

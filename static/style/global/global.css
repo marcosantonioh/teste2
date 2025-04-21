@@ -17,11 +17,12 @@
   --yellow: #F1C40F;
   --yellow_hover: #c6a600;
   --red: #E74C3C;
-  --red_hover: #af3022;
+  --red_hover: #c6301f;
 }
+
 
 *{
     padding: 0;
     margin: 0;
     font-family: 'Poppins', sans-serif;
-}
+    box-sizing: border-box;

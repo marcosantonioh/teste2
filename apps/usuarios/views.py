@@ -196,3 +196,26 @@ def remover_amigo(request, amigo_id):
     ).delete()
     messages.success(request, "Amizade removida.")
     return redirect("usuarios:lista_amigos")
+
+
+
+
+
+
+
+@login_required
+def preferencias(request):
+    if request.method == 'POST':
+        tema = request.POST.get('tema')
+        notificacoes = request.POST.get('notificacoes') == 'on'
+        visibilidade = request.POST.get('visibilidade')
+
+        # Aqui você pode salvar no modelo do perfil do usuário, por exemplo
+        perfil = request.user.perfil
+        perfil.tema = tema
+        perfil.visibilidade = visibilidade  # <- aqui está o novo campo
+        perfil.save()
+
+        return redirect('usuarios:preferencias')  # ou outra página
+
+    return render(request, 'usuarios/preferencias.html')

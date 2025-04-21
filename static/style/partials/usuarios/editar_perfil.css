@@ -2,12 +2,12 @@
 
 /* Estrutura geral */
 .container {
-    max-width: 1200px;
-    margin: 30px auto;
+    width: 100%;
+    /* margin: 30px auto; */
     padding: 20px;
-    background-color: #fff;
-    border-radius: 12px;
+    background-color: white;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
   }
   
   /* Layout em colunas */
@@ -20,12 +20,13 @@
     width: 250px;
     background-color: #f1f3f5;
     padding: 20px;
-    border-right: 1px solid #ddd;
+    border-right: 1px solid #343434;
   }
   
   .nav {
     list-style: none;
     padding: 0;
+    /* background-color: #218838; */
   }
   
   .nav-item {
@@ -43,7 +44,7 @@
   
   .nav-link:hover,
   .nav-link.active {
-    background-color: #007bff;
+    background-color: var(--azul);
     color: #fff;
   }
   
@@ -88,6 +89,7 @@
     font-size: 14px;
     resize: vertical;
   }
+
   .form-group {
     margin-top: 20px;
   }
@@ -96,6 +98,7 @@
   .bio-section label {
     font-weight: bold;
     display: block;
+    margin-top: 20px;
     margin-bottom: 5px;
   }
   
@@ -106,6 +109,7 @@
     font-size: 14px;
     border-radius: 8px;
     border: 1px solid #ccc;
+    margin-top: 20px;
   }
   
   /* Botões de foto */
@@ -121,21 +125,21 @@
     border-radius: 6px;
     border: none;
     cursor: pointer;
-    background-color: #007bff;
+    background-color: var(--azul);
     color: white;
     transition: background-color 0.3s;
   }
   
   .btn-foto:hover {
-    background-color: #0056b3;
+    background-color: var(--azul_hover);
   }
   
   .btn-foto.btn-danger {
-    background-color: #dc3545;
+    background-color: var(--red);
   }
   
   .btn-foto.btn-danger:hover {
-    background-color: #b52a37;
+    background-color: var(--red_hover);
   }
   
   /* Botão salvar */

@@ -23,7 +23,7 @@
     <div class="sidebar">
       <ul class="nav">
         <li class="nav-item"><a class="nav-link active" href="#">Informações</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Preferência</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'usuarios:preferencias' %}">Preferência</a></li>
         <li class="nav-item"><a class="nav-link" href="#">Mudar Senha</a></li>
         <li class="nav-item"><a class="nav-link" href="#">Links</a></li>
         <li class="nav-item"><a class="nav-link" href="#">Conecções</a></li>
@@ -61,7 +61,7 @@
         </div>
 
         <!-- Nome -->
-        <div class="name-section">
+        <div class="form-group">
           <label for="Nome">Nome</label>
           <input id="Nome" name="Nome" value="{{ perfil.user.username }}" required>
         </div>

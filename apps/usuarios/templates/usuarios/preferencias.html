@@ -1,0 +1,31 @@
+{% load static %}
+{% include 'navbar.html' %}
+
+<link rel="stylesheet" href="{% static 'style/partials/usuarios/preferencias.css' %}" />
+
+{% block content %}
+  <main class="preferencias-main">
+    <h2>Preferências</h2>
+
+    <form method="post">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label for="tema">Tema:</label>
+        <select id="tema" name="tema">
+          <option value="claro">Claro</option>
+          <option value="escuro">Escuro</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="visibilidade">Visibilidade do Perfil:</label>
+        <select id="visibilidade" name="visibilidade">
+          <option value="publico">Público</option>
+          <option value="privado">Privado</option>
+        </select>
+      </div>
+
+    </form>
+  </main>
+{% endblock %}
