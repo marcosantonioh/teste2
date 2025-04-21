@@ -104,9 +104,18 @@ body{
 }
 
 
+.olhos {
+  animation: olhar-vertical 2s infinite alternate ease-in-out;
+}
 
-
-
+@keyframes olhar-vertical {
+  0% {
+    transform: translate(391.11506px, 108.31779px) translateY(0px);
+  }
+  100% {
+    transform: translate(391.11506px, 108.31779px) translateY(5px);
+  }
+}
 
 @keyframes flutuar {
   0% {
