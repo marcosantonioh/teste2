@@ -11,12 +11,12 @@ def etapa(request, numero):
     etapas = {
         1: {
             "titulo": "Bem-vindo ao GameLoops!",
-            "mensagem": "Vamos começar sua jornada no mundo da lógica de programação em C.",
+            "mensagem": "GameLoops foi feito para quem quer aprender de forma fácil e divertida.",
             "tipo": "texto",
         },
         2: {
             "titulo": "Você está no lugar certo!",
-            "mensagem": "GameLoops foi feito para quem quer aprender de forma fácil e divertida.",
+            "mensagem": "Vamos começar sua jornada no mundo da lógica de programação em C.",
             "tipo": "texto",
         },
         3: {

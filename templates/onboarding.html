@@ -9,6 +9,10 @@
 
   {% if tipo == "texto" %}
     {%if etapa_atual == 1%}
+      <div class="logo-robo1">
+        <img src="{% static 'img/mascote/robo1.svg' %}" alt="Logo da Linguagem C" class="robo-animado">
+      </div>
+    {%elif etapa_atual == 2%}
       <div class="logo-container">
         <img src="{% static 'img/c-programming.svg' %}" alt="Logo da Linguagem C" class="logo-c">
       </div>

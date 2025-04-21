@@ -4,6 +4,7 @@ body{
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #f9f9f9;
 }
 
 
@@ -107,6 +108,26 @@ body{
 
 
 
+@keyframes flutuar {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.robo-animado {
+  width: 100px;
+  height: auto;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  animation: flutuar 2s ease-in-out infinite;
+  transition: transform 0.3s;
+}
 
 
 
