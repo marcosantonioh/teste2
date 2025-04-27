@@ -16,7 +16,6 @@
             alt="Voltar"
             class="back-icon"
           />
-          Módulo 1
         </a>
         <h1 class="module-title">{{modulo.nome}}</h1>
         <button class="guide-button">
@@ -32,12 +31,18 @@
           <h2>{{ secao.nome }}</h2>
         </div>
 
-
         <div class="stations">
-
+          {% for estacao in secao.estacoes_list %}
+            <div class="station-circle" onclick="toggleDrop('{{ estacao.id }}')">
+              
+              <!-- Círculo de estação -->
+              <div class="station-dropdown" id="dropdown-{{ estacao.id }}">
+                <span>{{ estacao.nome }}</span>
+                <a href="">Começar</a>
+              </div>
+            </div>
+          {% endfor %}
         </div>
-
-
 
       {% endfor %}
     </div>
@@ -45,6 +50,51 @@
 
   </div>
 
+
 </body>
+
+
+<script>
+  // Função para mostrar e ocultar o "drop" ao clicar no círculo
+  function toggleDrop(estacaoId) {
+    var dropDown = document.getElementById('dropdown-' + estacaoId);
+
+    // Se o drop estiver visível, fecha
+    if (dropDown.style.display === 'block') {
+      dropDown.style.display = 'none';
+    } else {
+      // Caso contrário, abre o drop
+      dropDown.style.display = 'block';
+
+      // Fecha todos os outros "drops" abertos
+      closeAllDrops(estacaoId);
+    }
+  }
+
+  // Função para fechar todos os "drops" abertos
+  function closeAllDrops(exceptId) {
+    var drops = document.querySelectorAll('.station-dropdown');
+    drops.forEach(function(drop) {
+      if (drop.id !== 'dropdown-' + exceptId) {
+        drop.style.display = 'none';
+      }
+    });
+  }
+
+  // Função para fechar o "drop" se o clique for fora do círculo
+  document.addEventListener('click', function(event) {
+    var isClickInsideStation = event.target.closest('.station-circle') !== null;
+    var isClickInsideDrop = event.target.closest('.station-dropdown') !== null;
+
+    if (!isClickInsideStation && !isClickInsideDrop) {
+      // Fecha todos os "drops" se o clique for fora
+      var drops = document.querySelectorAll('.station-dropdown');
+      drops.forEach(function(drop) {
+        drop.style.display = 'none';
+      });
+    }
+  });
+</script>
+
 
 {% endblock %}

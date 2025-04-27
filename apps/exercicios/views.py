@@ -43,11 +43,19 @@ def modulos(request):
     return render(request, 'exercicios/modulos.html', context)
 
 
+
+
+
 def percurso(request, modulo_id):
     
     # Obtém o módulo com o id fornecido
     modulo = get_object_or_404(Modulo, pk=modulo_id)
-    secoes = modulo.secoes.all()  # Obtém todas as seções do módulo
+    secoes = Secao.objects.filter(modulo=modulo)
+
+    # Para cada seção, você pode obter as estações
+    for secao in secoes:
+        secao.estacoes_list = Estacao.objects.filter(secao=secao)
+
     context = {
         'modulo': modulo,
         'secoes': secoes  # Passa as seções para o template
@@ -55,6 +63,8 @@ def percurso(request, modulo_id):
     
     # Adicione o módulo ao contexto e renderize o template
     return render(request, 'exercicios/percurso.html', context)
+
+
 
 
 

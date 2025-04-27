@@ -40,7 +40,6 @@ class Estacao(models.Model):
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='livre')
     secao = models.ForeignKey(Secao, related_name='estacoes', on_delete=models.CASCADE)
     nome = models.CharField(max_length=200)
-    descricao = models.TextField()
     
     def __str__(self):
         return f"Estação {self.nome} na seção {self.secao.nome}"
