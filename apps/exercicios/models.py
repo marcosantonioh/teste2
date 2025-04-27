@@ -2,6 +2,44 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 
+class Modulo(models.Model):
+    # Definindo as opções de status
+    STATUS_CHOICES = [
+        ('completado', 'Completado'),
+        ('livre', 'Livre'),
+        ('bloqueado', 'Bloqueado'),
+    ]
+    
+    # Definindo as opções de ícone (para associar a cada status)
+    ICONE_CHOICES = [
+        ('check', 'Check'),
+        ('porcentagem', 'Porcentagem'),
+        ('cadeado', 'Cadeado'),
+    ]
+    nome = models.CharField(max_length=200)
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES)  # 'Completado', 'Livre', 'Bloqueado'
+    icone = models.CharField(max_length=50, choices=ICONE_CHOICES)  # 'check', 'porcentagem', 'cadeado'
+    descricao = models.TextField()
+    
+    def __str__(self):
+        return self.nome
+
+class Secao(models.Model):
+    modulo = models.ForeignKey(Modulo, related_name='secoes', on_delete=models.CASCADE)
+    nome = models.CharField(max_length=200)
+    
+    def __str__(self):
+        return f"Seção {self.nome} no módulo {self.modulo.nome}"
+
+class Estacao(models.Model):
+    secao = models.ForeignKey(Secao, related_name='estacoes', on_delete=models.CASCADE)
+    nome = models.CharField(max_length=200)
+    descricao = models.TextField()
+    
+    def __str__(self):
+        return f"Estação {self.nome} na seção {self.secao.nome}"
+
+
 # Create your models here.
 class Exercicio(models.Model):
     
@@ -26,7 +64,7 @@ class Exercicio(models.Model):
         ('ia', 'Gerada por IA'),
     ]
 
-
+    estacao = models.ForeignKey(Estacao, related_name='exercicios', on_delete=models.CASCADE, default=1)
     titulo = models.CharField(max_length=200)
     descricao = models.TextField()
     tipo = models.CharField(max_length=50, choices=TIPO_CHOICES)

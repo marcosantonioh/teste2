@@ -39,8 +39,5 @@ class Migration(migrations.Migration):
                 ('exercicio', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='exercicios.exercicio')),
                 ('usuario', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
-            options={
-                'db_table': 'submissoes',
-            },
         ),
     ]
