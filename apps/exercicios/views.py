@@ -43,8 +43,18 @@ def modulos(request):
     return render(request, 'exercicios/modulos.html', context)
 
 
-def percurso(request):
-    return render(request, 'exercicios/percurso.html')
+def percurso(request, modulo_id):
+    
+    # Obtém o módulo com o id fornecido
+    modulo = get_object_or_404(Modulo, pk=modulo_id)
+    secoes = modulo.secoes.all()  # Obtém todas as seções do módulo
+    context = {
+        'modulo': modulo,
+        'secoes': secoes  # Passa as seções para o template
+    }
+    
+    # Adicione o módulo ao contexto e renderize o template
+    return render(request, 'exercicios/percurso.html', context)
 
 
 

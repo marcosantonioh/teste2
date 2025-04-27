@@ -6,6 +6,7 @@
 />
 
 <body>
+
   <div class="container">
     <div class="header-wrapper">
       <div class="page-header">
@@ -17,7 +18,7 @@
           />
           Módulo 1
         </a>
-        <h1 class="module-title">Laços de Repetição</h1>
+        <h1 class="module-title">{{modulo.nome}}</h1>
         <button class="guide-button">
           <!-- Conteúdo do botão -->
         </button>
@@ -25,27 +26,25 @@
     </div>
 
 
-    {% for section in sections %}
-    <div class="section">
-      <h3>{{ section.name }}</h3>
-      <p>Status: {{ section.status }}</p>
-
-      {% for station in section.stations %}
-      <div class="station">
-        <h4>{{ station.name }}</h4>
-        <p>Status: {{ station.status }}</p>
-
-        {% for question in station.questions %}
-        <div class="question">
-          <p>{{ question.question }}</p>
-          <p>Status: {{ question.status }}</p>
+    <div class="module-description">
+      {% for secao in secoes %}
+        <div class="module-description">
+          <h2>{{ secao.nome }}</h2>
         </div>
-        {% endfor %}
-      </div>
+
+
+        <div class="stations">
+
+        </div>
+
+
+
       {% endfor %}
     </div>
-    {% endfor %}
+
+
   </div>
+
 </body>
 
 {% endblock %}

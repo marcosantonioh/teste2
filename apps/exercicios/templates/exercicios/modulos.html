@@ -29,7 +29,7 @@
         <div>
           <p class="card-text">{{modulo.descricao}}</p>
         </div>
-        <a href="{% url 'exercicios:percurso' %}">Ver Exercícios</a>
+        <a href="{% url 'exercicios:percurso' modulo_id=modulo.id %}">Ver Exercícios</a>
       </div>
     </div>
 
