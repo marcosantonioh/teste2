@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 
@@ -51,17 +50,3 @@ class Exercicio(models.Model):
     def __str__(self):
         return f"{self.titulo} ({self.get_modulo_display()} - Dificuldade {self.dificuldade})"
 
-
-
-class Submission(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    exercicio = models.ForeignKey(Exercicio, on_delete=models.CASCADE)
-    codigo_submetido = models.TextField()
-    correta = models.BooleanField(default=False)
-    data_envio = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        db_table = 'submissoes'
-
-    def __str__(self):
-        return f"{self.usuario.username} - {self.exercicio.titulo} - {'Correta' if self.correta else 'Errada'}"

@@ -27,6 +27,20 @@
         </div>
         <a class="back-link" href="{% url 'exercicios:lista_exercicios' %}">Voltar para a lista</a>
     </form>
+
+    <!-- Resultado aparece aqui, se existir -->
+    {% if resultado %}
+        <hr>
+        <h2>Resultado:</h2>
+        {% if resultado == 'correto' %}
+            <p style="color:green;">✅ Parabéns! Você acertou!</p>
+        {% else %}
+            <p style="color:red;">❌ Resposta incorreta. Tente novamente!</p>
+        {% endif %}
+
+        <h3>Explicação:</h3>
+        <p>{{ exercicio.explicacao }}</p>
+    {% endif %}
 </div>
 
 {% endblock %}

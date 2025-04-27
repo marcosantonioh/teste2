@@ -18,11 +18,21 @@
   --yellow_hover: #c6a600;
   --red: #E74C3C;
   --red_hover: #c6301f;
-}
 
+  --primary: #00cc44;
+  --primary-dark: #00aa33;
+  --primary-light: #99ffbb;
+  --dark: #333;
+  --light: #f8f8f8;
+  --gray: #e2e2e2;
+  --completed: #00cc44;
+  --locked: #d1d5db;
+  --current: #ffc107;
+}
 
 *{
     padding: 0;
     margin: 0;
     font-family: 'Poppins', sans-serif;
     box-sizing: border-box;
+  }

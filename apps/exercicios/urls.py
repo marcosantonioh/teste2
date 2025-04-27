@@ -1,11 +1,12 @@
-from django.urls import path, include
-from .views import main_view, lista_exercicios, submeter_exercicio, modulos
+from django.urls import path
+from . import views
 
 app_name = "exercicios"
 
 urlpatterns = [
-    path("", modulos, name="modulos"),
-    path("modulos/", modulos, name='modulos'),
-    path("<int:exercicio_id>/", submeter_exercicio, name="submeter"),
-    path('exercicios/<str:modulo>/', lista_exercicios, name='lista_exercicios'),
+    path("", views.modulos, name="modulos"),
+    path("modulos/", views.modulos, name='modulos'),
+    path("percurso/", views.percurso, name="percurso"),
+    path('<str:modulo>/', views.lista_exercicios, name='lista_exercicios'),
+    path('<int:exercicio_id>/', views.resolver_exercicio, name='resolver_exercicio'),
 ]

@@ -6,65 +6,59 @@
 
 <link rel="stylesheet" href="{% static 'style/partials/exercicios/modulos.css' %}">
 
-  <div class="container">
+<!-- modulos.html -->
+<div class="container">    
 
+      <div class="card">
+        <h2>Módulo 1</h2>
+        <div class="card-body">
 
-    <div class="row">
+          <div class="progress-container">
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 6.6%;"></div>
+            </div>
+            <div class="trophy-circle">
+              <img src="{% static 'img/trofeu.svg' %}" alt="Troféu" class="trophy-icon">
+            </div>
+            <div class="progress-text">
+              1/15
+            </div>
+          </div>
+          
+          
+
+          <div>
+            <p class="card-text">Aprenda laços de repetição em C.</p>
+          </div>
+          <a href="{% url 'exercicios:percurso' %}">Ver Exercícios</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Módulo 2</h2>
+        <div class="card-body">
+          <div>
+            <p class="card-text">Aprenda Vetores em C.</p>
+          </div>
+          <a href="{% url 'exercicios:percurso' %}">Ver Exercícios</a>
+        </div>
+      </div>
+
 
       <div class="card">
         <div class="card-body">
+          <div class="img">
+            <img src="{% static 'img/bola_cristal.svg' %}" alt="Random">
+          </div>
           <div>
-            <h5 class="card-title">While</h5>
-            <p class="card-text">Aprenda o loop While em C.</p>
+            <h5 class="card-title">Módulo 4: Aleatório</h5>
+            <p class="card-text">Loop aleatório.</p>
           </div>
           <a href="{% url 'exercicios:lista_exercicios' modulo='while' %}">Ver Exercícios</a>
         </div>
       </div>
 
-      <div class="card">
-        <div class="card-body">
-          <div>
-            <h5 class="card-title">Do-While</h5>
-            <p class="card-text">Aprenda o loop Do-While em C.</p>
-          </div>
-          <a href="{% url 'exercicios:lista_exercicios' modulo='do-while'%}">Ver Exercícios</a>
-        </div>
-      </div>
 
-      <div class="card">
-        <div class="card-body">
-          <div>
-            <h5 class="card-title">For</h5>
-            <p class="card-text">Aprenda o loop For em C.</p>
-          </div>
-          <a href="{% url 'exercicios:lista_exercicios' modulo='for' %}">Ver Exercícios</a>
-        </div>
-      </div>
+</div>
 
-  </div>
-
-
-    <div class="random">
-
-      <div class="card">
-
-        <div class="img">
-          <img src="{% static 'img/bola_cristal.svg' %}" alt="Random">
-        </div>
-
-        <div class="card-body">
-          <div>
-            <h5 class="card-title">Aleatorio</h5>
-            <p class="card-text">Loop aleatorio.</p>
-          </div>
-          <a href="{% url 'exercicios:lista_exercicios' modulo='while' %}">Ver Exercícios</a>
-        </div>
-        
-      </div>
-    
-    </div>
-
-    
-
-  </div>
 {% endblock %}

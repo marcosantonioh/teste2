@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from apps.usuarios.models import Perfil
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404, redirect
-from apps.exercicios.models import Exercicio, Submission
+from apps.exercicios.models import Exercicio
 
 # @login_required(login_url="usuarios:login_usuario")
 def main_view(request):
@@ -41,6 +41,8 @@ def modulos(request):
     return render(request, 'exercicios/modulos.html', context)
 
 
+def percurso(request):
+    return render(request, 'exercicios/percurso.html')
 
 
 
@@ -59,25 +61,30 @@ def lista_exercicios(request, modulo):
         'exercicios': exercicios
     }
     
-    return render(request, 'exercicios/listar.html', context)
+    return render(request, 'exercicios/lista_exercicios.html', context)
 
 
 
-def submeter_exercicio(request, exercicio_id):
+def resolver_exercicio(request, exercicio_id):
     exercicio = get_object_or_404(Exercicio, id=exercicio_id)
+    resultado = None  # Inicialmente não tem resultado ainda
 
     if request.method == 'POST':
-        codigo_usuario = request.POST.get('codigo')
-        correta = codigo_usuario.strip() == exercicio.resposta_correta.strip()
+        resposta_usuario = request.POST.get('resposta')
+        if resposta_usuario == exercicio.resposta_correta:
+            resultado = 'correto'
+        else:
+            resultado = 'incorreto'
+    
+    return render(request, 'exercicios/resolver_exercicio.html', {
+        'exercicio': exercicio,
+        'resultado': resultado
+    })
 
-        # Salva a submissão no banco
-        Submission.objects.create(
-            usuario=request.user,
-            exercicio=exercicio,
-            codigo_submetido=codigo_usuario,
-            correta=correta
-        )
-        
-        return render(request, 'exercicios/resultado.html', {'correta': correta, 'exercicio': exercicio})
 
-    return render(request, 'exercicios/submeter.html', {'exercicio': exercicio})
+def exercicio_detalhe(request, modulo, exercicio_slug):
+    contexto = {
+        'modulo': modulo,
+        'exercicio': exercicio_slug.replace('-', ' ').title(),  # Só para exibir bonito
+    }
+    return render(request, 'exercicios/exercicio_detalhe.html', contexto)

@@ -1,0 +1,218 @@
+@import "/static/style/global/global.css";
+
+body {
+  background-color: #ffffff;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  color: white;
+  text-decoration: none;
+  background-color: var(--primary);
+  padding: 0.75rem 1rem;
+  border-radius: 50px;
+  margin-right: 1rem;
+  font-weight: 500;
+}
+
+.module-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0;
+  flex-grow: 1;
+  color: white;
+}
+
+.guide-button {
+  background-color: var(--primary-dark);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.header-wrapper {
+  background-color: var(--primary);
+  padding: 1rem;
+  border-radius: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.learning-path {
+  position: relative;
+  padding: 1rem 0;
+  margin: 0 auto;
+  max-width: 450px;
+  z-index: 1;
+}
+
+.path-line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  background-color: var(--gray);
+  border-radius: 4px;
+  transform: translateX(-50%);
+  z-index: -1;
+}
+
+.path-line-progress {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 8px;
+  background-color: var(--completed);
+  border-radius: 4px;
+  transform: translateX(-50%);
+  z-index: -1;
+  height: 38%; /* Adjust based on progress */
+}
+
+.station {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 2rem 0;
+  position: relative;
+}
+
+.station-icon {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+.station.completed .station-icon {
+  background-color: var(--completed);
+  color: white;
+}
+
+.station.current .station-icon {
+  background-color: white;
+  border: 4px solid var(--current);
+  box-sizing: border-box;
+}
+
+.station.locked .station-icon {
+  background-color: var(--locked);
+  opacity: 0.6;
+}
+
+.station-content {
+  margin-top: 1rem;
+  text-align: center;
+  max-width: 150px;
+}
+
+.station-title {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.station-subtitle {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.locked .station-content {
+  opacity: 0.6;
+}
+
+.action-button {
+  margin-top: 1rem;
+  padding: 0.75rem 2rem;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.action-button:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+.treasure-chest {
+  width: 5rem;
+  height: 5rem;
+  background-color: #ffd700;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  box-shadow: 0 8px 0 #b8860b;
+  margin: 2rem auto;
+  transform: rotate(-5deg);
+}
+
+.mascot {
+  width: 5rem;
+  height: 5rem;
+  background-color: var(--primary-light);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  position: absolute;
+  right: 15%;
+  top: 10rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.trophy {
+  width: 4rem;
+  height: 4rem;
+  background-color: var(--primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: white;
+  margin: 2rem auto 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.footer {
+  text-align: center;
+  padding: 1rem;
+  margin-top: 2rem;
+  color: #666;
+  border-top: 1px solid var(--gray);
+}
