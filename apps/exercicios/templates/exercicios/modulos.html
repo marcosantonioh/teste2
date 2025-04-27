@@ -1,64 +1,39 @@
 <!-- modulos.html -->
-{% extends 'navbar.html' %}
-{% load static %}
+{% extends 'navbar.html' %} {% load static %} {% block content %}
 
-{% block content %}
-
-<link rel="stylesheet" href="{% static 'style/partials/exercicios/modulos.css' %}">
+<link
+  rel="stylesheet"
+  href="{% static 'style/partials/exercicios/modulos.css' %}"
+/>
 
 <!-- modulos.html -->
-<div class="container">    
+<div class="container">
+  {% for modulo in modulos %}
 
-      <div class="card">
-        <h2>Módulo 1</h2>
-        <div class="card-body">
-
-          <div class="progress-container">
-            <div class="progress-bar">
-              <div class="progress-fill" style="width: 6.6%;"></div>
-            </div>
-            <div class="trophy-circle">
-              <img src="{% static 'img/trofeu.svg' %}" alt="Troféu" class="trophy-icon">
-            </div>
-            <div class="progress-text">
-              1/15
-            </div>
+    <div class="card">
+      <h2>{{modulo.nome}}</h2>
+      <div class="card-body">
+        <div class="progress-container">
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 6.6%"></div>
           </div>
-          
-          
-
-          <div>
-            <p class="card-text">Aprenda laços de repetição em C.</p>
+          <div class="trophy-circle">
+            <img
+              src="{% static 'img/trofeu.svg' %}"
+              alt="Troféu"
+              class="trophy-icon"
+            />
           </div>
-          <a href="{% url 'exercicios:percurso' %}">Ver Exercícios</a>
         </div>
-      </div>
 
-      <div class="card">
-        <h2>Módulo 2</h2>
-        <div class="card-body">
-          <div>
-            <p class="card-text">Aprenda Vetores em C.</p>
-          </div>
-          <a href="{% url 'exercicios:percurso' %}">Ver Exercícios</a>
+        <div>
+          <p class="card-text">{{modulo.descricao}}</p>
         </div>
+        <a href="{% url 'exercicios:percurso' %}">Ver Exercícios</a>
       </div>
+    </div>
 
-
-      <div class="card">
-        <div class="card-body">
-          <div class="img">
-            <img src="{% static 'img/bola_cristal.svg' %}" alt="Random">
-          </div>
-          <div>
-            <h5 class="card-title">Módulo 4: Aleatório</h5>
-            <p class="card-text">Loop aleatório.</p>
-          </div>
-          <a href="{% url 'exercicios:lista_exercicios' modulo='while' %}">Ver Exercícios</a>
-        </div>
-      </div>
-
-
+  {% endfor %}
 </div>
 
 {% endblock %}

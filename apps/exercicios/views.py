@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from apps.usuarios.models import Perfil
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404, redirect
-from apps.exercicios.models import Exercicio
+from apps.exercicios.models import Exercicio, Modulo, Secao, Estacao
 
 # @login_required(login_url="usuarios:login_usuario")
 def main_view(request):
@@ -34,9 +34,11 @@ def modulos(request):
         except ObjectDoesNotExist:
             perfil = Perfil.objects.create(user=request.user)
 
+    modulos = Modulo.objects.all()
+
     context = {
         'perfil': perfil,  # Vai ser None se o usuário for anônimo
-        'modulos': ['While', 'Do-While', 'For']
+        'modulos': modulos
     }
     return render(request, 'exercicios/modulos.html', context)
 

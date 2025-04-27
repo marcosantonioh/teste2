@@ -3,6 +3,16 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class Modulo(models.Model):
+    
+    nome = models.CharField(max_length=200)
+    descricao = models.TextField()
+    
+    def __str__(self):
+        return self.nome
+
+
+class Secao(models.Model):
+    
     # Definindo as opções de status
     STATUS_CHOICES = [
         ('completado', 'Completado'),
@@ -10,28 +20,24 @@ class Modulo(models.Model):
         ('bloqueado', 'Bloqueado'),
     ]
     
-    # Definindo as opções de ícone (para associar a cada status)
-    ICONE_CHOICES = [
-        ('check', 'Check'),
-        ('porcentagem', 'Porcentagem'),
-        ('cadeado', 'Cadeado'),
-    ]
-    nome = models.CharField(max_length=200)
-    status = models.CharField(max_length=50, choices=STATUS_CHOICES)  # 'Completado', 'Livre', 'Bloqueado'
-    icone = models.CharField(max_length=50, choices=ICONE_CHOICES)  # 'check', 'porcentagem', 'cadeado'
-    descricao = models.TextField()
-    
-    def __str__(self):
-        return self.nome
-
-class Secao(models.Model):
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='livre')
     modulo = models.ForeignKey(Modulo, related_name='secoes', on_delete=models.CASCADE)
     nome = models.CharField(max_length=200)
     
     def __str__(self):
         return f"Seção {self.nome} no módulo {self.modulo.nome}"
 
+
 class Estacao(models.Model):
+    
+    # Definindo as opções de status
+    STATUS_CHOICES = [
+        ('completado', 'Completado'),
+        ('livre', 'Livre'),
+        ('bloqueado', 'Bloqueado'),
+    ]
+    
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='livre')
     secao = models.ForeignKey(Secao, related_name='estacoes', on_delete=models.CASCADE)
     nome = models.CharField(max_length=200)
     descricao = models.TextField()
