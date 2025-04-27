@@ -38,10 +38,10 @@ def ranking(request):
             perfil = Perfil.objects.create(user=request.user)
 
         amigos = obter_amigos(request.user)
-        perfis_amigos = Perfil.objects.filter(user__in=amigos).order_by('-pontos')
+        perfis_amigos = Perfil.objects.filter(user__in=amigos).order_by('-xp')
 
     
-    perfis_globais = Perfil.objects.all().order_by('-pontos')[:20]
+    perfis_globais = Perfil.objects.all().order_by('-xp')[:20]
 
     context = {
         'perfil': perfil,
