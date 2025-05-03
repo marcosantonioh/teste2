@@ -1,7 +1,0 @@
-<h2>{% if form.instance.pk %}Editar{% else %}Nova{% endif %} Questão</h2>
-<form method="POST">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Salvar</button>
-</form>
-<a href="{% url 'lista_exercicios' %}">← Voltar</a>

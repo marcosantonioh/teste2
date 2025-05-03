@@ -3,6 +3,7 @@ from apps.usuarios.models import Perfil
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404, redirect
 from apps.exercicios.models import Exercicio, Modulo, Secao, Estacao
+from apps.exercicios.forms import ExercicioForm
 
 # @login_required(login_url="usuarios:login_usuario")
 def main_view(request):
@@ -41,7 +42,6 @@ def modulos(request):
         'modulos': modulos
     }
     return render(request, 'exercicios/modulos.html', context)
-
 
 
 

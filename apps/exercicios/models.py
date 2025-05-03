@@ -82,8 +82,21 @@ class Exercicio(models.Model):
     origem = models.CharField(max_length=10, choices=ORIGEM_CHOICES, default='estatica')
 
     # Campos novos para múltipla escolha
-    alternativas = models.JSONField(null=True, blank=True)  # {"A": "texto", "B": "texto"...}
-    resposta_correta = models.CharField(max_length=255, null=True, blank=True)
+
+    alternativa_a = models.CharField(max_length=300,null=True, blank=True)
+    alternativa_b = models.CharField(max_length=300,null=True, blank=True)
+    alternativa_c = models.CharField(max_length=300,null=True, blank=True)
+    alternativa_d = models.CharField(max_length=300,null=True, blank=True)
+
+    RESPOSTAS_CHOICES = [
+        ('A', 'Alternativa A'),
+        ('B', 'Alternativa B'),
+        ('C', 'Alternativa C'),
+        ('D', 'Alternativa D'),
+    ]
+
+    resposta_correta = models.CharField(max_length=1, choices=RESPOSTAS_CHOICES)
+
     explicacao = models.TextField(null=True, blank=True)
 
 
@@ -92,4 +105,3 @@ class Exercicio(models.Model):
         
     def __str__(self):
         return f"{self.titulo} ({self.get_modulo_display()} - Dificuldade {self.dificuldade})"
-

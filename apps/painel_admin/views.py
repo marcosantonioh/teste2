@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from apps.exercicios.models import Exercicio
-from .forms import ExercicioForm
+from apps.exercicios.forms import ExercicioForm
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 
@@ -8,6 +8,8 @@ from django.contrib import messages
 def lista_exercicios(request):
     exercicios = Exercicio.objects.filter(origem='estatica')
     return render(request, 'painel_admin/lista.html', {'exercicios': exercicios})
+
+
 
 @staff_member_required
 def novo_exercicio(request):
@@ -18,7 +20,9 @@ def novo_exercicio(request):
             return redirect('lista_exercicios')
     else:
         form = ExercicioForm()
-    return render(request, 'painel_admin/form.html', {'form': form})
+    return render(request, 'painel_admin/novo_exercicio.html', {'form': form})
+
+
 
 @staff_member_required
 def editar_exercicio(request, id):
@@ -32,6 +36,8 @@ def editar_exercicio(request, id):
     else:
         form = ExercicioForm(instance=exercicio)
     return render(request, 'painel_admin/editar_exercicio.html', {'form': form, 'exercicio': exercicio})
+
+
 
 
 @staff_member_required
