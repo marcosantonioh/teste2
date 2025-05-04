@@ -6,7 +6,7 @@ class ExercicioForm(forms.ModelForm):
         model = Exercicio
         fields = [
             'titulo',
-            'descricao',
+            'enunciado',
             'alternativa_a',
             'alternativa_b',
             'alternativa_c',
@@ -15,6 +15,6 @@ class ExercicioForm(forms.ModelForm):
             'dificuldade',
         ]
         widgets = {
-            'descricao': forms.Textarea(attrs={'rows': 6, 'cols': 60}),
+            'enunciado': forms.Textarea(attrs={'rows': 6, 'cols': 60}),
             'resposta_correta': forms.RadioSelect(choices=Exercicio.RESPOSTAS_CHOICES),
         }

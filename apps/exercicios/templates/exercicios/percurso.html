@@ -8,29 +8,28 @@
 <body>
 
   <div class="container">
-    <div class="header-wrapper">
-      <div class="page-header">
-        <a href="{% url 'exercicios:modulos' %}" class="back-button">
-          <img
-            src="/static/img/back_white.svg"
-            alt="Voltar"
-            class="back-icon"
-          />
-        </a>
-        <h1 class="section-title">{{secoes.nome}}</h1>
-        <button class="guide-button">
-          <!-- Conteúdo do botão -->
-        </button>
-      </div>
-    </div>
-
-
-    <div class="module-description">
-      {% for secao in secoes %}
-        <div class="module-description">
-          <h2>{{ secao.nome }}</h2>
+    {% for secao in secoes %}
+      <div class="header-wrapper">
+        <div class="page-header">
+          <a href="{% url 'exercicios:modulos' %}" class="back-button">
+            <img
+              src="/static/img/back_white.svg"
+              alt="Voltar"
+              class="back-icon"
+            />
+          </a>
+          
+          <h1 class="section-title">{{secao.nome}}</h1>
+          
+          <button class="guide-button">
+            <!-- Conteúdo do botão -->
+          </button>
         </div>
+      </div>
 
+
+      <div class="module-description">
+    
         <div class="stations">
           {% for estacao in secao.estacoes_list %}
             <div class="station-circle" onclick="toggleDrop('{{ estacao.id }}')">
@@ -38,14 +37,17 @@
               <!-- Círculo de estação -->
               <div class="station-dropdown" id="dropdown-{{ estacao.id }}">
                 <span>{{ estacao.nome }}</span>
-                <a href="">Começar</a>
+                {% if estacao. %}
+                  <a href="{% url 'exercicios:resolver_exercicio' estacao.exercicio.id %}">Começar</a>
+                {% else %}
+                  <span class="no-exercicio">Sem exercícios</span>
+                {% endif %}
               </div>
             </div>
           {% endfor %}
         </div>
 
-      {% endfor %}
-    </div>
+    {% endfor %}
 
 
   </div>

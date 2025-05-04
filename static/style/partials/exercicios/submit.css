@@ -1,75 +1,122 @@
-/* filepath: /home/marcos-rocha/Git-hub/Django/teste2/static/style/submeter.css */
 .container {
-    margin: 0 auto;
-    padding: 20px;
-    max-width: 800px;
+    max-width: 700px;
+    margin: 30px auto;
+    padding: 25px;
 }
 
-h1, h3 {
-    text-align: center;
+h2, h3 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.enunciado {
+    font-size: 18px;
+    margin-bottom: 20px;
 }
 
 pre {
-    background-color: #f8f8f8;
-    border: 1px solid #ddd;
-    padding: 10px;
-    border-radius: 5px;
+    background: #f4f4f4;
+    padding: 15px;
+    border-radius: 10px;
     overflow-x: auto;
 }
-
+/* 
 form {
     margin-top: 20px;
+} */
+
+label {
+    display: block;
+    /* margin-bottom: 10px; */
+    font-size: 16px;
+    cursor: pointer;
 }
+
 
 textarea {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
     font-family: monospace;
+    resize: vertical;
 }
 
-button {
-    display: block;
+.submit {
+    margin-top: 15px;
     width: 100%;
-    padding: 10px;
-    background-color: #4CAF50;
+    padding: 10px 20px;
+    background-color: #007bff;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
+    font-weight: bold;
+}
+
+.submit:hover {
+    background-color: #0056b3;
+}
+
+.message, .resultado {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 10px;
     font-size: 16px;
 }
 
-button:hover {
-    background-color: #45a049;
+.green {
+    background-color: #d4edda;
+    color: #155724;
 }
 
-.message {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.message p {
-    font-size: 18px;
-}
-
-.message p.green {
-    color: green;
-}
-
-.message p.red {
-    color: red;
+.red {
+    background-color: #f8d7da;
+    color: #721c24;
 }
 
 .back-link {
-    display: block;
-    text-align: center;
+    display: inline-block;
     margin-top: 20px;
     text-decoration: none;
-    color: #333;
+    color: #555;
+    font-weight: bold;
 }
 
 .back-link:hover {
-    color: #666;
+    color: #000;
+}
+
+
+
+
+
+
+
+.alternativas {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    /* margin-bottom: 5px; */
+}
+
+.botao-alternativa {
+    padding: 12px 20px;
+    background-color: #f0f0f0;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.2s ease;
+    user-select: none;
+}
+
+.botao-alternativa:hover {
+    background-color: #e0e0e0;
+}
+
+input[type="radio"]:checked + .botao-alternativa {
+    background-color: #007bff;
+    color: white;
+    border-color: #0056b3;
 }

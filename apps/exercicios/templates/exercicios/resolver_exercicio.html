@@ -1,31 +1,38 @@
 <!-- filepath: /home/marcos-rocha/Git-hub/Django/teste2/apps/exercicios/templates/exercicios/submeter.html -->
-{% extends "navbar.html" %}
 {% load static %}
 
 {% block content %}
+
 <link rel="stylesheet" href="{% static 'style/partials/exercicios/submit.css' %}">
 
 <div class="container">
-    <h1>{{ exercicio.titulo }}</h1>
-    <p>{{ exercicio.descricao }}</p>
-
-    <h3>Código Inicial:</h3>
-    <pre>{{ exercicio.codigo_inicial }}</pre>
+    {% include "progress.html" %}
 
     <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <textarea name="codigo" rows="6" cols="50">{{ exercicio.codigo_inicial }}</textarea><br>
-        <button type="submit">Responder</button>
+        {% if exercicio.tipo == 'mcq' %}
+            <p>{{ exercicio.enunciado }}</p>
+            <!-- <h3>Código:</h3> -->
+            <pre>{{ exercicio.codigo }}</pre>
 
-        <div class="message">
-            {% if correta %}
-                <p class="green">✅ Parabéns! Você acertou!</p>
-            {% else %}
-                <p class="red">❌ Resposta incorreta. Tente novamente.</p>
-            {% endif %}
-        </div>
-        <a class="back-link" href="{% url 'exercicios:lista_exercicios' %}">Voltar para a lista</a>
+            <div class="alternativas">
+                <input type="radio" name="resposta" id="altA" value="A" hidden>
+                <label for="altA" class="botao-alternativa">A) {{ exercicio.alternativa_a }}</label>
+        
+                <input type="radio" name="resposta" id="altB" value="B" hidden>
+                <label for="altB" class="botao-alternativa">B) {{ exercicio.alternativa_b }}</label>
+        
+                <input type="radio" name="resposta" id="altC" value="C" hidden>
+                <label for="altC" class="botao-alternativa">C) {{ exercicio.alternativa_c }}</label>
+        
+                <input type="radio" name="resposta" id="altD" value="D" hidden>
+                <label for="altD" class="botao-alternativa">D) {{ exercicio.alternativa_d }}</label>
+            </div>
+        
+        {% elif exercicio.tipo == 'code' %}
+            <textarea name="codigo" rows="10" cols="60">{{ exercicio.codigo }}</textarea>
+        {% endif %}
+
+        <button type="submit" class="submit">Responder</button>
     </form>
 
     <!-- Resultado aparece aqui, se existir -->

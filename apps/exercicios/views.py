@@ -3,7 +3,9 @@ from apps.usuarios.models import Perfil
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404, redirect
 from apps.exercicios.models import Exercicio, Modulo, Secao, Estacao
-from apps.exercicios.forms import ExercicioForm
+from django.http import Http404
+
+
 
 # @login_required(login_url="usuarios:login_usuario")
 def main_view(request):
@@ -55,6 +57,8 @@ def percurso(request, modulo_id):
     # Para cada seção, você pode obter as estações
     for secao in secoes:
         secao.estacoes_list = Estacao.objects.filter(secao=secao)
+        for estacao in secao.estacoes_list:
+            estacao.exercicios_list = Exercicio.objects.filter(estacao=estacao)
 
     context = {
         'modulo': modulo,
@@ -68,13 +72,13 @@ def percurso(request, modulo_id):
 
 
 
-def lista_exercicios(request, modulo):
+def lista_exercicios(request, modulo_id):
     try:
         perfil = Perfil.objects.get(user=request.user)
     except ObjectDoesNotExist:
         perfil = Perfil.objects.create(user=request.user)
 
-    # Filtra os exercícios com base no módulo selecionado
+    modulo = get_object_or_404(Modulo, pk=modulo_id)
     exercicios = Exercicio.objects.filter(modulo=modulo).order_by('bloqueado')
 
     context = {
@@ -87,26 +91,40 @@ def lista_exercicios(request, modulo):
 
 
 
+
+
 def resolver_exercicio(request, exercicio_id):
     exercicio = get_object_or_404(Exercicio, id=exercicio_id)
-    resultado = None  # Inicialmente não tem resultado ainda
+    resultado = None
+    correta = None
+    perfil = Perfil.objects.get(user=request.user)
+
+    try:
+        perfil = Perfil.objects.get(user=request.user)
+    except Perfil.DoesNotExist:
+        raise Http404("Perfil não encontrado")
 
     if request.method == 'POST':
-        resposta_usuario = request.POST.get('resposta')
-        if resposta_usuario == exercicio.resposta_correta:
-            resultado = 'correto'
-        else:
-            resultado = 'incorreto'
-    
+        if exercicio.tipo == 'mcq':
+            resposta_usuario = request.POST.get('resposta')
+            correta = resposta_usuario == exercicio.resposta_correta
+        elif exercicio.tipo == 'code':
+            resposta_usuario = request.POST.get('codigo', '').strip()
+            correta = resposta_usuario == exercicio.resposta_correta.strip()
+
+        resultado = 'correto' if correta else 'incorreto'
+
+        # Reduz uma vida se errar
+        if not correta:
+            if perfil.vidas > 0:
+                perfil.vidas -= 1
+                perfil.save()
+
     return render(request, 'exercicios/resolver_exercicio.html', {
         'exercicio': exercicio,
-        'resultado': resultado
+        'resultado': resultado,
+        'correta': correta,
+        'perfil': perfil,
+        'modulo_id': exercicio.modulo.id,  # ou como for o relacionamento
     })
 
-
-def exercicio_detalhe(request, modulo, exercicio_slug):
-    contexto = {
-        'modulo': modulo,
-        'exercicio': exercicio_slug.replace('-', ' ').title(),  # Só para exibir bonito
-    }
-    return render(request, 'exercicios/exercicio_detalhe.html', contexto)
