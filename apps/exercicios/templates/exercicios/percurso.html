@@ -29,26 +29,31 @@
 
 
       <div class="module-description">
-    
         <div class="stations">
-          {% for estacao in secao.estacoes_list %}
+          {% for estacao in secao.estacoes.all %}
             <div class="station-circle" onclick="toggleDrop('{{ estacao.id }}')">
               
               <!-- Círculo de estação -->
               <div class="station-dropdown" id="dropdown-{{ estacao.id }}">
                 <span>{{ estacao.nome }}</span>
-                {% if estacao. %}
-                  <a href="{% url 'exercicios:resolver_exercicio' estacao.exercicio.id %}">Começar</a>
+
+                {% if estacao.exercicios.all %}
+                    <!-- Se houver exercícios nesta estação -->
+                    <a href="{% url 'exercicios:resolver_exercicio' estacao.exercicios.first.id %}" class="btn btn-continue">
+                        Continuar
+                    </a>
                 {% else %}
-                  <span class="no-exercicio">Sem exercícios</span>
+                    <!-- Se não houver exercícios nesta estação -->
+                    <p class="no-exercise-message">Ainda não há exercícios nesta estação.</p>
                 {% endif %}
               </div>
+
             </div>
           {% endfor %}
         </div>
+      </div>
 
     {% endfor %}
-
 
   </div>
 

@@ -1,12 +1,14 @@
 @import "/static/style/global/global.css";
 
+
 /* Estilo para a barra superior */
 .top-bar {
+    width: 70%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* background-color: #f8f9fa; */
-    padding: 12px 20px;
+    /* background-color: #b8cde2; */
+    padding: 45px 20px 0px 20px;
     /* border-bottom: 2px solid #e0e0e0; */
     top: 0;
     z-index: 1000;
@@ -21,9 +23,10 @@
 }
 
 .exit-icon {
-    width: 24px;
-    height: 24px;
+    width: 1em;
+    height: 1em;
 }
+
 
 /* Barra de progresso */
 .progress-container {
@@ -54,8 +57,8 @@
 }
 
 .contador-vida {
-    font-weight: bold;
-    font-size: 1.5em;
+    font-weight: 400;
+    font-size: 1.2em;
     color: #1e1e1e;
 }
 

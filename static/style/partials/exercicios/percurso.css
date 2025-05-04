@@ -149,10 +149,11 @@ body {
 	background: var(--azul);
 	border-radius: 15px;
 	transition: all 0.2s ease;
+  cursor: pointer;
 }
 
 .station-circle:hover {
-	transform: translateY(5px);
+	transform: translateY(3px);
 }
 
 

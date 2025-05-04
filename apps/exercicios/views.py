@@ -54,6 +54,14 @@ def percurso(request, modulo_id):
     modulo = get_object_or_404(Modulo, pk=modulo_id)
     secoes = Secao.objects.filter(modulo=modulo)
 
+    perfil = None
+
+    if request.user.is_authenticated:
+        try:
+            perfil = Perfil.objects.get(user=request.user)
+        except ObjectDoesNotExist:
+            perfil = Perfil.objects.create(user=request.user)
+
     # Para cada seção, você pode obter as estações
     for secao in secoes:
         secao.estacoes_list = Estacao.objects.filter(secao=secao)
@@ -62,7 +70,8 @@ def percurso(request, modulo_id):
 
     context = {
         'modulo': modulo,
-        'secoes': secoes  # Passa as seções para o template
+        'secoes': secoes,
+        'perfil': perfil,
     }
     
     # Adicione o módulo ao contexto e renderize o template
@@ -98,6 +107,16 @@ def resolver_exercicio(request, exercicio_id):
     resultado = None
     correta = None
     perfil = Perfil.objects.get(user=request.user)
+    alternativas = []
+    if exercicio.alternativa_a:
+        alternativas.append(('A', exercicio.alternativa_a))
+    if exercicio.alternativa_b:
+        alternativas.append(('B', exercicio.alternativa_b))
+    if exercicio.alternativa_c:
+        alternativas.append(('C', exercicio.alternativa_c))
+    if exercicio.alternativa_d:
+        alternativas.append(('D', exercicio.alternativa_d))
+
 
     try:
         perfil = Perfil.objects.get(user=request.user)
@@ -125,6 +144,8 @@ def resolver_exercicio(request, exercicio_id):
         'resultado': resultado,
         'correta': correta,
         'perfil': perfil,
-        'modulo_id': exercicio.modulo.id,  # ou como for o relacionamento
+        'modulo_id': exercicio.modulo.id,
+        'alternativas': alternativas,
+
     })
 
