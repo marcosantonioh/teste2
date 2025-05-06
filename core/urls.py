@@ -9,7 +9,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("login/", include("apps.usuarios.urls")),
     path("ranking/", include("apps.ranking.urls")),
-    path('usuarios/', include("apps.usuarios.urls")),
     path("desafios/", include("apps.desafios.urls",)),
     path("exercicios/", include("apps.exercicios.urls",)),
     path('etapa/<int:numero>/', views.etapa, name='etapa'),
