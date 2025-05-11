@@ -78,16 +78,16 @@ class Exercicio(models.Model):
 
     # Campos novos para múltipla escolha
 
-    alternativa_a = models.CharField(max_length=300,null=True, blank=True)
-    alternativa_b = models.CharField(max_length=300,null=True, blank=True)
-    alternativa_c = models.CharField(max_length=300,null=True, blank=True)
-    alternativa_d = models.CharField(max_length=300,null=True, blank=True)
+    alternativa_1 = models.CharField(max_length=300,null=True, blank=True)
+    alternativa_2 = models.CharField(max_length=300,null=True, blank=True)
+    alternativa_3 = models.CharField(max_length=300,null=True, blank=True)
+    alternativa_4 = models.CharField(max_length=300,null=True, blank=True)
 
     RESPOSTAS_CHOICES = [
-        ('A', 'Alternativa A'),
-        ('B', 'Alternativa B'),
-        ('C', 'Alternativa C'),
-        ('D', 'Alternativa D'),
+        ('1', 'Alternativa 1'),
+        ('2', 'Alternativa 2'),
+        ('3', 'Alternativa 3'),
+        ('4', 'Alternativa 4'),
     ]
 
     resposta_correta = models.CharField(max_length=1, choices=RESPOSTAS_CHOICES)

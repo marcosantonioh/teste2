@@ -81,71 +81,111 @@ def percurso(request, modulo_id):
 
 
 
-def lista_exercicios(request, modulo_id):
-    try:
-        perfil = Perfil.objects.get(user=request.user)
-    except ObjectDoesNotExist:
-        perfil = Perfil.objects.create(user=request.user)
-
-    modulo = get_object_or_404(Modulo, pk=modulo_id)
-    exercicios = Exercicio.objects.filter(modulo=modulo).order_by('bloqueado')
-
-    context = {
-        'perfil': perfil,
-        'modulo': modulo,
-        'exercicios': exercicios
-    }
-    
-    return render(request, 'exercicios/lista_exercicios.html', context)
-
-
-
-
-
 def resolver_exercicio(request, exercicio_id):
-    exercicio = get_object_or_404(Exercicio, id=exercicio_id)
-    resultado = None
-    correta = None
-    perfil = Perfil.objects.get(user=request.user)
-    alternativas = []
-    if exercicio.alternativa_a:
-        alternativas.append(('A', exercicio.alternativa_a))
-    if exercicio.alternativa_b:
-        alternativas.append(('B', exercicio.alternativa_b))
-    if exercicio.alternativa_c:
-        alternativas.append(('C', exercicio.alternativa_c))
-    if exercicio.alternativa_d:
-        alternativas.append(('D', exercicio.alternativa_d))
-
-
+    
     try:
         perfil = Perfil.objects.get(user=request.user)
     except Perfil.DoesNotExist:
         raise Http404("Perfil não encontrado")
+    
+    exercicio = get_object_or_404(Exercicio, id=exercicio_id)
+    alternativas = obter_alternativas(exercicio)
+    resultado = None
+    correta = None
+
+    exercicios_pendentes = Exercicio.objects.filter(
+        estacao=exercicio.estacao,
+        concluido=False
+    )
 
     if request.method == 'POST':
-        if exercicio.tipo == 'mcq':
-            resposta_usuario = request.POST.get('resposta')
-            correta = resposta_usuario == exercicio.resposta_correta
-        elif exercicio.tipo == 'code':
-            resposta_usuario = request.POST.get('codigo', '').strip()
-            correta = resposta_usuario == exercicio.resposta_correta.strip()
+        acao = request.POST.get('acao')
 
-        resultado = 'correto' if correta else 'incorreto'
+        if acao == 'pular':
+            # Lista de exercícios ainda não concluídos na mesma estação
+            exercicios_pendentes = Exercicio.objects.filter(
+                estacao=exercicio.estacao,
+                concluido=False
+            ).order_by('id')
 
-        # Reduz uma vida se errar
-        if not correta:
-            if perfil.vidas > 0:
-                perfil.vidas -= 1
-                perfil.save()
+            # Se houver mais de 1 exercício pendente, procura o próximo após o atual
+            if exercicios_pendentes.count() > 1:
+                proximo_exercicio = exercicios_pendentes.filter(id__gt=exercicio.id).first()
 
-    return render(request, 'exercicios/resolver_exercicio.html', {
+                # Se não encontrou um ID maior, volta para o primeiro da lista pendente
+                if not proximo_exercicio:
+                    proximo_exercicio = exercicios_pendentes.first()
+
+                return redirect('exercicios:resolver_exercicio', exercicio_id=proximo_exercicio.id)
+            
+            else:
+                # Só um exercício restante — não há mais para onde pular
+                return redirect('exercicios:resolver_exercicio', exercicio_id=exercicio.id)
+
+        elif acao == 'responder':
+            resposta_usuario = (
+                request.POST.get('resposta') if exercicio.tipo == 'mcq'
+                else request.POST.get('codigo', '')
+            )
+            correta = verificar_resposta(exercicio, resposta_usuario)
+            resultado = 'correto' if correta else 'incorreto'
+            atualizar_estado_do_perfil_e_exercicio(perfil, exercicio, correta)
+
+    progresso, exercicios_modulo = calcular_progresso(exercicio.modulo)
+
+
+    context = {
         'exercicio': exercicio,
         'resultado': resultado,
         'correta': correta,
         'perfil': perfil,
         'modulo_id': exercicio.modulo.id,
         'alternativas': alternativas,
+        'progresso': progresso,
+        'exercicios_modulo': exercicios_modulo,
+        'exercicios_pendentes': exercicios_pendentes,
+    }
 
-    })
+    return render(request, 'exercicios/resolver_exercicio.html', context)
 
+
+
+def obter_alternativas(exercicio):
+    alternativas = []
+    if exercicio.alternativa_1:
+        alternativas.append(('1', exercicio.alternativa_1))
+    if exercicio.alternativa_2:
+        alternativas.append(('2', exercicio.alternativa_2))
+    if exercicio.alternativa_3:
+        alternativas.append(('3', exercicio.alternativa_3))
+    if exercicio.alternativa_4:
+        alternativas.append(('4', exercicio.alternativa_4))
+    return alternativas
+
+
+def verificar_resposta(exercicio, resposta_usuario):
+    if exercicio.tipo == 'mcq':
+        return resposta_usuario == exercicio.resposta_correta
+    elif exercicio.tipo == 'code':
+        return resposta_usuario.strip() == exercicio.resposta_correta.strip()
+    return False
+
+
+def atualizar_estado_do_perfil_e_exercicio(perfil, exercicio, correta):
+    if correta:
+        if not exercicio.concluido:
+            exercicio.concluido = True
+            exercicio.save()
+    else:
+        if perfil.vidas > 0:
+            perfil.vidas -= 1
+            perfil.save()
+
+def calcular_progresso(modulo):
+    todas_secoes = Secao.objects.filter(modulo=modulo)
+    todas_estacoes = Estacao.objects.filter(secao__in=todas_secoes)
+    todos_exercicios = Exercicio.objects.filter(estacao__in=todas_estacoes)
+    total = todos_exercicios.count()
+    concluidos = todos_exercicios.filter(concluido=True).count()
+    progresso = int((concluidos / total) * 100) if total > 0 else 0
+    return progresso, todos_exercicios.order_by('id')

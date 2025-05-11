@@ -7,10 +7,10 @@ class ExercicioForm(forms.ModelForm):
         fields = [
             'titulo',
             'enunciado',
-            'alternativa_a',
-            'alternativa_b',
-            'alternativa_c',
-            'alternativa_d',
+            'alternativa_1',
+            'alternativa_2',
+            'alternativa_3',
+            'alternativa_4',
             'resposta_correta',
             'dificuldade',
         ]

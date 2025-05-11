@@ -16,9 +16,9 @@
 
             <div class="alternativas">
 
-                {% for letra, texto in alternativas %}
-                    <input type="radio" name="resposta" id="alt{{ letra }}" value="{{ letra }}" hidden>
-                    <label for="alt{{ letra }}" class="botao-alternativa">{{ letra }}) {{ texto }}</label>
+                {% for numero, texto in alternativas %}
+                    <input type="radio" name="resposta" id="alt{{ numero }}" value="{{ numero }}" hidden>
+                    <label for="alt{{ numero }}" class="botao-alternativa">{{ numero }}) {{ texto }}</label>
                 {% endfor %}
                 
             </div>
@@ -26,6 +26,11 @@
         {% elif exercicio.tipo == 'code' %}
             <textarea name="codigo" rows="10" cols="60">{{ exercicio.codigo }}</textarea>
         {% endif %}
+
+
+
+        {% include "botoes.html" %}
+
 
     </form>
 
@@ -43,9 +48,6 @@
         <p>{{ exercicio.explicacao }}</p>
     {% endif %}
 
-    {% include "botoes.html" %}
-
 </div>
 
 {% endblock %}
-

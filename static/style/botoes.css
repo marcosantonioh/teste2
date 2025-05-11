@@ -20,6 +20,32 @@
     font-weight: bold;
 }
 
+.submit2{
+    padding: 15px 25px;
+    background-color: #c9c9c9;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
 .submit:hover {
     background-color: #0056b3;
+}
+
+
+.botao-continuar {
+    background-color: green;
+    color: white;
+    font-weight: bold;
+}
+
+.botao-responder {
+    background-color: blue;
+    color: white;
+}
+
+.botao-pular {
+    background-color: gray;
+    color: white;
 }

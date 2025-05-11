@@ -2,6 +2,9 @@
 
 <link rel="stylesheet" href="{% static 'style/progress.css' %}">
 
+
+
+
 <div class="top-bar">
     <a href="" class="exit-button" id="abrirModal">
         <img src="/static/img/close-2.svg" class="exit-icon">
@@ -9,8 +12,10 @@
     
     </button>
 
-    <div class="progress-container">
-        <div class="progress-bar" style="width: {{ progresso|default:'0' }}%;"></div>
+    <div class="barra-progresso">
+        {% for ex in exercicios_modulo %}
+          <div class="bloco {% if ex.concluido %}concluido{% endif %}"></div>
+        {% endfor %}
     </div>
 
     <div class="vidas">        
