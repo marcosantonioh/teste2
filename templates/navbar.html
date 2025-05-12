@@ -32,15 +32,15 @@
         <div class="user-stats">
           <div class="group">
             <img src="{% static 'img/heart.svg' %}" />
-            <p>{{ perfil.vidas|default:5 }}</p>
+            <p>{{ perfil.vidas }}</p>
           </div>
           <div class="group">
             <img src="{% static 'img/alvo.svg' %}" />
-            <p>{{ perfil.xp|default:200 }}</p>
+            <p>{{ perfil.xp }}</p>
           </div>
           <div class="group">
             <img src="{% static 'img/fire.svg' %}" />
-            <p>{{ perfil.sequencia_dias|default:0 }}</p>
+            <p>{{ perfil.sequencia_dias }}</p>
           </div>
         </div>
 

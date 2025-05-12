@@ -29,6 +29,16 @@
     font-weight: bold;
 }
 
+.pular{
+    padding: 15px 25px;
+    background-color: #ffffff;
+    color: rgb(120, 120, 120);
+    border: solid 1px #c9c9c9;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
 .submit:hover {
     background-color: #0056b3;
 }

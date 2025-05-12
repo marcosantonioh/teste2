@@ -1,9 +1,7 @@
-<!-- filepath: /home/marcos-rocha/Git-hub/Django/teste2/apps/exercicios/templates/exercicios/submeter.html -->
 {% load static %}
 <link rel="stylesheet" href="{% static 'style/partials/exercicios/submit.css' %}">
 
 {% block content %}
-
 <div class="container-exercicio">
     {% include "progress.html" %}
 
@@ -11,30 +9,22 @@
         {% csrf_token %}
         {% if exercicio.tipo == 'mcq' %}
             <p>{{ exercicio.enunciado }}</p>
-            <!-- <h3>Código:</h3> -->
             <pre>{{ exercicio.codigo }}</pre>
 
             <div class="alternativas">
-
                 {% for numero, texto in alternativas %}
                     <input type="radio" name="resposta" id="alt{{ numero }}" value="{{ numero }}" hidden>
                     <label for="alt{{ numero }}" class="botao-alternativa">{{ numero }}) {{ texto }}</label>
                 {% endfor %}
-                
             </div>
         
         {% elif exercicio.tipo == 'code' %}
             <textarea name="codigo" rows="10" cols="60">{{ exercicio.codigo }}</textarea>
         {% endif %}
 
-
-
         {% include "botoes.html" %}
-
-
     </form>
 
-    <!-- Resultado aparece aqui, se existir -->
     {% if resultado %}
         <hr>
         <h2>Resultado:</h2>
@@ -47,7 +37,27 @@
         <h3>Explicação:</h3>
         <p>{{ exercicio.explicacao }}</p>
     {% endif %}
-
 </div>
 
+<!-- Modal de Sem Vidas -->
+<div id="modalSemVidas" class="modal" role="dialog" aria-modal="true" style="display: none;">
+    <div class="modal-conteudo">
+        <button class="fechar" onclick="fecharModal()" aria-label="Fechar modal">&times;</button>
+        <h2>😢 Você ficou sem vidas!</h2>
+        <p>Por favor, reinicie a estação ou aguarde para tentar novamente.</p>
+    </div>
+</div>
+
+<script>
+    function fecharModal() {
+        document.getElementById('modalSemVidas').style.display = 'none';
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const semVidas = "{{ sem_vidas|default:'false' }}" === "True";
+        if (semVidas) {
+            document.getElementById('modalSemVidas').style.display = 'flex';
+        }
+    });
+</script>
 {% endblock %}

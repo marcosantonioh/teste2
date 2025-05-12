@@ -89,6 +89,14 @@ def resolver_exercicio(request, exercicio_id):
         raise Http404("Perfil não encontrado")
     
     exercicio = get_object_or_404(Exercicio, id=exercicio_id)
+    
+    # Verifica se já reiniciou a estação nesta sessão
+    session_key = f'estacao_{exercicio.estacao.id}_reiniciada'
+    if not request.session.get(session_key, False):
+        # Reinicia o progresso da estação
+        Exercicio.objects.filter(estacao=exercicio.estacao).update(concluido=False)
+        request.session[session_key] = True  # Marca como reiniciada para esta sessão
+    
     alternativas = obter_alternativas(exercicio)
     resultado = None
     correta = None
@@ -132,7 +140,7 @@ def resolver_exercicio(request, exercicio_id):
             atualizar_estado_do_perfil_e_exercicio(perfil, exercicio, correta)
 
     progresso, exercicios_modulo = calcular_progresso(exercicio.modulo)
-
+    sem_vidas = perfil.vidas <= 0
 
     context = {
         'exercicio': exercicio,
@@ -144,6 +152,7 @@ def resolver_exercicio(request, exercicio_id):
         'progresso': progresso,
         'exercicios_modulo': exercicios_modulo,
         'exercicios_pendentes': exercicios_pendentes,
+        'sem_vidas': sem_vidas,
     }
 
     return render(request, 'exercicios/resolver_exercicio.html', context)
@@ -189,3 +198,4 @@ def calcular_progresso(modulo):
     concluidos = todos_exercicios.filter(concluido=True).count()
     progresso = int((concluidos / total) * 100) if total > 0 else 0
     return progresso, todos_exercicios.order_by('id')
+
