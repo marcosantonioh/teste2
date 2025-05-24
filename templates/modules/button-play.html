@@ -1,0 +1,28 @@
+{% load static %}
+
+
+<div class="station-circle" onclick="toggleDrop('{{ estacao.id }}')">
+
+  <img src="{% static 'img/play-white.svg' %}" alt="Play" class="play-icon" />
+
+  <!-- Círculo de estação -->
+  <div class="station-dropdown" id="dropdown-{{ estacao.id }}">
+    <span>{{ estacao.nome }}</span>
+
+    {% if estacao.exercicios.all %}
+      <!-- Se houver exercícios nesta estação -->
+      <a
+        href="{% url 'exercicios:resolver_exercicio' estacao.exercicios.first.id %}"
+        class="btn btn-continue"
+      >
+        Continuar
+      </a>
+    {% else %}
+      <!-- Se não houver exercícios nesta estação -->
+      <p class="no-exercise-message">Ainda não há exercícios nesta estação.</p>
+    {% endif %}
+  </div>
+
+</div>
+
+

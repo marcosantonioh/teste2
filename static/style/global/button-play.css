@@ -1,0 +1,54 @@
+/* Estilos para as estações */
+
+.station-circle {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  background-color: var(--azul);
+  border-radius: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.1s ease-in-out;
+}
+
+.station-circle:active {
+  transform: scale(0.95);
+}
+
+.play-icon {
+  width: 32px;
+  height: 32px;
+  pointer-events: none; /* permite clicar na div mesmo com o ícone dentro */
+}
+
+.station-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #ecf0f1;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-top: 10px;
+  text-align: center;
+  width: 200px;
+  font-size: 1em;
+  color: #2c3e50;
+}
+
+.station-dropdown a {
+  margin: 0;
+  cursor: pointer;
+  background-color: var(--azul);
+  padding: 1em 2em;
+  text-decoration: none;
+  color: white;
+  border-radius: 5px;
+}
+
+.station-dropdown a:hover {
+  background-color: var(--azul_hover);
+}

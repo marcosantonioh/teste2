@@ -4,6 +4,7 @@
   rel="stylesheet"
   href="{% static 'style/partials/exercicios/percurso.css' %}"
 />
+<link rel="stylesheet" href="{% static 'style/global/button-play.css' %}">
 
 <body>
 
@@ -31,24 +32,8 @@
       <div class="module-description">
         <div class="stations">
           {% for estacao in secao.estacoes.all %}
-            <div class="station-circle" onclick="toggleDrop('{{ estacao.id }}')">
-              
-              <!-- Círculo de estação -->
-              <div class="station-dropdown" id="dropdown-{{ estacao.id }}">
-                <span>{{ estacao.nome }}</span>
-
-                {% if estacao.exercicios.all %}
-                    <!-- Se houver exercícios nesta estação -->
-                    <a href="{% url 'exercicios:resolver_exercicio' estacao.exercicios.first.id %}" class="btn btn-continue">
-                        Continuar
-                    </a>
-                {% else %}
-                    <!-- Se não houver exercícios nesta estação -->
-                    <p class="no-exercise-message">Ainda não há exercícios nesta estação.</p>
-                {% endif %}
-              </div>
-
-            </div>
+            <!-- Aqui você inclui o botão -->
+            {% include "modules/button-play.html" %}
           {% endfor %}
         </div>
       </div>

@@ -89,14 +89,7 @@ def resolver_exercicio(request, exercicio_id):
         raise Http404("Perfil não encontrado")
     
     exercicio = get_object_or_404(Exercicio, id=exercicio_id)
-    
-    # Verifica se já reiniciou a estação nesta sessão
-    session_key = f'estacao_{exercicio.estacao.id}_reiniciada'
-    if not request.session.get(session_key, False):
-        # Reinicia o progresso da estação
-        Exercicio.objects.filter(estacao=exercicio.estacao).update(concluido=False)
-        request.session[session_key] = True  # Marca como reiniciada para esta sessão
-    
+
     alternativas = obter_alternativas(exercicio)
     resultado = None
     correta = None
@@ -110,34 +103,12 @@ def resolver_exercicio(request, exercicio_id):
         acao = request.POST.get('acao')
 
         if acao == 'pular':
-            # Lista de exercícios ainda não concluídos na mesma estação
-            exercicios_pendentes = Exercicio.objects.filter(
-                estacao=exercicio.estacao,
-                concluido=False
-            ).order_by('id')
-
-            # Se houver mais de 1 exercício pendente, procura o próximo após o atual
-            if exercicios_pendentes.count() > 1:
-                proximo_exercicio = exercicios_pendentes.filter(id__gt=exercicio.id).first()
-
-                # Se não encontrou um ID maior, volta para o primeiro da lista pendente
-                if not proximo_exercicio:
-                    proximo_exercicio = exercicios_pendentes.first()
-
-                return redirect('exercicios:resolver_exercicio', exercicio_id=proximo_exercicio.id)
-            
-            else:
-                # Só um exercício restante — não há mais para onde pular
-                return redirect('exercicios:resolver_exercicio', exercicio_id=exercicio.id)
+            proximo_exercicio = pular_exercicio(exercicio)
+            return redirect('exercicios:resolver_exercicio', exercicio_id=proximo_exercicio.id)
 
         elif acao == 'responder':
-            resposta_usuario = (
-                request.POST.get('resposta') if exercicio.tipo == 'mcq'
-                else request.POST.get('codigo', '')
-            )
-            correta = verificar_resposta(exercicio, resposta_usuario)
-            resultado = 'correto' if correta else 'incorreto'
-            atualizar_estado_do_perfil_e_exercicio(perfil, exercicio, correta)
+            resultado, correta = processar_resposta(request, exercicio, perfil)
+
 
     progresso, exercicios_modulo = calcular_progresso(exercicio.modulo)
     sem_vidas = perfil.vidas <= 0
@@ -158,6 +129,32 @@ def resolver_exercicio(request, exercicio_id):
     return render(request, 'exercicios/resolver_exercicio.html', context)
 
 
+def iniciar_exercicios(request, exercicio_id):
+    exercicio = get_object_or_404(Exercicio, id=exercicio_id)
+    reiniciar_estacao(request, exercicio)
+    return redirect('exercicios:resolver_exercicio', exercicio_id=exercicio.id)
+
+
+def reiniciar_estacao(request, exercicio):
+    session_key = f'estacao_{exercicio.estacao.id}_reiniciada'
+    if not request.session.get(session_key, False):
+        Exercicio.objects.filter(estacao=exercicio.estacao).update(concluido=False)
+        request.session[session_key] = True
+
+
+def pular_exercicio(exercicio):
+    pendentes = Exercicio.objects.filter(
+        estacao=exercicio.estacao,
+        concluido=False
+    ).order_by('id')
+
+    if pendentes.count() > 1:
+        proximo = pendentes.filter(id__gt=exercicio.id).first() or pendentes.first()
+        return proximo
+    return exercicio  # Só um exercício restante
+
+
+
 
 def obter_alternativas(exercicio):
     alternativas = []
@@ -172,10 +169,14 @@ def obter_alternativas(exercicio):
     return alternativas
 
 
+def processar_resposta(request, exercicio, perfil):
+    resposta = request.POST.get('resposta') if exercicio.tipo == 'mcq' else request.POST.get('codigo', '')
+    correta = verificar_resposta(exercicio, resposta)
+    atualizar_estado_do_perfil_e_exercicio(perfil, exercicio, correta)
+    return ('correto' if correta else 'incorreto'), correta
+
 def verificar_resposta(exercicio, resposta_usuario):
-    if exercicio.tipo == 'mcq':
-        return resposta_usuario == exercicio.resposta_correta
-    elif exercicio.tipo == 'code':
+    if exercicio.tipo in ['mcq', 'code']:
         return resposta_usuario.strip() == exercicio.resposta_correta.strip()
     return False
 

@@ -6,6 +6,11 @@
   --azul: #3498db;
   --azul_hover: #217cba;
 
+   /* Gradientes */
+  --gradiente-azul: linear-gradient(135deg, var(--azul), var(--azul_hover));
+  --gradiente-azul-claro: linear-gradient(135deg, #5dade2, #2874a6);
+  --gradiente-azul-escuro: linear-gradient(135deg, #2c3e50, #3498db);
+
   /* Fundo e textos */
   --background-color: #f5f5f5;
   --text-color: #333333;

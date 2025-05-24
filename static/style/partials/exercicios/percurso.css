@@ -21,7 +21,7 @@ body {
   align-items: center;
   color: white;
   text-decoration: none;
-  background-color: var(--primary);
+  background-color: var(--azul);
   padding: 0.75rem 1rem;
   border-radius: 50px;
   margin-right: 1rem;
@@ -45,7 +45,7 @@ body {
 }
 
 .guide-button {
-  background-color: var(--primary-dark);
+  background-color: var(--azul_hover);
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -58,7 +58,7 @@ body {
 }
 
 .header-wrapper {
-  background-color: var(--primary);
+  background-color: var(--azul);
   padding: 1rem;
   border-radius: 1rem;
   margin-bottom: 1.5rem;
@@ -135,63 +135,4 @@ body {
   color: #007bff;
   text-decoration: none;
 }
-
-
-
-
-
-
-
-/* Estilos para as estações */
-.station-circle {
-  width: 6em;
-	height: 6em;
-	background: var(--azul);
-	border-radius: 15px;
-	transition: all 0.2s ease;
-  cursor: pointer;
-}
-
-.station-circle:hover {
-	transform: translateY(3px);
-}
-
-
-
-
-
-
-
-.station-dropdown {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #ecf0f1;
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin-top: 10px;
-  text-align: center;
-  width: 200px;
-  font-size: 1em;
-  color: #2c3e50;
-}
-
-.station-dropdown a {
-  margin: 0;
-  cursor: pointer;
-  background-color: var(--azul);
-  padding: 1em 2em;
-  text-decoration: none;
-  color: white;
-  border-radius: 5px;
-}
-
-.station-dropdown a:hover {
-  background-color: var(--azul_hover);
-}
-
-
-
 
