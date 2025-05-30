@@ -20,27 +20,7 @@
     </div>
 
 
-    <div class="modal-overlay" id="modal">
-        <div class="modal">
-            <p>Tem certeza que deseja sair?<br>Você perderá o progresso atual.</p>
-            <div class="botoes">
-                <button class="botao-sim" id="cancelarModal">Cancelar</button>
-                <a href="{% url 'exercicios:percurso' modulo_id%}" class="botao-nao">Ok</a>
-            </div>
-        </div>
-    </div>
+    
 
 </div>
 
-
-
-<script>
-    document.getElementById('abrirModal').addEventListener('click', function(event) {
-        event.preventDefault();
-        document.getElementById('modal').style.display = 'flex';
-    });
-    
-    document.getElementById('cancelarModal').addEventListener('click', function() {
-        document.getElementById('modal').style.display = 'none';
-    });
-</script>

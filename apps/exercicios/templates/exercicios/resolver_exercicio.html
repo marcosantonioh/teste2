@@ -8,9 +8,9 @@
 
 <div class="container-exercicio">
 
-    <div class="bloco-progresso">
-        {% include "progress.html" %}
-    </div>
+    
+    {% include "progress.html" %}
+    
 
     <form method="POST" class="form-exercicio">
         {% csrf_token %}
@@ -63,21 +63,29 @@
 </div>
 
 <!-- Modal de Sem Vidas -->
+<!-- Modal de Confirmação de Saída -->
 <div
-  id="modalSemVidas"
+  id="modalSair"
   class="modal"
   role="dialog"
   aria-modal="true"
   style="display: none"
 >
   <div class="modal-conteudo">
-    <button class="fechar" onclick="fecharModal()" aria-label="Fechar modal">
-      &times;
+    <button class="fechar" onclick="fecharModalSair()">
+      <img src="/static/img/close-2.svg" class="exit-icon">
     </button>
-    <h2>😢 Você ficou sem vidas!</h2>
-    <p>Por favor, reinicie a estação ou aguarde para tentar novamente.</p>
+    <img src="/static/img/mascote/sad.svg" class="mascote-modal">
+    <h2>Deseja realmente sair?</h2>
+    <div class="modal-botoes">
+      <button onclick="fecharModalSair()" class="btn-cancelar">Cancelar</button>
+      <a href="{% url 'exercicios:percurso' 1%}" class="btn-sair">Sair</a>
+    </div>
   </div>
 </div>
+
+
+
 
 <script>
   function fecharModal() {
@@ -90,5 +98,26 @@
       document.getElementById("modalSemVidas").style.display = "flex";
     }
   });
+
+  document.addEventListener("DOMContentLoaded", function () {
+    // Já existente:
+    const semVidas = "{{ sem_vidas|default:'false' }}" === "True";
+    if (semVidas) {
+      document.getElementById("modalSemVidas").style.display = "flex";
+    }
+
+    // Novo: abre modal de saída
+    const botaoSair = document.getElementById("abrirModal");
+    if (botaoSair) {
+      botaoSair.addEventListener("click", function (e) {
+        e.preventDefault(); // impede navegação direta
+        document.getElementById("modalSair").style.display = "flex";
+      });
+    }
+  });
+
+  function fecharModalSair() {
+    document.getElementById("modalSair").style.display = "none";
+  }
 </script>
 {% endblock %}

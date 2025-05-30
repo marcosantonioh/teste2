@@ -2,16 +2,11 @@
 
 .container-exercicio {
   width: 100%;
-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-/* justify-content: space-between; */
-}
-
-.bloco-progresso {
-  width: 100%;
-  margin: 0 auto;
+  /* justify-content: space-between; */
 }
 
 .form-exercicio {
@@ -98,8 +93,6 @@ height: 100vh;
   }
 }
 
-
-
 .resultado {
   width: 100%;
   padding: 20px;
@@ -126,43 +119,115 @@ height: 100vh;
   color: var(--white); /* texto vermelho escuro, por exemplo */
 }
 
-
-
+/* Modal geral */
 .modal {
   position: fixed;
-  z-index: 99999;
-  left: 0;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  overflow: auto;
   background-color: rgba(0, 0, 0, 0.6);
-  display: flex;
-  justify-content: center; /* Centraliza horizontalmente */
-  align-items: center; /* Centraliza verticalmente */
+  display: none; /* fica invisível até ativar via JS */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
+/* Conteúdo do modal */
 .modal-conteudo {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 12px;
+  background-color: white;
+  padding: 25px 30px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
   text-align: center;
-  max-width: 400px; /* Tamanho máximo do modal */
-  width: 100%; /* A largura vai ser 100% até o limite do max-width */
-  box-sizing: border-box; /* Garante que padding não afete a largura total */
-  max-height: 80%; /* Limita a altura máxima para que não ocupe toda a tela */
-  overflow-y: auto; /* Adiciona barra de rolagem caso o conteúdo ultrapasse o limite */
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+
+  .mascote-modal {
+    width: 90px;
+    height: 90px;
+  }
+
+  h2 {
+    margin-bottom: 12px;
+    font-size: 1.4rem;
+    color: #333;
+  }
+
+  p {
+    font-size: 1rem;
+    color: #555;
+  }
+
+  .modal-botoes {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+
+    .btn-sair {
+      padding: 10px 35px;
+      background-color: var(--red);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .btn-cancelar {
+      padding: 10px 35px;
+      background-color: #ffffff;
+      color: rgb(120, 120, 120);
+      border: solid 1px #c9c9c9;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-sair:hover {
+      background-color: var(--red-hover); /* escurece o botão ao passar o mouse */
+    }
+  }
+
 }
 
+/* Botão fechar modal (x) */
 .fechar {
   position: absolute;
-  top: 20px;
-  right: 30px;
-  font-size: 28px;
+  top: 10px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
   font-weight: bold;
-  color: #333;
+  color: #666;
   cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.fechar:hover {
+  color: #000;
+}
+
+.exit-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.exit-icon {
+  width: 1em;
+  height: 1em;
 }
 
 @media (max-width: 600px) {
