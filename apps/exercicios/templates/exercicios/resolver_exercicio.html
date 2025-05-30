@@ -1,63 +1,94 @@
 {% load static %}
-<link rel="stylesheet" href="{% static 'style/partials/exercicios/submit.css' %}">
+<link
+  rel="stylesheet"
+  href="{% static 'style/partials/exercicios/resolver_exercicio.css' %}"
+/>
 
 {% block content %}
+
 <div class="container-exercicio">
-    {% include "progress.html" %}
+
+    <div class="bloco-progresso">
+        {% include "progress.html" %}
+    </div>
 
     <form method="POST" class="form-exercicio">
         {% csrf_token %}
-        {% if exercicio.tipo == 'mcq' %}
-            <p>{{ exercicio.enunciado }}</p>
-            <pre>{{ exercicio.codigo }}</pre>
+        <div class="formulario">
+            {% if exercicio.tipo == 'mcq' %}
+                <p>{{ exercicio.enunciado }}</p>
+                <pre>{{ exercicio.codigo }}</pre>
 
-            <div class="alternativas">
+                <div class="alternativas">
                 {% for numero, texto in alternativas %}
-                    <input type="radio" name="resposta" id="alt{{ numero }}" value="{{ numero }}" hidden>
+                    <input
+                        type="radio"
+                        name="resposta"
+                        id="alt{{ numero }}"
+                        value="{{ numero }}"
+                        hidden
+                    />
                     <label for="alt{{ numero }}" class="botao-alternativa">{{ numero }}) {{ texto }}</label>
                 {% endfor %}
-            </div>
+                </div>
+
+            {% elif exercicio.tipo == 'code' %}
+                <textarea name="codigo" rows="10" cols="60">{{ exercicio.codigo }}</textarea>
+            {% endif %} 
+        </div>
         
-        {% elif exercicio.tipo == 'code' %}
-            <textarea name="codigo" rows="10" cols="60">{{ exercicio.codigo }}</textarea>
+        
+        {% if not resultado %} 
+            {% include "botoes.html" %} 
+        {% else %}
+            {% if resultado == 'correto' %}
+                <div class="resultado correto">
+                    <img src="{% static 'imgs/correto.png' %}" alt="correto" class="img-correto">
+                    <p>Resposta Correta!</p>
+                    <button type="submit" class="btn-continuar">Continuar</button>
+                </div>
+            {% elif resultado == 'incorreto' %}
+                <div class="resultado incorreto">
+                    <img src="{% static 'imgs/incorreto.png' %}" alt="incorreto" class="img-incorreto">
+                    <p class="resultado-incorreto">Resposta Incorreta!</p>
+                    <button type="submit" name="acao" value="responder" class="btn-tentar-novamente">Tentar Novamente</button>
+                    <button type="submit" class="btn-continuar">Continuar</button>
+                </div>
+            {% endif %}
         {% endif %}
 
-        {% include "botoes.html" %}
     </form>
 
-    {% if resultado %}
-        <hr>
-        <h2>Resultado:</h2>
-        {% if resultado == 'correto' %}
-            <p style="color:green;">✅ Parabéns! Você acertou!</p>
-        {% else %}
-            <p style="color:red;">❌ Resposta incorreta. Tente novamente!</p>
-        {% endif %}
 
-        <h3>Explicação:</h3>
-        <p>{{ exercicio.explicacao }}</p>
-    {% endif %}
 </div>
 
 <!-- Modal de Sem Vidas -->
-<div id="modalSemVidas" class="modal" role="dialog" aria-modal="true" style="display: none;">
-    <div class="modal-conteudo">
-        <button class="fechar" onclick="fecharModal()" aria-label="Fechar modal">&times;</button>
-        <h2>😢 Você ficou sem vidas!</h2>
-        <p>Por favor, reinicie a estação ou aguarde para tentar novamente.</p>
-    </div>
+<div
+  id="modalSemVidas"
+  class="modal"
+  role="dialog"
+  aria-modal="true"
+  style="display: none"
+>
+  <div class="modal-conteudo">
+    <button class="fechar" onclick="fecharModal()" aria-label="Fechar modal">
+      &times;
+    </button>
+    <h2>😢 Você ficou sem vidas!</h2>
+    <p>Por favor, reinicie a estação ou aguarde para tentar novamente.</p>
+  </div>
 </div>
 
 <script>
-    function fecharModal() {
-        document.getElementById('modalSemVidas').style.display = 'none';
-    }
+  function fecharModal() {
+    document.getElementById("modalSemVidas").style.display = "none";
+  }
 
-    document.addEventListener("DOMContentLoaded", function () {
-        const semVidas = "{{ sem_vidas|default:'false' }}" === "True";
-        if (semVidas) {
-            document.getElementById('modalSemVidas').style.display = 'flex';
-        }
-    });
+  document.addEventListener("DOMContentLoaded", function () {
+    const semVidas = "{{ sem_vidas|default:'false' }}" === "True";
+    if (semVidas) {
+      document.getElementById("modalSemVidas").style.display = "flex";
+    }
+  });
 </script>
 {% endblock %}

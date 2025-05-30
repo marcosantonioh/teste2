@@ -5,7 +5,7 @@
     width: 100%;
     padding: 20px;
     /* background-color: aqua; */
-    border-top: 1px solid #ccc;
+    border-top: 1px solid var(--border-color);
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -13,7 +13,7 @@
 
 .submit {
     padding: 15px 25px;
-    background-color: #007bff;
+    background-color: var(--primary-color);
     color: white;
     border: none;
     border-radius: 8px;
@@ -23,8 +23,8 @@
 
 .submit2{
     padding: 15px 25px;
-    background-color: #c9c9c9;
-    color: white;
+    background-color: var(--border-color);
+    color: black;
     border: none;
     border-radius: 8px;
     font-weight: bold;
@@ -41,22 +41,5 @@
 }
 
 .submit:hover {
-    background-color: #0056b3;
-}
-
-
-.botao-continuar {
-    background-color: green;
-    color: white;
-    font-weight: bold;
-}
-
-.botao-responder {
-    background-color: blue;
-    color: white;
-}
-
-.botao-pular {
-    background-color: gray;
-    color: white;
+    background-color: var(--primary-dark);
 }

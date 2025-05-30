@@ -6,60 +6,61 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* background-color: #b8cde2; */
+  /* background-color: #78d49f; */
   padding: 45px 20px 0px 20px;
   /* border-bottom: 2px solid #e0e0e0; */
   top: 0;
   z-index: 1000;
-}
+  margin: 0 auto;
 
-/* Botão de sair (X) */
-.exit-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  transition: 0.2s;
-}
+  /* Botão de sair (X) */
+  .exit-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s;
+  }
 
-.exit-icon {
-  width: 1em;
-  height: 1em;
-}
+  .exit-icon {
+    width: 1em;
+    height: 1em;
+  }
 
-/* Barra de progresso */
+  /* Barra de progresso */
 
-.barra-progresso {
-  display: flex;
-  gap: 4px;
-  margin-bottom: 15px;
-}
+  .barra-progresso {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 15px;
+  }
 
-.barra-progresso .bloco {
-  width: 20px;
-  height: 20px;
-  border-radius: 3px;
-  background-color: #ccc; /* cinza padrão */
-}
+  .barra-progresso .bloco {
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    background-color: #ccc; /* cinza padrão */
+  }
 
-.barra-progresso .bloco.concluido {
-  background-color: var(--primary-color); /* verde */
-}
+  .barra-progresso .bloco.concluido {
+    background-color: var(--primary-color); /* verde */
+  }
 
-.vidas {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+  .vidas {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
 
-.icone-vida {
-  width: 24px;
-  height: 24px;
-}
+  .icone-vida {
+    width: 24px;
+    height: 24px;
+  }
 
-.contador-vida {
-  font-weight: 400;
-  font-size: 1.2em;
-  color: #1e1e1e;
+  .contador-vida {
+    font-weight: 400;
+    color: var(--black);
+    font-size: 1rem;
+  }
 }
 
 .modal-overlay {

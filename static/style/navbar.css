@@ -25,12 +25,11 @@ body {
   text-decoration: none;
 }
 
-.logo {
+.logo-container {
   display: flex;
   gap: 10px;
   align-items: center;
   text-decoration: none;
-  color: #141414;
   font-size: 1rem;
   cursor: pointer;
 
@@ -38,7 +37,7 @@ body {
     text-decoration: none;
   }
 
-  h1 {
+  .logo {
     color: var(primary-color);
   }
 }
@@ -145,7 +144,7 @@ body {
     gap: 5px;
     align-items: center;
     text-decoration: none;
-    color: #141414;
+    color: var(--black);
     font-size: 1rem;
     text-align: center;
   }

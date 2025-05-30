@@ -1,0 +1,173 @@
+@import "/static/style/global/global.css";
+
+.container-exercicio {
+  width: 100%;
+height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+/* justify-content: space-between; */
+}
+
+.bloco-progresso {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.form-exercicio {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: 100vh;
+  /* background-color: #3094ff; */
+  margin: 0 auto;
+  /* flex: 1;  */
+}
+
+.formulario {
+  display: flex;
+  max-width: 700px;
+  margin: 0 auto;
+  margin-top: 50px;
+  padding: 25px;
+  flex-direction: column;
+  gap: 1em;
+  /* max-width: 700px; */
+  /* background-color: aqua; */
+
+  h2,
+  h3 {
+    color: #333;
+    margin-bottom: 1em;
+  }
+
+  .enunciado {
+    font-size: 1em;
+    margin-bottom: 2em;
+  }
+
+  pre {
+    background: #f4f4f4;
+    padding: 15px;
+    border-radius: 10px;
+    overflow-x: auto;
+  }
+
+  label {
+    display: block;
+    /* margin-bottom: 10px; */
+    font-size: 1.5em;
+    cursor: pointer;
+  }
+
+  textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    resize: vertical;
+  }
+
+  .alternativas {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    /* margin-bottom: 5px; */
+  }
+
+  .botao-alternativa {
+    padding: 12px 20px;
+    background-color: #ffffff;
+    border: 1px solid #909090;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.2s ease;
+    user-select: none;
+  }
+
+  .botao-alternativa:hover {
+    background-color: #eeeeee;
+  }
+
+  input[type="radio"]:checked + .botao-alternativa {
+    background-color: #d3f7ff;
+    color: rgb(1, 92, 189);
+    border-color: #3094ff;
+  }
+}
+
+
+
+.resultado {
+  width: 100%;
+  padding: 20px;
+  /* background-color: aqua; */
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.resultado.correto {
+  background-color: var(--success); /* exemplo: verde claro */
+  color: var(--white); /* texto verde escuro, por exemplo */
+
+  p {
+    font-weight: 600;
+  }
+
+  .btn-continuar {
+    background-color: #3094ff;
+  }
+}
+.resultado.incorreto {
+  background-color: var(--red); /* exemplo: vermelho claro */
+  color: var(--white); /* texto vermelho escuro, por exemplo */
+}
+
+
+
+.modal {
+  position: fixed;
+  z-index: 99999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center; /* Centraliza horizontalmente */
+  align-items: center; /* Centraliza verticalmente */
+}
+
+.modal-conteudo {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  max-width: 400px; /* Tamanho máximo do modal */
+  width: 100%; /* A largura vai ser 100% até o limite do max-width */
+  box-sizing: border-box; /* Garante que padding não afete a largura total */
+  max-height: 80%; /* Limita a altura máxima para que não ocupe toda a tela */
+  overflow-y: auto; /* Adiciona barra de rolagem caso o conteúdo ultrapasse o limite */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.fechar {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .modal-conteudo {
+    width: 90%; /* Modal ocupa 90% da largura em telas menores */
+    max-width: 300px; /* Reduz o tamanho máximo do modal para telas pequenas */
+  }
+}
