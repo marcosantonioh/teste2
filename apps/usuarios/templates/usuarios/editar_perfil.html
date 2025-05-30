@@ -17,7 +17,6 @@
 {% endif %}
 
 <div class="container">
-  <h3>Account settings</h3>
   <div class="account-layout">
     <!-- Sidebar -->
     <div class="sidebar">
@@ -29,6 +28,9 @@
         <li class="nav-item"><a class="nav-link" href="#">Conecções</a></li>
         <li class="nav-item"><a class="nav-link" href="#">Notificações</a></li>
       </ul>
+
+      <button type="submit" name="action" value="salvar_perfil" class="btn-salvar">Salvar alterações</button>
+
     </div>
 
     <!-- Conteúdo principal -->
@@ -55,7 +57,7 @@
               <button type="button" class="btn-foto" onclick="document.getElementById('id_foto').click();">Alterar</button>
         
               <!-- Botão para deletar -->
-              <button type="submit" name="action" value="deletar_foto" class="btn-foto btn-danger">Deletar</button>
+              <button type="submit" name="action" value="deletar_foto" class="btn-foto btn-danger">Remover</button>
             </div>
           </div>
         </div>
@@ -78,7 +80,6 @@
           <textarea id="id_bio" name="bio">{{ perfil.bio }}</textarea>
         </div>
 
-        <button type="submit" name="action" value="salvar_perfil" class="btn-salvar">Salvar alterações</button>
       </form>
     </div>
   </div>

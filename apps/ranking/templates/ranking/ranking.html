@@ -9,7 +9,6 @@
     {%if usuario_logado%}
 
         <div class="container">
-            <h2 class="text-center">Ranking</h2>
 
             <div class="ranking-switch">
                 <button class="btn-ranking ativo" onclick="mostrarRanking('global')">Global</button>
@@ -50,7 +49,7 @@
                                 {% endif %}
                             </td>
                             <td>{{ perfil.user.username }}</td>
-                            <td>{{ perfil.pontos }}</td>
+                            <td>{{ perfil.xp }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>

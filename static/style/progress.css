@@ -42,7 +42,7 @@
 }
 
 .barra-progresso .bloco.concluido {
-  background-color: #28a745; /* verde */
+  background-color: var(--primary-color); /* verde */
 }
 
 .vidas {

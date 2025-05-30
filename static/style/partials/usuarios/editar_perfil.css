@@ -2,236 +2,227 @@
 
 /* Estrutura geral */
 .container {
-    width: 100%;
-    /* margin: 30px auto; */
-    padding: 20px;
-    background-color: white;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    box-sizing: border-box;
-  }
-  
-  /* Layout em colunas */
-  .account-layout {
-    display: flex;
-  }
-  
-  /* Sidebar lateral esquerda */
-  .sidebar {
-    width: 250px;
-    background-color: #f1f3f5;
-    padding: 20px;
-    border-right: 1px solid #343434;
-  }
-  
-  .nav {
-    list-style: none;
-    padding: 0;
-    /* background-color: #218838; */
-  }
-  
-  .nav-item {
-    margin-bottom: 12px;
-  }
-  
-  .nav-link {
-    display: block;
-    text-decoration: none;
-    color: #333;
-    padding: 10px 15px;
-    border-radius: 6px;
-    transition: all 0.2s ease;
-  }
-  
-  .nav-link:hover,
-  .nav-link.active {
-    background-color: var(--azul);
-    color: #fff;
-  }
-  
-  /* Conteúdo principal à direita */
-  .main-content {
-    flex-grow: 1;
-    padding: 30px;
-  }
-  
+  width: 100%;
+  /* margin: 30px auto; */
+  padding: 20px;
+  background-color: white;
+  box-sizing: border-box;
+  padding-top: 100px;
+}
 
-  .profile-photo-section{
-    display: flex;
-    gap: 20px;
-  }
+/* Layout em colunas */
+.account-layout {
+  display: flex;
+}
 
+/* Sidebar lateral esquerda */
+.sidebar {
+  width: 250px;
+  background-color: var(--white);
+  padding: 20px;
+  border-right: 1px solid var(--border-color);
+}
 
-  .profile-photo-section img {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 10px;
-    border: 2px solid #ccc;
-  }
-  
-  input[type="file"] {
-    margin-top: 10px;
-  }
-  
-  .bio-section label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  
-  .bio-section textarea {
-    width: 100%;
-    min-height: 120px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 14px;
-    resize: vertical;
-  }
+.nav {
+  list-style: none;
+  padding: 0;
+  /* background-color: #218838; */
+}
 
-  .form-group {
-    margin-top: 20px;
-  }
-  
-  .form-group label,
-  .bio-section label {
-    font-weight: bold;
-    display: block;
-    margin-top: 20px;
-    margin-bottom: 5px;
-  }
-  
-  .form-group input,
-  .bio-section textarea {
-    width: 100%;
-    padding: 10px;
-    font-size: 14px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    margin-top: 20px;
-  }
-  
-  /* Botões de foto */
-  .foto-botoes {
-    margin-top: 10px;
-    display: flex;
-    gap: 10px;
-  }
-  
-  .btn-foto {
-    padding: 8px 16px;
-    font-size: 14px;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    background-color: var(--azul);
-    color: white;
-    transition: background-color 0.3s;
-  }
-  
-  .btn-foto:hover {
-    background-color: var(--azul_hover);
-  }
-  
-  .btn-foto.btn-danger {
-    background-color: var(--red);
-  }
-  
-  .btn-foto.btn-danger:hover {
-    background-color: var(--red_hover);
-  }
-  
-  /* Botão salvar */
-  .btn-salvar {
-    margin-top: 30px;
-    background-color: #28a745;
-    color: white;
-    padding: 12px 24px;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  
-  .btn-salvar:hover {
-    background-color: #218838;
-  }
-  /* Contêiner para mensagens */
+.nav-item {
+  margin-bottom: 12px;
+}
+
+.nav-link {
+  display: block;
+  text-decoration: none;
+  color: var(--black);
+  padding: 10px 15px;
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  background-color: var(--border-color);
+
+  color: var(--primary-color);
+}
+
+/* Conteúdo principal à direita */
+.main-content {
+  flex-grow: 1;
+  padding: 30px;
+}
+
+.profile-photo-section {
+  display: flex;
+  gap: 20px;
+}
+
+.profile-photo-section img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+input[type="file"] {
+  margin-top: 10px;
+}
+
+.bio-section label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.bio-section textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 14px;
+  resize: vertical;
+}
+
+.form-group {
+  /* background-color: gray; */
+}
+
+.form-group label,
+.bio-section label {
+  font-weight: bold;
+  display: block;
+  margin-top: 20px;
+}
+
+.form-group input,
+.bio-section textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  margin-top: 5px;
+}
+
+/* Botões de foto */
+.foto-botoes {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.btn-foto {
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background-color: var(--primary-color);
+  color: white;
+  transition: background-color 0.3s;
+}
+
+.btn-foto:hover {
+  background-color: var(--primary-dark);
+}
+
+.btn-foto.btn-danger {
+  background-color: var(--red);
+}
+
+.btn-foto.btn-danger:hover {
+  background-color: var(--red_hover);
+}
+
+/* Botão salvar */
+.btn-salvar {
+  margin-top: 30px;
+  background-color: var(--primary-color);
+  color: var(--white);
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.btn-salvar:hover {
+  background-color: var(--primary-dark);
+}
+/* Contêiner para mensagens */
 .mensagens {
-    position: fixed;       /* Fixa no topo da página */
-    top: 30px;             /* Distância do topo */
-    left: 50%;             /* Centraliza horizontalmente */
-    transform: translateX(-50%); /* Ajuste para centralizar exatamente */
-    z-index: 9999;         /* Garante que fique sobre os outros elementos */
-    width: 100%;           /* Largura total */
-    display: flex;
-    justify-content: center;
-    padding: 10px;
-    pointer-events: none;  /* Não interfere na interação com outros elementos */
+  position: fixed; /* Fixa no topo da página */
+  top: 30px; /* Distância do topo */
+  left: 50%; /* Centraliza horizontalmente */
+  transform: translateX(-50%); /* Ajuste para centralizar exatamente */
+  z-index: 9999; /* Garante que fique sobre os outros elementos */
+  width: 100%; /* Largura total */
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  pointer-events: none; /* Não interfere na interação com outros elementos */
+}
+
+/* Estilo da mensagem de sucesso */
+.alert {
+  position: relative;
+  background-color: #d4edda; /* Cor de fundo verde claro */
+  color: #155724; /* Cor do texto */
+  border: 1px solid #c3e6cb; /* Borda verde clara */
+  border-radius: 5px; /* Bordas arredondadas */
+  padding: 15px;
+  max-width: 400px; /* Limita a largura */
+  width: 100%; /* Ajusta à largura da tela */
+  font-size: 16px;
+  text-align: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  pointer-events: all; /* Permite interação com a notificação */
+  animation: fadeInOut 3s forwards; /* Animação de entrada e saída */
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 30px;
+  font-size: 25px;
+  color: #404040;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  color: #000;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
   }
-  
-  /* Estilo da mensagem de sucesso */
-  .alert {
-    position: relative;
-    background-color: #d4edda; /* Cor de fundo verde claro */
-    color: #155724;            /* Cor do texto */
-    border: 1px solid #c3e6cb; /* Borda verde clara */
-    border-radius: 5px;        /* Bordas arredondadas */
-    padding: 15px;
-    max-width: 400px;          /* Limita a largura */
-    width: 100%;               /* Ajusta à largura da tela */
-    font-size: 16px;
-    text-align: center;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    pointer-events: all;       /* Permite interação com a notificação */
-    animation: fadeInOut 3s forwards; /* Animação de entrada e saída */
+  20% {
+    opacity: 1;
   }
-  
-  .close-btn {
-    position: absolute;
-    top: 10px;
-    right: 30px;
-    font-size: 25px;
-    color: #404040;
-    cursor: pointer;
+  80% {
+    opacity: 1;
   }
-  
-  .close-btn:hover {
-    color: #000;
+  100% {
+    opacity: 0;
+    display: none;
   }
-  
-  @keyframes fadeInOut {
-    0% {
-      opacity: 0;
-    }
-    20% {
-      opacity: 1;
-    }
-    80% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-      display: none;
-    }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .account-layout {
+    flex-direction: column;
   }
 
-
-  
-
-
-  /* Responsividade */
-  @media (max-width: 768px) {
-    .account-layout {
-      flex-direction: column;
-    }
-  
-    .sidebar {
-      width: 100%;
-      border-right: none;
-      border-bottom: 1px solid #ddd;
-    }
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
   }
-  
+}

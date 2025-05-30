@@ -1,25 +1,16 @@
 @import url("/static/style/global/global.css");
 
-.container {
-  display: flex;
-  align-items: start;
-  justify-content: center;
-  width: 100%;
-  height: 100vh;
-  background-color: aliceblue;
-}
-
 .content-perfil {
   width: 70%;
-  height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: start;
   /* background-color: rgb(51, 51, 101); */
-  background-color:var(--secondary-color);
-  margin-top: 5em;
+  background-color:var(--primary-dark);
+  margin:0 auto ;
   padding: 20px 0px;
+  margin-top: 100px;
 }
 
 .head {
@@ -30,7 +21,7 @@
   display: flex;
   align-items: start;
   justify-content: space-around;
-  color: aliceblue;
+  color: var(--white);
   /* gap: 1em; */
   /* margin-top: 2em; */
 }
@@ -71,7 +62,7 @@
 }
 
 .name {
-  color: antiquewhite;
+  color: var(--white);
   font-size: 1.5em;
   font-weight: bold;
 }

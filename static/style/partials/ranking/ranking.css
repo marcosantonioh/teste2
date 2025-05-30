@@ -6,9 +6,9 @@ body {
 
 
 .container {
-  max-width: 800px;
+  max-width: 500px;
   margin: 0 auto;
-  padding: 20px;
+  margin-top: 100px;
 }
 
 .text-center {
@@ -24,26 +24,29 @@ body {
 }
 
 .ranking-table thead {
-  background-color: #007bff;
+  background-color: var(--primary-color);
   color: white;
 }
-
-.ranking-table th,
-.ranking-table td {
-  /* background-color: aqua; */
-  padding: 10px 0px;
+.ranking-table th {
+  padding: 10px 0;
   text-align: center;
-  /* border-bottom: 1px solid #ddd; */
+  font-weight: bold;
+  font-size: 1rem; /* aumenta levemente o tamanho da fonte */
+}
+.ranking-table td {
+  padding: 5px 0px; /* antes: 10px 0px */
+  text-align: center;
+  font-size: 0.9rem; /* reduz levemente o tamanho da fonte */
 }
 
 .foto-cell {
   text-align: center;
   vertical-align: middle;
 }
-
+/* 
 .ranking-table tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
+  background-color: var(--border-color);
+} */
 
 .profile-pic {
   width: 50px;
@@ -70,14 +73,14 @@ body {
   padding: 10px 20px;
   margin: 0 5px;
   border: none;
-  background-color: #ddd;
+  background-color: var(--border-color);
   font-weight: bold;
   cursor: pointer;
   border-radius: 5px;
 }
 
 .btn-ranking.ativo {
-  background-color: #007bff;
+  background-color: var(--primary-color);
   color: white;
 }
 
@@ -87,7 +90,7 @@ body {
 
 
 .ranking-table tbody tr.meu-perfil {
-  background-color: #a3caff !important;
+  background-color: var(--border-color) !important;
   font-weight: bold;
   /* border-left: 4px solid #28a745; */
 }

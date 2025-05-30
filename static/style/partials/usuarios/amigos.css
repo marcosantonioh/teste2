@@ -7,17 +7,16 @@
   gap: 2rem;
   padding: 2rem;
   flex-wrap: wrap;
-  background-color: #f3f3f3;
+  margin-top:100px;
 }
 
 /* BOX GERAL */
 .box {
   width: 40%;
   height: 450px;
-  background-color: #fff;
+  background-color: var(--white);
   /* border-radius: 10px; */
   /* border: 1px solid #ddd; */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   /* padding: 1.5rem; */
   display: flex;
   flex-direction: column;
@@ -37,7 +36,7 @@
   gap: 0.5rem;
   /* background-color: #c0c0c0; */
   /* padding: 0.5rem 1rem; */
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .tab {
@@ -53,15 +52,15 @@
 
 .tab:hover {
   /* background-color: #a0e0e0; */
-  color: var(--azul);
-  border-bottom: 2px solid var(--azul);
+  color: var(--primary-color);
+  border-bottom: 2px solid var(--primary-color);
 
 }
 
 .tab.active {
   /* background-color: var(--secondary-color); */
-  color: var(--azul);
-  border-bottom: 2px solid var(--azul);
+  color: var(--primary-color);
+  border-bottom: 2px solid var(--primary-color);
 }
 
 /* CONTEÚDO DAS ABAS */
@@ -82,9 +81,9 @@
   align-items: center;
   gap: 1rem;
   padding: 0.75rem;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color);
   border-radius: 8px;
-  background-color: #f9f9f9;
+  background-color: var(--white);
 }
 
 .perfil-item img {
@@ -101,13 +100,13 @@
 
 .ver-mais a {
   text-decoration: none;
-  color: #007bff;
+  color: var(--primary-color);
   font-weight: bold;
   transition: color 0.3s;
 }
 
 .ver-mais a:hover {
-  color: #0056b3;
+  color: var(--primary-dark);
 }
 
 /* BOX ADICIONAR AMIGOS */
@@ -144,7 +143,7 @@
   justify-content: center;
   gap: 0.5rem;
   padding: 0.75rem 1rem;
-  background-color: var(--azul);
+  background-color: var(--primary-color);
   color: white;
   border-radius: 8px;
   border: 1px solid rgba(0, 0, 0, 0.3);
@@ -154,7 +153,7 @@
 }
 
 .botao-opcao:hover {
-  background-color: var(--azul_hover);
+  background-color: var(--primary-dark);
 }
 
 /* MODAL */
@@ -171,17 +170,17 @@
 }
 
 .modal-content {
-  background-color: #ffffff;
+  background-color: var(--white);
   margin: 10% auto;
   padding: 2rem;
-  border: 1px solid #888;
+  border: 1px solid var(--border-color);
   width: 40%;
   border-radius: 10px;
   position: relative;
 }
 
 .close {
-  color: #aaa;
+  color: var(--border-color);
   position: absolute;
   top: 1rem;
   right: 1.5rem;
@@ -192,22 +191,22 @@
 
 .close:hover,
 .close:focus {
-  color: black;
+  color: var(--primary-dark);
 }
 
 .modal-content input[type="email"] {
   width: 100%;
   padding: 0.75rem;
   margin-top: 1rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
   border-radius: 6px;
 }
 
 .modal-content button {
   margin-top: 1rem;
   padding: 0.75rem 1.5rem;
-  background-color: #65caca;
-  color: white;
+  background-color: var(--primary-color);
+  color: var(--white);
   border: none;
   border-radius: 6px;
   font-weight: bold;
@@ -216,5 +215,5 @@
 }
 
 .modal-content button:hover {
-  background-color: #4bb0b0;
+  background-color: var(--primary-dark);
 }
