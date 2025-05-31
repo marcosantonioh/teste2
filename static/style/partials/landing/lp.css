@@ -8,10 +8,9 @@
 }
 
 body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
   background-color: #f9f9f9;
-  color: #333;
+  color: var(--primary-color);
 }
 
 /* Cabeçalho */
@@ -29,9 +28,10 @@ header {
   z-index: 1000; /* Garante que fique acima dos outros elementos */
 }
 
-header h1 {
+header .logo {
   font-size: 1.4rem;
   font-weight: bold;
+  color: var(--primary-color);
 }
 
 header a {
@@ -46,7 +46,7 @@ header a:hover {
 
 .start {
   background-color: none;
-  color: rgb(26, 26, 26);
+  color: var(--primary-color);
   padding: 0.5rem 1rem;
   border-radius: 50px;
   border: solid 1px rgba(0, 0, 0, 0.3); /* preto com 50% de opacidade */
@@ -55,11 +55,11 @@ header a:hover {
 }
 
 .start:hover {
-  border: solid 1px rgba(0, 0, 0); /* preto com 50% de opacidade */
+  border: solid 1px var(--primary-dark); /* preto com 50% de opacidade */
 }
 
 .login {
-  background-color: #2971ff;
+  background-color: var(--primary-color);
   color: #ffffff;
   padding: 0.5rem 1rem;
   border-radius: 50px;
@@ -67,7 +67,7 @@ header a:hover {
 }
 
 .login:hover {
-  background-color: #1b5fe7;
+  background-color: var(--primary-dark);
 }
 
 
@@ -165,11 +165,11 @@ header a:hover {
   margin: 0 auto;
   margin-top: 1rem;
   transition: background-color 0.3s;
-  background-color: #1b5fe7;
+  background-color: var(--primary-color);
 }
 
 .hero-content .btn:hover {
-  background-color: #0f3c96;
+  background-color: var(--primary-dark);
 }
 
 .btn-login{
@@ -302,7 +302,7 @@ header a:hover {
 
 /* Call to Action */
 .cta {
-  background-color: #2563eb;
+  background-color: var(--primary-color);
   color: white;
   text-align: center;
   padding: 4rem 2rem;
@@ -321,7 +321,7 @@ header a:hover {
 
 .cta a {
   background-color: white;
-  color: #2563eb;
+  color: var(--primary-color);
   padding: 0.75rem 1.5rem;
   border-radius: 9999px;
   text-decoration: none;
