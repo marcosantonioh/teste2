@@ -106,17 +106,66 @@
   background-color: var(--success); /* exemplo: verde claro */
   color: var(--white); /* texto verde escuro, por exemplo */
 
+  svg {
+    width: 50px;
+    height: 50px;
+    fill: var(--white);
+    background-color: var(--white);
+    padding: 10px;
+    border-radius: 50%;
+  }
+
   p {
     font-weight: 600;
+    font-size: 1.2rem;
   }
 
   .btn-continuar {
-    background-color: #3094ff;
+    padding: 15px 25px;
+    background-color: var(--white);
+    color: var(--success);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
   }
 }
 .resultado.incorreto {
   background-color: var(--red); /* exemplo: vermelho claro */
   color: var(--white); /* texto vermelho escuro, por exemplo */
+svg {
+    width: 50px;
+    height: 50px;
+    fill: var(--white);
+    background-color: var(--white);
+    padding: 10px;
+    border-radius: 50%;
+  }
+  .botoes-incorreto {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .btn-tentar-novamente {
+    padding: 15px 25px;
+    background-color: yellow;
+    color: var(--black);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .btn-continuar {
+    padding: 15px 25px;
+    background-color: var(--white);
+    color: var(--red);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+  }
 }
 
 /* Modal geral */
@@ -194,10 +243,11 @@
     }
 
     .btn-sair:hover {
-      background-color: var(--red-hover); /* escurece o botão ao passar o mouse */
+      background-color: var(
+        --red-hover
+      ); /* escurece o botão ao passar o mouse */
     }
   }
-
 }
 
 /* Botão fechar modal (x) */
