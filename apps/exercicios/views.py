@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from apps.usuarios.models import Perfil
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404, redirect
+from django.db.models import Sum
 from apps.exercicios.models import Exercicio, Modulo, Secao, Estacao
 from django.http import Http404
 
@@ -93,10 +94,12 @@ def resolver_exercicio(request, exercicio_id):
     alternativas = obter_alternativas(exercicio)
     resultado = None
     correta = None
+    proximo_exercicio_id_para_continuar = None
+    # estacao_totalmente_concluida = False # Não é mais necessário aqui, será tratado com redirect
 
     exercicios_pendentes = Exercicio.objects.filter(
         estacao=exercicio.estacao,
-        concluido=False
+        status='livre'  # Apenas exercícios livres são considerados pendentes para resolução
     )
 
     if request.method == 'POST':
@@ -108,7 +111,19 @@ def resolver_exercicio(request, exercicio_id):
 
         elif acao == 'responder':
             resultado, correta = processar_resposta(request, exercicio, perfil)
+            if correta:
+                # Encontrar o próximo exercício sequencial na estação
+                exercicios_na_estacao = Exercicio.objects.filter(estacao=exercicio.estacao).order_by('id')
+                proximo_na_ordem = exercicios_na_estacao.filter(id__gt=exercicio.id).first()
 
+                if proximo_na_ordem:
+                    proximo_exercicio_id_para_continuar = proximo_na_ordem.id
+                else:
+                    # Não há mais exercícios com ID maior nesta estação.
+                    # Verificar se todos os exercícios da estação estão concluídos.
+                    if not Exercicio.objects.filter(estacao=exercicio.estacao, status='livre').exists():
+                        return redirect('exercicios:estacao_concluida', estacao_id=exercicio.estacao.id)
+                        
 
     progresso, exercicios_modulo = calcular_progresso(exercicio.modulo)
     sem_vidas = perfil.vidas <= 0
@@ -123,6 +138,8 @@ def resolver_exercicio(request, exercicio_id):
         'progresso': progresso,
         'exercicios_modulo': exercicios_modulo,
         'exercicios_pendentes': exercicios_pendentes,
+        'proximo_exercicio_id_para_continuar': proximo_exercicio_id_para_continuar, # Ainda útil para o botão continuar normal
+        # 'estacao_totalmente_concluida': estacao_totalmente_concluida, # Removido
         'sem_vidas': sem_vidas,
     }
 
@@ -136,16 +153,19 @@ def iniciar_exercicios(request, exercicio_id):
 
 
 def reiniciar_estacao(request, exercicio):
-    session_key = f'estacao_{exercicio.estacao.id}_reiniciada'
-    if not request.session.get(session_key, False):
-        Exercicio.objects.filter(estacao=exercicio.estacao).update(concluido=False)
-        request.session[session_key] = True
+    """
+    Reinicia todos os exercícios da estação do exercício fornecido,
+    marcando-os como não concluídos.
+    A lógica anterior baseada em sessão foi removida para que sempre reinicie.
+    """
+    Exercicio.objects.filter(estacao=exercicio.estacao).update(status='livre') # Define como 'livre' para que possam ser resolvidos novamente
+    # O parâmetro 'request' é mantido para consistência da assinatura, caso seja usado para logging no futuro.
 
 
 def pular_exercicio(exercicio):
     pendentes = Exercicio.objects.filter(
         estacao=exercicio.estacao,
-        concluido=False
+        status='livre' # Apenas exercícios livres podem ser pulados/navegados
     ).order_by('id')
 
     if pendentes.count() > 1:
@@ -181,22 +201,49 @@ def verificar_resposta(exercicio, resposta_usuario):
     return False
 
 
+# Em views.py
 def atualizar_estado_do_perfil_e_exercicio(perfil, exercicio, correta):
     if correta:
-        if not exercicio.concluido:
-            exercicio.concluido = True
+        if exercicio.status != 'concluido': # Só atualiza se não estiver já concluído
+            exercicio.status = 'concluido'
             exercicio.save()
+            # Lógica de XP, etc.
     else:
         if perfil.vidas > 0:
             perfil.vidas -= 1
             perfil.save()
+        # O status do exercício não muda se a resposta for incorreta,
+        # a menos que você tenha uma lógica para re-bloquear ou algo assim.
+
 
 def calcular_progresso(modulo):
     todas_secoes = Secao.objects.filter(modulo=modulo)
     todas_estacoes = Estacao.objects.filter(secao__in=todas_secoes)
     todos_exercicios = Exercicio.objects.filter(estacao__in=todas_estacoes)
     total = todos_exercicios.count()
-    concluidos = todos_exercicios.filter(concluido=True).count()
+    concluidos = todos_exercicios.filter(status='concluido').count()
     progresso = int((concluidos / total) * 100) if total > 0 else 0
     return progresso, todos_exercicios.order_by('id')
 
+
+def estacao_concluida_view(request, estacao_id):
+    estacao = get_object_or_404(Estacao, id=estacao_id)
+    perfil = None
+    if request.user.is_authenticated:
+        try:
+            perfil = Perfil.objects.get(user=request.user)
+        except ObjectDoesNotExist:
+            # Lidar com o caso de perfil não existente, talvez criar um ou redirecionar
+            pass # Ou redirecionar para login, ou criar perfil
+
+    # Calcular XP total da estação
+    exercicios_da_estacao = Exercicio.objects.filter(estacao=estacao)
+    total_xp_estacao = exercicios_da_estacao.aggregate(total_xp=Sum('xp'))['total_xp'] or 0
+
+    context = {
+        'estacao': estacao,
+        'total_xp_estacao': total_xp_estacao,
+        'perfil': perfil, # Para a navbar, se necessário
+        'modulo_id': estacao.secao.modulo.id, # Para o botão "Voltar ao Percurso"
+    }
+    return render(request, 'exercicios/estacao_concluida.html', context)

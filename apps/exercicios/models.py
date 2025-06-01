@@ -48,6 +48,11 @@ class Estacao(models.Model):
 # Create your models here.
 class Exercicio(models.Model):
     
+    STATUS_CHOICES = [
+        ('livre', 'Livre'),         # Pronto para ser resolvido ou pulado
+        ('concluido', 'Concluído'), # Resolvido corretamente
+    ]
+
     CATEGORIA_CHOICES = [
         ('aula', 'Aula'),
         ('quiz', 'Quiz'),
@@ -69,10 +74,9 @@ class Exercicio(models.Model):
     codigo = models.TextField(null=True, blank=True)
     tipo = models.CharField(max_length=50, choices=TIPO_CHOICES)
     categoria = models.CharField(max_length=100, choices=CATEGORIA_CHOICES)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='livre')
     dificuldade = models.IntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(5)])
     xp = models.IntegerField(default=10)
-    bloqueado = models.BooleanField(default=True)
-    concluido = models.BooleanField(default=False)
     modulo = models.ForeignKey(Modulo, on_delete=models.CASCADE)  # A chave estrangeira para o modelo Modulo
     origem = models.CharField(max_length=10, choices=ORIGEM_CHOICES, default='estatica')
 

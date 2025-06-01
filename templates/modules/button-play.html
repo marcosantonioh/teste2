@@ -2,8 +2,16 @@
 
 
 <div class="station-circle" onclick="toggleDrop('{{ estacao.id }}')">
-
-  <img src="{% static 'img/play-white.svg' %}" alt="Play" class="play-icon" />
+  {% if estacao.status == 'livre' %}
+    <img src="{% static 'img/play-white.svg' %}" alt="Jogar Estação" class="play-icon" />
+  {% elif estacao.status == 'completado' %}
+    <img src="{% static 'img/check-white.svg' %}" alt="Estação Concluída" class="play-icon" /> {# Crie esta imagem #}
+  {% elif estacao.status == 'bloqueado' %}
+    <img src="{% static 'img/lock.svg' %}" alt="Estação Bloqueada" class="play-icon" /> {# Crie esta imagem #}
+  {% else %}
+    {# Fallback para um ícone padrão ou caso o status não seja reconhecido #}
+    <img src="{% static 'img/play-white.svg' %}" alt="Estação" class="play-icon" />
+  {% endif %}
 
   <!-- Círculo de estação -->
   <div class="station-dropdown" id="dropdown-{{ estacao.id }}">
@@ -24,5 +32,3 @@
   </div>
 
 </div>
-
-

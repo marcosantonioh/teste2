@@ -105,7 +105,12 @@
        d="m 728.81517,15.817026 c -3.82582,-3.879028 -6.95604,-7.0812024 -6.95604,-7.1159424 0,-0.03474 1.2526,-1.31539 2.78356,-2.8458895 l 2.78355,-2.7827296 4.21436,4.2059181 4.21436,4.2059164 10.19305,-10.3023742 c 5.60617,-5.6663047 10.22832,-10.2992696 10.27145,-10.2954768 0.0752,0.00657 5.56697,5.6806724 5.56697,5.7518064 0,0.05998 -25.99892,26.2315526 -26.05851,26.2315526 -0.0311,0 -3.18691,-3.17375 -7.01275,-7.052781 z"
                       id="path573" /></g></svg>
                     <p>Resposta Correta!</p>
-                    <button type="submit" class="btn-continuar">Continuar</button>
+                    {% if proximo_exercicio_id_para_continuar %}
+                        <a href="{% url 'exercicios:resolver_exercicio' proximo_exercicio_id_para_continuar %}" class="btn-continuar">Continuar</a>
+                    {% else %}
+                        {# Se não há próximo exercício na estação (e a view já redirecionou ou este é um fallback), o botão leva de volta ao percurso #}
+                        <a href="{% url 'exercicios:percurso' exercicio.modulo.id %}" class="btn-continuar">Voltar ao Percurso</a>
+                    {% endif %}
                 </div>
             {% elif resultado == 'incorreto' %}
                 <div class="resultado incorreto">
@@ -173,7 +178,8 @@
                     <p class="resultado-incorreto">Resposta Incorreta!</p>
                     <div class="botoes-incorreto">
                       <button type="submit" name="acao" value="responder" class="btn-tentar-novamente">Tentar Novamente</button>
-                      <button type="submit" class="btn-continuar">Continuar</button>
+                      {% comment %} Este botão agora envia a ação 'pular' para ir ao próximo exercício livre. {% endcomment %}
+                      <button type="submit" name="acao" value="pular" class="btn-continuar">Continuar</button>
                     </div>
                 </div>
             {% endif %}

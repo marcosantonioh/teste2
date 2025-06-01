@@ -5,7 +5,7 @@ from django.utils import timezone
 
 class Perfil(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    xp = models.IntegerField(default=0, validators=[MinValueValidator(0)], verbose_name="Pontuação")
+    xp = models.IntegerField(default=0, validators=[MinValueValidator(0)], verbose_name="Xp")
     vidas = models.IntegerField(default=5, validators=[MinValueValidator(0)])
     sequencia_dias = models.IntegerField(default=0, validators=[MinValueValidator(0)])
     perfil_publico = models.BooleanField(default=False)
