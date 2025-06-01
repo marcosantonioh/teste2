@@ -5,13 +5,13 @@
 
 <div class="top-bar">
     <a href="" class="exit-button" id="abrirModal">
-        <img src="/static/img/close-2.svg" class="exit-icon">
+        <img src="{% static 'img/close-2.svg' %}" class="exit-icon">
     </a>
     
-    <div class="barra-progresso">
-        {% for ex in exercicios_modulo %}
-          <div class="bloco {% if ex.concluido %}concluido{% endif %}"></div>
-        {% endfor %}
+    <div class="progresso-container">
+        <div class="barra-progresso-visual">
+            <div class="barra-progresso-preenchida" style="width: {{ progresso_percentual|default:0 }}%;"></div>
+        </div>
     </div>
 
     <div class="vidas">        
@@ -19,8 +19,4 @@
         <span class="contador-vida">{{ perfil.vidas }}</span>
     </div>
 
-
-    
-
 </div>
-

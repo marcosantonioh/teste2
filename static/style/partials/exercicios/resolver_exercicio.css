@@ -5,27 +5,52 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  /* justify-content: space-between; */
+  /* align-items: center; /* Removido para permitir que as seções filhas controlem seu próprio alinhamento/largura */
 }
 
-.form-exercicio {
+/* Seção para a barra de progresso no topo */
+.barra-progresso-container {
+  width: 100%;
+  padding: 10px 20px; /* Ajuste conforme necessário */
+  background-color: #f0f0f0; /* Cor de exemplo */
+  flex-shrink: 0; /* Impede que a barra de progresso encolha */
+  box-sizing: border-box;
+  text-align: center; /* Exemplo de alinhamento */
+}
+
+/* Novo container para o formulário que gerencia o layout do conteúdo e ações */
+.form-layout-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Faz o formulário ocupar o espaço vertical restante */
+  min-height: 0; /* Importante para flex children que crescem e têm overflow */
+}
+
+/* Wrapper para o conteúdo do exercício que será rolável */
+.conteudo-exercicio-wrapper {
+  flex-grow: 1; /* Faz esta seção ocupar o espaço vertical restante */
+  overflow-y: auto; /* Adiciona rolagem vertical se o conteúdo for maior */
+  width: 100%;
+  padding: 20px 0; /* Adiciona padding vertical; padding horizontal pode ser no .formulario */
+  box-sizing: border-box;
+}
+
+/* .form-exercicio original - pode ser removido ou adaptado.
+   Se .form-exercicio é o próprio <form>, ele não deve ter height: 100vh.
+   A lógica de layout principal agora está no .container-exercicio e seus filhos diretos.
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
   height: 100vh;
-  /* background-color: #3094ff; */
   margin: 0 auto;
-  /* flex: 1;  */
-}
+*/
 
 .formulario {
   display: flex;
   max-width: 700px;
   margin: 0 auto;
-  margin-top: 50px;
-  padding: 25px;
+  padding: 0 25px; /* Padding horizontal, o vertical pode vir do wrapper */
   flex-direction: column;
   gap: 1em;
   /* max-width: 700px; */
@@ -93,11 +118,23 @@
   }
 }
 
-.resultado {
+/* Base fixa para botões de ação e resultado */
+.base-acoes-exercicio {
   width: 100%;
-  padding: 20px;
-  /* background-color: aqua; */
-  border-top: 1px solid var(--border-color);
+  padding: 15px 20px;
+  background-color: #fff; /* Fundo para a base */
+  border-top: 1px solid #ddd; /* Linha divisória sutil */
+  flex-shrink: 0; /* Impede que a base encolha */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.resultado {
+  width: 100%; /* Para ocupar a largura da .base-acoes-exercicio */
+  /* padding: 20px; /* O padding agora pode ser controlado pela .base-acoes-exercicio */
+  /* border-top: 1px solid var(--border-color); /* A borda pode ser da .base-acoes-exercicio */
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -230,6 +267,8 @@ svg {
       cursor: pointer;
       font-weight: bold;
       text-decoration: none;
+          font-size: 0.9em;
+
     }
 
     .btn-cancelar {
@@ -240,6 +279,8 @@ svg {
       border-radius: 8px;
       font-weight: bold;
       cursor: pointer;
+          font-size: 0.9em;
+
     }
 
     .btn-sair:hover {

@@ -125,7 +125,10 @@ def resolver_exercicio(request, exercicio_id):
                         return redirect('exercicios:estacao_concluida', estacao_id=exercicio.estacao.id)
                         
 
-    progresso, exercicios_modulo = calcular_progresso(exercicio.modulo)
+    # Calcular progresso para a barra superior
+    progresso_percentual, exercicios_concluidos_count, total_exercicios_modulo = calcular_progresso(exercicio.modulo)
+    
+    # Verificar se o usuário não tem mais vidas
     sem_vidas = perfil.vidas <= 0
 
     context = {
@@ -135,12 +138,13 @@ def resolver_exercicio(request, exercicio_id):
         'perfil': perfil,
         'modulo_id': exercicio.modulo.id,
         'alternativas': alternativas,
-        'progresso': progresso,
-        'exercicios_modulo': exercicios_modulo,
         'exercicios_pendentes': exercicios_pendentes,
         'proximo_exercicio_id_para_continuar': proximo_exercicio_id_para_continuar, # Ainda útil para o botão continuar normal
-        # 'estacao_totalmente_concluida': estacao_totalmente_concluida, # Removido
         'sem_vidas': sem_vidas,
+        # Novas variáveis para o progress.html
+        'progresso_percentual': progresso_percentual,
+        'exercicios_concluidos_count': exercicios_concluidos_count,
+        'total_exercicios_modulo': total_exercicios_modulo,
     }
 
     return render(request, 'exercicios/resolver_exercicio.html', context)
@@ -220,10 +224,10 @@ def calcular_progresso(modulo):
     todas_secoes = Secao.objects.filter(modulo=modulo)
     todas_estacoes = Estacao.objects.filter(secao__in=todas_secoes)
     todos_exercicios = Exercicio.objects.filter(estacao__in=todas_estacoes)
-    total = todos_exercicios.count()
-    concluidos = todos_exercicios.filter(status='concluido').count()
-    progresso = int((concluidos / total) * 100) if total > 0 else 0
-    return progresso, todos_exercicios.order_by('id')
+    total_exercicios_modulo = todos_exercicios.count()
+    exercicios_concluidos_count = todos_exercicios.filter(status='concluido').count()
+    progresso_percentual = int((exercicios_concluidos_count / total_exercicios_modulo) * 100) if total_exercicios_modulo > 0 else 0
+    return progresso_percentual, exercicios_concluidos_count, total_exercicios_modulo
 
 
 def estacao_concluida_view(request, estacao_id):

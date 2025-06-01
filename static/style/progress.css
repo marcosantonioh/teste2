@@ -1,63 +1,89 @@
 @import "/static/style/global/global.css";
+/* Certifique-se de que este arquivo está sendo carregado: /home/marcos-rocha/Git-hub/Django/teste2/static/style/progress.css */
 
-/* Estilo para a barra superior */
+/* Estilos gerais para a barra superior */
 .top-bar {
-  width: 70%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  /* background-color: #78d49f; */
-  padding: 45px 20px 0px 20px;
-  /* border-bottom: 2px solid #e0e0e0; */
-  top: 0;
-  z-index: 1000;
-  margin: 0 auto;
+  justify-content: space-between; /* Para espaçar o botão de sair, progresso e vidas */
+  width: 100%; /* Para ocupar toda a largura do .barra-progresso-container */
+  padding: 0; /* O padding principal é gerenciado por .barra-progresso-container em resolver_exercicio.css */
+  box-sizing: border-box;
+}
 
-  /* Botão de sair (X) */
-  .exit-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    transition: 0.2s;
-  }
+/* Container para a barra de progresso visual e o texto */
+.progresso-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Espaço entre a barra e o texto do progresso */
+  flex-grow: 1; /* Permite que o container do progresso ocupe espaço */
+  justify-content: center; /* Centraliza a barra e o texto se houver espaço */
+  margin: 0 15px; /* Adiciona margem para não colar nas laterais se o botão de sair/vidas for pequeno */
+}
 
-  .exit-icon {
-    width: 1em;
-    height: 1em;
-  }
+/* A barra de progresso visual (fundo) */
+.barra-progresso-visual {
+  width: 100%; /* Ocupa a largura disponível no .progresso-container */
+  max-width: 300px; /* Limita a largura máxima da barra */
+  height: 18px; /* Altura da barra */
+  background-color: #e0e0e0; /* Cor da barra vazia (cinza claro) */
+  border-radius: 10px; /* Bordas arredondadas */
+  overflow: hidden; /* Garante que o preenchimento respeite o border-radius */
+  position: relative; /* Necessário para o posicionamento absoluto do preenchimento */
+  border: 1px solid #c5c5c5; /* Borda sutil */
+}
 
-  /* Barra de progresso */
+/* O preenchimento da barra de progresso */
+.barra-progresso-preenchida {
+  height: 100%;
+  background-color: #4CAF50; /* Cor verde para o progresso */
+  /* A largura é definida inline via style="width: {{ progresso_percentual }}%;" */
+  transition: width 0.5s ease-in-out; /* Animação suave ao mudar a largura */
+  border-radius: 9px; /* Para manter o arredondamento interno, um pouco menor que o pai */
+}
 
-  .barra-progresso {
-    display: flex;
-    gap: 4px;
-    margin-bottom: 15px;
-  }
+/* Texto da contagem do progresso */
+.texto-progresso {
+  font-size: 0.85em;
+  color: #333;
+  white-space: nowrap; /* Evita que o texto quebre em duas linhas */
+}
 
-  .barra-progresso .bloco {
-    width: 20px;
-    height: 20px;
-    border-radius: 3px;
-    background-color: #ccc; /* cinza padrão */
-  }
+/* Estilos para o botão de sair e ícone */
+.exit-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  font-size: 1.3em; /* Ajusta o tamanho base para o ícone */
+  line-height: 1; /* Para melhor alinhamento vertical */
+  color: #333; /* Cor do ícone, se for uma fonte de ícone ou SVG com currentColor */
+}
 
-  .barra-progresso .bloco.concluido {
-    background-color: var(--primary-color); /* verde */
-  }
+.exit-button:hover {
+  opacity: 0.7;
+}
 
-  .vidas {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
+.exit-icon {
+  width: 1em; /* Relativo ao font-size do .exit-button */
+  height: 1em; /* Relativo ao font-size do .exit-button */
+  display: block; /* Para evitar espaço extra */
+}
 
-  .icone-vida {
-    width: 24px;
-    height: 24px;
-  }
+/* Estilos para o contador de vidas */
+.vidas {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
 
-  .contador-vida {
-    font-weight: 400;
-    color: var(--black);
-    font-size: 1rem;
-  }
+.icone-vida {
+  width: 22px; /* Tamanho do ícone de coração */
+  height: 22px;
+}
+
+.contador-vida {
+  font-weight: bold;
+  font-size: 0.9em;
+  color: #d32f2f; /* Cor vermelha para o contador de vidas */
+}
