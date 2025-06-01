@@ -8,11 +8,11 @@
         <img src="{% static 'img/close-2.svg' %}" class="exit-icon">
     </a>
     
-    <div class="progresso-container">
-        <div class="barra-progresso-visual">
-            <div class="barra-progresso-preenchida" style="width: {{ progresso_percentual|default:0 }}%;"></div>
-        </div>
+    
+    <div class="barra-progresso-visual">
+        <div class="barra-progresso-preenchida" style="width: {{ progresso_percentual|default:0 }}%;"></div>
     </div>
+    
 
     <div class="vidas">        
         <img src="{% static 'img/heart.svg' %}" class="icone-vida">

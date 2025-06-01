@@ -5,48 +5,31 @@
 .top-bar {
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Para espaçar o botão de sair, progresso e vidas */
-  width: 100%; /* Para ocupar toda a largura do .barra-progresso-container */
-  padding: 0; /* O padding principal é gerenciado por .barra-progresso-container em resolver_exercicio.css */
+  justify-content: space-between; 
+  width: 80%; 
+  padding: 35px 55px 0px 55px; 
   box-sizing: border-box;
-}
-
-/* Container para a barra de progresso visual e o texto */
-.progresso-container {
-  display: flex;
-  align-items: center;
-  gap: 10px; /* Espaço entre a barra e o texto do progresso */
-  flex-grow: 1; /* Permite que o container do progresso ocupe espaço */
-  justify-content: center; /* Centraliza a barra e o texto se houver espaço */
-  margin: 0 15px; /* Adiciona margem para não colar nas laterais se o botão de sair/vidas for pequeno */
+  /* background-color: aqua; */
+  margin: 0 auto; 
 }
 
 /* A barra de progresso visual (fundo) */
 .barra-progresso-visual {
-  width: 100%; /* Ocupa a largura disponível no .progresso-container */
-  max-width: 300px; /* Limita a largura máxima da barra */
-  height: 18px; /* Altura da barra */
-  background-color: #e0e0e0; /* Cor da barra vazia (cinza claro) */
-  border-radius: 10px; /* Bordas arredondadas */
-  overflow: hidden; /* Garante que o preenchimento respeite o border-radius */
-  position: relative; /* Necessário para o posicionamento absoluto do preenchimento */
-  border: 1px solid #c5c5c5; /* Borda sutil */
+  width: 100%; 
+  max-width: 300px; 
+  height: 15px; 
+  background-color: #e0e0e0; 
+  border-radius: 10px; 
+  overflow: hidden; 
+  position: relative; 
 }
 
 /* O preenchimento da barra de progresso */
 .barra-progresso-preenchida {
   height: 100%;
-  background-color: #4CAF50; /* Cor verde para o progresso */
-  /* A largura é definida inline via style="width: {{ progresso_percentual }}%;" */
-  transition: width 0.5s ease-in-out; /* Animação suave ao mudar a largura */
-  border-radius: 9px; /* Para manter o arredondamento interno, um pouco menor que o pai */
-}
-
-/* Texto da contagem do progresso */
-.texto-progresso {
-  font-size: 0.85em;
-  color: #333;
-  white-space: nowrap; /* Evita que o texto quebre em duas linhas */
+  background-color: var(--primary-color); 
+  transition: width 0.5s ease-in-out;
+  border-radius: 9px;
 }
 
 /* Estilos para o botão de sair e ícone */
@@ -55,9 +38,9 @@
   border: none;
   cursor: pointer;
   padding: 5px;
-  font-size: 1.3em; /* Ajusta o tamanho base para o ícone */
-  line-height: 1; /* Para melhor alinhamento vertical */
-  color: #333; /* Cor do ícone, se for uma fonte de ícone ou SVG com currentColor */
+  font-size: 1.3em; 
+  line-height: 1; 
+  color: #333; 
 }
 
 .exit-button:hover {
@@ -65,9 +48,9 @@
 }
 
 .exit-icon {
-  width: 1em; /* Relativo ao font-size do .exit-button */
-  height: 1em; /* Relativo ao font-size do .exit-button */
-  display: block; /* Para evitar espaço extra */
+  width: 1em; 
+  height: 1em; 
+  display: block; 
 }
 
 /* Estilos para o contador de vidas */
@@ -78,12 +61,12 @@
 }
 
 .icone-vida {
-  width: 22px; /* Tamanho do ícone de coração */
-  height: 22px;
+  width: 30px; 
+  height: 30px;
 }
 
 .contador-vida {
   font-weight: bold;
-  font-size: 0.9em;
-  color: #d32f2f; /* Cor vermelha para o contador de vidas */
+  font-size: 1.2em;
+  color: var(--black); 
 }

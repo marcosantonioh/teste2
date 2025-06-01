@@ -5,33 +5,32 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  /* align-items: center; /* Removido para permitir que as seções filhas controlem seu próprio alinhamento/largura */
 }
 
 /* Seção para a barra de progresso no topo */
 .barra-progresso-container {
   width: 100%;
-  padding: 10px 20px; /* Ajuste conforme necessário */
-  background-color: #f0f0f0; /* Cor de exemplo */
-  flex-shrink: 0; /* Impede que a barra de progresso encolha */
+  padding: 10px 20px; 
+  background-color: #f0f0f0; 
+  flex-shrink: 0; 
   box-sizing: border-box;
-  text-align: center; /* Exemplo de alinhamento */
+  text-align: center; 
 }
 
 /* Novo container para o formulário que gerencia o layout do conteúdo e ações */
 .form-layout-container {
   display: flex;
   flex-direction: column;
-  flex-grow: 1; /* Faz o formulário ocupar o espaço vertical restante */
-  min-height: 0; /* Importante para flex children que crescem e têm overflow */
+  flex-grow: 1; 
+  min-height: 0; 
 }
 
 /* Wrapper para o conteúdo do exercício que será rolável */
 .conteudo-exercicio-wrapper {
-  flex-grow: 1; /* Faz esta seção ocupar o espaço vertical restante */
-  overflow-y: auto; /* Adiciona rolagem vertical se o conteúdo for maior */
+  flex-grow: 1; 
+  overflow-y: auto; 
   width: 100%;
-  padding: 20px 0; /* Adiciona padding vertical; padding horizontal pode ser no .formulario */
+  padding: 20px 0; 
   box-sizing: border-box;
 }
 
@@ -50,11 +49,9 @@
   display: flex;
   max-width: 700px;
   margin: 0 auto;
-  padding: 0 25px; /* Padding horizontal, o vertical pode vir do wrapper */
+  padding: 0 25px; 
   flex-direction: column;
   gap: 1em;
-  /* max-width: 700px; */
-  /* background-color: aqua; */
 
   h2,
   h3 {
@@ -76,7 +73,6 @@
 
   label {
     display: block;
-    /* margin-bottom: 10px; */
     font-size: 1.5em;
     cursor: pointer;
   }
@@ -93,7 +89,6 @@
     display: flex;
     flex-direction: column;
     gap: 3px;
-    /* margin-bottom: 5px; */
   }
 
   .botao-alternativa {
@@ -121,37 +116,39 @@
 /* Base fixa para botões de ação e resultado */
 .base-acoes-exercicio {
   width: 100%;
-  padding: 15px 20px;
-  background-color: #fff; /* Fundo para a base */
-  border-top: 1px solid #ddd; /* Linha divisória sutil */
-  flex-shrink: 0; /* Impede que a base encolha */
+  padding: 0; /* Garante que não há padding na base que afete o tamanho do resultado */
+  background-color: #fff; 
+  border-top: 1px solid #ddd; 
+  flex-shrink: 0; 
   display: flex;
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
+  height: 90px; /* Defina uma altura fixa para a base de ações */
 }
 
 .resultado {
-  width: 100%; /* Para ocupar a largura da .base-acoes-exercicio */
-  /* padding: 20px; /* O padding agora pode ser controlado pela .base-acoes-exercicio */
-  /* border-top: 1px solid var(--border-color); /* A borda pode ser da .base-acoes-exercicio */
+  padding: 20px;
+  width: 100%; 
+  height: 100%; /* Faz com que .resultado ocupe toda a altura do pai */
+  box-sizing: border-box; /* Garante que o padding seja incluído na altura total */
   display: flex;
   align-items: center;
   justify-content: space-around;
+  overflow: hidden; /* Esconde qualquer conteúdo que transborde a altura definida */
 }
+
+.resultado svg {
+  width: 60px;
+  height: 60px;
+  background-color: var(--white); /* Fundo do círculo ao redor do SVG */
+  padding: 10px;
+  border-radius: 50%;
+}
+
 .resultado.correto {
-  background-color: var(--success); /* exemplo: verde claro */
-  color: var(--white); /* texto verde escuro, por exemplo */
-
-  svg {
-    width: 50px;
-    height: 50px;
-    fill: var(--white);
-    background-color: var(--white);
-    padding: 10px;
-    border-radius: 50%;
-  }
-
+  background-color: var(--success); 
+  color: var(--white); 
   p {
     font-weight: 600;
     font-size: 1.2rem;
@@ -161,49 +158,74 @@
     padding: 15px 25px;
     background-color: var(--white);
     color: var(--success);
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
   }
 }
 .resultado.incorreto {
-  background-color: var(--red); /* exemplo: vermelho claro */
-  color: var(--white); /* texto vermelho escuro, por exemplo */
-svg {
-    width: 50px;
-    height: 50px;
-    fill: var(--white);
-    background-color: var(--white);
-    padding: 10px;
-    border-radius: 50%;
-  }
+  background-color: var(--red); 
+  color: var(--white); 
   .botoes-incorreto {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 20px;
   }
-
+  p {
+    font-weight: 600;
+    font-size: 1.2rem;
+  }
   .btn-tentar-novamente {
-    padding: 15px 25px;
     background-color: yellow;
     color: var(--black);
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
   }
   .btn-continuar {
-    padding: 15px 25px;
     background-color: var(--white);
     color: var(--red);
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
   }
 }
+
+/* Estilos base para botões dentro da seção de resultado */
+.resultado .btn-continuar,
+.resultado .btn-tentar-novamente {
+  padding: 15px 25px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  text-decoration: none; /* Caso sejam links */
+}
+
+/* Estilos base para botões dentro do modal */
+.modal-botoes .btn-sair,
+.modal-botoes .btn-cancelar {
+  padding: 10px 35px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+
+/* Estilos específicos para os botões do modal */
+.modal-botoes .btn-sair {
+  background-color: var(--red);
+  color: white;
+  border: none; 
+  text-decoration: none;
+}
+
+.modal-botoes .btn-cancelar {
+  background-color: #ffffff;
+  color: rgb(120, 120, 120);
+  border: solid 1px #c9c9c9;
+}
+
+.modal-botoes .btn-sair:hover { /* Manter o hover específico */
+  background-color: var(--red-hover); 
+}
+
+/* Modal geral */
+.modal {
+  position: fixed;
+  }
 
 /* Modal geral */
 .modal {
@@ -213,7 +235,7 @@ svg {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.6);
-  display: none; /* fica invisível até ativar via JS */
+  display: none; 
   justify-content: center;
   align-items: center;
   z-index: 1000;
@@ -258,36 +280,8 @@ svg {
     gap: 25px;
     flex-wrap: wrap;
 
-    .btn-sair {
-      padding: 10px 35px;
-      background-color: var(--red);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-      text-decoration: none;
-          font-size: 0.9em;
-
-    }
-
-    .btn-cancelar {
-      padding: 10px 35px;
-      background-color: #ffffff;
-      color: rgb(120, 120, 120);
-      border: solid 1px #c9c9c9;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-          font-size: 0.9em;
-
-    }
-
-    .btn-sair:hover {
-      background-color: var(
-        --red-hover
-      ); /* escurece o botão ao passar o mouse */
-    }
+    /* .btn-sair e .btn-cancelar agora usam os estilos base definidos acima */
+    /* O :hover para .btn-sair é mantido separadamente ou pode ser incorporado se não houver conflitos */
   }
 }
 
@@ -323,7 +317,7 @@ svg {
 
 @media (max-width: 600px) {
   .modal-conteudo {
-    width: 90%; /* Modal ocupa 90% da largura em telas menores */
-    max-width: 300px; /* Reduz o tamanho máximo do modal para telas pequenas */
+    width: 90%; 
+    max-width: 300px; 
   }
 }
