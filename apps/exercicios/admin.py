@@ -31,10 +31,11 @@ class ExercicioAdmin(admin.ModelAdmin):
 
 # Admin para Secao
 class SecaoAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'modulo', 'status')
+    list_display = ('nome', 'modulo', 'status', 'ordem')
     list_filter = ('modulo', 'status')
     search_fields = ('nome',)
-    fields = ['nome', 'modulo', 'status', 'link_adicionar_estacao_form']
+    list_editable = ('ordem',) # Permite editar a ordem diretamente na lista
+    fields = ['nome', 'modulo', 'status', 'ordem', 'link_adicionar_estacao_form']
     readonly_fields = ['link_adicionar_estacao_form']
 
     def link_adicionar_estacao_form(self, obj):
@@ -60,11 +61,12 @@ class SecaoAdmin(admin.ModelAdmin):
 
 # Admin para Estacao
 class EstacaoAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'secao', 'status')
+    list_display = ('nome', 'secao', 'status') # Adicione 'ordem' se implementado em Estacao
     list_filter = ('secao__modulo', 'secao', 'status')
     search_fields = ('nome',)
+    # list_editable = ('ordem',) # Se implementado em Estacao
 
-    # Define os campos que aparecerão no formulário de edição da Estacao
+    # Define os campos que aparecerão no formulário de edição/criação da Estacao
     # Incluímos nosso método que renderiza o link
     fields = ['nome', 'secao', 'status', 'link_adicionar_exercicio_form']
     readonly_fields = ['link_adicionar_exercicio_form'] # O link será um campo apenas de leitura

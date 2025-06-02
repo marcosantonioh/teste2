@@ -25,9 +25,13 @@ class Secao(models.Model):
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='livre')
     modulo = models.ForeignKey(Modulo, related_name='secoes', on_delete=models.CASCADE)
     nome = models.CharField(max_length=200)
+    ordem = models.PositiveIntegerField(default=0, help_text="Define a ordem de exibição da seção dentro do módulo (menor número aparece primeiro).")
     
     def __str__(self):
         return self.nome
+
+    class Meta:
+        ordering = ['ordem', 'id'] # Ordena por 'ordem', depois por 'id' como desempate
 
 
 class Estacao(models.Model):
@@ -42,9 +46,13 @@ class Estacao(models.Model):
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='bloqueado')
     secao = models.ForeignKey(Secao, related_name='estacoes', on_delete=models.CASCADE)
     nome = models.CharField(max_length=200)
+    # Se precisar de ordem para Estações também, adicione um campo 'ordem' aqui
     
     def __str__(self):
         return self.nome
+    
+    class Meta:
+        ordering = ['id'] # Ou ['ordem', 'id'] se adicionar campo de ordem
 
 
 # Create your models here.
@@ -75,7 +83,6 @@ class Exercicio(models.Model):
     enunciado = models.TextField(null=True, blank=True)
     codigo = models.TextField(null=True, blank=True)
     tipo = models.CharField(max_length=50, choices=TIPO_CHOICES)
-    categoria = models.CharField(max_length=100, choices=CATEGORIA_CHOICES)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='livre')
     dificuldade = models.IntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(5)])
     xp = models.IntegerField(default=10)
@@ -102,7 +109,7 @@ class Exercicio(models.Model):
 
 
     class Meta:
-        db_table = 'exercicio'
+        ordering = ['id'] # Ou outra ordem padrão desejada para exercícios
         
     def __str__(self):
         return self.titulo
