@@ -21,8 +21,8 @@
 }
 
 .play-icon {
-  width: 32px;
-  height: 32px;
+  width: 25px;
+  height: 25px;
   pointer-events: none; /* Permite clicar na div mesmo com o ícone dentro */
 }
 
@@ -62,4 +62,44 @@
   color: var(--primary-dark);
   background-color: var(--white);
   border:none;
+}
+
+/* Definição da animação de pulsar para a borda */
+@keyframes pulse-livre {
+  0% {
+    /* Começa com uma sombra (aura) sutil da cor primária */
+    box-shadow: 0 0 0 0px rgba(var(--primary-color-rgb, 106, 13, 173), 0.7);
+  }
+  50% { /* Ponto médio da animação */
+    /* A sombra se expande e começa a desaparecer */
+    box-shadow: 0 0 0 7px rgba(var(--primary-color-rgb, 106, 13, 173), 0);
+  }
+  100% {
+    /* A sombra desaparece completamente, voltando ao estado inicial para o próximo ciclo */
+    box-shadow: 0 0 0 0px rgba(var(--primary-color-rgb, 106, 13, 173), 0);
+  }
+}
+
+.station-circle.status-livre {
+    background-color: white;
+    border: 3px solid var(--primary-color);
+    animation: pulse-livre 2s infinite; /* Aplica a animação */
+}
+
+.station-circle.status-completado {
+    background-color: var(--primary-color); /* Ou a cor roxa do seu tema */
+}
+
+.station-circle.status-completado .play-icon {
+  width: 35px;
+  height: 35px;
+  pointer-events: none; /* Permite clicar na div mesmo com o ícone dentro */
+}
+
+.station-circle.status-bloqueado {
+    background-color: #ccc; /* Um tom de cinza */
+    /* cursor: not-allowed; /* Sugestão para indicar bloqueio */
+}
+.station-circle.status-default {
+    background-color: initial; /* Ou sua cor padrão para botões */
 }

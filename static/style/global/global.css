@@ -5,6 +5,7 @@
   /* Cores principais */
   --primary-color: #6a0dad;          /* Roxo */
   --primary-dark: #4b0a87;
+  --primary-color-rgb: 106, 13, 173; /* Componentes RGB de #6a0dad */
   --primary-light: #a066d2;
 
   --black: #000000;
