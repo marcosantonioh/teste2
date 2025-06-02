@@ -250,3 +250,9 @@ def estacao_concluida_view(request, estacao_id):
         'modulo_id': estacao.secao.modulo.id, # Para o botão "Voltar ao Percurso"
     }
     return render(request, 'exercicios/estacao_concluida.html', context)
+
+
+
+
+
+

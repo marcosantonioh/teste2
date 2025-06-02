@@ -1,5 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class Modulo(models.Model):
@@ -37,7 +39,7 @@ class Estacao(models.Model):
         ('bloqueado', 'Bloqueado'),
     ]
     
-    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='livre')
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='bloqueado')
     secao = models.ForeignKey(Secao, related_name='estacoes', on_delete=models.CASCADE)
     nome = models.CharField(max_length=200)
     
@@ -104,3 +106,31 @@ class Exercicio(models.Model):
         
     def __str__(self):
         return self.titulo
+
+@receiver(post_save, sender=Estacao)
+def atualizar_status_estacoes_adjacentes(sender, instance, created, **kwargs):
+    """
+    Signal para:
+    1. Garantir que a primeira estação de uma seção seja 'livre' na criação.
+    2. Liberar a próxima estação quando a atual for completada.
+    """
+    secao = instance.secao
+
+    if created:
+        # Lógica para a primeira estação da seção ser 'livre'
+        # Considera a estação com o menor ID como a primeira.
+        # Se houver um campo 'ordem', seria melhor usá-lo.
+        primeira_estacao_na_secao = Estacao.objects.filter(secao=secao).order_by('id').first()
+        if instance == primeira_estacao_na_secao and instance.status == 'bloqueado':
+            # Usar update para evitar recursão do sinal se instance.save() fosse chamado
+            Estacao.objects.filter(pk=instance.pk).update(status='livre')
+            # Atualiza a instância localmente se necessário para o restante do código no mesmo request,
+            # mas o update já salvou no DB.
+            instance.status = 'livre' 
+
+    if instance.status == 'completado':
+        # Lógica para liberar a próxima estação na mesma seção
+        proxima_estacao = Estacao.objects.filter(secao=secao, id__gt=instance.id).order_by('id').first()
+        if proxima_estacao and proxima_estacao.status == 'bloqueado':
+            # Usar update para evitar recursão do sinal
+            Estacao.objects.filter(pk=proxima_estacao.pk).update(status='livre')
