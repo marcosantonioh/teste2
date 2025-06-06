@@ -47,11 +47,13 @@
 
 .formulario {
   display: flex;
-  max-width: 700px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 25px; 
+  padding: 25px 25px; 
   flex-direction: column;
   gap: 1em;
+
+  /* background-color: aqua; */
 
   h2,
   h3 {
@@ -97,13 +99,37 @@
     border: 1px solid #909090;
     border-radius: 10px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 1.2em;
     transition: 0.2s ease;
     user-select: none;
+    display: flex;
+    align-items: center;
+    /* justify-content: center; Removido para permitir alinhamento customizado dos filhos */
+    /* text-align: left;  Removido pois o texto-alternativa controlará seu próprio alinhamento */
   }
 
   .botao-alternativa:hover {
     background-color: #eeeeee;
+  }
+
+  .numero-alternativa {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px; /* Largura do quadradinho */
+    height: 28px; /* Altura do quadradinho */
+    border: 1.5px solid #b0b0b0; /* Borda do quadradinho */
+    border-radius: 6px; /* Cantos arredondados */
+    margin-right: 12px; /* Espaço entre o número e o texto da alternativa */
+    font-weight: 600;
+    font-size: 0.9em; /* Tamanho da fonte do número */
+    color: #444; /* Cor do número */
+    flex-shrink: 0; /* Impede que o quadradinho encolha */
+  }
+
+  .texto-alternativa {
+    flex-grow: 1; /* Faz o texto ocupar o espaço restante */
+    text-align: center; /* Centraliza o texto dentro deste span */
   }
 
   input[type="radio"]:checked + .botao-alternativa {
@@ -113,6 +139,12 @@
   }
 }
 
+/* Estilo adicional para o número quando a alternativa está selecionada */
+input[type="radio"]:checked + .botao-alternativa .numero-alternativa {
+  border-color: #3094ff;
+  background-color: #3094ff;
+  color: white;
+}
 /* Base fixa para botões de ação e resultado */
 .base-acoes-exercicio {
   width: 100%;
@@ -320,20 +352,20 @@
 
 .exercicio-mcq-layout {
   display: flex;
-  gap: 20px; /* Espaço entre as colunas */
+  gap: 6em; /* Espaço entre as colunas */
   width: 100%;
+  /* background-color: #3094ff; */
 }
 
 .exercicio-mcq-conteudo {
-  flex: 1; /* Ocupa o espaço disponível, pode ajustar a proporção com flex-basis ou width */
-  /* Exemplo: width: 60%; */
+  width: 60%;
   display: flex;
   flex-direction: column;
+  /* background-color: #555; */
 }
 
 .exercicio-mcq-alternativas {
-  flex: 1; /* Ocupa o espaço disponível */
-  /* Exemplo: width: 40%; */
+  width: 40%;
   display: flex;
   flex-direction: column; /* Para alinhar as alternativas verticalmente se necessário */
 }

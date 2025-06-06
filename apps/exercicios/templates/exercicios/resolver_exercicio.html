@@ -32,6 +32,7 @@
             </div>
             <div class="exercicio-mcq-alternativas"> {# Coluna da Direita #}
               <div class="alternativas">
+                <h3>Alternativas</h3>
                 {% for numero, texto in alternativas %}
                 <input
                   type="radio"
@@ -40,9 +41,11 @@
                   value="{{ numero }}"
                   hidden
                 />
-                <label for="alt{{ numero }}" class="botao-alternativa"
-                  >{{ texto }}</label
-                >
+                <label for="alt{{ numero }}" class="botao-alternativa">
+                  <span class="numero-alternativa">{{ numero }}</span>
+                  <span class="texto-alternativa">{{ texto }}</span>
+                </label>
+                
                 {% endfor %}
               </div>
             </div>

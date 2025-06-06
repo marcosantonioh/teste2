@@ -47,45 +47,65 @@
 
 
 <script>
-  // Função para mostrar e ocultar o "drop" ao clicar no círculo
   function toggleDrop(estacaoId) {
-    var dropDown = document.getElementById('dropdown-' + estacaoId);
+    const targetDropdownId = `dropdown-${estacaoId}`;
+    const targetDropdown = document.getElementById(targetDropdownId);
 
-    // Se o drop estiver visível, fecha
-    if (dropDown.style.display === 'block') {
-      dropDown.style.display = 'none';
-    } else {
-      // Caso contrário, abre o drop
-      dropDown.style.display = 'block';
-
-      // Fecha todos os outros "drops" abertos
-      closeAllDrops(estacaoId);
+    if (!targetDropdown) {
+        console.error(`Dropdown com ID ${targetDropdownId} não encontrado.`);
+        return;
     }
-  }
+    
+    // Assumindo que .station-circle é o pai direto do .station-dropdown
+    // Se a estrutura for diferente em button-play.html, ajuste esta linha.
+    // Por exemplo, se o dropdown estiver aninhado mais profundamente:
+    // const stationCircle = document.getElementById(estacaoId).closest('.station-circle');
+    // Ou, se o ID do círculo for diferente do ID da estação para o dropdown:
+    const stationCircle = targetDropdown.closest('.station-circle'); // Mais robusto se o ID do círculo não for `estacaoId`
+    
+    // Verifica se o dropdown alvo está atualmente visível
+    const isTargetVisible = targetDropdown.style.display === 'block';
 
-  // Função para fechar todos os "drops" abertos
-  function closeAllDrops(exceptId) {
-    var drops = document.querySelectorAll('.station-dropdown');
-    drops.forEach(function(drop) {
-      if (drop.id !== 'dropdown-' + exceptId) {
-        drop.style.display = 'none';
-      }
+    // Primeiro, fecha todos os dropdowns abertos e remove a classe ativa de todos os círculos
+    const allDropdowns = document.querySelectorAll('.station-dropdown');
+    allDropdowns.forEach(dropdown => {
+        dropdown.style.display = 'none';
     });
-  }
 
-  // Função para fechar o "drop" se o clique for fora do círculo
-  document.addEventListener('click', function(event) {
-    var isClickInsideStation = event.target.closest('.station-circle') !== null;
-    var isClickInsideDrop = event.target.closest('.station-dropdown') !== null;
+    const allCircles = document.querySelectorAll('.station-circle');
+    allCircles.forEach(circle => {
+        circle.classList.remove('station-circle-active');
+    });
 
-    if (!isClickInsideStation && !isClickInsideDrop) {
-      // Fecha todos os "drops" se o clique for fora
-      var drops = document.querySelectorAll('.station-dropdown');
-      drops.forEach(function(drop) {
-        drop.style.display = 'none';
-      });
+    // Se o dropdown alvo não estava visível (ou era um diferente que estava visível), abre-o e ativa seu círculo
+    // Se estava visível, ele já foi fechado pelo loop acima, alcançando o efeito de toggle.
+    if (!isTargetVisible) {
+        targetDropdown.style.display = 'block';
+        if (stationCircle) { // Garante que stationCircle foi encontrado
+            stationCircle.classList.add('station-circle-active');
+        }
     }
-  });
+}
+
+// Opcional: Fecha o dropdown ao clicar fora dele
+window.addEventListener('click', function(event) {
+    // Verifica se o clique foi em um círculo de estação ou dentro de um dropdown
+    const clickedOnStationCircle = event.target.closest('.station-circle');
+    const clickedInsideDropdown = event.target.closest('.station-dropdown');
+
+    // Se o clique foi fora de ambos
+    if (!clickedOnStationCircle && !clickedInsideDropdown) {
+        const allDropdowns = document.querySelectorAll('.station-dropdown');
+        allDropdowns.forEach(dropdown => {
+            dropdown.style.display = 'none';
+        });
+
+        const allCircles = document.querySelectorAll('.station-circle');
+        allCircles.forEach(circle => {
+            circle.classList.remove('station-circle-active');
+        });
+    }
+});
 </script>
 
 
