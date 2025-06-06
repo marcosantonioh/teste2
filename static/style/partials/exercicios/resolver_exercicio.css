@@ -315,6 +315,79 @@
   height: 1em;
 }
 
+
+/* Adicione ao seu arquivo resolver_exercicio.css */
+
+.exercicio-mcq-layout {
+  display: flex;
+  gap: 20px; /* Espaço entre as colunas */
+  width: 100%;
+}
+
+.exercicio-mcq-conteudo {
+  flex: 1; /* Ocupa o espaço disponível, pode ajustar a proporção com flex-basis ou width */
+  /* Exemplo: width: 60%; */
+  display: flex;
+  flex-direction: column;
+}
+
+.exercicio-mcq-alternativas {
+  flex: 1; /* Ocupa o espaço disponível */
+  /* Exemplo: width: 40%; */
+  display: flex;
+  flex-direction: column; /* Para alinhar as alternativas verticalmente se necessário */
+}
+
+.exercicio-titulo {
+  font-size: 1.4em; /* Ajuste conforme necessário */
+  margin-bottom: 10px;
+  color: #333; /* Ajuste a cor */
+}
+
+.exercicio-enunciado {
+  margin-bottom: 15px;
+  line-height: 1.6;
+}
+
+.exercicio-codigo {
+  background-color: #f5f5f5; /* Fundo para o bloco de código */
+  padding: 15px;
+  border-radius: 4px;
+  overflow-x: auto; /* Para rolagem horizontal se o código for muito longo */
+  margin-bottom: 15px;
+  font-family: monospace; /* Fonte monoespaçada para código */
+}
+
+.exercicio-codigo-input { /* Para a textarea do exercício de código */
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: monospace;
+  margin-top: 10px;
+}
+
+/* Ajustes para as alternativas se necessário */
+.alternativas {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Espaço entre os botões de alternativa */
+}
+
+.botao-alternativa {
+  /* Seus estilos existentes para botao-alternativa */
+  /* Certifique-se de que eles funcionem bem neste novo layout */
+  width: 100%; /* Para ocupar a largura da coluna da direita */
+  box-sizing: border-box; /* Para que padding e border não aumentem a largura total */
+}
+
+
+
+
+
+
+
+
 @media (max-width: 600px) {
   .modal-conteudo {
     width: 90%; 

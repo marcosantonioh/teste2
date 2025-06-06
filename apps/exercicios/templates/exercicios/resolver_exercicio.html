@@ -20,30 +20,38 @@
       <!-- A div .formulario contém os elementos do exercício -->
       <div class="formulario">
         {% if exercicio.tipo == 'mcq' %}
-        <p>{{ exercicio.enunciado }}</p>
-        <pre>{{ exercicio.codigo }}</pre>
-
-        <div class="formulario">
-          <div class="alternativas">
-            {% for numero, texto in alternativas %}
-            <input
-              type="radio"
-              name="resposta"
-              id="alt{{ numero }}"
-              value="{{ numero }}"
-              hidden
-            />
-            <label for="alt{{ numero }}" class="botao-alternativa"
-              >{{ texto }}</label
-            >
-            {% endfor %}
+          <h3 class="exercicio-titulo">{{ exercicio.titulo }}</h3> {# Título movido para cá #}
+          <div class="exercicio-mcq-layout"> {# Novo container para o layout de duas colunas #}
+            <div class="exercicio-mcq-conteudo"> {# Coluna da Esquerda #}
+              {% if exercicio.enunciado %}
+                <p class="exercicio-enunciado">{{ exercicio.enunciado }}</p>
+              {% endif %}
+              {% if exercicio.codigo %}
+                <pre class="exercicio-codigo">{{ exercicio.codigo }}</pre>
+              {% endif %}
+            </div>
+            <div class="exercicio-mcq-alternativas"> {# Coluna da Direita #}
+              <div class="alternativas">
+                {% for numero, texto in alternativas %}
+                <input
+                  type="radio"
+                  name="resposta"
+                  id="alt{{ numero }}"
+                  value="{{ numero }}"
+                  hidden
+                />
+                <label for="alt{{ numero }}" class="botao-alternativa"
+                  >{{ texto }}</label
+                >
+                {% endfor %}
+              </div>
+            </div>
           </div>
-        </div>
 
         {% elif exercicio.tipo == 'code' %}
-        <textarea name="codigo" rows="10" cols="60">
-{{ exercicio.codigo }}</textarea
-        >
+          <h3 class="exercicio-titulo">{{ exercicio.titulo }}</h3>
+          <p class="exercicio-enunciado">{{ exercicio.enunciado }}</p>
+          <textarea name="codigo" rows="10" cols="60" class="exercicio-codigo-input">{{ exercicio.codigo }}</textarea>
         {% endif %}
       </div>
     </div>

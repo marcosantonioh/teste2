@@ -61,10 +61,10 @@ class SecaoAdmin(admin.ModelAdmin):
 
 # Admin para Estacao
 class EstacaoAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'secao', 'status') # Adicione 'ordem' se implementado em Estacao
+    list_display = ('nome', 'secao', 'status') # Adicione 'ordem' se implementado e desejado aqui
     list_filter = ('secao__modulo', 'secao', 'status')
     search_fields = ('nome',)
-    # list_editable = ('ordem',) # Se implementado em Estacao
+    list_editable = ('secao', 'status') # Permite editar a seção e o status diretamente na lista
 
     # Define os campos que aparecerão no formulário de edição/criação da Estacao
     # Incluímos nosso método que renderiza o link
@@ -101,10 +101,12 @@ class EstacaoAdmin(admin.ModelAdmin):
 
 # Admin para Modulo
 class ModuloAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'descricao')
+    list_display = ('nome', 'descricao', 'ordem')
     search_fields = ('nome', 'descricao')
-    fields = ['nome', 'descricao', 'link_adicionar_secao_form']
+    list_editable = ('ordem',) # Permite editar a ordem diretamente na lista
+    fields = ['nome', 'descricao', 'ordem', 'link_adicionar_secao_form']
     readonly_fields = ['link_adicionar_secao_form']
+
 
     def link_adicionar_secao_form(self, obj):
         if obj.pk:

@@ -8,9 +8,13 @@ class Modulo(models.Model):
     
     nome = models.CharField(max_length=200)
     descricao = models.TextField()
+    ordem = models.PositiveIntegerField(default=0, help_text="Define a ordem de exibição do módulo (menor número aparece primeiro).")
     
     def __str__(self):
         return self.nome
+    
+    class Meta:
+        ordering = ['ordem', 'id'] # Ordena por 'ordem', depois por 'id' como desempate
 
 
 class Secao(models.Model):
