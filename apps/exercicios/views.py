@@ -124,7 +124,9 @@ def resolver_exercicio(request, exercicio_id):
 
     # Calcular progresso para a barra superior
     progresso_percentual, exercicios_concluidos_count, total_exercicios_modulo = calcular_progresso(exercicio.modulo)
-    
+    # Nova lógica para decidir se o modal de saída deve ser mostrado
+    mostrar_modal_confirmacao_saida = progresso_percentual > 0
+
     # Verificar se o usuário não tem mais vidas
     sem_vidas = perfil.vidas <= 0
 
@@ -142,6 +144,8 @@ def resolver_exercicio(request, exercicio_id):
         'progresso_percentual': progresso_percentual,
         'exercicios_concluidos_count': exercicios_concluidos_count,
         'total_exercicios_modulo': total_exercicios_modulo,
+        'mostrar_modal_confirmacao_saida': mostrar_modal_confirmacao_saida, # Adicionamos aqui
+
     }
 
     return render(request, 'exercicios/resolver_exercicio.html', context)

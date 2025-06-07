@@ -4,9 +4,17 @@
 
 
 <div class="top-bar">
-    <a href="" class="exit-button" id="abrirModal">
-        <img src="{% static 'img/close-2.svg' %}" class="exit-icon">
-    </a>
+    {% if mostrar_modal_confirmacao_saida %}
+        {# Se o usuário tem progresso, o link deve acionar o modal via JavaScript #}
+        <a href="#" class="exit-button" id="abrirModal">
+            <img src="{% static 'img/close-2.svg' %}" class="exit-icon">
+        </a>
+    {% else %}
+        {# Se o usuário NÃO tem progresso, o link redireciona diretamente para o percurso #}
+        <a href="{% url 'exercicios:percurso' modulo_id=modulo_id %}" class="exit-button">
+            <img src="{% static 'img/close-2.svg' %}" class="exit-icon">
+        </a>
+    {% endif %}
     
     
     <div class="barra-progresso-visual">
