@@ -40,6 +40,7 @@
                   id="alt{{ numero }}"
                   value="{{ numero }}"
                   hidden
+                  class="alternativa-exercicio"
                 />
                 <label for="alt{{ numero }}" class="botao-alternativa">
                   <span class="numero-alternativa">{{ numero }}</span>
@@ -210,13 +211,12 @@
               <button
                 type="submit"
                 name="acao"
-                value="responder"
+                value="tentar_novamente"
                 class="btn-tentar-novamente"
               >
                 Tentar Novamente
               </button>
-              {% comment %} Este botão agora envia a ação 'pular' para ir ao
-              próximo exercício livre. {% endcomment %}
+              
               <button type="submit" name="acao" value="pular" class="btn-continuar">
                 Continuar
               </button>
@@ -229,6 +229,27 @@
 </div>
 
 <!-- Modal de Sem Vidas -->
+<div
+  id="modalSemVidas"
+  class="modal"
+  role="dialog"
+  aria-modal="true"
+  style="display: none"
+>
+  <div class="modal-conteudo">
+    <button class="fechar" onclick="fecharModal()">
+      <img src="/static/img/close-2.svg" class="exit-icon" alt="Fechar">
+    </button>
+    <img src="/static/img/mascote/sem_vidas.svg" class="mascote-modal" alt="Mascote Triste">
+    <h2>Você ficou sem vidas!</h2>
+    <p>Adquira mais vidas para continuar ou aguarde até que elas recarreguem.</p>
+    <div class="modal-botoes">
+      <button onclick="fecharModal()" class="btn-cancelar">Entendi</button>
+      
+    </div>
+  </div>
+</div>
+
 <!-- Modal de Confirmação de Saída -->
 <div
   id="modalSair"
@@ -239,10 +260,10 @@
 >
   <div class="modal-conteudo">
     <button class="fechar" onclick="fecharModalSair()">
-      <img src="/static/img/close-2.svg" class="exit-icon">
+      <img src="/static/img/close-2.svg" class="exit-icon" alt="Fechar">
     </button>
-    <img src="/static/img/mascote/sad.svg" class="mascote-modal">
-    <h2>Deseja realmente sair?</h2>
+    <img src="/static/img/mascote/sad.svg" class="mascote-modal" alt="Mascote Triste">
+    <h2>Deseja realmente sair do exercício?</h2>
     <div class="modal-botoes">
       <button onclick="fecharModalSair()" class="btn-cancelar">Cancelar</button>
       <a href="{% url 'exercicios:percurso' 1%}" class="btn-sair">Sair</a>
@@ -254,36 +275,40 @@
 
 
 <script>
+  // Função para fechar o modal de "Sem Vidas"
   function fecharModal() {
-    document.getElementById("modalSemVidas").style.display = "none";
+    // Redireciona para a página de percurso do módulo atual
+    window.location.href = "{% url 'exercicios:percurso' exercicio.modulo.id %}";
+  }
+
+  // Função para fechar o modal de "Sair"
+  function fecharModalSair() {
+    const modal = document.getElementById("modalSair");
+    if (modal) {
+      modal.style.display = "none";
+    }
   }
 
   document.addEventListener("DOMContentLoaded", function () {
     const semVidas = "{{ sem_vidas|default:'false' }}" === "True";
-    if (semVidas) {
-      document.getElementById("modalSemVidas").style.display = "flex";
-    }
-  });
-
-  document.addEventListener("DOMContentLoaded", function () {
-    // Já existente:
-    const semVidas = "{{ sem_vidas|default:'false' }}" === "True";
-    if (semVidas) {
-      document.getElementById("modalSemVidas").style.display = "flex";
-    }
-
-    // Novo: abre modal de saída
     const botaoSair = document.getElementById("abrirModal");
+
+    if (semVidas) {
+      const modalSemVidas = document.getElementById("modalSemVidas");
+      if (modalSemVidas) {
+        modalSemVidas.style.display = "flex";
+      }
+    }
+
     if (botaoSair) {
       botaoSair.addEventListener("click", function (e) {
-        e.preventDefault(); // impede navegação direta
-        document.getElementById("modalSair").style.display = "flex";
+        e.preventDefault(); // Impede navegação direta se o botão for um link
+        const modalSair = document.getElementById("modalSair");
+        if (modalSair) {
+          modalSair.style.display = "flex";
+        }
       });
     }
   });
-
-  function fecharModalSair() {
-    document.getElementById("modalSair").style.display = "none";
-  }
 </script>
 {% endblock %}

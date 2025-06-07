@@ -140,7 +140,6 @@ def resolver_exercicio(request, exercicio_id):
         'exercicios_pendentes': exercicios_pendentes,
         'proximo_exercicio_id_para_continuar': proximo_exercicio_id_para_continuar, # Ainda útil para o botão continuar normal
         'sem_vidas': sem_vidas,
-        # Novas variáveis para o progress.html
         'progresso_percentual': progresso_percentual,
         'exercicios_concluidos_count': exercicios_concluidos_count,
         'total_exercicios_modulo': total_exercicios_modulo,

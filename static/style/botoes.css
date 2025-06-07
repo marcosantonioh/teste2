@@ -43,3 +43,9 @@
 .submit:hover {
     background-color: var(--primary-dark);
 }
+
+.submit:disabled {
+    background-color: var(--border-color);
+    color: black;
+    cursor: not-allowed; /* Adiciona o cursor para indicar que não é clicável */
+}

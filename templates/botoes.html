@@ -15,8 +15,48 @@
             {% else %}
                 <button class="submit2" disabled>Pular</button>
             {% endif %}
-            <button type="submit" name="acao" value="responder" class="submit">Responder</button>
+            <button type="submit" name="acao" value="responder" class="submit" id="botao-responder-exercicio" disabled>Responder</button>
         {% endif %}
 
     </div>
 </form>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Seleciona o botão "Responder" pelo ID que definimos
+    const botaoResponder = document.getElementById('botao-responder-exercicio');
+    
+    const alternativas = document.querySelectorAll('.alternativa-exercicio');
+
+    // Verifica se o botão e as alternativas existem na página antes de prosseguir
+    if (botaoResponder && alternativas.length > 0) {
+        
+        // Função para verificar se alguma alternativa está selecionada
+        const verificarSelecaoEAtualizarBotao = () => {
+            let algumaAlternativaSelecionada = false;
+            alternativas.forEach(alternativa => {
+                if (alternativa.checked) {
+                    algumaAlternativaSelecionada = true;
+                }
+            });
+            
+            // Habilita o botão se uma alternativa estiver selecionada, senão desabilita
+            botaoResponder.disabled = !algumaAlternativaSelecionada;
+        };
+
+        alternativas.forEach(alternativa => {
+            alternativa.addEventListener('change', verificarSelecaoEAtualizarBotao);
+        });
+
+        verificarSelecaoEAtualizarBotao();
+    } else {
+        if (!botaoResponder) {
+            console.warn('Botão com ID "botao-responder-exercicio" não encontrado.');
+        }
+        if (alternativas.length === 0) {
+            console.warn('Nenhuma alternativa com a classe "alternativa-exercicio" foi encontrada.');
+        }
+    }
+});
+</script>
