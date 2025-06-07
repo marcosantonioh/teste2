@@ -273,6 +273,38 @@ input[type="radio"]:checked + .botao-alternativa .numero-alternativa {
   z-index: 1000;
 }
 
+/* Animação para o mascote de feedback (correto/incorreto) */
+@keyframes animacaoMascoteFeedback {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 30px); /* Começa um pouco abaixo da posição 'bottom' e invisível */
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, 0);    /* Aparece na posição 'bottom' definida */
+  }
+  80% {
+    opacity: 1;
+    transform: translate(-50%, -112.5px); /* Ajustado para velocidade de subida constante */
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -150px); /* Posição final, desaparece completamente */
+  }
+}
+
+.mascote-feedback {
+  position: fixed; /* Posicionamento em relação à viewport, flutuando sobre tudo */
+  left: 50%;       /* Centraliza horizontalmente */
+  bottom: 100px;   /* Posição inicial vertical (acima da barra de resultados de 90px) */
+  transform: translateX(-50%); /* Ajuste fino para centralização horizontal */
+  max-width: 100px; /* Tamanho do mascote, ajuste conforme necessário */
+  height: auto;
+  z-index: 2000;    /* Garante que fique acima de outros elementos (ex: modais com z-index 1000) */
+  pointer-events: none; /* Para que o mascote não intercepte cliques/eventos do mouse */
+  animation: animacaoMascoteFeedback 1s linear forwards; /* Animação mais rápida: alterado de 2s para 1s */
+}
+
 /* Conteúdo do modal */
 .modal-conteudo {
   background-color: white;
@@ -290,8 +322,8 @@ input[type="radio"]:checked + .botao-alternativa .numero-alternativa {
   gap: 20px;
 
   .mascote-modal {
-    width: 90px;
-    height: 90px;
+    width: 150px;
+    height: 150px;
   }
 
   h2 {

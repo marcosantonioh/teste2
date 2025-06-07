@@ -14,6 +14,8 @@ class Perfil(models.Model):
     seguidos = models.IntegerField(default=0)
     data_inicio = models.DateTimeField(default=timezone.now)
     tema = models.CharField(max_length=20, default='claro')
+    cristal = models.IntegerField(default=0)
+
     
     visibilidade = models.CharField(
         max_length=10,

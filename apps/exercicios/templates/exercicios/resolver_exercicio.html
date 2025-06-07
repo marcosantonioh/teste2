@@ -66,6 +66,11 @@
         {% include "botoes.html" %} 
       {% else %} 
         {% if resultado == 'correto' %}
+          {# Adiciona o mascote para resultado correto #}
+          <img 
+            src="{% static 'img/mascote/verde.svg' %}" 
+            alt="Mascote Feliz" 
+            class="mascote-feedback" />
           <div class="resultado correto">
             <svg
       width="48.247559mm"
@@ -145,6 +150,11 @@
             {% endif %}
           </div>
         {% elif resultado == 'incorreto' %}
+          {# Adiciona o mascote para resultado incorreto #}
+          <img 
+            src="{% static 'img/mascote/vermelho.svg' %}" 
+            alt="Mascote Triste" 
+            class="mascote-feedback" />
           <div class="resultado incorreto">
             <svg
       width="48.247559mm"

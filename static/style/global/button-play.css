@@ -1,21 +1,20 @@
 /* Estilos gerais para o círculo da estação */
 .station-circle {
-  width: 80px; /* Tamanho de exemplo */
-  height: 80px; /* Tamanho de exemplo */
-  border-radius: 50%; /* Transforma o div em um círculo */
+  padding: 20px; /* Espaçamento interno para o ícone */
+  border-radius: 15%; /* Transforma o div em um círculo */
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative; /* Necessário para o posicionamento absoluto do dropdown */
   cursor: pointer;
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Efeito suave ao passar o mouse */
+  /* transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; */
   z-index: 1; /* Define um z-index base para os círculos */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
   margin: 15px; /* Margem para espaçamento entre múltiplos círculos */
 }
 
 .station-circle:hover {
-  transform: scale(1.05); /* Leve aumento ao passar o mouse */
+  /* transform: scale(1.05); */
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Sombra mais pronunciada no hover */
 }
 
@@ -26,12 +25,12 @@
 /* Estilos específicos para cada status do círculo */
 .status-livre {
   background-color: #ffffff; /* Fundo branco (para ícone preto 'play.svg') */
-  border: 2px solid #4CAF50; /* Borda verde para indicar 'livre' ou 'jogável' */
+  border: 3px solid var(--primary-color); /* Borda verde para indicar 'livre' ou 'jogável' */
 }
 
 .status-completado {
-  background-color: #6a0dad; /* Fundo roxo (para ícone branco 'check-white.svg') */
-  border: 2px solid #50087a; /* Borda roxa mais escura */
+  background-color: var(--primary-color); /* Fundo roxo (para ícone branco 'check-white.svg') */
+  border: 2px solid var(--primary-dark); /* Borda roxa mais escura */
 }
 
 .status-bloqueado {
@@ -42,7 +41,6 @@
 
 .status-default {
   background-color: #555e67; /* Fundo cinza escuro/ardósia (para ícone branco 'play-white.svg') */
-  border: 2px solid #3e454c; /* Borda mais escura */
 }
 
 /* Estilos para o ícone dentro do círculo */
@@ -58,9 +56,9 @@
   position: absolute;
   top: 115%; /* Posição abaixo do círculo (80px + alguma margem) */
   left: 50%;
-  transform: translateX(-50%); /* Centraliza o dropdown em relação ao círculo */
+  transform: translateX(-50%);
   background-color: #ffffff;
-  border: 1px solid #e0e0e0;
+  /* border: 1px solid #e0e0e0; */
   border-radius: 8px;
   padding: 15px 20px;
   min-width: 200px; /* Largura mínima, pode se ajustar ao conteúdo */
@@ -81,21 +79,22 @@
 /* Estilos gerais para os botões dentro do dropdown */
 .btn {
   display: inline-block;
-  padding: 10px 20px;
+  padding: 10px 50px;
   border-radius: 5px;
   text-decoration: none;
   font-weight: bold;
-  transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease;
+  /* transition: background-color 0.1s ease, color 0.1s ease, transform 0.1s ease; */
   margin-top: 10px;
   border: none;
   cursor: pointer;
   font-size: 0.95em;
-  width: calc(100% - 40px); /* Ocupa a largura do padding do dropdown */
+  /* width: calc(100% - 40px); */
   box-sizing: border-box;
 }
 
-.btn:hover {
-    transform: translateY(-1px); /* Leve elevação no hover */
+/* Estilos gerais para os botões dentro do dropdown */
+.btn:hover{
+  border: none;
 }
 
 /* Estilo específico para o botão 'Começar' */
@@ -110,12 +109,12 @@
 
 /* Estilo específico para o botão 'Praticar Novamente' */
 .btn-practice-again {
-  background-color: #007bff; /* Azul */
+  background-color: var(--primary-color); /* Azul */
   color: white;
 }
 
 .btn-practice-again:hover {
-  background-color: #0056b3; /* Azul mais escuro */
+  background-color: var(--primary-dark); /* Azul mais escuro */
 }
 
 /* Estilo para a mensagem de 'sem exercícios' */
