@@ -103,24 +103,28 @@ def resolver_exercicio(request, exercicio_id):
         elif acao == 'responder':
             resultado, correta = processar_resposta(request, exercicio, perfil)
             if correta:
-                # Encontrar o próximo exercício sequencial na estação
-                exercicios_na_estacao = Exercicio.objects.filter(estacao=exercicio.estacao).order_by('id')
-                proximo_na_ordem = exercicios_na_estacao.filter(id__gt=exercicio.id).first()
+                estacao_atual = exercicio.estacao
+                
+                # Após o exercício atual ser marcado como 'concluido' por 
+                # atualizar_estado_do_perfil_e_exercicio (chamado em processar_resposta),
+                # verificamos se ainda existem outros exercícios 'livre' na estação.
+                exercicios_livres_restantes = Exercicio.objects.filter(
+                    estacao=estacao_atual,
+                    status='livre'  # Busca por exercícios que ainda não foram concluídos
+                ).order_by('id')
 
-                if proximo_na_ordem:
-                    proximo_exercicio_id_para_continuar = proximo_na_ordem.id
+                if exercicios_livres_restantes.exists():
+                    # Se ainda há exercícios livres (incluindo os pulados), 
+                    # o botão "Continuar" deve levar ao primeiro deles na ordem de ID.
+                    proximo_exercicio_id_para_continuar = exercicios_livres_restantes.first().id
                 else:
-                    # Não há mais exercícios com ID maior nesta estação.
-                    # Verificar se todos os exercícios da estação estão concluídos.
-                    estacao_atual = exercicio.estacao
-                    # Verifica se NÃO existe nenhum exercício 'livre' NAQUELA estação
-                    if not Exercicio.objects.filter(estacao=estacao_atual, status='livre').exists():
-                        # Se não há mais exercícios livres, a estação foi concluída.
+                    # Não há mais exercícios 'livre', a estação está completa.
+                    # Verifica se a estação já não está marcada como completada para evitar saves desnecessários.
+                    if estacao_atual.status != 'completado':
                         if estacao_atual.status != 'completado': # Verifica se já não está completado
                             estacao_atual.status = 'completado'
                             estacao_atual.save()
-                        return redirect('exercicios:estacao_concluida', estacao_id=estacao_atual.id)
-                        
+                    return redirect('exercicios:estacao_concluida', estacao_id=estacao_atual.id)
 
     # Calcular progresso para a barra superior
     progresso_percentual, exercicios_concluidos_count, total_exercicios_modulo = calcular_progresso(exercicio.modulo)
@@ -253,9 +257,3 @@ def estacao_concluida_view(request, estacao_id):
         'modulo_id': estacao.secao.modulo.id, # Para o botão "Voltar ao Percurso"
     }
     return render(request, 'exercicios/estacao_concluida.html', context)
-
-
-
-
-
-

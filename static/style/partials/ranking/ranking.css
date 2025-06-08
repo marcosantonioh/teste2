@@ -166,3 +166,116 @@ body {
   width: 90px;
   height: 20px;
 }
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .container {
+    max-width: 95%;
+    margin-top: 60px;
+  }
+
+  .ranking-table th {
+    padding: 8px 0;
+    font-size: 0.9rem;
+  }
+
+  .ranking-table td {
+    padding: 4px 0px;
+    font-size: 0.85rem;
+  }
+
+  .profile-pic {
+    width: 40px;
+    height: 40px;
+  }
+
+  .medalha {
+    font-size: 1.8rem;
+  }
+
+  .btn-ranking {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+  }
+
+  .div1, .div2 {
+    height: auto; /* Altura automática para acomodar conteúdo */
+    padding-top: 20px;
+    padding-bottom: 20px; /* Adiciona padding inferior */
+  }
+
+  .div3 {
+    width: 80%; /* Aumenta a largura relativa */
+    height: auto; /* Altura automática */
+    padding: 10px; /* Adiciona padding interno */
+    flex-direction: column; /* Empilha os itens */
+    gap: 10px; /* Espaço entre itens empilhados */
+  }
+
+  .f1, .f2 {
+    width: 50px;
+    height: 50px;
+  }
+
+  .f3 {
+    width: 100%; /* Ocupa a largura do .div3 */
+    max-width: 170px; /* Limita a largura máxima */
+    height: 18px;
+  }
+
+  .f4 {
+    width: 100%; /* Ocupa a largura do .div3 */
+    max-width: 80px; /* Limita a largura máxima */
+    height: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    margin-top: 40px;
+  }
+
+  .ranking-table th {
+    font-size: 0.8rem;
+  }
+
+  .ranking-table td {
+    font-size: 0.75rem;
+  }
+
+  .profile-pic {
+    width: 35px;
+    height: 35px;
+  }
+
+  .medalha {
+    font-size: 1.5rem;
+  }
+
+  .btn-ranking {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+    margin: 0 3px;
+  }
+
+  .ranking-switch {
+    margin: 15px 0;
+  }
+
+  .div3 {
+    width: 90%;
+  }
+
+  .f1, .f2 {
+    width: 40px;
+    height: 40px;
+  }
+
+  .f3 {
+    height: 15px;
+  }
+
+  .f4 {
+    height: 15px;
+  }
+}

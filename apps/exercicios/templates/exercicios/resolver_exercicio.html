@@ -139,9 +139,7 @@
               class="btn-continuar"
               >Continuar</a
             >
-            {% else %} {# Se não há próximo exercício na estação (e a view já
-            redirecionou ou este é um fallback), o botão leva de volta ao percurso
-            #}
+            {% else %} 
             <a
               href="{% url 'exercicios:percurso' exercicio.modulo.id %}"
               class="btn-continuar"
@@ -237,7 +235,7 @@
     </div>
   </form>
 </div>
-
+  
 <!-- Modal de Sem Vidas -->
 <div
   id="modalSemVidas"

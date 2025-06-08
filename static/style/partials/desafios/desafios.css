@@ -117,3 +117,110 @@ span {
     font-weight: bold;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
+
+/* Responsividade */
+@media (max-width: 768px) { /* Tablets e layouts menores */
+  .dashboard {
+    flex-direction: column;
+    align-items: stretch; /* Faz com que left-section e right-section ocupem a largura */
+    width: 90%; 
+    margin-top: 60px; /* Reduz a margem superior */
+  }
+
+  .left-section,
+  .right-section {
+    width: 100%; /* Ocupam a largura total do .dashboard */
+    margin-left: 0; 
+    margin-right: 0;
+  }
+
+  .section {
+    margin-left: 0; 
+    margin-right: 0;
+    /* margin-bottom continua de .monthly ou .section geral */
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .mission-title {
+    font-size: 18px;
+  }
+
+  .mission h2 {
+    font-size: 17px;
+  }
+
+  .progress-container {
+    padding: 5px 15px; /* Reduz padding lateral */
+  }
+
+  progress {
+    width: 75%; /* Ajusta a largura da barra de progresso */
+  }
+}
+
+@media (max-width: 480px) { /* Celulares */
+  .dashboard {
+    width: 95%; /* Um pouco mais de largura para telas pequenas */
+    margin-top: 30px; /* Reduz ainda mais a margem superior */
+  }
+
+  .section {
+    padding: 15px; /* Reduz o padding interno das seções */
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  .time-remaining {
+    font-size: 0.9em;
+    margin-bottom: 15px;
+  }
+
+  .month {
+    font-size: 16px;
+  }
+
+  .mission-title {
+    font-size: 17px;
+  }
+
+  .mission {
+    padding: 12px;
+  }
+
+  .mission h2 {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .progress-container {
+    padding: 5px 10px;
+  }
+
+  progress {
+    width: 70%;
+    height: 8px; /* Barra de progresso um pouco mais fina */
+  }
+
+  .progress-container span { /* O span ao lado da barra de progresso */
+    font-size: 0.85em;
+  }
+
+  .reward {
+    font-size: 15px;
+    margin-top: 8px;
+  }
+
+  .badge-list {
+    gap: 8px;
+  }
+
+  .badge {
+    font-size: 14px;
+    padding: 8px 10px;
+  }
+}

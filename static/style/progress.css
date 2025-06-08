@@ -70,3 +70,58 @@
   font-size: 1.2em;
   color: var(--black); 
 }
+
+/* Responsividade para a barra de progresso */
+@media (max-width: 768px) { /* Tablets e celulares em paisagem */
+  .top-bar {
+    width: 70%; /* Aumenta a largura para ocupar mais espaço */
+    padding: 25px 30px 0px 30px; /* Reduz o padding */
+  }
+
+  .barra-progresso-visual {
+    max-width: 250px; /* Reduz a largura máxima da barra de progresso */
+    height: 12px; /* Reduz a altura da barra */
+  }
+
+  .exit-button {
+    font-size: 1.2em; /* Reduz um pouco o tamanho do ícone de sair */
+  }
+
+  .icone-vida {
+    width: 26px;
+    height: 26px;
+  }
+
+  .contador-vida {
+    font-size: 1.1em;
+  }
+}
+
+@media (max-width: 480px) { /* Celulares em retrato */
+  .top-bar {
+    width: 95%; /* Quase largura total */
+    padding: 20px 15px 0px 15px; /* Padding ainda menor */
+    gap: 10px; /* Espaço entre os itens se quebrarem linha */
+  }
+
+  .barra-progresso-visual {
+    max-width: 100%; /* Barra de progresso ocupa a largura disponível no seu container flex */
+  }
+
+  .exit-button {
+    font-size: 1.1em;
+  }
+
+  .icone-vida {
+    width: 24px;
+    height: 24px;
+  }
+
+  .contador-vida {
+    font-size: 1em;
+  }
+
+  .vidas {
+    gap: 4px;
+  }
+}

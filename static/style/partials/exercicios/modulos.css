@@ -128,4 +128,90 @@ body {
 
 
 
+/* --- Media Queries para Responsividade --- */
 
+/* Para tablets e telas menores (até 768px) */
+@media (max-width: 768px) {
+  .container {
+    margin-top: 10px; /* Ajustar margem superior se necessário */
+    padding: 30px 15px; /* Reduzir padding do container */
+    gap: 20px;
+  }
+
+  .card {
+    width: 80%; /* Cards ocupam mais da largura */
+    max-width: 450px; /* Um limite para não ficarem excessivamente largos */
+    min-height: auto; /* Altura se ajusta ao conteúdo */
+    padding: 15px;
+  }
+
+  .card h2 {
+    font-size: 1.3em; /* Reduzir tamanho do título do card */
+  }
+
+  .card h5 {
+    font-size: 0.9em; /* Reduzir tamanho do subtítulo */
+  }
+
+  .card-body .img img {
+    width: 70px; /* Reduzir tamanho da imagem */
+  }
+
+  .card-text {
+    font-size: 0.95rem; /* Reduzir tamanho do texto descritivo */
+  }
+
+  .card-body a {
+    padding: 9px 18px; /* Ajustar padding do botão */
+    font-size: 0.95em;
+  }
+
+  .trophy-circle {
+    width: 32px;
+    height: 32px;
+    right: -16px; /* Ajustar posição (metade da nova largura) */
+  }
+
+  .trophy-icon {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* Para celulares (até 480px) */
+@media (max-width: 480px) {
+  .container {
+    margin-top: 10px;
+    padding: 20px 10px;
+  }
+
+  .card {
+    width: 95%; /* Cards ocupam quase toda a largura */
+  }
+
+  .card h2 {
+    font-size: 1.2em;
+  }
+
+  .card-body .img img {
+    width: 60px;
+  }
+
+  .card-body a {
+    width: 100%; /* Botão ocupa largura total do card-body */
+    box-sizing: border-box; /* Para padding não estourar a largura */
+    padding: 10px;
+    font-size: 0.9em;
+  }
+
+  .trophy-circle {
+    width: 30px;
+    height: 30px;
+    right: -15px;
+  }
+
+  .trophy-icon {
+    width: 16px;
+    height: 16px;
+  }
+}

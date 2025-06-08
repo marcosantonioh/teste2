@@ -446,15 +446,175 @@ input[type="radio"]:checked + .botao-alternativa .numero-alternativa {
 }
 
 
+/* Responsividade */
+@media (max-width: 768px) { /* Breakpoint para tablets e celulares em paisagem */
+  .formulario {
+    padding: 20px 15px; /* Reduz o padding lateral do formulário */
+  }
 
+  .exercicio-mcq-layout {
+    flex-direction: column; /* Muda a direção do flex para coluna */
+    gap: 2em; /* Ajusta o espaçamento vertical entre conteúdo e alternativas */
+  }
 
+  .exercicio-mcq-conteudo,
+  .exercicio-mcq-alternativas {
+    width: 100%; /* Fazem com que cada seção ocupe a largura total */
+  }
 
+  .exercicio-titulo {
+    font-size: 1.3em;
+  }
 
+  .formulario .enunciado {
+    font-size: 0.95em;
+    margin-bottom: 1.5em;
+  }
 
+  .formulario .botao-alternativa {
+    font-size: 1.1em;
+    padding: 12px 18px;
+  }
 
-@media (max-width: 600px) {
+  .formulario .numero-alternativa {
+    width: 26px;
+    height: 26px;
+    font-size: 0.85em;
+  }
+
+  .base-acoes-exercicio {
+    height: auto; /* Altura automática para acomodar conteúdo se necessário */
+    padding: 15px; /* Adicionar padding para não colar nas bordas */
+    min-height: 70px; /* Altura mínima para manter uma boa área de toque */
+  }
+
+  .resultado {
+    flex-direction: column;
+    gap: 15px; /* Espaço entre os itens empilhados */
+    text-align: center; /* Centralizar texto e outros elementos inline */
+    padding: 15px; /* Ajustar padding interno */
+  }
+
+  .resultado svg {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 5px; /* Espaço abaixo do SVG */
+  }
+
+  .resultado p {
+    font-size: 1.1rem;
+  }
+
+  .resultado.incorreto .botoes-incorreto {
+    flex-direction: column;
+    gap: 10px; /* Espaço entre os botões empilhados */
+    width: 100%; /* Fazer os botões ocuparem a largura */
+  }
+
+  .resultado .btn-continuar,
+  .resultado .btn-tentar-novamente {
+    width: 100%; /* Botões ocupam largura total para melhor toque */
+    max-width: 300px; /* Limitar a largura máxima dos botões */
+    margin-left: auto;
+    margin-right: auto;
+    padding: 12px 20px;
+  }
+
   .modal-conteudo {
-    width: 90%; 
-    max-width: 300px; 
+    padding: 20px 25px;
+    gap: 15px;
+  }
+
+  .modal-conteudo .mascote-modal {
+    width: 120px;
+    height: 120px;
+  }
+
+  .modal-conteudo h2 {
+    font-size: 1.3rem;
+  }
+
+  .modal-conteudo p {
+    font-size: 0.95rem;
+  }
+
+  .modal-botoes {
+    gap: 15px;
+    flex-direction: column; /* Empilha os botões do modal */
+    width: 100%;
+  }
+
+  .modal-botoes .btn-sair,
+  .modal-botoes .btn-cancelar {
+    width: 100%; /* Botões do modal ocupam largura total */
+    max-width: 280px;
+    padding: 12px 20px;
+  }
+}
+
+@media (max-width: 480px) { /* Breakpoint para celulares menores em retrato */
+  .formulario {
+    padding: 15px 10px;
+    gap: 0.8em;
+  }
+
+  .formulario h2,
+  .formulario h3 {
+    font-size: 1.2rem;
+  }
+
+  .formulario .enunciado {
+    font-size: 0.9em;
+  }
+
+  .formulario label {
+    font-size: 1.2em;
+  }
+
+  .barra-progresso-container {
+    padding: 8px 10px;
+  }
+
+  .base-acoes-exercicio {
+    padding: 10px;
+    min-height: 60px;
+  }
+
+  .resultado p {
+    font-size: 1rem;
+  }
+
+  .resultado svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  .resultado .btn-continuar,
+  .resultado .btn-tentar-novamente {
+    padding: 10px 18px;
+    font-size: 0.9em;
+  }
+
+  .modal-conteudo .mascote-modal {
+    width: 100px;
+    height: 100px;
+  }
+
+  .modal-conteudo h2 {
+    font-size: 1.2rem;
+  }
+
+  .modal-conteudo p {
+    font-size: 0.9rem;
+  }
+
+  .fechar { /* Botão de fechar modal (x) */
+    font-size: 1.4rem;
+    top: 8px;
+    right: 12px;
+  }
+
+  .exercicio-mcq-layout {
+    gap: 1.5em; /* Menor gap vertical */
   }
 }

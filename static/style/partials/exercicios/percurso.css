@@ -136,3 +136,96 @@ body {
   text-decoration: none;
 }
 
+/* --- Media Queries para Responsividade --- */
+
+/* Para tablets e telas menores (até 768px) */
+@media (max-width: 768px) {
+  .container {
+    margin-top: 10px; /* Ajustar margem superior se o navbar mudar de altura */
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start; /* Alinhar itens à esquerda */
+    gap: 0.75rem; /* Espaço entre botão de voltar e título */
+  }
+
+  .back-button {
+    display: none;
+  }
+
+  .back-icon {
+    display: none;
+  }
+
+  .section-title {
+    font-size: 1.3rem;
+    align-self: flex-start; /* Título alinhado à esquerda */
+  }
+
+  .guide-button {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9em;
+    align-self: flex-end; /* Botão de guia alinhado à direita, abaixo do título */
+    margin-top: -2.5rem; /* Ajuste para posicionar ao lado do título se houver espaço, ou abaixo */
+  }
+
+  .header-wrapper {
+    padding: 0.75rem;
+  }
+
+  .module-description {
+    padding: 15px;
+  }
+
+  .module-description h2 {
+    font-size: 1.2em;
+  }
+
+  .module-text {
+    font-size: 0.95em;
+  }
+
+  .station-card {
+    padding: 12px;
+  }
+
+  .station-card h3 {
+    font-size: 1.1em;
+  }
+}
+
+/* Para celulares (até 480px) */
+@media (max-width: 480px) {
+  .container {
+    margin-top: 10px; /* Ajuste fino para navbar mobile */
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .section-title {
+    font-size: 1.2rem;
+  }
+
+  .guide-button {
+    width: 100%; /* Botão de guia ocupa toda a largura */
+    justify-content: center;
+    margin-top: 0.5rem; /* Espaço abaixo do título */
+  }
+
+  .module-description h2 {
+    font-size: 1.1em;
+  }
+
+  .module-text {
+    font-size: 0.9em;
+  }
+
+  .section-actions .btn {
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+  }
+}
