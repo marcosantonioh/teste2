@@ -1,11 +1,15 @@
-{% extends "admin/base_site.html" %}
+{% extends "professor/base_professor.html" %}
 {% load static %}
 
-{% block title %}Lista de Exercícios Estáticos{% endblock %}
+{% block title %}Lista de Exercícios{% endblock %}
+
+{% block extrastyle %}
+    <link rel="stylesheet" href="{% static 'style/partials/professor/listar_exercicio.css' %}">
+{% endblock %}
 
 {% block content %}
 <div id="content-main">
-    <h1>Lista de Exercícios Estáticos</h1>
+    <h1>Lista de Exercícios</h1>
 
     <h2>Criar Novo Exercício</h2>
     <ul>

@@ -1,0 +1,135 @@
+/* /home/marcos-rocha/Git-hub/Django/teste2/static/style/professor/professor_panel.css */
+
+/* Estilos gerais para o conteúdo principal do painel do professor */
+.professor-main-content #content-main {
+    padding: 20px;
+    max-width: 1200px; /* Limita a largura máxima para melhor leitura */
+    margin: 0 auto; /* Centraliza o conteúdo */
+    background-color: #f9f9f9; /* Um fundo levemente diferente para a área de conteúdo */
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.professor-main-content h1 {
+    color: #333;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+}
+
+.professor-main-content h2 {
+    color: #555;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    font-size: 1.5em;
+}
+
+/* Estilizando a lista de links para criar novo exercício */
+.professor-main-content #content-main > ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 30px;
+}
+
+.professor-main-content #content-main > ul li {
+    margin-bottom: 10px;
+}
+
+.professor-main-content #content-main > ul li a.button,
+.professor-main-content #content-main > ul li a {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #007bff; /* Cor primária (ex: azul) */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    font-weight: 500;
+}
+
+.professor-main-content #content-main > ul li a.button:hover,
+.professor-main-content #content-main > ul li a:hover {
+    background-color: #0056b3; /* Cor primária mais escura no hover */
+}
+
+/* Estilizando a tabela de exercícios */
+.professor-main-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.professor-main-content th,
+.professor-main-content td {
+    border: 1px solid #ddd;
+    padding: 12px 15px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.professor-main-content th {
+    background-color: #f0f0f0; /* Fundo para o cabeçalho da tabela */
+    color: #333;
+    font-weight: 600;
+}
+
+.professor-main-content tr:nth-child(even) {
+    background-color: #f9f9f9; /* Linhas alternadas para melhor legibilidade */
+}
+
+.professor-main-content tr:hover {
+    background-color: #f1f1f1; /* Destaque ao passar o mouse */
+}
+
+/* Estilizando os links de Ações na tabela */
+.professor-main-content td a {
+    color: #007bff;
+    text-decoration: none;
+    margin-right: 10px;
+    font-weight: 500;
+}
+
+.professor-main-content td a:hover {
+    text-decoration: underline;
+    color: #0056b3;
+}
+
+.professor-main-content td a:last-child {
+    margin-right: 0;
+}
+
+/* Mensagens de feedback */
+.professor-main-content .messagelist {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.professor-main-content .messagelist li {
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    color: #fff;
+}
+
+.professor-main-content .messagelist li.success {
+    background-color: #28a745; /* Verde para sucesso */
+}
+
+.professor-main-content .messagelist li.warning {
+    background-color: #ffc107; /* Amarelo para aviso */
+    color: #333;
+}
+
+.professor-main-content .messagelist li.error {
+    background-color: #dc3545; /* Vermelho para erro */
+}
+
+/* Parágrafo para "Nenhum exercício..." */
+.professor-main-content p {
+    font-style: italic;
+    color: #777;
+}

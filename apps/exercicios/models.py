@@ -131,7 +131,7 @@ class Exercicio(models.Model):
         ordering = ['id'] # Ou outra ordem padrão desejada para exercícios
         
     def __str__(self):
-        return self.titulo
+        return self.titulo or "Exercício sem título"
 
 @receiver(post_save, sender=Estacao)
 def atualizar_status_estacoes_adjacentes(sender, instance, created, **kwargs):
