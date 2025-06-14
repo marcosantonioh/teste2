@@ -12,7 +12,7 @@ urlpatterns = [
     path("desafios/", include("apps.desafios.urls",)),
     path("exercicios/", include("apps.exercicios.urls",)),
     path('etapa/<int:numero>/', views.etapa, name='etapa'),
-    path('adminpainel/', include('apps.painel_admin.urls')),
+    path('professor/', include('apps.professor.urls')),
 ]
 
    

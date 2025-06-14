@@ -1,11 +1,11 @@
 from django.urls import path
 from . import views
 
-app_name = 'painel_admin'
+app_name = 'professor'
 
 urlpatterns = [
-    path('exercicios/', views.lista_exercicios, name='lista_exercicios'),
-    path('exercicios/novo/', views.novo_exercicio, name='novo_exercicio'),
+    path('exercicios/', views.listar_exercicios, name='listar_exercicios'),
+    path('exercicios/criar/<str:tipo_exercicio>/', views.criar_exercicio, name='criar_exercicio'),
     path('exercicios/editar/<int:id>/', views.editar_exercicio, name='editar_exercicio'),
     path('exercicios/deletar/<int:id>/', views.deletar_exercicio, name='deletar_exercicio'),
 ]

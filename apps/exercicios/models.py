@@ -75,12 +75,10 @@ class Exercicio(models.Model):
     TIPO_CHOICES = [
         ('mcq', 'Múltipla Escolha'),
         ('code', 'Código'),
+        ('combinacao', 'Combinação'),
+        ('vf', 'Verdadeiro ou Falso'),
     ]
     
-    ORIGEM_CHOICES = [
-        ('estatica', 'Estática'),
-        ('ia', 'Gerada por IA'),
-    ]
 
     estacao = models.ForeignKey(Estacao, related_name='exercicios', on_delete=models.CASCADE, default=1)
     titulo = models.CharField(max_length=200)
@@ -91,7 +89,6 @@ class Exercicio(models.Model):
     dificuldade = models.IntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(5)])
     xp = models.IntegerField(default=10)
     modulo = models.ForeignKey(Modulo, on_delete=models.CASCADE)  # A chave estrangeira para o modelo Modulo
-    origem = models.CharField(max_length=10, choices=ORIGEM_CHOICES, default='estatica')
     categoria = models.CharField(max_length=10, choices=CATEGORIA_CHOICES, default='aula')
 
 
@@ -109,12 +106,29 @@ class Exercicio(models.Model):
         ('4', 'Alternativa 4'),
     ]
 
-    resposta_correta = models.CharField(max_length=1, choices=RESPOSTAS_CHOICES)
+    resposta_correta = models.CharField(
+        max_length=1, choices=RESPOSTAS_CHOICES, null=True, blank=True,
+        help_text="Relevante apenas para exercícios de Múltipla Escolha."
+    )
 
     resposta_texto_codigo = models.TextField(
         null=True, blank=True,
         help_text="Resposta esperada para exercícios de preenchimento de lacuna ou código."
     )
+
+    resposta_vf_correta = models.BooleanField(
+        null=True, blank=True,
+        help_text="Resposta correta para exercícios de Verdadeiro ou Falso (True para Verdadeiro, False para Falso)."
+    )
+
+    # Campos para o tipo 'Combinação' (Exemplo com 3 pares)
+    comb_par1_col1 = models.CharField(max_length=255, blank=True, null=True, verbose_name="Par 1 - Item Coluna 1")
+    comb_par1_col2 = models.CharField(max_length=255, blank=True, null=True, verbose_name="Par 1 - Item Coluna 2 (Correspondente)")
+    comb_par2_col1 = models.CharField(max_length=255, blank=True, null=True, verbose_name="Par 2 - Item Coluna 1")
+    comb_par2_col2 = models.CharField(max_length=255, blank=True, null=True, verbose_name="Par 2 - Item Coluna 2 (Correspondente)")
+    comb_par3_col1 = models.CharField(max_length=255, blank=True, null=True, verbose_name="Par 3 - Item Coluna 1")
+    comb_par3_col2 = models.CharField(max_length=255, blank=True, null=True, verbose_name="Par 3 - Item Coluna 2 (Correspondente)")
+    # Adicione mais pares conforme necessário (comb_par4_col1, comb_par4_col2, etc.)
 
     explicacao = models.TextField(null=True, blank=True)
 

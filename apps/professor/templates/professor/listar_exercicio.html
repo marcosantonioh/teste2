@@ -1,0 +1,60 @@
+{% extends "admin/base_site.html" %} {# Ou seu template base do admin #}
+{% load static %}
+
+{% block title %}Lista de Exercícios Estáticos{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    <h1>Lista de Exercícios Estáticos</h1>
+
+    <h2>Criar Novo Exercício</h2>
+    <ul>
+        {% for tipo in tipos_exercicio_disponiveis %}
+            <li>
+                <a href="{% url 'professor:criar_exercicio' tipo_exercicio=tipo.codigo %}" class="button">
+                    Criar Exercício: {{ tipo.nome }}
+                </a>
+            </li>
+        {% empty %}
+            <li>Nenhum tipo de exercício configurado para criação.</li>
+        {% endfor %}
+    </ul>
+    <br>
+
+    {% if messages %}
+        <ul class="messagelist">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if exercicios %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Tipo</th>
+                    <th>Módulo</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for exercicio in exercicios %}
+                <tr>
+                    <td>{{ exercicio.titulo }}</td>
+                    <td>{{ exercicio.get_tipo_display }}</td>
+                    <td>{{ exercicio.modulo.nome }}</td>
+                    <td>
+                        <a href="{% url 'professor:editar_exercicio' id=exercicio.id %}">Editar</a> |
+                        <a href="{% url 'professor:deletar_exercicio' id=exercicio.id %}" onclick="return confirm('Tem certeza que deseja excluir este exercício?');">Deletar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Nenhum exercício estático cadastrado.</p>
+    {% endif %}
+</div>
+{% endblock %}
