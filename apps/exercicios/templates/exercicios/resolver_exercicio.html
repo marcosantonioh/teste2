@@ -56,6 +56,39 @@
           <h3 class="exercicio-titulo">{{ exercicio.titulo }}</h3>
           <p class="exercicio-enunciado">{{ exercicio.enunciado }}</p>
           <textarea name="codigo" rows="10" cols="60" class="exercicio-codigo-input">{{ exercicio.codigo }}</textarea>
+
+        {% elif exercicio.tipo == 'combinacao' %}
+          <h3 class="exercicio-titulo">{{ exercicio.titulo }}</h3>
+          {% if exercicio.enunciado %}
+            <p class="exercicio-enunciado">{{ exercicio.enunciado }}</p>
+          {% endif %}
+          <div class="exercicio-combinacao-layout">
+            
+          </div>
+
+        {% elif exercicio.tipo == 'vf' %}
+          <h3 class="exercicio-titulo">{{ exercicio.titulo }}</h3>
+          <p class="exercicio-enunciado">{{ exercicio.enunciado }}</p>
+          <div class="alternativas-vf">
+            <input
+              type="radio"
+              name="resposta_vf"
+              id="vf_true"
+              value="True"
+              class="alternativa-exercicio-vf" {# Mantendo a classe para consistência ou JS futuro #}
+              hidden
+            />
+            <label for="vf_true" class="botao-alternativa">Verdadeiro</label>
+            <input
+              type="radio"
+              name="resposta_vf"
+              id="vf_false"
+              value="False"
+              class="alternativa-exercicio-vf" {# Mantendo a classe para consistência ou JS futuro #}
+              hidden
+            />
+            <label for="vf_false" class="botao-alternativa">Falso</label>
+          </div>
         {% endif %}
       </div>
     </div>
@@ -317,6 +350,54 @@
         }
       });
     }
+
+    // Lógica para habilitar o botão de responder
+    const responderButton = document.querySelector('button[name="acao"][value="responder"]');
+    const mcqRadioInputs = document.querySelectorAll('input[type="radio"][name="resposta"]');
+    const vfRadioInputs = document.querySelectorAll('input[type="radio"][name="resposta_vf"]');
+    const codeTextarea = document.querySelector('textarea[name="codigo"]');
+
+    function updateResponderButtonState() {
+        if (!responderButton) {
+            // O botão "Responder" não está na página (ex: após o exercício ser respondido)
+            return;
+        }
+
+        let enableButton = false;
+
+        if (mcqRadioInputs.length > 0) { // Verifica se é um exercício MCQ
+            mcqRadioInputs.forEach(radio => {
+                if (radio.checked) {
+                    enableButton = true;
+                }
+            });
+        } else if (vfRadioInputs.length > 0) { // Verifica se é um exercício V/F
+            vfRadioInputs.forEach(radio => {
+                if (radio.checked) {
+                    enableButton = true;
+                }
+            });
+        } else if (codeTextarea) { // Verifica se é um exercício de Código
+            // Para exercícios de código, o botão pode ser habilitado por padrão
+            // ou baseado no conteúdo da textarea. Vamos habilitar por padrão.
+            enableButton = true;
+        }
+        // Adicione aqui lógica para 'combinacao' se necessário
+
+        responderButton.disabled = !enableButton;
+    }
+
+    // Adiciona ouvintes de evento para os inputs de rádio
+    mcqRadioInputs.forEach(radio => radio.addEventListener('change', updateResponderButtonState));
+    vfRadioInputs.forEach(radio => radio.addEventListener('change', updateResponderButtonState));
+
+    // Se for um exercício de código e você quiser habilitar/desabilitar baseado no conteúdo:
+    // if (codeTextarea) {
+    //     codeTextarea.addEventListener('input', updateResponderButtonState);
+    // }
+
+    // Verifica o estado inicial do botão ao carregar a página
+    updateResponderButtonState();
   });
 </script>
 {% endblock %}

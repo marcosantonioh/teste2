@@ -12,15 +12,14 @@ from apps.exercicios.forms import (
 
 # Função auxiliar para obter a classe de formulário correta baseada no tipo de exercício
 def get_exercicio_form_class(tipo_exercicio):
-    if tipo_exercicio == 'mcq':
-        return ExercicioMultiplaEscolhaForm
-    elif tipo_exercicio == 'code':
-        return ExercicioCodigoLacunaForm
-    elif tipo_exercicio == 'combinacao':
-        return ExercicioCombinacaoForm
-    elif tipo_exercicio == 'vf': # Identificador para Verdadeiro ou Falso
-        return ExercicioVerdadeiroFalsoForm
-    return None
+    form_mapping = {
+        'mcq': ExercicioMultiplaEscolhaForm,
+        'code': ExercicioCodigoLacunaForm,
+        'combinacao': ExercicioCombinacaoForm,
+        'vf': ExercicioVerdadeiroFalsoForm,
+        # Adicione outros tipos e seus formulários aqui
+    }
+    return form_mapping.get(tipo_exercicio) # Retorna None se o tipo não estiver no dicionário
 
 @staff_member_required
 def listar_exercicios(request):
@@ -42,12 +41,6 @@ def criar_exercicio(request, tipo_exercicio):
     if request.method == 'POST':
         form = FormClass(request.POST)
         if form.is_valid():
-            # O __init__ do formulário já deve definir o 'tipo' com initial e HiddenInput.
-            # Se precisar garantir, pode fazer:
-            # exercicio = form.save(commit=False)
-            # exercicio.tipo = tipo_exercicio
-            # exercicio.save()
-            # form.save_m2m() # se houver campos many-to-many
             form.save() 
             messages.success(request, f'Exercício do tipo "{dict(Exercicio.TIPO_CHOICES).get(tipo_exercicio)}" criado com sucesso!')
             return redirect('professor:listar_exercicios')

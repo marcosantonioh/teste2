@@ -67,11 +67,6 @@ class Exercicio(models.Model):
         ('concluido', 'Concluído'), # Resolvido corretamente
     ]
 
-    CATEGORIA_CHOICES = [
-        ('aula', 'Aula'),
-        ('quiz', 'Quiz'),
-    ]
-
     TIPO_CHOICES = [
         ('mcq', 'Múltipla Escolha'),
         ('code', 'Código'),
@@ -81,7 +76,7 @@ class Exercicio(models.Model):
     
 
     estacao = models.ForeignKey(Estacao, related_name='exercicios', on_delete=models.CASCADE, default=1)
-    titulo = models.CharField(max_length=200)
+    titulo = models.CharField(max_length=200, null=True, blank=True)
     enunciado = models.TextField(null=True, blank=True)
     codigo = models.TextField(null=True, blank=True)
     tipo = models.CharField(max_length=50, choices=TIPO_CHOICES)
@@ -89,7 +84,6 @@ class Exercicio(models.Model):
     dificuldade = models.IntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(5)])
     xp = models.IntegerField(default=10)
     modulo = models.ForeignKey(Modulo, on_delete=models.CASCADE)  # A chave estrangeira para o modelo Modulo
-    categoria = models.CharField(max_length=10, choices=CATEGORIA_CHOICES, default='aula')
 
 
     # Campos novos para múltipla escolha

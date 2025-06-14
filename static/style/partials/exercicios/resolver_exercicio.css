@@ -446,6 +446,34 @@ input[type="radio"]:checked + .botao-alternativa .numero-alternativa {
 }
 
 
+.alternativas-vf {
+  display: flex;
+  flex-direction: column; /* Opções uma abaixo da outra */
+  gap: 10px; /* Espaço entre as opções "Verdadeiro" e "Falso" */
+  margin-top: 20px; /* Espaço acima das opções */
+  align-items: center; /* Centraliza os botões (que terão largura definida abaixo) */
+  width: 100%; /* O container das alternativas V/F ocupa a largura disponível */
+}
+
+/* Estilização específica para os botões dentro da seção V/F */
+.alternativas-vf .botao-alternativa {
+  width: auto; /* Permite que o conteúdo e padding definam a largura, em vez de 100% */
+  min-width: 180px; /* Garante uma largura mínima clicável e legível */
+  max-width: 250px; /* Evita que fiquem excessivamente largos em telas grandes */
+  padding: 12px 25px; /* Ajuste o padding conforme o visual desejado */
+  justify-content: center; /* Centraliza o texto "Verdadeiro" / "Falso" dentro do botão */
+}
+
+/* Estilo para quando uma opção V/F é selecionada (destaca a label) */
+.alternativas-vf input[type="radio"]:checked + .botao-alternativa {
+  background-color: var(--accent-color, #007bff); /* Cor de destaque, use sua variável de cor */
+  color: white;
+  border-color: var(--accent-color-dark, #0056b3); /* Cor de borda mais escura */
+}
+
+
+
+
 /* Responsividade */
 @media (max-width: 768px) { /* Breakpoint para tablets e celulares em paisagem */
   .formulario {

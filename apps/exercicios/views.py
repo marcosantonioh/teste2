@@ -182,20 +182,34 @@ def processar_resposta(request, exercicio, perfil):
     elif exercicio.tipo == 'code':
         # .get() com um padrão já lida com o caso de 'codigo' não estar no POST.
         resposta_usuario_input = request.POST.get('codigo', '')
+    elif exercicio.tipo == 'vf':
+        # Para V/F, o valor será "True" ou "False" como string, ou None se não selecionado
+        resposta_usuario_input = request.POST.get('resposta_vf')
     else:
         # Fallback para outros tipos de exercício, embora não tratados por verificar_resposta atualmente.
         resposta_usuario_input = ''
 
     correta = verificar_resposta(exercicio, resposta_usuario_input)
     atualizar_estado_do_perfil_e_exercicio(perfil, exercicio, correta)
-    return ('correto' if correta else 'incorreto'), correta
+    return 'correto' if correta else 'incorreto', correta
 
 def verificar_resposta(exercicio, resposta_usuario):
-    if exercicio.tipo in ['mcq', 'code']:
+    if exercicio.tipo == 'mcq':
         # Garante que tanto a resposta do usuário quanto a resposta correta sejam tratadas como strings
         resposta_usuario_str = resposta_usuario if resposta_usuario is not None else ""
         resposta_correta_str = exercicio.resposta_correta if exercicio.resposta_correta is not None else ""
         return resposta_usuario_str.strip() == resposta_correta_str.strip()
+    elif exercicio.tipo == 'code':
+        # Para código, a comparação pode precisar ser mais flexível (ex: ignorar espaços extras)
+        # ou exata, dependendo dos requisitos.
+        resposta_usuario_str = resposta_usuario if resposta_usuario is not None else ""
+        # Assumindo que resposta_texto_codigo é o campo correto para a resposta do código
+        resposta_correta_str = exercicio.resposta_texto_codigo if exercicio.resposta_texto_codigo is not None else ""
+        return resposta_usuario_str.strip() == resposta_correta_str.strip()
+    elif exercicio.tipo == 'vf':
+        # Converte a string "True" ou "False" do POST para um booleano Python
+        resposta_usuario_bool = resposta_usuario == 'True'
+        return resposta_usuario_bool == exercicio.resposta_vf_correta
     return False
 
 def atualizar_estado_do_perfil_e_exercicio(perfil, exercicio, correta):

@@ -1,13 +1,100 @@
-{% extends "base.html" %}
+{% extends "admin/base_site.html" %}
 {% load static %}
 
-{% block content %}
-<h2>Novo Exercício</h2>
+{% block title %}{{ form_title|default:"Novo Exercício" }}{% endblock %}
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Salvar</button>
-    <a href="{% url 'lista_exercicios' %}">Cancelar</a>
-</form>
+{% block content %}
+<div id="content-main">
+    <h1>{{ form_title|default:"Novo Exercício" }}</h1>
+
+    {% if messages %}
+        <ul class="messagelist">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <form method="post" novalidate>
+        {% csrf_token %}
+        {{ form.media }}
+
+        {% if form.non_field_errors %}
+        <ul class="errorlist nonfield">
+            {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        {% for field in form %}
+            {% if field.is_hidden %}
+                {{ field }}
+            {% elif field.name|slice:":8" == "comb_par" and field.name|slice:"-4" == "_col1" %}
+                {# Início de um par de combinação #}
+                {% with col1_field=field col2_field_name_to_find=field.name|slice:":9"|add:"_col2" %}
+                    {% for potential_col2_field_loop_var in form %}
+                        {% if potential_col2_field_loop_var.name == col2_field_name_to_find %}
+                            {# Encontramos o campo col2. Agora renderizamos o par. #}
+                            <fieldset class="module aligned">
+                                <div class="form-row combination-pair-row">
+                                    <div class="field-box combination-item">
+                                        {{ col1_field.label_tag }}
+                                        {{ col1_field }}
+                                        {% if col1_field.help_text %}<div class="help">{{ col1_field.help_text|safe }}</div>{% endif %}
+                                        {{ col1_field.errors }}
+                                    </div>
+                                    {# potential_col2_field_loop_var é o BoundField correto para col2 #}
+                                    <div class="field-box combination-item">
+                                        {{ potential_col2_field_loop_var.label_tag }}
+                                        {{ potential_col2_field_loop_var }}
+                                        {% if potential_col2_field_loop_var.help_text %}<div class="help">{{ potential_col2_field_loop_var.help_text|safe }}</div>{% endif %}
+                                        {{ potential_col2_field_loop_var.errors }}
+                                    </div>
+                                </div>
+                            </fieldset>
+                        {% endif %}
+                    {% endfor %}
+                {% endwith %}
+            {% elif field.name|slice:":8" == "comb_par" and field.name|slice:"-4" == "_col2" %}
+                {# Este campo já foi renderizado com seu par _col1, então pulamos #}
+            {% else %}
+                {# Renderização padrão para outros campos #}
+                <fieldset class="module aligned">
+                    <div class="form-row">
+                        <div>
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.help_text %}<div class="help">{{ field.help_text|safe }}</div>{% endif %}
+                            {{ field.errors }}
+                        </div>
+                    </div>
+                </fieldset>
+            {% endif %}
+        {% endfor %}
+
+        <div class="submit-row">
+            <input type="submit" value="Salvar" class="default">
+            <a href="{% url 'professor:listar_exercicios' %}" class="button">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+<style>
+    .combination-pair-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5em; /* Espaço entre os itens do par */
+    }
+    .combination-item {
+        flex: 1;
+        min-width: 250px; /* Largura mínima antes de quebrar a linha ou encolher demais */
+    }
+    /* Estilos adicionais para inputs e labels podem ser herdados de admin/base_site.html ou adicionados aqui se necessário */
+    .field-box input[type="text"], .field-box textarea, .field-box select,
+    .form-row input[type="text"], .form-row textarea, .form-row select {
+        width: 100%;
+        box-sizing: border-box;
+    }
+</style>
 {% endblock %}

@@ -12,7 +12,6 @@ BASE_EXERCICIO_FIELDS = [
     'explicacao',
     'dificuldade',
     'xp',
-    'categoria',
     # 'status' geralmente é gerenciado pelo sistema
 ]
 
