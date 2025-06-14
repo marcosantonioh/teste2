@@ -15,8 +15,7 @@
 
 /* A barra de progresso visual (fundo) */
 .barra-progresso-visual {
-  width: 100%; 
-  max-width: 300px; 
+  width: 80%; 
   height: 15px; 
   background-color: #e0e0e0; 
   border-radius: 10px; 

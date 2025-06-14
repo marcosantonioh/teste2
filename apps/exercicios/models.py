@@ -92,6 +92,8 @@ class Exercicio(models.Model):
     xp = models.IntegerField(default=10)
     modulo = models.ForeignKey(Modulo, on_delete=models.CASCADE)  # A chave estrangeira para o modelo Modulo
     origem = models.CharField(max_length=10, choices=ORIGEM_CHOICES, default='estatica')
+    categoria = models.CharField(max_length=10, choices=CATEGORIA_CHOICES, default='aula')
+
 
     # Campos novos para múltipla escolha
 
@@ -108,6 +110,11 @@ class Exercicio(models.Model):
     ]
 
     resposta_correta = models.CharField(max_length=1, choices=RESPOSTAS_CHOICES)
+
+    resposta_texto_codigo = models.TextField(
+        null=True, blank=True,
+        help_text="Resposta esperada para exercícios de preenchimento de lacuna ou código."
+    )
 
     explicacao = models.TextField(null=True, blank=True)
 

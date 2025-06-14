@@ -6,18 +6,17 @@ from django.db.models import Sum
 from apps.exercicios.models import Exercicio, Modulo, Secao, Estacao
 from django.http import Http404
 
+def get_or_create_perfil(user):
+    if not user.is_authenticated:
+        return None
+    return Perfil.objects.get_or_create(user=user)[0]
 
 # @login_required(login_url="usuarios:login_usuario")
 def main_view(request):
-    perfil = None
-    if request.user.is_authenticated:
-        try:
-            perfil = Perfil.objects.get(user=request.user)
-        except ObjectDoesNotExist:
-            perfil = Perfil.objects.create(user=request.user)
+    perfil = get_or_create_perfil(request.user)
 
-    # Caso o usuário não esteja logado e não tenha feito o onboarding, redireciona
-    elif not request.session.get('onboarding_concluido'):
+    # Se o usuário não estiver autenticado E não tiver concluído o onboarding, redireciona
+    if not request.user.is_authenticated and not request.session.get('onboarding_concluido'):
         return redirect('etapa', 1)  # ou qual for o nome da sua view inicial
 
     
@@ -28,14 +27,7 @@ def main_view(request):
 
 # @login_required(login_url="usuarios:login_usuario")
 def modulos(request):
-    perfil = None
-
-    if request.user.is_authenticated:
-        try:
-            perfil = Perfil.objects.get(user=request.user)
-        except ObjectDoesNotExist:
-            perfil = Perfil.objects.create(user=request.user)
-
+    perfil = get_or_create_perfil(request.user)
     modulos = Modulo.objects.all()
 
     context = {
@@ -49,15 +41,8 @@ def percurso(request, modulo_id):
     # Obtém o módulo com o id fornecido
     modulo = get_object_or_404(Modulo, pk=modulo_id)
     secoes = Secao.objects.filter(modulo=modulo)
-
-    perfil = None
-
-    if request.user.is_authenticated:
-        try:
-            perfil = Perfil.objects.get(user=request.user)
-        except ObjectDoesNotExist:
-            perfil = Perfil.objects.create(user=request.user)
-
+    perfil = get_or_create_perfil(request.user)
+    
     # Para cada seção, você pode obter as estações
     for secao in secoes:
         secao.estacoes_list = Estacao.objects.filter(secao=secao)
@@ -73,12 +58,11 @@ def percurso(request, modulo_id):
     # Adicione o módulo ao contexto e renderize o template
     return render(request, 'exercicios/percurso.html', context)
 
+
 def resolver_exercicio(request, exercicio_id):
-    
-    try:
-        perfil = Perfil.objects.get(user=request.user)
-    except Perfil.DoesNotExist:
-        raise Http404("Perfil não encontrado")
+    perfil = get_or_create_perfil(request.user)
+    if not perfil: # Se o usuário não estiver autenticado e a função retornar None
+        return redirect('usuarios:login_usuario') # Ou outra lógica de tratamento
     
     exercicio = get_object_or_404(Exercicio, id=exercicio_id)
 
@@ -238,13 +222,8 @@ def calcular_progresso(modulo):
 
 def estacao_concluida_view(request, estacao_id):
     estacao = get_object_or_404(Estacao, id=estacao_id)
-    perfil = None
-    if request.user.is_authenticated:
-        try:
-            perfil = Perfil.objects.get(user=request.user)
-        except ObjectDoesNotExist:
-            # Lidar com o caso de perfil não existente, talvez criar um ou redirecionar
-            pass # Ou redirecionar para login, ou criar perfil
+    perfil = get_or_create_perfil(request.user)
+    # Se perfil for None e for necessário para a view, adicione um tratamento aqui.
 
     # Calcular XP total da estação
     exercicios_da_estacao = Exercicio.objects.filter(estacao=estacao)
