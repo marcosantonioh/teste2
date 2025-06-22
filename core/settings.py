@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'apps.ranking',
     'apps.desafios',
     'apps.professor',
+    'apps.mecanicas_jogo',
     'livereload',
 ]
 
