@@ -4,6 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Sum
 from apps.exercicios.models import Exercicio, Modulo, Secao, Estacao
+from apps.mecanicas_jogo import services as mecanicas_services
 from django.http import Http404
 
 def get_or_create_perfil(user):
@@ -58,6 +59,28 @@ def percurso(request, modulo_id):
     # Adicione o módulo ao contexto e renderize o template
     return render(request, 'exercicios/percurso.html', context)
 
+def _extrair_resposta_do_request(request, tipo_exercicio):
+    """Função auxiliar para extrair a resposta do usuário do objeto request."""
+    if tipo_exercicio == 'mcq':
+        return request.POST.get('resposta')
+    elif tipo_exercicio == 'code':
+        return request.POST.get('codigo')
+    elif tipo_exercicio == 'vf':
+        return request.POST.get('resposta_vf')
+    return None
+
+def obter_alternativas(exercicio):
+    """Prepara a lista de alternativas para exercícios de múltipla escolha."""
+    alternativas = []
+    if exercicio.alternativa_1:
+        alternativas.append(('1', exercicio.alternativa_1))
+    if exercicio.alternativa_2:
+        alternativas.append(('2', exercicio.alternativa_2))
+    if exercicio.alternativa_3:
+        alternativas.append(('3', exercicio.alternativa_3))
+    if exercicio.alternativa_4:
+        alternativas.append(('4', exercicio.alternativa_4))
+    return alternativas
 
 def resolver_exercicio(request, exercicio_id):
     perfil = get_or_create_perfil(request.user)
@@ -70,22 +93,17 @@ def resolver_exercicio(request, exercicio_id):
     resultado = None
     correta = None
     proximo_exercicio_id_para_continuar = None
-    # estacao_totalmente_concluida = False # Não é mais necessário aqui, será tratado com redirect
-
-    exercicios_pendentes = Exercicio.objects.filter(
-        estacao=exercicio.estacao,
-        status='livre'  # Apenas exercícios livres são considerados pendentes para resolução
-    )
 
     if request.method == 'POST':
         acao = request.POST.get('acao')
 
         if acao == 'pular':
-            proximo_exercicio = pular_exercicio(exercicio)
+            proximo_exercicio = mecanicas_services.pular_exercicio(exercicio)
             return redirect('exercicios:resolver_exercicio', exercicio_id=proximo_exercicio.id)
 
         elif acao == 'responder':
-            resultado, correta = processar_resposta(request, exercicio, perfil)
+            resposta_usuario = _extrair_resposta_do_request(request, exercicio.tipo)
+            resultado, correta = mecanicas_services.processar_resposta_exercicio(resposta_usuario, exercicio, perfil)
             if correta:
                 estacao_atual = exercicio.estacao
                 
@@ -111,12 +129,12 @@ def resolver_exercicio(request, exercicio_id):
                     return redirect('exercicios:estacao_concluida', estacao_id=estacao_atual.id)
 
     # Calcular progresso para a barra superior
-    progresso_percentual, exercicios_concluidos_count, total_exercicios_modulo = calcular_progresso(exercicio.modulo)
+    progresso_percentual, exercicios_concluidos_count, total_exercicios_modulo = mecanicas_services.calcular_progresso(exercicio.modulo)
     # Nova lógica para decidir se o modal de saída deve ser mostrado
     mostrar_modal_confirmacao_saida = progresso_percentual > 0
 
     # Verificar se o usuário não tem mais vidas
-    sem_vidas = perfil.vidas <= 0
+    sem_vidas = perfil.vidas_atuais <= 0
 
     context = {
         'exercicio': exercicio,
@@ -125,7 +143,6 @@ def resolver_exercicio(request, exercicio_id):
         'perfil': perfil,
         'modulo_id': exercicio.modulo.id,
         'alternativas': alternativas,
-        'exercicios_pendentes': exercicios_pendentes,
         'proximo_exercicio_id_para_continuar': proximo_exercicio_id_para_continuar, # Ainda útil para o botão continuar normal
         'sem_vidas': sem_vidas,
         'progresso_percentual': progresso_percentual,
@@ -139,100 +156,8 @@ def resolver_exercicio(request, exercicio_id):
 
 def iniciar_exercicios(request, exercicio_id):
     exercicio = get_object_or_404(Exercicio, id=exercicio_id)
-    reiniciar_estacao(request, exercicio)
+    mecanicas_services.reiniciar_estacao(exercicio.estacao)
     return redirect('exercicios:resolver_exercicio', exercicio_id=exercicio.id)
-
-def reiniciar_estacao(request, exercicio):
-    """
-    Reinicia todos os exercícios da estação do exercício fornecido,
-    marcando-os como não concluídos.
-    A lógica anterior baseada em sessão foi removida para que sempre reinicie.
-    """
-    Exercicio.objects.filter(estacao=exercicio.estacao).update(status='livre') # Define como 'livre' para que possam ser resolvidos novamente
-    # O parâmetro 'request' é mantido para consistência da assinatura, caso seja usado para logging no futuro.
-
-def pular_exercicio(exercicio):
-    pendentes = Exercicio.objects.filter(
-        estacao=exercicio.estacao,
-        status='livre' # Apenas exercícios livres podem ser pulados/navegados
-    ).order_by('id')
-
-    if pendentes.count() > 1:
-        proximo = pendentes.filter(id__gt=exercicio.id).first() or pendentes.first()
-        return proximo
-    return exercicio  # Só um exercício restante
-
-def obter_alternativas(exercicio):
-    alternativas = []
-    if exercicio.alternativa_1:
-        alternativas.append(('1', exercicio.alternativa_1))
-    if exercicio.alternativa_2:
-        alternativas.append(('2', exercicio.alternativa_2))
-    if exercicio.alternativa_3:
-        alternativas.append(('3', exercicio.alternativa_3))
-    if exercicio.alternativa_4:
-        alternativas.append(('4', exercicio.alternativa_4))
-    return alternativas
-
-def processar_resposta(request, exercicio, perfil):
-    resposta_usuario_input = None
-    if exercicio.tipo == 'mcq':
-        # Se 'resposta' não estiver no POST, .get() retorna None. Definimos '' como padrão.
-        resposta_usuario_input = request.POST.get('resposta', '')
-    elif exercicio.tipo == 'code':
-        # .get() com um padrão já lida com o caso de 'codigo' não estar no POST.
-        resposta_usuario_input = request.POST.get('codigo', '')
-    elif exercicio.tipo == 'vf':
-        # Para V/F, o valor será "True" ou "False" como string, ou None se não selecionado
-        resposta_usuario_input = request.POST.get('resposta_vf')
-    else:
-        # Fallback para outros tipos de exercício, embora não tratados por verificar_resposta atualmente.
-        resposta_usuario_input = ''
-
-    correta = verificar_resposta(exercicio, resposta_usuario_input)
-    atualizar_estado_do_perfil_e_exercicio(perfil, exercicio, correta)
-    return 'correto' if correta else 'incorreto', correta
-
-def verificar_resposta(exercicio, resposta_usuario):
-    if exercicio.tipo == 'mcq':
-        # Garante que tanto a resposta do usuário quanto a resposta correta sejam tratadas como strings
-        resposta_usuario_str = resposta_usuario if resposta_usuario is not None else ""
-        resposta_correta_str = exercicio.resposta_correta if exercicio.resposta_correta is not None else ""
-        return resposta_usuario_str.strip() == resposta_correta_str.strip()
-    elif exercicio.tipo == 'code':
-        # Para código, a comparação pode precisar ser mais flexível (ex: ignorar espaços extras)
-        # ou exata, dependendo dos requisitos.
-        resposta_usuario_str = resposta_usuario if resposta_usuario is not None else ""
-        # Assumindo que resposta_texto_codigo é o campo correto para a resposta do código
-        resposta_correta_str = exercicio.resposta_texto_codigo if exercicio.resposta_texto_codigo is not None else ""
-        return resposta_usuario_str.strip() == resposta_correta_str.strip()
-    elif exercicio.tipo == 'vf':
-        # Converte a string "True" ou "False" do POST para um booleano Python
-        resposta_usuario_bool = resposta_usuario == 'True'
-        return resposta_usuario_bool == exercicio.resposta_vf_correta
-    return False
-
-def atualizar_estado_do_perfil_e_exercicio(perfil, exercicio, correta):
-    if correta:
-        if exercicio.status != 'concluido': # Só atualiza se não estiver já concluído
-            exercicio.status = 'concluido'
-            exercicio.save()
-            # Lógica de XP, etc.
-    else:
-        if perfil.vidas > 0:
-            perfil.vidas -= 1
-            perfil.save()
-        # O status do exercício não muda se a resposta for incorreta,
-        # a menos que você tenha uma lógica para re-bloquear ou algo assim.
-
-def calcular_progresso(modulo):
-    todas_secoes = Secao.objects.filter(modulo=modulo)
-    todas_estacoes = Estacao.objects.filter(secao__in=todas_secoes)
-    todos_exercicios = Exercicio.objects.filter(estacao__in=todas_estacoes)
-    total_exercicios_modulo = todos_exercicios.count()
-    exercicios_concluidos_count = todos_exercicios.filter(status='concluido').count()
-    progresso_percentual = int((exercicios_concluidos_count / total_exercicios_modulo) * 100) if total_exercicios_modulo > 0 else 0
-    return progresso_percentual, exercicios_concluidos_count, total_exercicios_modulo
 
 def estacao_concluida_view(request, estacao_id):
     estacao = get_object_or_404(Estacao, id=estacao_id)
@@ -240,8 +165,9 @@ def estacao_concluida_view(request, estacao_id):
     # Se perfil for None e for necessário para a view, adicione um tratamento aqui.
 
     # Calcular XP total da estação
-    exercicios_da_estacao = Exercicio.objects.filter(estacao=estacao)
-    total_xp_estacao = exercicios_da_estacao.aggregate(total_xp=Sum('xp'))['total_xp'] or 0
+    total_xp_estacao = Exercicio.objects.filter(
+        estacao=estacao
+    ).aggregate(total_xp=Sum('xp'))['total_xp'] or 0
 
     context = {
         'estacao': estacao,
