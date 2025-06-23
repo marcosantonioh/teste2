@@ -5,17 +5,17 @@ from django.contrib import messages
 from django.http import Http404
 from apps.exercicios.forms import (
     ExercicioMultiplaEscolhaForm,
-    ExercicioCodigoLacunaForm,
-    ExercicioCombinacaoForm,
-    ExercicioVerdadeiroFalsoForm # Adicionado conforme nossa conversa anterior
+    ExercicioCodigoForm, 
+    ExercicioLacunaForm,
+    ExercicioVerdadeiroFalsoForm,
 )
 
 # Função auxiliar para obter a classe de formulário correta baseada no tipo de exercício
 def get_exercicio_form_class(tipo_exercicio):
     form_mapping = {
         'mcq': ExercicioMultiplaEscolhaForm,
-        'code': ExercicioCodigoLacunaForm,
-        'combinacao': ExercicioCombinacaoForm,
+        'code': ExercicioCodigoForm, # Usa o nome correto
+        'lacuna': ExercicioLacunaForm, # Adiciona o formulário para o novo tipo 'lacuna'
         'vf': ExercicioVerdadeiroFalsoForm,
         # Adicione outros tipos e seus formulários aqui
     }
@@ -24,8 +24,10 @@ def get_exercicio_form_class(tipo_exercicio):
 @staff_member_required
 def listar_exercicios(request):
     exercicios = Exercicio.objects.all() 
+    # Filtra os tipos de exercício para não incluir 'info', que não tem formulário de criação.
     tipos_exercicio_disponiveis = [
         {'codigo': tipo_cod, 'nome': tipo_nome} for tipo_cod, tipo_nome in Exercicio.TIPO_CHOICES
+        if tipo_cod != 'info'
     ]
     return render(request, 'professor/listar_exercicio.html', {
         'exercicios': exercicios,
@@ -82,6 +84,10 @@ def editar_exercicio(request, id):
 @staff_member_required
 def deletar_exercicio(request, id):
     exercicio = get_object_or_404(Exercicio, pk=id)
-    exercicio.delete()
-    messages.success(request, 'Exercício excluído com sucesso!')
-    return redirect('professor:listar_exercicios')
+    if request.method == 'POST':
+        exercicio.delete()
+        messages.success(request, 'Exercício excluído com sucesso!')
+        return redirect('professor:listar_exercicios')
+    
+    # Para requisições GET, mostra uma página de confirmação
+    return render(request, 'professor/deletar_exercicio_confirm.html', {'exercicio': exercicio})

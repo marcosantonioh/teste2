@@ -58,7 +58,7 @@ class ExercicioMultiplaEscolhaForm(forms.ModelForm):
         self.fields['resposta_correta'].required = True
 
 
-class ExercicioCodigoLacunaForm(forms.ModelForm):
+class ExercicioCodigoForm(forms.ModelForm):
     class Meta:
         model = Exercicio
         fields = BASE_EXERCICIO_FIELDS + [
@@ -70,71 +70,46 @@ class ExercicioCodigoLacunaForm(forms.ModelForm):
             **COMMON_WIDGETS,
             'enunciado': forms.Textarea(attrs={'rows': 3, 'cols': 60, 'placeholder': 'Instruções para o aluno sobre o que fazer com o código abaixo.'}),
             'tipo': forms.HiddenInput(),
-            'codigo': forms.Textarea(attrs={'rows': 10, 'cols': 60, 'placeholder': 'Ex: def minha_funcao(param):\n    # Preencha a lacuna para retornar o dobro de param\n    resultado = param * __LACUNA__\n    return resultado'}),
-            'resposta_texto_codigo': forms.TextInput(attrs={'size': '60', 'placeholder': 'Texto exato que preenche a lacuna. Ex: 2'}),
+            'codigo': forms.Textarea(attrs={'rows': 10, 'cols': 60, 'placeholder': 'Ex: for (i=0; i<5; i++) { ... }'}),
+            'resposta_texto_codigo': forms.TextInput(attrs={'size': '60', 'placeholder': 'Resposta exata esperada do aluno.'}),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        if not self.instance.pk: # Novo exercício
+        if not self.instance.pk:
             self.fields['tipo'].initial = 'code'
         elif self.instance.pk and self.instance.tipo == 'code':
             self.fields['tipo'].disabled = True
-        
+
         self.fields['codigo'].required = True
         self.fields['resposta_texto_codigo'].required = True
 
 
-class ExercicioCombinacaoForm(forms.ModelForm):
+class ExercicioLacunaForm(forms.ModelForm):
     class Meta:
         model = Exercicio
         fields = BASE_EXERCICIO_FIELDS + [
             'tipo',
-            'comb_par1_col1', 'comb_par1_col2',
-            'comb_par2_col1', 'comb_par2_col2',
-            'comb_par3_col1', 'comb_par3_col2',
-            # Adicione mais campos de pares aqui se você os adicionou ao modelo
+            'codigo', # Reutilizando 'codigo' para o texto com a lacuna
+            'resposta_texto_codigo',
         ]
         widgets = {
             **COMMON_WIDGETS,
-            'enunciado': forms.Textarea(attrs={'rows': 3, 'cols': 60, 'placeholder': 'Instrua o aluno a combinar os itens da Coluna 1 com os da Coluna 2.'}),
+            'enunciado': forms.Textarea(attrs={'rows': 3, 'cols': 60, 'placeholder': 'Instrua o aluno a preencher a lacuna no texto ou código abaixo.'}),
             'tipo': forms.HiddenInput(),
-            'comb_par1_col1': forms.TextInput(attrs={'size': '40', 'placeholder': 'Item A1'}),
-            'comb_par1_col2': forms.TextInput(attrs={'size': '40', 'placeholder': 'Item B1 (par de A1)'}),
-            'comb_par2_col1': forms.TextInput(attrs={'size': '40', 'placeholder': 'Item A2'}),
-            'comb_par2_col2': forms.TextInput(attrs={'size': '40', 'placeholder': 'Item B2 (par de A2)'}),
-            'comb_par3_col1': forms.TextInput(attrs={'size': '40', 'placeholder': 'Item A3'}),
-            'comb_par3_col2': forms.TextInput(attrs={'size': '40', 'placeholder': 'Item B3 (par de A3)'}),
+            'codigo': forms.Textarea(attrs={'rows': 10, 'cols': 60, 'placeholder': 'Ex: A capital do Brasil é __LACUNA__.'}),
+            'resposta_texto_codigo': forms.TextInput(attrs={'size': '60', 'placeholder': 'Texto exato que preenche a lacuna. Ex: Brasília'}),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        if not self.instance.pk: # Novo exercício
-            self.fields['tipo'].initial = 'combinacao'
-        elif self.instance.pk and self.instance.tipo == 'combinacao':
+        if not self.instance.pk:
+            self.fields['tipo'].initial = 'lacuna'
+        elif self.instance.pk and self.instance.tipo == 'lacuna':
             self.fields['tipo'].disabled = True
 
-        # Tornar pelo menos o primeiro par obrigatório
-        self.fields['comb_par1_col1'].required = True
-        self.fields['comb_par1_col2'].required = True
-        # Você pode adicionar validações mais complexas se necessário (ex: se col1 preenchido, col2 também deve ser)
-
-    def clean(self):
-        cleaned_data = super().clean()
-        # Exemplo de validação: se um item de um par é fornecido, o outro também deve ser.
-        for i in range(1, 4): # Para 3 pares
-            col1_field_name = f'comb_par{i}_col1'
-            col2_field_name = f'comb_par{i}_col2'
-            
-            item_col1 = cleaned_data.get(col1_field_name)
-            item_col2 = cleaned_data.get(col2_field_name)
-
-            if item_col1 and not item_col2:
-                self.add_error(col2_field_name, f"Se o item da Coluna 1 para o Par {i} é fornecido, o item correspondente da Coluna 2 também deve ser.")
-            if item_col2 and not item_col1:
-                self.add_error(col1_field_name, f"Se o item da Coluna 2 para o Par {i} é fornecido, o item correspondente da Coluna 1 também deve ser.")
-        
-        return cleaned_data
+        self.fields['codigo'].required = True
+        self.fields['resposta_texto_codigo'].required = True
 
 
 class ExercicioVerdadeiroFalsoForm(forms.ModelForm):

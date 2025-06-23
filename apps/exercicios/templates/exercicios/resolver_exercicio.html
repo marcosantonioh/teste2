@@ -70,12 +70,11 @@
           <p class="exercicio-enunciado">{{ exercicio.enunciado }}</p>
           <textarea name="codigo" rows="10" cols="60" class="exercicio-codigo-input">{{ exercicio.codigo }}</textarea>
 
-        {% elif exercicio.tipo == 'combinacao' %}
-          <h3 class="exercicio-titulo">{{ exercicio.titulo }}</h3>
+        {% elif exercicio.tipo == 'lacuna' %}
           {% if exercicio.enunciado %}
             <p class="exercicio-enunciado">{{ exercicio.enunciado }}</p>
           {% endif %}
-          <div class="exercicio-combinacao-layout">
+          <div class="exercicio-lacuna-layout">
             
           </div>
 
@@ -450,7 +449,6 @@
             // ou baseado no conteúdo da textarea. Vamos habilitar por padrão.
             enableButton = true;
         }
-        // Adicione aqui lógica para 'combinacao' se necessário
 
         responderButton.disabled = !enableButton;
     }

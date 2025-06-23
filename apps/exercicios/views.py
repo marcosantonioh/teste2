@@ -41,14 +41,10 @@ def percurso(request, modulo_id):
     
     # Obtém o módulo com o id fornecido
     modulo = get_object_or_404(Modulo, pk=modulo_id)
-    secoes = Secao.objects.filter(modulo=modulo)
+    # Otimização: Usamos prefetch_related para evitar múltiplas queries (problema N+1).
+    # Isso busca todas as seções, suas estações e os exercícios de cada estação de forma eficiente.
+    secoes = Secao.objects.filter(modulo=modulo).prefetch_related('estacoes__exercicios')
     perfil = get_or_create_perfil(request.user)
-    
-    # Para cada seção, você pode obter as estações
-    for secao in secoes:
-        secao.estacoes_list = Estacao.objects.filter(secao=secao)
-        for estacao in secao.estacoes_list:
-            estacao.exercicios_list = Exercicio.objects.filter(estacao=estacao)
 
     context = {
         'modulo': modulo,
