@@ -13,5 +13,4 @@ urlpatterns = [
     path("perfil/amigos/", views.amigos, name="amigos"),
     path("perfil/amigos/encontrar", views.encontrar_amigos, name="encontrar_amigos"),
     path("perfil/amigos/convidar", views.convidar_amigos, name="convidar_amigos"),
-
 ]

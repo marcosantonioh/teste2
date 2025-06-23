@@ -10,18 +10,16 @@ from django.contrib.auth.decorators import login_required
 
 
 
+@login_required
 def perfil_view(request):
-    perfil = Perfil.objects.filter(user=request.user).first()
-    if not perfil:
-        messages.warning(request, "Perfil não encontrado.")
-        return redirect("usuarios:cadastro_usuario")  # ou outra ação apropriada
-
+    # Usar get_object_or_404 é uma prática mais segura e padrão no Django.
+    perfil = get_object_or_404(Perfil, user=request.user)
     return render(request, 'usuarios/perfil.html', {'perfil': perfil})
 
 
-
+@login_required
 def editar_perfil(request):
-    perfil = request.user.perfil  # ou como você estiver buscando o perfil
+    perfil = get_object_or_404(Perfil, user=request.user)
 
     if request.method == 'POST':
         action = request.POST.get('action')
@@ -44,9 +42,7 @@ def editar_perfil(request):
             perfil.save()
 
             messages.success(request, "Perfil atualizado com sucesso!")
-
-
-            # return redirect('usuarios:perfil_usuario')  # <- precisa existir uma rota com name="perfil"
+            return redirect('usuarios:editar_perfil') # Redireciona para a mesma página para ver as alterações.
 
         if action == "deletar_foto":
             if perfil.foto:
@@ -55,10 +51,7 @@ def editar_perfil(request):
                 perfil.save()
             return redirect('usuarios:editar_perfil')
     
-    
-    
-    
-    return render(request, 'usuarios/editar_perfil.html', {'perfil': perfil})
+    return render(request, 'usuarios/editar_perfil.html', {'perfil': perfil}) # Passa o perfil no GET também
 
 
 
@@ -205,17 +198,19 @@ def remover_amigo(request, amigo_id):
 
 @login_required
 def preferencias(request):
+    perfil = get_object_or_404(Perfil, user=request.user)
+
     if request.method == 'POST':
         tema = request.POST.get('tema')
-        notificacoes = request.POST.get('notificacoes') == 'on'
         visibilidade = request.POST.get('visibilidade')
 
-        # Aqui você pode salvar no modelo do perfil do usuário, por exemplo
-        perfil = request.user.perfil
         perfil.tema = tema
-        perfil.visibilidade = visibilidade  # <- aqui está o novo campo
+        perfil.visibilidade = visibilidade
         perfil.save()
 
-        return redirect('usuarios:preferencias')  # ou outra página
+        messages.success(request, 'Preferências salvas com sucesso!')
+        return redirect('usuarios:preferencias')
 
-    return render(request, 'usuarios/preferencias.html')
+    # Adiciona o perfil ao contexto para que o template possa exibir os valores atuais.
+    context = {'perfil': perfil}
+    return render(request, 'usuarios/preferencias.html', context)

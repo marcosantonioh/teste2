@@ -2,12 +2,17 @@ from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
 from .models import Exercicio, Modulo, Secao, Estacao
+from import_export.admin import ExportMixin, ImportExportModelAdmin
 
+
+@admin.register(Exercicio)
+class ExercicioAdmin(ImportExportModelAdmin):
+    pass
 
 # Admin para Exercicio
 class ExercicioAdmin(admin.ModelAdmin):
-    list_display = ('titulo', 'estacao', 'modulo', 'tipo', 'status', 'dificuldade')
-    list_filter = ('estacao__secao__modulo', 'estacao__secao', 'estacao', 'tipo', 'status', 'dificuldade')
+    list_display = ('titulo', 'estacao', 'modulo', 'tipo', 'status')
+    list_filter = ('estacao__secao__modulo', 'estacao__secao', 'estacao', 'tipo', 'status')
     search_fields = ('titulo', 'enunciado')
     # Adicione aqui outros campos e configurações que você já utiliza ou deseja
 

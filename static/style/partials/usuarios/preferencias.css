@@ -1,63 +1,59 @@
 @import url("/static/style/global/global.css");
 
 .preferencias-main {
+  width: 100%;
   max-width: 600px;
-  margin: 80px auto;
+  margin: 100px auto 0;
   padding: 30px;
   background-color: var(--white);
-  border-radius: 15px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-  margin-top: 100px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
 }
 
-.preferencias-main h2 {
+.titulo-pagina {
   text-align: center;
-  margin-bottom: 30px;
-  font-size: 28px;
-  color: #333;
+  color: var(--primary-dark);
+  font-size: 1.8em;
+  margin-bottom: 10px;
 }
 
 .form-group {
-  margin-bottom: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .form-group label {
-  display: block;
   font-weight: 600;
-  margin-bottom: 8px;
-  color: #444;
+  color: #333;
+  font-size: 1.1em;
 }
 
-.form-group select {
-  width: 100%;
-  padding: 10px 15px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 16px;
-  background-color: #f9f9f9;
-  transition: border 0.3s ease;
-}
-
-.form-group select:focus {
-  outline: none;
-  border-color: #007bff;
-  background-color: #fff;
-}
-
-button[type="submit"] {
-  display: block;
-  width: 100%;
+.select-preferencias {
   padding: 12px;
-  background-color: #007bff;
-  border: none;
-  color: white;
-  font-weight: bold;
-  font-size: 16px;
-  border-radius: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1em;
+  background-color: #f9f9f9;
   cursor: pointer;
-  transition: background 0.3s ease;
 }
 
-button[type="submit"]:hover {
-  background-color: #0056b3;
+.btn-salvar {
+  padding: 12px 20px;
+  background-color: var(--primary-color);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+}
+
+.btn-salvar:hover {
+  background-color: var(--primary-dark);
 }

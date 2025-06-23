@@ -466,10 +466,10 @@ input[type="radio"]:checked + .botao-alternativa .numero-alternativa {
 
 /* Estilo para quando uma opção V/F é selecionada (destaca a label) */
 .alternativas-vf input[type="radio"]:checked + .botao-alternativa {
-  background-color: var(--accent-color, #007bff); /* Cor de destaque, use sua variável de cor */
-  color: white;
-  border-color: var(--accent-color-dark, #0056b3); /* Cor de borda mais escura */
-}
+    background-color: #d3f7ff;
+    color: rgb(1, 92, 189);
+    border-color: #3094ff;
+  }
 
 
 
@@ -579,6 +579,44 @@ input[type="radio"]:checked + .botao-alternativa .numero-alternativa {
     padding: 12px 20px;
   }
 }
+
+
+
+/* Em seu arquivo .css, por exemplo: static/style/partials/exercicios/resolver_exercicio.css */
+.exercicio-imagem {
+  max-width: 300px;
+  height: auto;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+
+/* Layout para exercício informativo (texto à esquerda, imagem à direita) */
+.exercicio-info-layout {
+  display: flex;
+  gap: 4em; /* Espaço entre as colunas */
+  width: 100%;
+  align-items: center; /* Alinha verticalmente o texto e a imagem */
+}
+
+.exercicio-info-conteudo {
+  flex: 1; /* Ocupa o espaço disponível, ajustável */
+  min-width: 50%; /* Garante que o texto tenha um bom espaço */
+}
+
+.exercicio-info-imagem-container {
+  flex: 1; /* Ocupa o espaço disponível, ajustável */
+  min-width: 40%; /* Garante espaço para a imagem */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.exercicio-info-conteudo .exercicio-enunciado {
+  margin-bottom: 0; /* Remove a margem inferior do enunciado para melhor alinhamento */
+}
+
+
+
 
 @media (max-width: 480px) { /* Breakpoint para celulares menores em retrato */
   .formulario {

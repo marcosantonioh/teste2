@@ -10,7 +10,6 @@ BASE_EXERCICIO_FIELDS = [
     'estacao',
     'modulo',
     'explicacao',
-    'dificuldade',
     'xp',
     # 'status' geralmente é gerenciado pelo sistema
 ]

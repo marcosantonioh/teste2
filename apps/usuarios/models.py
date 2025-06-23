@@ -9,7 +9,6 @@ class Perfil(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     xp = models.IntegerField(default=0, validators=[MinValueValidator(0)], verbose_name="Xp")
     sequencia_dias = models.IntegerField(default=0, validators=[MinValueValidator(0)])
-    perfil_publico = models.BooleanField(default=False)
     bio = models.TextField(null=True, blank=True)
     seguidores = models.IntegerField(default=0)
     seguidos = models.IntegerField(default=0)
@@ -17,6 +16,7 @@ class Perfil(models.Model):
     tema = models.CharField(max_length=20, default='claro')
     cristal = models.IntegerField(default=0)
 
+    intervalo_restauracao_por_vida = models.DurationField(default=datetime.timedelta(minutes=15)) 
     vidas_atuais = models.IntegerField(default=5)
     max_vidas = models.IntegerField(default=5)
     ultima_restauracao_vida = models.DateTimeField(default=timezone.now)
@@ -45,14 +45,6 @@ class Perfil(models.Model):
 
     genero = models.CharField(max_length=1, choices=GÊNEROS, null=True, blank=True)
 
-    STATUS_CHOICES = [
-        ('pendente', 'Pendente'),
-        ('aceita', 'Aceita'),
-    ]
-
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pendente')
-
-
 
     class Meta:
         db_table = 'perfil_usuario'  # Nome personalizado para a tabela
@@ -61,7 +53,7 @@ class Perfil(models.Model):
         return self.user.username
     
     def tem_vidas(self):
-        return self.vidas > 0
+        return self.vidas_atuais > 0
 
     def pode_usar_ofensiva(self):
         if not self.ultima_ofensiva_usada:
@@ -75,20 +67,21 @@ class Perfil(models.Model):
         tempo_restante = (self.ultima_ofensiva_usada + self.cooldown_ofensiva) - timezone.now()
         return max(tempo_restante, datetime.timedelta(seconds=0))
 
-    def restaurar_vida(self):
-        if self.vidas_atuais < self.max_vidas:
-            self.vidas_atuais += 1
-            self.ultima_restauracao_vida = timezone.now()
-            self.save()
-            return True
-        return False
+    @property
+    def tempo_restante_para_proxima_vida(self):
+        """
+        Calcula o tempo restante para a próxima vida ser restaurada.
+        Retorna um timedelta. Se as vidas estiverem cheias, retorna timedelta zero.
+        """
+        if self.vidas_atuais >= self.max_vidas:
+            return datetime.timedelta(seconds=0)
 
-    def precisa_restaurar_vida(self, intervalo_restauracao_minutos=15):
-        if self.vidas_atuais < self.max_vidas:
-            tempo_desde_ultima_restauracao = timezone.now() - self.ultima_restauracao_vida
-            return tempo_desde_ultima_restauracao >= datetime.timedelta(minutes=intervalo_restauracao_minutos)
-        return False
-    
+        proxima_restauracao = self.ultima_restauracao_vida + self.intervalo_restauracao_por_vida
+        tempo_restante = proxima_restauracao - timezone.now()
+        
+        # Garante que não retornamos um tempo negativo se a tarefa estiver atrasada
+        return max(tempo_restante, datetime.timedelta(seconds=0))
+
 class Amizade(models.Model):
     remetente = models.ForeignKey(User, related_name='amizades_enviadas', on_delete=models.CASCADE)
     destinatario = models.ForeignKey(User, related_name='amizades_recebidas', on_delete=models.CASCADE)

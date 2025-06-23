@@ -56,6 +56,7 @@ def verificar_resposta(exercicio, resposta_usuario):
 def atualizar_estado_do_perfil_e_exercicio(perfil, exercicio, correta):
     """
     Atualiza o status do exercício e o perfil do usuário (vidas, XP) com base na resposta.
+    Inicia o ciclo de restauração de vida se for a primeira vida perdida.
     """
     if correta:
         if exercicio.status != "concluido":

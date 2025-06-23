@@ -94,6 +94,31 @@ def resolver_exercicio(request, exercicio_id):
     correta = None
     proximo_exercicio_id_para_continuar = None
 
+    # Calcular progresso para a barra superior ANTES de qualquer modificação de status.
+    # Assim, a barra reflete o estado no momento em que o exercício é exibido.
+    progresso_percentual, exercicios_concluidos_count, total_exercicios_modulo = mecanicas_services.calcular_progresso(exercicio.modulo)
+
+    # Lógica para exercícios informativos (tipo 'info')
+    # Isso é executado em uma requisição GET, antes do processamento do POST.
+    if exercicio.tipo == 'info':
+        # Marca o exercício informativo como concluído ao ser visualizado, para não ficar preso nele.
+        if exercicio.status == 'livre':
+            exercicio.status = 'concluido'
+            exercicio.save()
+            # Opcional: Adicionar XP se exercícios informativos valerem pontos.
+            # perfil.xp_total += exercicio.xp
+            # perfil.save()
+
+        # Após marcar como concluído, busca o próximo exercício livre na estação.
+        estacao_atual = exercicio.estacao
+        proximo_exercicio_livre = Exercicio.objects.filter(
+            estacao=estacao_atual,
+            status='livre'
+        ).order_by('id').first()
+
+        if proximo_exercicio_livre:
+            proximo_exercicio_id_para_continuar = proximo_exercicio_livre.id
+
     if request.method == 'POST':
         acao = request.POST.get('acao')
 
@@ -122,14 +147,11 @@ def resolver_exercicio(request, exercicio_id):
                 else:
                     # Não há mais exercícios 'livre', a estação está completa.
                     # Verifica se a estação já não está marcada como completada para evitar saves desnecessários.
-                    if estacao_atual.status != 'completado':
-                        if estacao_atual.status != 'completado': # Verifica se já não está completado
-                            estacao_atual.status = 'completado'
-                            estacao_atual.save()
+                    if estacao_atual.status != 'completado': # Verifica se já não está completado
+                        estacao_atual.status = 'completado'
+                        estacao_atual.save()
                     return redirect('exercicios:estacao_concluida', estacao_id=estacao_atual.id)
 
-    # Calcular progresso para a barra superior
-    progresso_percentual, exercicios_concluidos_count, total_exercicios_modulo = mecanicas_services.calcular_progresso(exercicio.modulo)
     # Nova lógica para decidir se o modal de saída deve ser mostrado
     mostrar_modal_confirmacao_saida = progresso_percentual > 0
 

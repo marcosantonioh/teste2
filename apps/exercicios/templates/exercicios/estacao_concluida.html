@@ -2,11 +2,11 @@
 {% load static %}
 
 {% block content %}
-<link rel="stylesheet" href="{% static 'style/partials/exercicios/estacao_concluida.css' %}" /> {# Crie este CSS #}
+<link rel="stylesheet" href="{% static 'style/partials/exercicios/estacao_concluida.css' %}" /> 
 
 <div class="container-estacao-concluida">
     <div class="conteudo-estacao-concluida">
-        <img src="{% static 'img/mascote/happy.svg' %}" alt="Mascote Feliz" class="mascote-resultado" /> {# Ajuste o caminho se necessário #}
+        <img src="{% static 'img/mascote/happy.svg' %}" alt="Mascote Feliz" class="mascote-resultado" /> 
         <h1>Parabéns!</h1>
         <p>Você concluiu todos os exercícios da estação "{{ estacao.nome }}"!</p>
         <p class="xp-ganho">Você ganhou <span class="xp-valor">{{ total_xp_estacao }} XP</span>!</p>

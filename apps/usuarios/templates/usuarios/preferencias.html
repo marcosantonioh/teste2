@@ -1,31 +1,32 @@
+{% extends 'navbar.html' %}
 {% load static %}
-{% include 'navbar.html' %}
-
-<link rel="stylesheet" href="{% static 'style/partials/usuarios/preferencias.css' %}" />
 
 {% block content %}
+  <link rel="stylesheet" href="{% static 'style/partials/usuarios/preferencias.css' %}" />
+
   <main class="preferencias-main">
-    <h2>Preferências</h2>
+    <h1 class="titulo-pagina">Preferências</h1>
 
     <form method="post">
       {% csrf_token %}
 
       <div class="form-group">
         <label for="tema">Tema:</label>
-        <select id="tema" name="tema">
-          <option value="claro">Claro</option>
-          <option value="escuro">Escuro</option>
+        <select id="tema" name="tema" class="select-preferencias">
+          <option value="claro" {% if perfil.tema == 'claro' %}selected{% endif %}>Claro</option>
+          <option value="escuro" {% if perfil.tema == 'escuro' %}selected{% endif %}>Escuro</option>
         </select>
       </div>
 
       <div class="form-group">
         <label for="visibilidade">Visibilidade do Perfil:</label>
-        <select id="visibilidade" name="visibilidade">
-          <option value="publico">Público</option>
-          <option value="privado">Privado</option>
+        <select id="visibilidade" name="visibilidade" class="select-preferencias">
+          <option value="publico" {% if perfil.visibilidade == 'publico' %}selected{% endif %}>Público</option>
+          <option value="privado" {% if perfil.visibilidade == 'privado' %}selected{% endif %}>Privado</option>
         </select>
       </div>
 
+      <button type="submit" class="btn-salvar">Salvar Alterações</button>
     </form>
   </main>
 {% endblock %}

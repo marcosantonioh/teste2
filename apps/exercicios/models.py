@@ -71,6 +71,7 @@ class Exercicio(models.Model):
         ('mcq', 'Múltipla Escolha'),
         ('code', 'Código'),
         ('combinacao', 'Combinação'),
+        ('info', 'Informativo'),
         ('vf', 'Verdadeiro ou Falso'),
     ]
     
@@ -79,9 +80,9 @@ class Exercicio(models.Model):
     titulo = models.CharField(max_length=200, null=True, blank=True)
     enunciado = models.TextField(null=True, blank=True)
     codigo = models.TextField(null=True, blank=True)
+    imagem = models.ImageField(upload_to='exercicios/imagens/', null=True, blank=True, help_text="Imagem para exercícios informativos.")
     tipo = models.CharField(max_length=50, choices=TIPO_CHOICES)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='livre')
-    dificuldade = models.IntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(5)])
     xp = models.IntegerField(default=10)
     modulo = models.ForeignKey(Modulo, on_delete=models.CASCADE)  # A chave estrangeira para o modelo Modulo
 
@@ -125,7 +126,6 @@ class Exercicio(models.Model):
     # Adicione mais pares conforme necessário (comb_par4_col1, comb_par4_col2, etc.)
 
     explicacao = models.TextField(null=True, blank=True)
-
 
     class Meta:
         ordering = ['id'] # Ou outra ordem padrão desejada para exercícios

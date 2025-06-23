@@ -21,7 +21,7 @@
 }
 
 .mascote-resultado {
-    width: 100px; /* Ajuste o tamanho conforme necessário */
+    width: 200px; /* Ajuste o tamanho conforme necessário */
     height: auto;
     margin-bottom: 20px;
 }
@@ -69,4 +69,59 @@
 
 .btn-voltar-percurso:hover {
     background-color: var(--primary-dark); /* Uma variação mais escura da cor primária */
+}
+
+/* --- Media Queries para Responsividade --- */
+
+/* Para tablets e telas menores (até 768px) */
+@media (max-width: 768px) {
+    .container-estacao-concluida {
+        margin-top: 60px; /* Reduz a margem superior */
+        padding: 15px;
+    }
+
+    .conteudo-estacao-concluida {
+        padding: 25px 30px;
+    }
+
+    .mascote-resultado {
+        width: 180px; /* Reduz um pouco o mascote */
+    }
+
+    .conteudo-estacao-concluida h1 {
+        font-size: 2.2rem;
+    }
+
+    .conteudo-estacao-concluida p {
+        font-size: 1rem;
+    }
+
+    .xp-ganho {
+        font-size: 1.2rem;
+    }
+
+    .xp-valor {
+        font-size: 1.4rem;
+    }
+}
+
+/* Para celulares (até 480px) */
+@media (max-width: 480px) {
+    .container-estacao-concluida {
+        margin-top: 20px; /* Menos margem ainda para telas pequenas */
+    }
+
+    .conteudo-estacao-concluida {
+        padding: 20px 25px;
+        box-shadow: none; /* Remove a sombra para um visual mais limpo */
+        border: 1px solid #eee; /* Adiciona uma borda sutil */
+    }
+
+    .mascote-resultado {
+        width: 150px; /* Mascote ainda menor */
+    }
+
+    .conteudo-estacao-concluida h1 {
+        font-size: 1.8rem; /* Título significativamente menor */
+    }
 }
