@@ -102,12 +102,12 @@ class Exercicio(models.Model):
 
     resposta_correta = models.CharField(
         max_length=1, choices=RESPOSTAS_CHOICES, null=True, blank=True,
-        help_text="Relevante apenas para exercícios de Múltipla Escolha."
+        help_text="Relevante para exercícios de Múltipla Escolha e Preencher Lacuna."
     )
 
     resposta_texto_codigo = models.TextField(
         null=True, blank=True,
-        help_text="Resposta esperada para exercícios de preenchimento de lacuna ou código."
+        help_text="Resposta esperada para exercícios de código que exigem uma saída de texto."
     )
 
     resposta_vf_correta = models.BooleanField(
