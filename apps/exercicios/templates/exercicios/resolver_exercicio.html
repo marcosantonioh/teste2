@@ -3,6 +3,7 @@
   rel="stylesheet"
   href="{% static 'style/partials/exercicios/resolver_exercicio.css' %}"
 />
+<link rel="stylesheet" href="{% static 'style/botoes.css' %}" />
 
 {% block content %}
 
@@ -40,8 +41,21 @@
                   value="{{ numero }}"
                   hidden
                   class="alternativa-exercicio"
+                  {% if resultado %}disabled{% endif %}
                 />
-                <label for="alt{{ numero }}" class="botao-alternativa">
+                <label
+                  for="alt{{ numero }}"
+                  class="botao-alternativa
+                    {% if resultado %}
+                      {# Se a resposta foi correta, pinta a alternativa certa de verde #}
+                      {% if correta and numero == exercicio.resposta_correta %}
+                        alternativa-correta
+                      {# Se a resposta foi incorreta, pinta apenas a que o usuário marcou de vermelho #}
+                      {% elif not correta and numero == resposta_submetida %}
+                        alternativa-incorreta
+                      {% endif %}
+                    {% endif %}"
+                >
                   <span class="numero-alternativa">{{ numero }}</span>
                   <span class="texto-alternativa">{{ texto }}</span>
                 </label>
@@ -75,8 +89,20 @@
               value="True"
               class="alternativa-exercicio-vf" {# Mantendo a classe para consistência ou JS futuro #}
               hidden
+              {% if resultado %}disabled{% endif %}
             />
-            <label for="vf_true" class="botao-alternativa">Verdadeiro</label>
+            <label
+              for="vf_true"
+              class="botao-alternativa
+                {% if resultado %}
+                  {% if correta and exercicio.resposta_vf_correta %}
+                    alternativa-correta
+                  {% elif not correta and resposta_submetida == 'True' %}
+                    alternativa-incorreta
+                  {% endif %}
+                {% endif %}"
+              >Verdadeiro</label
+            >
             <input
               type="radio"
               name="resposta_vf"
@@ -84,8 +110,20 @@
               value="False"
               class="alternativa-exercicio-vf" {# Mantendo a classe para consistência ou JS futuro #}
               hidden
+              {% if resultado %}disabled{% endif %}
             />
-            <label for="vf_false" class="botao-alternativa">Falso</label>
+            <label
+              for="vf_false"
+              class="botao-alternativa
+                {% if resultado %}
+                  {% if correta and not exercicio.resposta_vf_correta %}
+                    alternativa-correta
+                  {% elif not correta and resposta_submetida == 'False' %}
+                    alternativa-incorreta
+                  {% endif %}
+                {% endif %}"
+              >Falso</label
+            >
           </div>
 
         {% elif exercicio.tipo == 'info' %}
@@ -111,9 +149,9 @@
         {# Para o tipo 'info', não há resposta, apenas o botão de continuar que fica sempre livre #}
         <div class="resultado"> {# Usando a classe 'resultado' para consistência de layout #}
           {% if proximo_exercicio_id_para_continuar %}
-            <a href="{% url 'exercicios:resolver_exercicio' proximo_exercicio_id_para_continuar %}" class="btn-continuar">Continuar</a>
+            <a href="{% url 'exercicios:resolver_exercicio' proximo_exercicio_id_para_continuar %}" class="submit">Continuar</a>
           {% else %}
-            <a href="{% url 'exercicios:percurso' exercicio.modulo.id %}" class="btn-continuar">Voltar ao Percurso</a>
+            <a href="{% url 'exercicios:percurso' exercicio.modulo.id %}" class="submit">Voltar ao Percurso</a>
           {% endif %}
         </div>
       {% elif not resultado %} 
@@ -190,13 +228,13 @@
             {% if proximo_exercicio_id_para_continuar %}
             <a
               href="{% url 'exercicios:resolver_exercicio' proximo_exercicio_id_para_continuar %}"
-              class="btn-continuar"
+              class="submit"
               >Continuar</a
             >
             {% else %} 
             <a
               href="{% url 'exercicios:percurso' exercicio.modulo.id %}"
-              class="btn-continuar"
+              class="submit"
               >Voltar ao Percurso</a
             >
             {% endif %}

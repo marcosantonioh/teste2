@@ -19,6 +19,7 @@
     border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
+    text-decoration: none; /* Adicionado para remover o sublinhado de links */
 }
 
 .submit2{

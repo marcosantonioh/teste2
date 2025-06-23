@@ -21,17 +21,23 @@
 .form-layout-container {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   flex-grow: 1; 
   min-height: 0; 
+  overflow: hidden;
 }
 
 /* Wrapper para o conteúdo do exercício que será rolável */
 .conteudo-exercicio-wrapper {
   flex-grow: 1; 
   overflow-y: auto; 
-  width: 100%;
+  width: 80%;
   padding: 20px 0; 
   box-sizing: border-box;
+  background-color: #3094ff;
+  overflow: hidden;
+
 }
 
 /* .form-exercicio original - pode ser removido ou adaptado.
@@ -99,7 +105,7 @@
     border: 1px solid #909090;
     border-radius: 10px;
     cursor: pointer;
-    font-size: 1.2em;
+    font-size: 1em;
     transition: 0.2s ease;
     user-select: none;
     display: flex;
@@ -144,6 +150,42 @@ input[type="radio"]:checked + .botao-alternativa .numero-alternativa {
   border-color: #3094ff;
   background-color: #3094ff;
   color: white;
+}
+
+/* Estilos para feedback de alternativas após a resposta */
+.botao-alternativa.alternativa-correta {
+    background-color: var(--success);
+    border-color: var(--success);
+    color: white;
+    cursor: default; /* O cursor não deve indicar que é clicável */
+}
+
+.botao-alternativa.alternativa-correta .numero-alternativa {
+    background-color: white;
+    color: var(--success);
+    border-color: white;
+}
+
+.botao-alternativa.alternativa-incorreta {
+    background-color: var(--red);
+    border-color: var(--red);
+    color: white;
+    cursor: default;
+}
+
+.botao-alternativa.alternativa-incorreta .numero-alternativa {
+    background-color: white;
+    color: var(--red);
+    border-color: white;
+}
+
+/* Sobrescreve o hover padrão para não mudar de cor após o resultado */
+.botao-alternativa.alternativa-correta:hover {
+    background-color: var(--success);
+}
+
+.botao-alternativa.alternativa-incorreta:hover {
+    background-color: var(--red);
 }
 /* Base fixa para botões de ação e resultado */
 .base-acoes-exercicio {
@@ -490,6 +532,21 @@ input[type="radio"]:checked + .botao-alternativa .numero-alternativa {
     width: 100%; /* Fazem com que cada seção ocupe a largura total */
   }
 
+  .exercicio-info-layout {
+    flex-direction: column; 
+    gap: 2em; /* Espaçamento vertical */
+  }
+
+  .exercicio-info-conteudo,
+  .exercicio-info-imagem-container {
+    width: 100%; /* Colunas ocupam a largura total */
+  }
+
+  .exercicio-imagem {
+    width: 150px;
+    height: auto;
+  }
+
   .exercicio-titulo {
     font-size: 1.3em;
   }
@@ -682,5 +739,9 @@ input[type="radio"]:checked + .botao-alternativa .numero-alternativa {
 
   .exercicio-mcq-layout {
     gap: 1.5em; /* Menor gap vertical */
+  }
+
+  .exercicio-info-layout {
+    gap: 1.5em; /* Reduz o gap vertical também para o layout informativo */
   }
 }

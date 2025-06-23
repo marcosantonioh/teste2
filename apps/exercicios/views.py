@@ -93,6 +93,7 @@ def resolver_exercicio(request, exercicio_id):
     resultado = None
     correta = None
     proximo_exercicio_id_para_continuar = None
+    resposta_submetida = None # Variável para guardar a resposta do usuário
 
     # Calcular progresso para a barra superior ANTES de qualquer modificação de status.
     # Assim, a barra reflete o estado no momento em que o exercício é exibido.
@@ -128,6 +129,7 @@ def resolver_exercicio(request, exercicio_id):
 
         elif acao == 'responder':
             resposta_usuario = _extrair_resposta_do_request(request, exercicio.tipo)
+            resposta_submetida = resposta_usuario  # Guarda a resposta para usar no template
             resultado, correta = mecanicas_services.processar_resposta_exercicio(resposta_usuario, exercicio, perfil)
             if correta:
                 estacao_atual = exercicio.estacao
@@ -165,6 +167,7 @@ def resolver_exercicio(request, exercicio_id):
         'perfil': perfil,
         'modulo_id': exercicio.modulo.id,
         'alternativas': alternativas,
+        'resposta_submetida': resposta_submetida, # Passa a resposta do usuário para o template
         'proximo_exercicio_id_para_continuar': proximo_exercicio_id_para_continuar, # Ainda útil para o botão continuar normal
         'sem_vidas': sem_vidas,
         'progresso_percentual': progresso_percentual,
