@@ -116,6 +116,11 @@ def resolver_exercicio(request, exercicio_id):
         if proximo_exercicio_livre:
             proximo_exercicio_id_para_continuar = proximo_exercicio_livre.id
 
+    # Calcula os exercícios pendentes na estação para usar no template.
+    exercicios_pendentes = Exercicio.objects.filter(
+        estacao=exercicio.estacao, status='livre'
+    )
+
     if request.method == 'POST':
         acao = request.POST.get('acao')
 
@@ -170,6 +175,7 @@ def resolver_exercicio(request, exercicio_id):
         'exercicios_concluidos_count': exercicios_concluidos_count,
         'total_exercicios_modulo': total_exercicios_modulo,
         'mostrar_modal_confirmacao_saida': mostrar_modal_confirmacao_saida, # Adicionamos aqui
+        'exercicios_pendentes': exercicios_pendentes, # Adiciona a variável ao contexto
 
     }
 
