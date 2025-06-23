@@ -35,7 +35,7 @@
   width: 80%;
   padding: 20px 0; 
   box-sizing: border-box;
-  background-color: #3094ff;
+  /* background-color: #3094ff; */
   overflow: hidden;
 
 }
@@ -452,7 +452,9 @@ input[type="radio"]:checked + .botao-alternativa .numero-alternativa {
 
 .exercicio-enunciado {
   margin-bottom: 15px;
-  line-height: 1.6;
+  line-height: 1.5;
+  font-size: 1.2em;
+
 }
 
 .exercicio-codigo {
@@ -487,6 +489,31 @@ input[type="radio"]:checked + .botao-alternativa .numero-alternativa {
   box-sizing: border-box; /* Para que padding e border não aumentem a largura total */
 }
 
+/* Layout para exercício Verdadeiro/Falso */
+.exercicio-vf-layout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  /* background-color: #3094ff; */
+}
+
+.exercicio-vf-conteudo {
+  width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column; /* Alinha o conteúdo verticalmente */
+}
+
+.exercicio-vf-alternativas {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Centraliza os botões V/F na coluna */
+}
 
 .alternativas-vf {
   display: flex;
@@ -525,6 +552,16 @@ input[type="radio"]:checked + .botao-alternativa .numero-alternativa {
   .exercicio-mcq-layout {
     flex-direction: column; /* Muda a direção do flex para coluna */
     gap: 2em; /* Ajusta o espaçamento vertical entre conteúdo e alternativas */
+  }
+
+  .exercicio-vf-layout {
+    flex-direction: column;
+    gap: 2em;
+  }
+
+  .exercicio-vf-conteudo,
+  .exercicio-vf-alternativas {
+    width: 100%;
   }
 
   .exercicio-mcq-conteudo,

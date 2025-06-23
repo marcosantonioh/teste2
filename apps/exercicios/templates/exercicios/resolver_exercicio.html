@@ -80,50 +80,59 @@
           </div>
 
         {% elif exercicio.tipo == 'vf' %}
-          <p class="exercicio-enunciado">{{ exercicio.enunciado }}</p>
-          <div class="alternativas-vf">
-            <input
-              type="radio"
-              name="resposta_vf"
-              id="vf_true"
-              value="True"
-              class="alternativa-exercicio-vf" {# Mantendo a classe para consistência ou JS futuro #}
-              hidden
-              {% if resultado %}disabled{% endif %}
-            />
-            <label
-              for="vf_true"
-              class="botao-alternativa
-                {% if resultado %}
-                  {% if correta and exercicio.resposta_vf_correta %}
-                    alternativa-correta
-                  {% elif not correta and resposta_submetida == 'True' %}
-                    alternativa-incorreta
-                  {% endif %}
-                {% endif %}"
-              >Verdadeiro</label
-            >
-            <input
-              type="radio"
-              name="resposta_vf"
-              id="vf_false"
-              value="False"
-              class="alternativa-exercicio-vf" {# Mantendo a classe para consistência ou JS futuro #}
-              hidden
-              {% if resultado %}disabled{% endif %}
-            />
-            <label
-              for="vf_false"
-              class="botao-alternativa
-                {% if resultado %}
-                  {% if correta and not exercicio.resposta_vf_correta %}
-                    alternativa-correta
-                  {% elif not correta and resposta_submetida == 'False' %}
-                    alternativa-incorreta
-                  {% endif %}
-                {% endif %}"
-              >Falso</label
-            >
+          <div class="exercicio-vf-layout">
+            <div class="exercicio-vf-conteudo">
+              <p class="exercicio-enunciado">{{ exercicio.enunciado }}</p>
+            
+              <div class="exercicio-vf-alternativas">
+                <div class="alternativas-vf">
+                  <input
+                    type="radio"
+                    name="resposta_vf"
+                    id="vf_true"
+                    value="True"
+                    class="alternativa-exercicio-vf"
+                    hidden
+                    {% if resultado %}disabled{% endif %}
+                  />
+                  <label
+                    for="vf_true"
+                    class="botao-alternativa
+                      {% if resultado %}
+                        {% if correta and exercicio.resposta_vf_correta %}
+                          alternativa-correta
+                        {% elif not correta and resposta_submetida == 'True' %}
+                          alternativa-incorreta
+                        {% endif %}
+                      {% endif %}"
+                    >Verdadeiro</label
+                  >
+                  <input
+                    type="radio"
+                    name="resposta_vf"
+                    id="vf_false"
+                    value="False"
+                    class="alternativa-exercicio-vf"
+                    hidden
+                    {% if resultado %}disabled{% endif %}
+                  />
+                  <label
+                    for="vf_false"
+                    class="botao-alternativa
+                      {% if resultado %}
+                        {% if correta and not exercicio.resposta_vf_correta %}
+                          alternativa-correta
+                        {% elif not correta and resposta_submetida == 'False' %}
+                          alternativa-incorreta
+                        {% endif %}
+                      {% endif %}"
+                    >Falso</label
+                  >
+                </div>
+            </div>
+            </div>
+
+            
           </div>
 
         {% elif exercicio.tipo == 'info' %}
