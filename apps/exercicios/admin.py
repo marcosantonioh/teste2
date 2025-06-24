@@ -17,12 +17,12 @@ class ExercicioAdmin(ImportExportModelAdmin):
         ('Informações Gerais', {
             'fields': ('titulo', 'enunciado', 'estacao', 'modulo', 'status', 'xp', 'explicacao', 'tipo')
         }),
-        ('Campos para Múltipla Escolha / Lacuna', {
-            'classes': ('exercicio-tipo', 'exercicio-mcq', 'exercicio-lacuna'), # Mostra para os tipos 'mcq' e 'lacuna'
+        ('Campos para Múltipla Escolha', {
+            'classes': ('exercicio-tipo', 'exercicio-mcq'), # Mostra para o tipo 'mcq'
             'fields': ('alternativa_1', 'alternativa_2', 'alternativa_3', 'alternativa_4', 'resposta_correta'),
         }),
-        ('Campos para Código', {
-            'classes': ('exercicio-tipo', 'exercicio-code'), # Mostra para o tipo 'code'
+        ('Campos para Lacuna', {
+            'classes': ('exercicio-tipo', 'exercicio-lacuna'), # Mostra para o tipo 'lacuna'
             'fields': ('codigo', 'resposta_texto_codigo'),
         }),
         ('Campos para Informativo', {

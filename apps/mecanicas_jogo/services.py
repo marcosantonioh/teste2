@@ -40,11 +40,6 @@ def verificar_resposta(exercicio, resposta_usuario):
         resposta_correta_str = str(exercicio.resposta_correta or "").strip()
         return resposta_usuario_str == resposta_correta_str
 
-    elif exercicio.tipo == "code":
-        resposta_usuario_str = str(resposta_usuario or "").strip()
-        resposta_correta_str = str(exercicio.resposta_texto_codigo or "").strip()
-        return resposta_usuario_str == resposta_correta_str
-
     elif exercicio.tipo == "vf":
         # Converte a string "True" ou "False" do POST para um booleano Python
         resposta_usuario_bool = resposta_usuario == "True"

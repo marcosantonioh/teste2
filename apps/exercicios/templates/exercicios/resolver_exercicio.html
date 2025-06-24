@@ -65,11 +65,6 @@
             </div>
           </div>
 
-        {% elif exercicio.tipo == 'code' %}
-          <h3 class="exercicio-titulo">{{ exercicio.titulo }}</h3>
-          <p class="exercicio-enunciado">{{ exercicio.enunciado }}</p>
-          <textarea name="codigo" rows="10" cols="60" class="exercicio-codigo-input">{{ exercicio.codigo }}</textarea>
-
         {% elif exercicio.tipo == 'lacuna' %}
           {% if exercicio.enunciado %}
             <p class="exercicio-enunciado">{{ exercicio.enunciado }}</p>
@@ -422,7 +417,7 @@
     const responderButton = document.querySelector('button[name="acao"][value="responder"]');
     const mcqRadioInputs = document.querySelectorAll('input[type="radio"][name="resposta"]');
     const vfRadioInputs = document.querySelectorAll('input[type="radio"][name="resposta_vf"]');
-    const codeTextarea = document.querySelector('textarea[name="codigo"]');
+    const lacunaInput = document.querySelector('input[name="resposta_lacuna"]');
 
     function updateResponderButtonState() {
         if (!responderButton) {
@@ -444,23 +439,20 @@
                     enableButton = true;
                 }
             });
-        } else if (codeTextarea) { // Verifica se é um exercício de Código
-            // Para exercícios de código, o botão pode ser habilitado por padrão
-            // ou baseado no conteúdo da textarea. Vamos habilitar por padrão.
-            enableButton = true;
+        } else if (lacunaInput) { // Verifica se é um exercício de Lacuna
+            if (lacunaInput.value.trim() !== '') { // Habilita se o input não estiver vazio
+                enableButton = true;
+            }
         }
 
         responderButton.disabled = !enableButton;
     }
 
-    // Adiciona ouvintes de evento para os inputs de rádio
     mcqRadioInputs.forEach(radio => radio.addEventListener('change', updateResponderButtonState));
     vfRadioInputs.forEach(radio => radio.addEventListener('change', updateResponderButtonState));
-
-    // Se for um exercício de código e você quiser habilitar/desabilitar baseado no conteúdo:
-    // if (codeTextarea) {
-    //     codeTextarea.addEventListener('input', updateResponderButtonState);
-    // }
+    if (lacunaInput) { // Adiciona ouvinte de evento para o input de lacuna
+        lacunaInput.addEventListener('input', updateResponderButtonState);
+    }
 
     // Verifica o estado inicial do botão ao carregar a página
     updateResponderButtonState();

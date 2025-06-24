@@ -69,7 +69,6 @@ class Exercicio(models.Model):
 
     TIPO_CHOICES = [
         ('mcq', 'Múltipla Escolha'),
-        ('code', 'Código'),
         ('lacuna', 'Lacuna'),
         ('info', 'Informativo'),
         ('vf', 'Verdadeiro ou Falso'),
@@ -102,12 +101,12 @@ class Exercicio(models.Model):
 
     resposta_correta = models.CharField(
         max_length=1, choices=RESPOSTAS_CHOICES, null=True, blank=True,
-        help_text="Relevante para exercícios de Múltipla Escolha e Preencher Lacuna."
+        help_text="Relevante para exercícios de Múltipla Escolha."
     )
 
     resposta_texto_codigo = models.TextField(
         null=True, blank=True,
-        help_text="Resposta esperada para exercícios de código que exigem uma saída de texto."
+        help_text="Resposta esperada para exercícios de preencher a lacuna."
     )
 
     resposta_vf_correta = models.BooleanField(

@@ -59,8 +59,6 @@ def _extrair_resposta_do_request(request, tipo_exercicio):
     """Função auxiliar para extrair a resposta do usuário do objeto request."""
     if tipo_exercicio == 'mcq':
         return request.POST.get('resposta')
-    elif tipo_exercicio == 'code':
-        return request.POST.get('codigo')
     elif tipo_exercicio == 'vf':
         return request.POST.get('resposta_vf')
     return None

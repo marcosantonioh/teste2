@@ -475,6 +475,14 @@ input[type="radio"]:checked + .botao-alternativa .numero-alternativa {
   margin-top: 10px;
 }
 
+.input-lacuna { /* Estilo para o campo de entrada de texto da lacuna */
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 1em;
+}
+
 /* Ajustes para as alternativas se necessário */
 .alternativas {
   display: flex;

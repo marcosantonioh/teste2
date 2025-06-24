@@ -58,33 +58,6 @@ class ExercicioMultiplaEscolhaForm(forms.ModelForm):
         self.fields['resposta_correta'].required = True
 
 
-class ExercicioCodigoForm(forms.ModelForm):
-    class Meta:
-        model = Exercicio
-        fields = BASE_EXERCICIO_FIELDS + [
-            'tipo',
-            'codigo',
-            'resposta_texto_codigo',
-        ]
-        widgets = {
-            **COMMON_WIDGETS,
-            'enunciado': forms.Textarea(attrs={'rows': 3, 'cols': 60, 'placeholder': 'Instruções para o aluno sobre o que fazer com o código abaixo.'}),
-            'tipo': forms.HiddenInput(),
-            'codigo': forms.Textarea(attrs={'rows': 10, 'cols': 60, 'placeholder': 'Ex: for (i=0; i<5; i++) { ... }'}),
-            'resposta_texto_codigo': forms.TextInput(attrs={'size': '60', 'placeholder': 'Resposta exata esperada do aluno.'}),
-        }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        if not self.instance.pk:
-            self.fields['tipo'].initial = 'code'
-        elif self.instance.pk and self.instance.tipo == 'code':
-            self.fields['tipo'].disabled = True
-
-        self.fields['codigo'].required = True
-        self.fields['resposta_texto_codigo'].required = True
-
-
 class ExercicioLacunaForm(forms.ModelForm):
     class Meta:
         model = Exercicio

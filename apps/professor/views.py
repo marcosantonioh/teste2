@@ -5,7 +5,6 @@ from django.contrib import messages
 from django.http import Http404
 from apps.exercicios.forms import (
     ExercicioMultiplaEscolhaForm,
-    ExercicioCodigoForm, 
     ExercicioLacunaForm,
     ExercicioVerdadeiroFalsoForm,
 )
@@ -14,7 +13,6 @@ from apps.exercicios.forms import (
 def get_exercicio_form_class(tipo_exercicio):
     form_mapping = {
         'mcq': ExercicioMultiplaEscolhaForm,
-        'code': ExercicioCodigoForm, # Usa o nome correto
         'lacuna': ExercicioLacunaForm, # Adiciona o formulário para o novo tipo 'lacuna'
         'vf': ExercicioVerdadeiroFalsoForm,
         # Adicione outros tipos e seus formulários aqui
