@@ -9,56 +9,8 @@
 
 <div class="container">
     
-  <div class="box lista">
-    <!-- Abas -->
-    <div class="tabs">
-      <button class="tab active" onclick="mostrarAba('segue')">Segue</button>
-      <button class="tab" onclick="mostrarAba('seguidores')">Seguidores</button>
-    </div>
-
-
-    <!-- Conteúdo das Abas -->
-    <div id="segue" class="tab-content active">
-      {% for perfil in seguindo|slice:":3" %}
-        <div class="perfil-item">
-          <img src="{{ perfil.foto.url }}" alt="Foto de {{ perfil.user.username }}"/>
-          <div>
-            <strong>{{ perfil.user.get_full_name }}</strong><br />
-            <span>{{ perfil.pontos }} XP</span>
-          </div>
-        </div>
-      {% empty %}
-        <p>Você não segue ninguém ainda.</p>
-      {% endfor %} 
-      {% if seguindo|length > 3 %}
-        <div class="ver-mais">
-          <a href="#">Ver mais {{ seguindo|length|add:"-3" }}</a>
-        </div>
-      {% endif %}
-    </div>
-
-    <div id="seguidores" class="tab-content">
-      {% for perfil in seguidores|slice:":3" %}
-        <div class="perfil-item">
-          <img src="{{ perfil.foto.url }}" alt="Foto de {{ perfil.user.username }}"/>
-          <div>
-            <strong>{{ perfil.user.get_full_name }}</strong><br />
-            <span>{{ perfil.pontos }} XP</span>
-          </div>
-        </div>
-      {% empty %}
-        <p>Você ainda não tem seguidores.</p>
-      {% endfor %} 
-      {% if seguidores|length > 3 %}
-        <div class="ver-mais">
-          <a href="#">Ver mais {{ seguidores|length|add:"-3" }}</a>
-        </div>
-      {% endif %}
-    </div>
-
-  </div>
-
-
+  <!-- Incluindo o componente de lista de amigos -->
+  {% include "usuarios/_lista_amigos.html" %}
 
   <div class="box adicionar-amigos">
     <h4>Adicionar amigos</h4>
@@ -89,22 +41,7 @@
 
 
 
-<!-- Script de abas -->
 <script>
-  function mostrarAba(id) {
-    document
-      .querySelectorAll(".tab")
-      .forEach((btn) => btn.classList.remove("active"));
-    document
-      .querySelectorAll(".tab-content")
-      .forEach((content) => content.classList.remove("active"));
-
-    document
-      .querySelector(`.tab[onclick="mostrarAba('${id}')"]`)
-      .classList.add("active");
-    document.getElementById(id).classList.add("active");
-  }
-
   function abrirModalConvidar() {
     document.getElementById("modal-convidar").style.display = "block";
   }

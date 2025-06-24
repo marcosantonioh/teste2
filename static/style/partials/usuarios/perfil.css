@@ -7,7 +7,7 @@
   align-items: center;
   justify-content: start;
   /* background-color: rgb(51, 51, 101); */
-  background-color:var(--primary-dark);
+  /* background-color:var(--primary-dark); */
   margin:0 auto ;
   padding: 20px 0px;
   margin-top: 100px;
@@ -22,18 +22,9 @@
   display: flex;
   align-items: start;
   justify-content: space-around;
-  color: var(--white);
+  color: var(--black);
   /* gap: 1em; */
   /* margin-top: 2em; */
-}
-
-.form-group {
-  /* display: flex;
-    align-items: center;
-    justify-content: center; */
-  /* width: 90%;
-    height: 100%; */
-  /* background-color: blue; */
 }
 
 .perfil-photo {
@@ -63,7 +54,7 @@
 }
 
 .name {
-  color: var(--white);
+  color: var(--black);
   font-size: 1.5em;
   font-weight: bold;
 }
@@ -74,6 +65,103 @@
 
 .data {
   display: flex;
+}
+
+/* Estilo para a Bio */
+.content-perfil > .form-group {
+  width: 100%;
+  padding: 0 20px;
+  box-sizing: border-box;
+  margin-top: 10px;
+}
+
+.content-perfil > .form-group p {
+  text-align: center;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* Estilos para as novas seções */
+.section-estatisticas,
+.section-amigos,
+.section-conquistas {
+  width: 100%;
+  margin-top: 30px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  box-sizing: border-box;
+}
+
+.section-estatisticas h2,
+.section-amigos h2,
+.section-conquistas h2 {
+  font-size: 1.5em;
+  color: var(--black);
+  margin-top: 0;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--primary-color-light);
+  text-align: left;
+}
+
+/* Estilização da grade de estatísticas */
+.estatisticas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+}
+
+.stat-item {
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease-in-out;
+  display: flex; /* Habilita flexbox */
+  align-items: center; /* Alinha verticalmente o ícone e o texto */
+  gap: 15px; /* Espaçamento entre o ícone e o bloco de informações */
+}
+
+
+.stat-item h3 {
+  margin: 0; /* Remove margens padrão */
+  font-size: 1em;
+  color: #666;
+  font-weight: 500;
+}
+
+.stat-item p {
+  margin: 0; /* Remove margens padrão */
+  font-size: 1.6em;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+/* Estilo para o container das informações (valor e rótulo) */
+.stat-info {
+  display: flex;
+  flex-direction: column; /* Organiza o valor e o rótulo em coluna */
+  align-items: flex-start; /* Alinha o texto à esquerda dentro da coluna */
+}
+
+.stat-info p {
+  margin-bottom: 5px; /* Espaçamento entre o valor e o rótulo */
+}
+
+/* Estilo para os ícones dentro do stat-item */
+.stat-item img {
+  width: 40px; /* Tamanho fixo para os ícones */
+  height: 40px;
+  object-fit: contain; /* Garante que o ícone se ajuste sem distorcer */
+  flex-shrink: 0; /* Impede que o ícone encolha */
+}
+
+.section-amigos p,
+.section-conquistas p {
+  color: #777;
+  font-style: italic;
 }
 
 /* --- Media Queries para Responsividade --- */
@@ -109,6 +197,12 @@
 
   .name {
     font-size: 1.4em;
+  }
+
+  .section-estatisticas h2,
+  .section-amigos h2,
+  .section-conquistas h2 {
+    text-align: center;
   }
 }
 

@@ -55,6 +55,46 @@
     <div class="form-group">
       <p>{{ perfil.bio }}</p>
     </div>
+
+    <div class="section-estatisticas">
+      <h2>Estatísticas</h2>
+      <div class="estatisticas-grid">
+        <div class="stat-item">
+          <img src="{% static 'img/xp.svg' %}" alt="Ícone de XP">
+          <div class="stat-info">
+            <p>{{ perfil.xp }}</p>
+            <h3>XP Total</h3>
+          </div>
+        </div>
+        <div class="stat-item">
+          <img src="{% static 'img/fire.svg' %}" alt="Ícone de Ofensivas"> {# Adicione este ícone #}
+          <div class="stat-info">
+            <p>{{ perfil.sequencia_dias }}</p>
+            <h3>Sequência</h3>
+          </div>
+        </div>
+        <div class="stat-item">
+          <img src="{% static 'img/rank.svg' %}" alt="Ícone de Liga"> {# Adicione este ícone #}
+          <div class="stat-info">
+            <p>Bronze</p> {# Exemplo de dado, substitua pela lógica real #}
+            <h3>Liga Atual</h3>
+          </div>
+        </div>
+        {# Adicione mais estatísticas aqui conforme necessário #}
+      </div>
+    </div>
+
+    <div class="section-amigos">
+      <h2>Meus Amigos</h2>
+      {# Inclua seu template de amigos aqui. Ex: {% include "amigos.html" %} #}
+      <p>Conteúdo da seção de amigos será carregado aqui.</p>
+    </div>
+
+    <div class="section-conquistas">
+      <h2>Minhas Conquistas</h2>
+      <p>Nenhuma conquista desbloqueada ainda. Continue praticando!</p>
+    </div>
+
   </div>
 
 {% endblock %}

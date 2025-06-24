@@ -13,8 +13,22 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def perfil_view(request):
     # Usar get_object_or_404 é uma prática mais segura e padrão no Django.
-    perfil = get_object_or_404(Perfil, user=request.user)
-    return render(request, 'usuarios/perfil.html', {'perfil': perfil})
+    user = request.user
+    perfil = get_object_or_404(Perfil, user=user)
+    
+    # Lógica para buscar amigos (reutilizada da view 'amigos')
+    amizades = Amizade.objects.filter(
+        (Q(remetente=user) | Q(destinatario=user)) & 
+        Q(status='aceita')
+    )
+    amigos = []
+    for amizade in amizades:
+        if amizade.remetente == user:
+            amigos.append(amizade.destinatario)
+        else:
+            amigos.append(amizade.remetente)
+            
+    return render(request, 'usuarios/perfil.html', {'perfil': perfil, 'amigos': amigos})
 
 
 @login_required
