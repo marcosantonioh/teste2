@@ -1,97 +1,179 @@
 @import url("/static/style/global/global.css");
 
+/* --- Main Container --- */
 .content-perfil {
-  width: 70%;
+  max-width: 900px;
+  margin: 100px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: start;
-  /* background-color: rgb(51, 51, 101); */
-  /* background-color:var(--primary-dark); */
-  margin:0 auto ;
-  padding: 20px 0px;
-  margin-top: 100px;
-  border-radius: 10px;
+  gap: 30px; /* Espaçamento entre as seções principais */
 }
 
+/* --- Header Section --- */
 .head {
-  /* background-color: aqua; */
   width: 100%;
-  margin: 0;
-  padding: 0;
+  padding: 20px;
   display: flex;
-  align-items: start;
-  justify-content: space-around;
-  color: var(--black);
-  /* gap: 1em; */
-  /* margin-top: 2em; */
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 40px;
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .perfil-photo {
-  top: 0;
-  width: 30%;
-  /* background-color: rgb(238, 106, 106); */
-  display: flex;
-  justify-content: end;
+  flex-shrink: 0;
 }
+
 .perfil-photo img {
-  width: 50%;
-  height: auto;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--primary-color-light);
 }
-
-
-
 
 .parte2 {
-  /* background-color: brown; */
-  width: 60%;
-  height: 100%;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  align-items: start;
-  justify-content: center;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.head-actions {
+  display: flex;
+  align-items: center;
+}
+
+/* --- Name and XP --- */
+.name-xp-group {
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+  gap: 10px;
 }
 
 .name {
   color: var(--black);
   font-size: 1.5em;
   font-weight: bold;
+  margin: 0;
 }
 
-.seguidores .box {
+.xp {
+  color: var(--primary-color);
+  font-weight: 600;
+  font-size: 1.1em;
+}
+
+.name p, .xp p {
+  margin: 0;
+}
+
+/* --- Followers and Date --- */
+.seguidores {
   display: flex;
+  gap: 20px;
+  color: #555;
+}
+
+.seguidores p, .data p {
+    margin: 0;
 }
 
 .data {
-  display: flex;
+  color: #777;
+  font-size: 0.9em;
 }
 
-/* Estilo para a Bio */
-.content-perfil > .form-group {
+/* --- Edit Profile Buttons --- */
+/* Botão de texto para Desktop */
+.btn-editar-perfil {
+  display: inline-block; /* Visível por padrão */
+  background-color: var(--white);
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  padding: 8px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-editar-perfil:hover {
+  background-color: var(--primary-color);
+  color: var(--white);
+}
+
+/* Botão de ícone para Responsivo */
+.btn-editar-perfil-icon {
+  display: none; /* Escondido por padrão */
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--white);
+  /* border: 1px solid var(--primary-color); */
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+}
+
+.btn-editar-perfil-icon:active {
+  transform: scale(0.95); /* Efeito de clique no próprio botão */
+}
+
+.btn-editar-perfil-icon img {
+  width: 34px; /* Tamanho mais apropriado para o padding */
+  height: 34px;
+  transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out;
+}
+
+/* Aplica a rotação e muda a cor do ícone para branco no hover e no active */
+.btn-editar-perfil-icon:hover img,
+.btn-editar-perfil-icon:active img {
+  transform: rotate(45deg);
+}
+
+/* --- Bio Section --- */
+.bio {
   width: 100%;
-  padding: 0 20px;
+  padding: 10px;
   box-sizing: border-box;
-  margin-top: 10px;
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
 }
 
-.content-perfil > .form-group p {
+.bio p {
   text-align: center;
   color: #555;
   line-height: 1.6;
+  margin: 0;
 }
 
-/* Estilos para as novas seções */
+/* --- Generic Sections (Stats, Friends, Achievements) --- */
 .section-estatisticas,
 .section-amigos,
 .section-conquistas {
   width: 100%;
-  margin-top: 30px;
   padding: 20px;
   background-color: #f9f9f9;
   border-radius: 8px;
   border: 1px solid #e0e0e0;
   box-sizing: border-box;
+  
+}
+
+.section-amigos{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .section-estatisticas h2,
@@ -106,10 +188,10 @@
   text-align: left;
 }
 
-/* Estilização da grade de estatísticas */
+/* --- Statistics Grid --- */
 .estatisticas-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 20px;
 }
 
@@ -118,85 +200,88 @@
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s ease-in-out;
-  display: flex; /* Habilita flexbox */
-  align-items: center; /* Alinha verticalmente o ícone e o texto */
-  gap: 15px; /* Espaçamento entre o ícone e o bloco de informações */
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
+.stat-item img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
 
-.stat-item h3 {
-  margin: 0; /* Remove margens padrão */
+.stat-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.stat-info p {
+  margin: 0 0 5px 0;
+  font-size: 1.6em;
+  font-weight: 700;
+  color: var(--black);
+}
+
+.stat-info h3 {
+  margin: 0;
   font-size: 1em;
   color: #666;
   font-weight: 500;
 }
 
-.stat-item p {
-  margin: 0; /* Remove margens padrão */
-  font-size: 1.6em;
-  font-weight: 700;
-  color: var(--primary-color);
-}
-
-/* Estilo para o container das informações (valor e rótulo) */
-.stat-info {
-  display: flex;
-  flex-direction: column; /* Organiza o valor e o rótulo em coluna */
-  align-items: flex-start; /* Alinha o texto à esquerda dentro da coluna */
-}
-
-.stat-info p {
-  margin-bottom: 5px; /* Espaçamento entre o valor e o rótulo */
-}
-
-/* Estilo para os ícones dentro do stat-item */
-.stat-item img {
-  width: 40px; /* Tamanho fixo para os ícones */
-  height: 40px;
-  object-fit: contain; /* Garante que o ícone se ajuste sem distorcer */
-  flex-shrink: 0; /* Impede que o ícone encolha */
-}
-
+/* --- Friends & Achievements Placeholder --- */
 .section-amigos p,
 .section-conquistas p {
   color: #777;
   font-style: italic;
 }
 
-/* --- Media Queries para Responsividade --- */
 
+/* --- Media Queries for Responsiveness --- */
+
+/* For tablets and smaller devices */
 @media (max-width: 768px) {
   .content-perfil {
-    width: 90%;
-    margin-top: 80px; /* Espaço para a barra de status superior fixa */
+    margin: 20px;
     padding: 20px 15px;
   }
 
   .head {
-    flex-direction: column; /* Empilha a foto e as informações */
-    align-items: center;   /* Centraliza os itens empilhados */
-    gap: 2em;              /* Espaço entre a foto e as informações */
-  }
-
-  .perfil-photo {
-    width: 50%; /* Aumenta a área da foto */
-    max-width: 150px; /* Limita o tamanho máximo da foto */
-    justify-content: center; /* Centraliza a imagem */
-  }
-
-  .perfil-photo img {
-    width: 100%; /* A imagem ocupa todo o espaço do container .perfil-photo */
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 15px;
   }
 
   .parte2 {
     width: 100%;
-    align-items: center; /* Centraliza o conteúdo (nome, seguidores, etc.) */
-    text-align: center;  /* Centraliza o texto dentro dos elementos */
+    align-items: center;
+    text-align: center;
+  }
+
+  .name-xp-group {
+    flex-direction: row;
+    justify-content: center;
   }
 
   .name {
     font-size: 1.4em;
+  }
+  
+  .seguidores {
+    justify-content: center;
+  }
+
+  /* Swap buttons */
+  .btn-editar-perfil {
+    display: none;
+  }
+
+  .btn-editar-perfil-icon {
+    display: flex;
   }
 
   .section-estatisticas h2,
@@ -204,11 +289,43 @@
   .section-conquistas h2 {
     text-align: center;
   }
+
+  /* Responsive Statistics Grid */
+  .estatisticas-grid {
+    grid-template-columns: 1fr 1fr; /* Força duas colunas */
+    gap: 15px;
+  }
+
+  /* Faz o terceiro item (Liga) ocupar a largura total, ficando abaixo */
+  .estatisticas-grid .stat-item:nth-child(3) {
+    grid-column: 1 / -1;
+  }
 }
 
+/* For mobile phones */
 @media (max-width: 480px) {
   .content-perfil {
-    width: 95%;
-    margin-top: 75px; /* Ajuste fino para a barra superior */
+    margin: 10px;
+    padding: 10px;
+  }
+
+  .head {
+    gap: 15px;
+  }
+
+  .perfil-photo img {
+    width: 100px;
+    height: 100px;
+  }
+
+  /* Stack all stat items in a single column on very small screens */
+  .estatisticas-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  /* Reset the grid-column for the third item since it's now single column */
+  .estatisticas-grid .stat-item:nth-child(3) {
+    grid-column: auto;
   }
 }

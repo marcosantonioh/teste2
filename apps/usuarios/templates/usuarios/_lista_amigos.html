@@ -10,8 +10,7 @@
 
   <!-- Conteúdo das Abas -->
   <div id="segue" class="tab-content active">
-    {% for amigo in amigos|slice:":3" %} {# Alterado para usar a lista 'amigos'
-    #}
+    {% for amigo in amigos|slice:":3" %} 
     <div class="perfil-item">
       <img
         src="{{ amigo.perfil.foto.url|default:'/static/img/default.png' }}"
@@ -23,7 +22,13 @@
       </div>
     </div>
     {% empty %}
-    <p>Você não segue ninguém ainda.</p>
+
+    <div class="info">
+      <img src="/static/img/cacto.svg" alt="" class="sad-mascote" />
+      <p>Você não segue ninguém ainda.</p>
+    </div>
+    
+
     {% endfor %} {% if amigos|length > 3 %}
     <div class="ver-mais">
       <a href="{% url 'usuarios:amigos' %}"
@@ -34,8 +39,7 @@
   </div>
 
   <div id="seguidores" class="tab-content">
-    {# A lógica de seguidores precisaria ser passada separadamente se for
-    diferente da lista de amigos #} {% for amigo in amigos|slice:":3" %}
+    {% for amigo in amigos|slice:":3" %}
     <div class="perfil-item">
       <img
         src="{{ amigo.perfil.foto.url|default:'/static/img/default.png' }}"
@@ -47,7 +51,13 @@
       </div>
     </div>
     {% empty %}
-    <p>Você ainda não tem seguidores.</p>
+
+     <div class="info">
+      <img src="/static/img/cacto.svg" alt="" class="sad-mascote" />
+      <p>Você ainda não tem seguidores.</p>
+    </div>
+    
+
     {% endfor %} {% if amigos|length > 3 %}
     <div class="ver-mais">
       <a href="{% url 'usuarios:amigos' %}"

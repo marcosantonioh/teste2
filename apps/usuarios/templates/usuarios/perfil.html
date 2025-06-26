@@ -6,6 +6,10 @@
   rel="stylesheet"
   href="{% static 'style/partials/usuarios/perfil.css' %}"
 />
+<link
+  rel="stylesheet"
+  href="{% static 'style/partials/usuarios/amigos.css' %}"
+/>
 
 {% block content %}
 
@@ -22,39 +26,49 @@
       </div>
 
       <div class="parte2">
-        <div class="form-group name">
-          <p>{{ user.username }}</p>
-        </div>
+        <div class="name-xp-group"> {# Novo wrapper para nome e XP #}
+          <div class="form-group name">
+            <p>{{ user.username }}</p>
+          </div>
 
-        <div class="form-group xp">
-          <p>{{ perfil.xp }} XP</p>
+          <div class="form-group xp">
+            <p>{{ perfil.xp }} XP</p>
+          </div>
         </div>
 
         <!-- Seguidores e Seguidos -->
         <div class="form-group seguidores">
-          <div class="box">
+          <div class="seguidores-item">
             <p>Seguidos {{ perfil.seguidos }}</p>
           </div>
 
-          <div class="box">
+          <div class="seguidores-item">
             <p>Seguidores {{ perfil.seguidores }}</p>
           </div>
         </div>
 
         <!-- Data de Início -->
         <div class="form-group data">
-          <p>Data de Início {{ perfil.data_inicio|date:"d/m/Y" }}</p>
+          <p>Desde {{ perfil.data_inicio|date:"d/m/Y" }}</p>
           <!-- Formato de data e hora -->
         </div>
       </div>
+      
+      <div class="head-actions">
+        <a href="{% url 'usuarios:editar_perfil' %}" class="btn-editar-perfil">Editar Perfil</a>
+        {# Botão de Editar Perfil (Responsivo - Ícone) #}
+        <a href="{% url 'usuarios:editar_perfil' %}" class="btn-editar-perfil-icon"><img src="{% static 'img/settings.svg' %}" alt="Editar Perfil"></a>
+      </div>
 
-      <!-- </div> -->
-    </div>
+      <!-- Bio -->
+      {% if perfil.bio and perfil.bio != "None"%}
+        <div class="bio">
+          <p>{{ perfil.bio }}</p>
+        </div>
+      {% endif %}
 
-    <!-- Bio -->
-    <div class="form-group">
-      <p>{{ perfil.bio }}</p>
-    </div>
+    </div> 
+
 
     <div class="section-estatisticas">
       <h2>Estatísticas</h2>
@@ -85,9 +99,8 @@
     </div>
 
     <div class="section-amigos">
-      <h2>Meus Amigos</h2>
-      {# Inclua seu template de amigos aqui. Ex: {% include "amigos.html" %} #}
-      <p>Conteúdo da seção de amigos será carregado aqui.</p>
+      <h2>Amigos</h2>
+      {% include "usuarios/_lista_amigos.html" %}
     </div>
 
     <div class="section-conquistas">
