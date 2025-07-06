@@ -32,6 +32,34 @@ def perfil_view(request):
 
 
 @login_required
+def ver_perfil_usuario(request, username):
+    """
+    Exibe o perfil de um usuário, respeitando sua configuração de privacidade.
+    """
+    # Busca o usuário pelo username ou retorna 404 se não existir.
+    perfil_usuario = get_object_or_404(User, username=username)
+    perfil = get_object_or_404(Perfil, user=perfil_usuario)
+
+    # Se o usuário logado está tentando ver seu próprio perfil, redireciona para a view padrão.
+    if request.user == perfil_usuario:
+        return redirect('usuarios:perfil_usuario')
+
+    # Verifica a configuração de visibilidade do perfil.
+    if perfil.visibilidade == 'privado':
+        # Se for privado, renderiza uma página informando sobre a privacidade.
+        return render(request, 'usuarios/perfil_privado.html', {'perfil': perfil})
+
+    # Se for público, busca os amigos e exibe o perfil completo.
+    # (Esta lógica é a mesma da 'perfil_view', mas para o usuário visualizado)
+    amizades = Amizade.objects.filter(
+        (Q(remetente=perfil_usuario) | Q(destinatario=perfil_usuario)) & Q(status='aceita')
+    )
+    amigos = [amz.remetente if amz.destinatario == perfil_usuario else amz.destinatario for amz in amizades]
+
+    return render(request, 'usuarios/perfil.html', {'perfil': perfil, 'amigos': amigos})
+
+
+@login_required
 def editar_perfil(request):
     perfil = get_object_or_404(Perfil, user=request.user)
 
@@ -78,6 +106,7 @@ def cadastrar_usuario(request):
         password = request.POST["password"]
         password2 = request.POST["password2"]
         foto = request.FILES.get("foto")  # pega a imagem enviada no form
+        visibilidade_choice = request.POST.get('visibilidade') # Captura a escolha de privacidade
 
         
         
@@ -100,8 +129,11 @@ def cadastrar_usuario(request):
         user = User.objects.create_user(username=username, email=email, password=password)
         user.save()
 
+        # Define o status de visibilidade com base na escolha do usuário
+        visibilidade_status = 'privado' if visibilidade_choice == 'privado' else 'publico'
+
         # Criar o perfil associado ao usuário e com foto se tiver
-        Perfil.objects.create(user=user, foto=foto)
+        Perfil.objects.create(user=user, foto=foto, visibilidade=visibilidade_status)
 
         
         

@@ -73,7 +73,13 @@
             <i class="bx bx-lock"></i>
           </div>
         </div>
-        <button>Cadastrar</button>
+
+        <label class="custom-checkbox-container">Manter meu perfil privado
+          <input type="checkbox" id="visibilidade" name="visibilidade" value="privado">
+          <span class="checkmark"></span>
+        </label>
+
+        <button class="cadastro">Cadastrar</button>
         <div class="text">
           <a class="register" href="{% url 'usuarios:login_usuario' %}"
             >Já possui uma conta? Entrar</a
