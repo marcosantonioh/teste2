@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 
 def landing_page(request):
+    if request.user.is_authenticated:
+        print("⚠️ Usuário logado:", request.user.username)
     return render(request, 'landing.html')
 
 
