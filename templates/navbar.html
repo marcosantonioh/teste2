@@ -93,6 +93,26 @@
 
     <div class="content">{% block content %} {% endblock %}</div>
 
+    <!-- Barra de Navegação Inferior para Mobile -->
+    <nav class="bottom-navbar">
+      <a href="{% url 'exercicios:modulos' %}" class="bottom-nav-link {% if request.resolver_match.view_name == 'exercicios:modulos' %}active{% endif %}">
+        <i class='bx bxs-home'></i>
+        <span>Aprender</span>
+      </a>
+      <a href="{% url 'ranking:ranking' %}" class="bottom-nav-link {% if request.resolver_match.view_name == 'ranking:ranking' %}active{% endif %}">
+        <i class='bx bxs-bar-chart-alt-2'></i>
+        <span>Ranking</span>
+      </a>
+      <a href="{% url 'desafios:desafios' %}" class="bottom-nav-link {% if request.resolver_match.view_name == 'desafios:desafios' %}active{% endif %}">
+        <i class='bx bxs-trophy'></i>
+        <span>Desafios</span>
+      </a>
+      <a href="{% url 'usuarios:perfil_usuario' %}" class="bottom-nav-link {% if request.resolver_match.view_name == 'usuarios:perfil_usuario' or request.resolver_match.view_name == 'usuarios:editar_perfil' %}active{% endif %}">
+        <i class='bx bxs-user'></i>
+        <span>Perfil</span>
+      </a>
+    </nav>
+
     <script src="{% static 'js/dropdown.js' %}"></script>
   </body>
 </html>

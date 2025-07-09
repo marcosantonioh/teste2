@@ -239,112 +239,71 @@ body {
   cursor: pointer;
 }
 
-/* --- Media Queries for Responsividade --- */
 
+
+
+/* Por padrão, a barra inferior fica escondida em telas grandes */
+.bottom-navbar {
+  display: none;
+}
+
+/* Media Query para telas mobile (ex: 768px ou menos) */
 @media (max-width: 768px) {
-  /* Adjust body padding to prevent navbottom from overlapping content */
-  body {
-    padding-top: 55px; /* Space for the fixed user-stats bar */
-    padding-bottom: 60px; /* Adjust based on navbottom height */
-  }
-
+  /* Esconde a barra de navegação superior original */
   .navbar {
-    top: auto; /* Remove fixed top */
-    bottom: 0; /* Fix to bottom */
-    padding: 5px 10px; /* Smaller padding for navbottom */
-    justify-content: space-around; /* Distribute items evenly */
-    border-top: solid 1px rgba(0, 0, 0, 0.1); /* Border on top */
-    border-bottom: none; /* No bottom border */
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Shadow on top */
+    display: none;
   }
 
-  .navbar .logo-container {
-    display: none; /* Hide logo on mobile */
-  }
-
-  .navbar .box-links {
-    flex-grow: 1; /* Allow links to take available space */
-    justify-content: space-around; /* Distribute links evenly */
-    gap: 0; /* Let space-around handle spacing, or set a small explicit gap */
-    padding: 0;
-  }
-
-  .navbar .box-links li a {
-    font-size: 0.7rem; /* Smaller font size for navbottom items */
-    font-weight: 400;
-    padding: 8px 5px; /* Adjust padding for touch targets */
+  /* Mostra e estiliza a nova barra de navegação inferior */
+  .bottom-navbar {
     display: flex;
-    flex-direction: column; /* Stack icon (if any) and text */
+    justify-content: space-around;
     align-items: center;
-    line-height: 1.2;
-    /* If you add icons, they would go here, e.g., as <i> or <img> tags */
-  }
-
-  .navbar .auth-buttons {
-    gap: 10px; /* Reduce gap for auth buttons */
-    padding: 0;
-  }
-
-  .navbar .btn {
-    padding: 6px 12px; /* Smaller buttons */
-    font-size: 0.8rem;
-  }
-
-  .navbar .user-profile {
-    gap: 5px;
-    position: static; /* Reverte o posicionamento relativo no mobile, pois o layout muda */
-  }
-
-  .navbar .user-profile .user-stats {
-    /* display: none; REMOVED - This will now be the top bar */
     position: fixed;
-    top: 0;
+    bottom: 0;
     left: 0;
     width: 100%;
-    background-color: var(--white);
-    padding: 10px 15px; /* Adjusted padding for a top bar */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    z-index: 1001; /* Ensure it's above the navbottom */
+    height: 65px; /* Altura da barra */
+    background-color: #ffffff;
+    border-top: 1px solid #e0e0e0;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
+    z-index: 1000; /* Garante que fique acima de outro conteúdo */
+  }
+
+  /* Estilo para cada link/botão na barra inferior */
+  .bottom-nav-link {
     display: flex;
-    justify-content: space-around; /* Distribute stats items */
+    flex-direction: column; /* Empilha o ícone e o texto verticalmente */
     align-items: center;
-    gap: 20px; /* Reduced gap for mobile */
-    box-sizing: border-box;
+    justify-content: center;
+    text-decoration: none;
+    color: #888888; /* Cor para ícones inativos */
+    flex-grow: 1; /* Faz com que cada link ocupe o mesmo espaço */
+    height: 100%;
+    transition: color 0.2s ease;
   }
 
-  .navbar .user-profile .user-stats .group p {
-    font-size: 1.4em; /* Adjusted for top bar */
-  }
-  .navbar .user-profile .user-stats .group img {
-    width: 1.8em; /* Adjusted for top bar */
-    height: 1.8em;
+  /* Estilo para o ícone */
+  .bottom-nav-link i {
+    font-size: 24px; /* Tamanho do ícone */
+    margin-bottom: 4px; /* Espaço entre o ícone e o texto */
   }
 
-  .navbar .user-profile .user {
-    padding: 5px;
-    border: none; /* Cleaner look for navbottom */
-    gap: 0;
+  /* Estilo para o texto abaixo do ícone */
+  .bottom-nav-link span {
+    font-size: 12px; /* Tamanho da fonte do texto */
+    font-weight: 500;
   }
 
-  .navbar .user-profile .user img {
-    width: 2em; /* Avatar size */
-    height: 2em;
+  /* Estilo para o link ativo (pode ser implementado com JS ou lógica de template) */
+  .bottom-nav-link.active {
+    color: var(--primary-color); /* Cor de destaque para o link da página atual */
   }
 
-  .navbar .user-profile .user span {
-    display: none; /* Hide username, icon is enough */
-  }
-
-  .navbar .dropdown-menu {
-    top: auto;
-    bottom: calc(100% + 5px); /* Position above the user icon/navbottom */
-    right: 5px; /* Align to the right edge of the screen or parent */
-    left: auto;
-    width: 200px; /* Or adjust as needed, e.g., 90vw for wider menu */
-    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.15);
-  }
-
-  .navbar .menu-toggle {
-    display: none; /* Assuming this is for a desktop sidebar, not used in navbottom */
+  /* Adiciona um espaçamento na parte inferior do corpo da página
+     para que o conteúdo não seja escondido pela barra de navegação fixa */
+  body {
+    padding-bottom: 70px; /* Um pouco mais que a altura da barra */
   }
 }
+
