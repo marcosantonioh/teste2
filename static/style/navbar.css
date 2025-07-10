@@ -33,31 +33,30 @@ body {
   font-size: 1rem;
   cursor: pointer;
 
-  a {
-    text-decoration: none;
-  }
+}
 
-  .logo {
-    color: var(primary-color);
-  }
+.logo-container a {
+  text-decoration: none;
+}
+
+.logo-container .logo {
+  color: var(--primary-color);
 }
 
 .box-links {
   display: flex;
   gap: 50px;
   /* background-color: #8ac7bb; */
+}
 
-  & li {
-    list-style: none;
-
-    & a {
-      text-decoration: none;
-      color: #141414;
-      font-size: 1.2rem;
-      font-weight: 500;
-
-    }
-  }
+.box-links li {
+  list-style: none;
+}
+.box-links li a {
+  text-decoration: none;
+  color: #141414;
+  font-size: 1.2rem;
+  font-weight: 500;
 }
 
 .auth-buttons {
@@ -114,12 +113,11 @@ body {
   text-align: center;
   position: relative; /* Para ser o contexto de posicionamento para dropdowns aninhados (desktop) */
   /* background-color: #8ac7bb; */
-
-  & a {
-    text-decoration: none;
-    color: #141414;
-    font-size: 1rem;
-  }
+}
+.user-profile a {
+  text-decoration: none;
+  color: #141414;
+  font-size: 1rem;
 }
 
 .user-stats {
@@ -134,28 +132,27 @@ body {
   /* background-color: #16a085; */
   padding: 0 10px; 
   box-sizing: border-box; 
+}
+.user-stats p {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.5em;
+  font-weight: bold;
+}
 
-  & p {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 1.5em;
-    font-weight: bold;
-  }
+.user-stats img {
+  width: 1.5em;
+}
 
-  & img {
-    width: 1.5em;
-  }
-
-  & .group {
-    display: flex;
-    /* background-color: rgb(143, 115, 79); */
-    flex-direction: row;
-    gap: 5px;
-    align-items: center;
-    text-decoration: none;
-    color: var(--black);
-    font-size: 1rem;
-    text-align: center;
-  }
+.user-stats .group {
+  display: flex;
+  /* background-color: rgb(143, 115, 79); */
+  flex-direction: row;
+  gap: 5px;
+  align-items: center;
+  text-decoration: none;
+  color: var(--black);
+  font-size: 1rem;
+  text-align: center;
 }
 .dropdown {
   position: relative;
@@ -193,16 +190,15 @@ body {
   gap: 10px;
   /* background-color: aqua; */
   padding: 5px 10px;
-
-  & img {
-    width: 2em;
-  }
-
-  & span {
-    font-size: 1em;
-  }
 }
 
+.user img {
+  width: 2em;
+}
+
+.user span {
+  font-size: 1em;
+}
 .option {
   display: flex;
   width: 100%;
@@ -249,10 +245,54 @@ body {
 
 /* Media Query para telas mobile (ex: 768px ou menos) */
 @media (max-width: 768px) {
-  /* Esconde a barra de navegação superior original */
+  /* Mantém a barra de navegação superior visível e a torna responsiva */
   .navbar {
+    padding: 10px 15px; /* Aumenta a altura */
+    justify-content: center; /* Centraliza o conteúdo restante (stats) */
+  }
+
+  /* Esconde os links de navegação principais para evitar redundância com a barra inferior */
+  .navbar .box-links {
     display: none;
   }
+  .logo-container{
+    display: none;
+  }
+  .auth-buttons{
+    display: none; /* Esconde os botões de autenticação na barra superior */
+  }
+
+  /* Esconde a área de perfil/login, mantendo apenas as estatísticas */
+  .navbar .dropdown {
+    display: none;
+  }
+
+  .user-profile{
+    width: 100%; 
+  }
+
+  /* Ajusta o espaçamento das estatísticas do usuário */
+  .user-stats {
+    display: flex;
+    justify-content: space-around; /* Distribui os 3 itens uniformemente */
+    align-items: center;
+    width: 100%;
+    padding: 0; /* Remove padding para dar mais espaço aos itens */
+    box-sizing: border-box;
+    font-size: 0.9em;
+    gap: 10px; /* Adiciona um espaçamento mínimo entre os itens */
+  }
+
+  .user-stats .group {
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    padding: 5px 10px; /* Padding horizontal reduzido para caber na tela */
+  }
+
+  .user-stats img {
+    width: 1.8em; /* Ícones um pouco menores para mobile */
+  }
+
 
   /* Mostra e estiliza a nova barra de navegação inferior */
   .bottom-navbar {
@@ -277,7 +317,7 @@ body {
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    color: #888888; /* Cor para ícones inativos */
+    color: #272727; /* Cor para ícones inativos */
     flex-grow: 1; /* Faz com que cada link ocupe o mesmo espaço */
     height: 100%;
     transition: color 0.2s ease;
@@ -303,7 +343,7 @@ body {
   /* Adiciona um espaçamento na parte inferior do corpo da página
      para que o conteúdo não seja escondido pela barra de navegação fixa */
   body {
-    padding-bottom: 70px; /* Um pouco mais que a altura da barra */
+    padding-top: 65px; /* Espaço ajustado para a navbar superior fixa */
+    padding-bottom: 70px; /* Espaço para a navbar inferior fixa */
   }
 }
-
