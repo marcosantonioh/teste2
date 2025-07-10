@@ -157,7 +157,8 @@ def login_usuario(request):
             login(request, user)
             return redirect("exercicios:modulos")  # Redirecione para a página desejada
         else:
-            messages.error(request, "Usuário ou senha incorretos.")
+            messages.error(request, "Usuário ou senha incorretos.", extra_tags="login")
+
     return render(request, "usuarios/login.html")
 
 
@@ -272,15 +273,16 @@ def solicitacoes_pendentes(request):
     return render(request, "usuarios/solicitacoes.html", {"pendentes": pendentes})
 
 
+
 @require_POST
 def remover_amigo(request, amigo_id):
     Amizade.objects.filter(
         Q(remetente=request.user, destinatario_id=amigo_id) |
         Q(remetente_id=amigo_id, destinatario=request.user),
-        status='aceita'
+        status__in=['aceita', 'pendente']  # inclui pendente também
     ).delete()
-    messages.success(request, "Amizade removida.")
-    return redirect("usuarios:lista_amigos")
+    messages.success(request, "Solicitação ou amizade removida.")
+    return redirect("usuarios:amigos")
 
 
 

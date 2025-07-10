@@ -15,7 +15,7 @@
             <!-- Barra de search (adicionar aqui a implementação da barra) -->
             <form method="get" action="{% url 'usuarios:encontrar_amigos' %}" class="search-container">
                 <img src="/static/img/lupa.svg" alt="lupa" class="search-icon">
-                <input type="text" name="q" placeholder="Pesquisar amigos..." value="{{ query|default_if_none:'' }}">
+                <input autocomplete="off" type="text" name="q" placeholder="Pesquisar amigos..." value="{{ query|default_if_none:'' }}">
             </form>
         </div>
     </div>
@@ -29,28 +29,34 @@
                     <h3>Resultados da busca: {{resultados|length}}</h3>
                     <ul>
                     {% for item in resultados %}
-                        <li class="resultado-item">
-                            {% if item.usuario.perfil.foto %}
-                                <img src="{{ item.usuario.perfil.foto.url }}" alt="Foto" width="40" height="40">
-                            {% else %}
-                                <img src="{% static 'img/default.png' %}" alt="Foto padrão" width="40" height="40">
-                            {% endif %}
-                            <strong>{{ item.usuario.username }}</strong> 
-                            <!-- <em>Status: {{ item.status }}</em> -->
+                    <li class="resultado-item">
+                        {% if item.usuario.perfil.foto %}
+                            <img src="{{ item.usuario.perfil.foto.url }}" alt="Foto" width="40" height="40">
+                        {% else %}
+                            <img src="{% static 'img/default.png' %}" alt="Foto padrão" width="40" height="40">
+                        {% endif %}
+                        <strong>{{ item.usuario.username }}</strong>
 
+                        <div class="friendship-status-container" id="friendship-status-{{ item.usuario.id }}">
                             {% if item.status == 'nenhum' %}
-                                <form method="post" action="{% url 'usuarios:enviar_solicitacao' item.usuario.id %}">
+                                <form method="post" action="{% url 'usuarios:enviar_solicitacao' item.usuario.id %}" class="form-amizade form-seguir">
                                     {% csrf_token %}
                                     <input type="hidden" name="query_original" value="{{ query }}">
-                                    <button type="submit">Seguir</button>
+                                    <button type="submit" class="btn-seguir">Seguir</button>
                                 </form>
                             {% elif item.status == 'pendente' %}
-                                <span>Solicitação pendente</span>
+                                <form method="post" action="{% url 'usuarios:remover_amigo' item.usuario.id %}" class="form-amizade form-cancelar">
+                                    {% csrf_token %}
+                                    <button type="button" class="btn-pendente btn-cancelar-solicitacao" data-user-id="{{ item.usuario.id }}">
+                                        Solicitação pendente
+                                    </button>
+                                </form>
                             {% elif item.status == 'aceita' %}
-                                <span>Já são amigos</span>
+                                <span class="amigo-confirmado">Já são amigos</span>
                             {% endif %}
-                        </li>
-                    {% endfor %}
+                        </div>
+                    </li>
+                {% endfor %}
                     </ul>
                 </div>
             {% elif query %}

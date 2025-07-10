@@ -18,17 +18,20 @@
         <h3>Login</h3>
 
         {% if messages %}
-        <ul class="messages">
-          {% for message in messages %}
-          <li class="message-alert {{ message.tags }}">{{ message }}</li>
-          {% endfor %}
-        </ul>
+          <ul class="messages">
+            {% for message in messages %}
+              {% if 'login' in message.tags %}
+                <li class="message-alert {{ message.tags }}">{{ message }}</li>
+              {% endif %}
+            {% endfor %}
+          </ul>
         {% endif %}
 
         <div class="input-box">
           <label for="username">Nome</label>
           <div class="input-icon">
             <input
+              autocomplete="off"
               type="text"
               placeholder="Nome ou E-mail"
               name="username"
@@ -42,6 +45,7 @@
           <label for="password">Senha</label>
           <div class="input-icon-password">
             <input
+              autocomplete="off"
               type="password"
               placeholder="Digite sua senha"
               name="password"

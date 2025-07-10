@@ -52,7 +52,7 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
-    gap: 5em;
+    gap: 2em;
     width: 80%;
     height: auto;
     padding: 0em 1em;
@@ -68,7 +68,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 50%;
+    width: 60%;
     height: 100%;
     /* background-color: blueviolet; */
     box-sizing: border-box; 
@@ -92,11 +92,12 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 50%;
-    height: 100%;
+    align-self: flex-start;
+    width: 40%;
+    height: 200px;
     /* background-color: rgb(56, 16, 93); */
     box-sizing: border-box;
-
+    position: sticky;
 }
 
 .right h2{
@@ -195,4 +196,31 @@
   font-size: 0.95rem;
   color: #4caf50;
   font-weight: 500;
+}
+
+
+.form-amizade {
+    display: inline;
+}
+
+.btn-seguir {
+    background-color: #3498db;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.resultado-item .btn-pendente {
+    background-color: #f1c40f;
+    color: #333;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.resultado-item .btn-pendente:hover {
+    background-color: #e0b70e;
 }
