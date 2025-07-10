@@ -13,8 +13,10 @@
 
         <div class="search-container">
             <!-- Barra de search (adicionar aqui a implementação da barra) -->
-            <img src="/static/img/lupa.svg" alt="lupa" class="search-icon">
-            <input type="text" placeholder="Pesquisar amigos...">
+            <form method="get" action="{% url 'usuarios:encontrar_amigos' %}" class="search-container">
+                <img src="/static/img/lupa.svg" alt="lupa" class="search-icon">
+                <input type="text" name="q" placeholder="Pesquisar amigos..." value="{{ query|default_if_none:'' }}">
+            </form>
         </div>
     </div>
 
@@ -22,8 +24,41 @@
     <div class="box2">
 
         <div class="left">
-            <img src="/static/img/equipe.svg" alt="equipe" >
-            <h2>Aprender é mais divertido e eficaz quando a gente se junta!</h2>
+            {% if resultados %}
+                <div class="resultados">
+                    <h3>Resultados da busca: {{resultados|length}}</h3>
+                    <ul>
+                    {% for item in resultados %}
+                        <li class="resultado-item">
+                            {% if item.usuario.perfil.foto %}
+                                <img src="{{ item.usuario.perfil.foto.url }}" alt="Foto" width="40" height="40">
+                            {% else %}
+                                <img src="{% static 'img/default.png' %}" alt="Foto padrão" width="40" height="40">
+                            {% endif %}
+                            <strong>{{ item.usuario.username }}</strong> 
+                            <!-- <em>Status: {{ item.status }}</em> -->
+
+                            {% if item.status == 'nenhum' %}
+                                <form method="post" action="{% url 'usuarios:enviar_solicitacao' item.usuario.id %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="query_original" value="{{ query }}">
+                                    <button type="submit">Seguir</button>
+                                </form>
+                            {% elif item.status == 'pendente' %}
+                                <span>Solicitação pendente</span>
+                            {% elif item.status == 'aceita' %}
+                                <span>Já são amigos</span>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            {% elif query %}
+                <p>Nenhum usuário encontrado para "{{ query }}"</p>
+            {% else %}
+                <img src="/static/img/equipe.svg" alt="equipe" >
+                <h2>Aprender é mais divertido e eficaz quando a gente se junta!</h2>
+            {% endif %}
         </div>
 
         <div class="right">
@@ -40,6 +75,7 @@
         
     </div>
 
+    
 </div>
 
 

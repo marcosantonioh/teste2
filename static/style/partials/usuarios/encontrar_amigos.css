@@ -24,26 +24,26 @@
 .search-container {
     position: relative;
     width: 100%;
-    max-width: 300px; /* ou o tamanho que quiser */
-    margin-top: 2em;
+    max-width: 500px; /* ou o tamanho que quiser */
+    margin-top: 3em;
 }
 
 .search-container input {
     width: 100%;
-    padding: 10px 10px 10px 35px; /* espaço à esquerda pro ícone */
+    padding: 15px 15px 15px 55px;
     border: 1px solid #ccc;
     border-radius: 6px;
-    font-size: 14px;
+    font-size: 1.2em;
     outline: none;
 }
 
 .search-icon {
     position: absolute;
-    left: 10px;
+    left: 20px;
     top: 50%;
     transform: translateY(-50%);
-    width: 18px;
-    height: 18px;
+    width: 22px;
+    height: 22px;
     pointer-events: none;
     opacity: 0.6;
 }
@@ -68,7 +68,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 30%;
+    width: 50%;
     height: 100%;
     /* background-color: blueviolet; */
     box-sizing: border-box; 
@@ -129,4 +129,70 @@
     color: rgb(68, 68, 68);
     font-size: 1em;
     font-weight: 400;
+}
+
+
+.resultados {
+    width: 100%;
+  padding: 20px;
+  /* background-color: #8be91f; */
+  border-radius: 12px;
+  /* box-shadow: 0 0 8px rgba(0,0,0,0.05); */
+}
+
+.resultados h3 {
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.resultado-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+.resultado-item img {
+    width: 80px;
+    height: auto;
+  border-radius: 50%;
+  margin-right: 12px;
+}
+
+.resultado-item strong {
+  margin-right: 10px;
+  font-size: 1.1rem;
+}
+
+.resultado-item em {
+  color: #777;
+  font-size: 0.9rem;
+  margin-right: auto;
+}
+
+.resultado-item form {
+  display: inline;
+}
+
+.resultado-item button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 0.95rem;
+}
+
+.resultado-item button:hover {
+  background-color: var(--primary-dark);
+}
+
+.resultado-item span {
+  font-size: 0.95rem;
+  color: #4caf50;
+  font-weight: 500;
 }

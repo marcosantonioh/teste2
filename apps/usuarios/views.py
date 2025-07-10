@@ -6,6 +6,7 @@ from .models import Perfil, Amizade
 from django.db.models import Q
 from django.db import models
 from django.views.decorators.http import require_POST
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
 
@@ -171,27 +172,57 @@ def logout_usuario(request):
 def amigos(request):
     user = request.user
     perfil = Perfil.objects.get(user=user)
-    amizades = Amizade.objects.filter(
-        (Q(remetente=user) | Q(destinatario=user)) & 
-        Q(status='aceita')
-    )
-    amigos = []
-    for amizade in amizades:
-        if amizade.remetente == user:
-            amigos.append(amizade.destinatario)
-        else:
-            amigos.append(amizade.remetente)
+
+    # Pessoas que o usuário segue (ele foi o remetente da amizade aceita)
+    seguindo_amizades = Amizade.objects.filter(remetente=user, status='aceita')
+    seguindo = [amizade.destinatario for amizade in seguindo_amizades]
+
+    # Pessoas que seguem o usuário (ele foi o destinatário da amizade aceita)
+    seguidores_amizades = Amizade.objects.filter(destinatario=user, status='aceita')
+    seguidores = [amizade.remetente for amizade in seguidores_amizades]
 
     return render(request, 'usuarios/amigos.html', {
-        'amigos': amigos,
+        'seguindo': seguindo,
+        'seguidores': seguidores,
         'perfil': perfil
     })
 
 
 
 
+@login_required
 def encontrar_amigos(request):
-    return render(request, 'usuarios/encontrar_amigos.html')
+    query = request.GET.get('q', None)
+    resultados_finais = []
+    user = request.user
+    
+    if query:
+        # Busca usuários cujo username contém a query, excluindo o próprio usuário.
+        resultados_brutos = User.objects.filter(
+            username__icontains=query
+        ).exclude(id=user.id).select_related('perfil')
+
+        # Pega todas as relações de amizade do usuário logado para checar o status
+        amizades = Amizade.objects.filter(
+            Q(remetente=user) | Q(destinatario=user)
+        )
+
+        # Mapeia o status por ID de "outro" usuário para busca rápida
+        status_map = {}
+        for amizade in amizades:
+            outro_usuario_id = amizade.destinatario_id if amizade.remetente_id == user.id else amizade.remetente_id
+            status_map[outro_usuario_id] = amizade.status
+
+        # Monta a lista final de resultados com o status de cada um
+        for u in resultados_brutos:
+            status = status_map.get(u.id, 'nenhum') # 'nenhum' = sem relação
+            resultados_finais.append({'usuario': u, 'status': status})
+
+    return render(request, 'usuarios/encontrar_amigos.html', {
+        'resultados': resultados_finais,
+        'query': query,
+        'perfil': get_object_or_404(Perfil, user=user)
+    })
     
 def convidar_amigos(request):
     return render(request, 'usuarios/convidar_amigos.html')
@@ -220,6 +251,21 @@ def aceitar_solicitacao_view(request, amizade_id):
     aceitar_solicitacao(amizade_id)
     return redirect("usuarios:solicitacoes")
 
+@login_required
+@require_POST
+def enviar_solicitacao_view(request, destinatario_id):
+    destinatario = get_object_or_404(User, id=destinatario_id)
+    remetente = request.user
+    
+    # Reutiliza a lógica de negócio para criar a solicitação
+    enviar_solicitacao(remetente, destinatario)
+    
+    messages.success(request, f"Solicitação de amizade enviada para {destinatario.username}.")
+    
+    # Redireciona de volta para a página de busca, mantendo a query original
+    query = request.POST.get('query_original', '')
+    redirect_url = reverse('usuarios:encontrar_amigos') + (f'?q={query}' if query else '')
+    return redirect(redirect_url)
 
 def solicitacoes_pendentes(request):
     pendentes = Amizade.objects.filter(destinatario=request.user, status='pendente')
