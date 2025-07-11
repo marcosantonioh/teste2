@@ -7,20 +7,24 @@
 body {
   background-color: #080710;
   font-family: "Poppins", sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 form {
-  width: 400px;
+  width: 100%;
+  max-width: 400px;
   background-color: rgba(255, 255, 255, 0.13);
-  position: absolute;
-  transform: translate(-50%, -50%);
-  top: 50%;
-  left: 50%;
+  position: relative;
   border-radius: 10px;
   backdrop-filter: blur(10px);
   border: 2px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
-  padding: 20px 35px;
+  padding: 40px 35px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -45,51 +49,50 @@ form h3 {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-
-  & label {
-    display: block;
-    margin: 10px 0;
-    font-size: 16px;
-    font-weight: 500;
-    /* background-color: aqua; */
-  }
-
-  & .input-icon {
-    /* background-color: aqua; */
-    position: relative;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: end;
-  }
-  & .input-icon-password {
-    /* background-color: aqua; */
-    position: relative;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: end;
-    cursor: pointer;
-    pointer-events: all;
-  }
-  & i {
-    position: absolute;
-    color: #262626;
-    font-size: 1.3em;
-    padding: 10px;
-  }
-
-  & input {
-    width: 100%;
-    /* background-color: rgba(255, 255, 255, 0.8); */
-    border-radius: 3px;
-    padding: 15px 10px;
-    font-size: 14px;
-    font-weight: 300;
-    box-sizing: border-box; /* Garante que padding não expanda */
-    color: black;
-  }
 }
+
+.input-box label {
+  display: block;
+  margin: 10px 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.input-box .input-icon {
+  position: relative;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
+.input-box .input-icon-password {
+  position: relative;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  cursor: pointer;
+  pointer-events: all;
+}
+
+.input-box i {
+  position: absolute;
+  color: #262626;
+  font-size: 1.3em;
+  padding: 10px;
+}
+
+.input-box input {
+  width: 100%;
+  border-radius: 3px;
+  padding: 15px 10px;
+  font-size: 14px;
+  font-weight: 300;
+  box-sizing: border-box; /* Garante que padding não expanda */
+  color: black;
+}
+
 ::placeholder {
   color: #222222;
   opacity: 0.5;
@@ -237,4 +240,15 @@ button:hover {
   border: solid white;
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
+}
+
+/* Media Query para telas menores */
+@media (max-width: 480px) {
+  form {
+    padding: 30px 25px;
+  }
+
+  form h3 {
+    font-size: 1.2em;
+  }
 }
