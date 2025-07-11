@@ -3,7 +3,6 @@
 
 
 
-
 body {
   background-color: #080710;
   font-family: "Poppins", sans-serif;
@@ -11,7 +10,7 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  padding: 20px;
+  padding: 20px 10px; /* <- padding mais fino nas laterais */
   box-sizing: border-box;
 }
 
@@ -242,13 +241,26 @@ button:hover {
   transform: rotate(45deg);
 }
 
+
 /* Media Query para telas menores */
 @media (max-width: 480px) {
   form {
-    padding: 30px 25px;
+    width: 100%;
+    max-width: 100%; /* deixa usar toda a largura possível */
+    padding: 25px 20px;
   }
 
-  form h3 {
-    font-size: 1.2em;
+  .input-box label {
+    font-size: 14px;
+  }
+
+  .input-box input {
+    font-size: 13px;
+    padding: 12px 10px;
+  }
+
+  button {
+    font-size: 16px;
+    padding: 12px 0;
   }
 }
