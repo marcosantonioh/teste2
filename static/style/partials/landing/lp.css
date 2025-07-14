@@ -26,6 +26,7 @@ header {
   justify-content: space-between;
   align-items: center;
   z-index: 1000; /* Garante que fique acima dos outros elementos */
+  transition: padding 0.3s ease; /* Adiciona transição suave para o padding */
 }
 
 header .logo {
@@ -34,13 +35,13 @@ header .logo {
   color: var(--primary-color);
 }
 
-header a {
+header nav a {
   text-decoration: none;
   margin-left: 1rem;
   font-weight: 500;
 }
 
-header a:hover {
+header nav a:hover {
   text-decoration: none;
 }
 
@@ -70,27 +71,15 @@ header a:hover {
   background-color: var(--primary-dark);
 }
 
-
-
-
-
-
-
-
-
-
-
-
 /* Hero section */
 .hero {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 5rem 8rem;
-  height: 600px;
+  padding: 8rem 8rem 5rem 8rem; /* Aumentado padding-top para compensar o header fixo */
+  min-height: 600px;
+  height: auto;
   background-color: #ffffff;
-  /* gap: 2rem; */
-  /* flex-wrap: wrap; */
 }
 
 .hero-text {
@@ -125,9 +114,7 @@ header a:hover {
 
 .hero-image {
   flex: 1;
-  /* min-width: 300px; */
   text-align: center;
-  /* background-color: #0e5729; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -135,10 +122,11 @@ header a:hover {
 
 .hero-image img {
   width: 450px;
+  max-width: 100%; /* Garante que a imagem não ultrapasse o contêiner */
+  height: auto;
 }
 
 .hero-content {
-  /* background-color: #16a34a; */
   width: 50%;
   height: 100%;
   display: flex;
@@ -172,7 +160,7 @@ header a:hover {
   background-color: var(--primary-dark);
 }
 
-.btn-login{
+.btn-login {
   width: 250px;
   height: 45px;
   border-radius: 90px;
@@ -194,7 +182,6 @@ header a:hover {
   border: solid 1px rgba(0, 0, 0); /* preto com 50% de opacidade */
 }
 
-
 /* Benefícios */
 .benefits {
   display: flex;
@@ -204,19 +191,17 @@ header a:hover {
   text-align: center;
   gap: 2rem;
   width: 100%;
-  /* background-color: #16a34a; */
-  height:auto;
+  height: auto;
   margin-bottom: 20px;
   padding: 4rem 2rem;
   color: rgb(53, 53, 53);
   font-weight: 300;
 }
 
-
-.benefit{
+.benefit {
   width: 100%;
-  height: 400px;
-  /* background-color: #22c55e; */
+  height: auto; /* Alterado para auto */
+  min-height: 400px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -224,33 +209,30 @@ header a:hover {
   padding: 20px;
 }
 
-
-.benefit-img{
-  width: 50%;  
+.benefit-img {
+  width: 50%;
   height: 100%;
-  /* background-color: #2971ff; */
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-
-.benefit-img img{
+.benefit-img img {
   width: 450px;
+  max-width: 100%;
   height: auto;
 }
 
-.benefit-content{
+.benefit-content {
   width: 50%;
   height: 100%;
   display: flex;
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  /* background-color: #2563eb; */
   padding: 2rem;
+  text-align: left;
 }
-
 
 .benefit-content h4 {
   font-size: 1.5rem;
@@ -260,19 +242,6 @@ header a:hover {
 .benefit-content p {
   font-size: 1rem;
   color: #333;
-}
-
-
-
-
-
-
-
-
-@media (min-width: 768px) {
-  .benefits .grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
 }
 
 /* Como funciona */
@@ -350,4 +319,120 @@ footer a:hover {
   text-decoration: underline;
 }
 
+/* #################################### */
+/* ########## REGRAS RESPONSIVAS ########## */
+/* #################################### */
 
+/* Telas de tablet (até 1024px) */
+@media (max-width: 1024px) {
+  header {
+    padding: 0.7rem 2rem; /* Reduz o padding horizontal do cabeçalho */
+    flex-wrap: wrap; /* Permite que os itens do cabeçalho quebrem linha se necessário */
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .hero {
+    padding: 7rem 2rem 4rem 2rem;
+  }
+
+  .hero-text h2 {
+    font-size: 2.2rem; /* Diminui um pouco a fonte principal */
+  }
+
+  .benefit {
+    padding: 0; 
+  }
+
+  .benefit-img img {
+    width: 250px; /* Diminui a imagem nos benefícios */
+  }
+
+  .benefit-content {
+    padding: 1.5rem;
+  }
+}
+
+/* Telas de celular (até 768px) */
+@media (max-width: 768px) {
+  header {
+    padding: 1rem;
+    /* Para uma melhor experiência mobile, o ideal seria usar um menu "hambúrguer" com JavaScript,
+       mas esta solução com flex-wrap é um paliativo funcional apenas com CSS. */
+  }
+
+  header nav {
+    margin-top: 0.5rem; /* Adiciona um espaço caso os links quebrem a linha */
+  }
+
+  header nav a {
+    margin: 0 0.5rem; /* Ajusta a margem dos links */
+  }
+
+  .hero {
+    flex-direction: column; /* Empilha o texto e a imagem */
+    padding: 6rem 1.5rem 3rem 1.5rem; /* Ajusta padding para mobile */
+    text-align: center;
+  }
+
+  .hero-text {
+    min-width: 100%;
+    order: 1; /* Coloca o texto primeiro (agora será abaixo da imagem) */
+  }
+
+  .hero-image {
+    min-width: 100%;
+    order: 0; /* Coloca a imagem primeiro */
+    margin-bottom: 2rem;
+  }
+
+  .hero-image img {
+    width: 250px; /* Ajusta o tamanho da imagem no mobile */
+    margin-top: 20px;
+  }
+
+  .hero-content {
+    width: 100%; /* Ocupa toda a largura */
+  }
+  .hero-content h2{
+    font-size: 1.2em;
+  }
+
+  .benefits {
+    padding: 1rem ;
+  }
+
+  .benefit {
+    flex-direction: column; /* Empilha a imagem e o conteúdo do benefício */
+    gap: 1rem;
+    text-align: center;
+  }
+  .benefit h4{
+    font-size: 1.4rem; 
+  }
+
+  /* Inverte a ordem da imagem a cada dois benefícios para um layout mais dinâmico (zig-zag) */
+  .benefit:nth-child(even) {
+    flex-direction: column-reverse;
+  }
+
+  .benefit-img,
+  .benefit-content {
+    width: 100%; /* Ocupa toda a largura */
+    text-align: center; /* Centraliza o texto */
+    padding: 1rem;
+  }
+
+  .steps,
+  .cta {
+    padding: 3rem 2rem; /* Ajusta padding para mobile */
+  }
+
+  .cta h3 {
+    font-size: 1.4rem;
+  }
+
+  .cta p {
+    font-size: 1rem;
+  }
+}
