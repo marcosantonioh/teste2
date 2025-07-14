@@ -16,7 +16,7 @@ body {
 
 form {
   width: 100%;
-  max-width: 400px;
+  /* max-width: 400px; */
   background-color: rgba(255, 255, 255, 0.13);
   position: relative;
   border-radius: 10px;
@@ -28,6 +28,7 @@ form {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  -webkit-tap-highlight-color: transparent;
 }
 form * {
   font-family: "Poppins", sans-serif;
@@ -86,7 +87,7 @@ form h3 {
   width: 100%;
   border-radius: 3px;
   padding: 15px 10px;
-  font-size: 14px;
+  font-size: 16px; /* Aumentado de 14px para 16px */
   font-weight: 300;
   box-sizing: border-box; /* Garante que padding não expanda */
   color: black;
@@ -100,7 +101,8 @@ form h3 {
 button {
   margin-top: 30px;
   width: 100%;
-  background-color: var(--primary-color);
+  /* background-color: var(--primary-color); */
+  background-color: #4CAF50;
   color: #fff;
   padding: 15px 0;
   font-size: 18px;
@@ -109,10 +111,12 @@ button {
   cursor: pointer;
   margin-bottom: 20px;
   transition: ease 0.2s;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .cadastro{
   margin: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
 button:hover {
@@ -255,7 +259,7 @@ button:hover {
   }
 
   .input-box input {
-    font-size: 13px;
+    font-size: 16px; /* Aumentado de 14px para 16px */
     padding: 12px 10px;
   }
 
