@@ -32,7 +32,7 @@ body {
   text-decoration: none;
   font-size: 1rem;
   cursor: pointer;
-
+  -webkit-tap-highlight-color: transparent;
 }
 
 .logo-container a {
@@ -40,6 +40,7 @@ body {
 }
 
 .logo-container .logo {
+  -webkit-tap-highlight-color: transparent;
   color: var(--primary-color);
 }
 

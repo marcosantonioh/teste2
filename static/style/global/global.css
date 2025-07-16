@@ -42,3 +42,7 @@
 body {
   background-color: var(--white);
 }
+
+a {
+  -webkit-tap-highlight-color: transparent;
+}
