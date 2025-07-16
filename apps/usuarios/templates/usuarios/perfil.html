@@ -15,14 +15,23 @@
 
   <div class="content-perfil">
     <div class="head">
-      <!-- <div class="infos"> -->
-      <!-- Foto de Perfil -->
-      <div class="perfil-photo">
-        {% if perfil.foto %}
-        <img src="{{ perfil.foto.url }}" alt="Foto de Perfil" />
-        {% else %}
-        <img src="{% static 'img/default.png' %}" alt="Foto padrão" />
-        {% endif %}
+      {# NOVO WRAPPER PARA FOTO E ÍCONE DE EDIÇÃO #}
+      <div class="perfil-photo-wrapper">
+        
+        {# CONTAINER DO ÍCONE DE EDIÇÃO (APARECE SÓ NO MOBILE) #}
+        <div class="edit-icon-container">
+          <a href="{% url 'usuarios:editar_perfil' %}" class="btn-editar-perfil-icon">
+            <img src="{% static 'img/settings.svg' %}" alt="Editar Perfil">
+          </a>
+        </div>
+
+        <div class="perfil-photo">
+          {% if perfil.foto %}
+          <img src="{{ perfil.foto.url }}" alt="Foto de Perfil" />
+          {% else %}
+          <img src="{% static 'img/default.png' %}" alt="Foto padrão" />
+          {% endif %}
+        </div>
       </div>
 
       <div class="parte2">
@@ -55,10 +64,12 @@
       </div>
       
       <div class="head-actions">
+        {# O BOTÃO DE TEXTO CONTINUA AQUI PARA DESKTOP #}
         <a href="{% url 'usuarios:editar_perfil' %}" class="btn-editar-perfil">Editar Perfil</a>
-        {# Botão de Editar Perfil (Responsivo - Ícone) #}
-        <a href="{% url 'usuarios:editar_perfil' %}" class="btn-editar-perfil-icon"><img src="{% static 'img/settings.svg' %}" alt="Editar Perfil"></a>
+        
+        {# REMOVEMOS O ÍCONE DAQUI, POIS ELE FOI PARA CIMA DA FOTO #}
       </div>
+
 
       <!-- Bio -->
       {% if perfil.bio and perfil.bio != "None"%}
@@ -99,8 +110,8 @@
     </div>
 
     <div class="section-amigos">
-      <h2>Amigos</h2>
-      {% include "usuarios/_lista_amigos.html" %}
+      
+      
     </div>
 
     <div class="section-conquistas">

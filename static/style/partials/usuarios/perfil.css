@@ -23,6 +23,7 @@
   flex-wrap: wrap;
   gap: 40px;
   border-bottom: 1px solid #e0e0e0;
+  /* background-color: aqua; */
 }
 
 .perfil-photo {
@@ -162,9 +163,9 @@
 .section-conquistas {
   width: 100%;
   padding: 20px;
-  background-color: #f9f9f9;
+  /* background-color: #f9f9f9; */
   border-radius: 8px;
-  border: 1px solid #e0e0e0;
+  /* border: 1px solid #e0e0e0; */
   box-sizing: border-box;
   
 }
@@ -239,6 +240,15 @@
   font-style: italic;
 }
 
+/* O container do ícone fica ESCONDIDO no desktop por padrão */
+.edit-icon-container {
+  display: none;
+}
+
+/* O botão de texto fica VISÍVEL no desktop */
+.btn-editar-perfil {
+  display: inline-block; /* ou flex, dependendo do seu layout */
+}
 
 /* --- Media Queries for Responsiveness --- */
 
@@ -254,6 +264,33 @@
     align-items: center;
     gap: 20px;
     padding: 15px;
+  }
+
+  /* O wrapper agora organiza o ícone e a foto */
+  .perfil-photo-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* O container do ícone agora fica VISÍVEL */
+  .edit-icon-container {
+    display: flex;
+    justify-content: flex-end; /* ÍCONE ALINHADO À DIREITA (FLEX-END) */
+    width: 100%; /* Ocupa toda a largura do wrapper */
+    max-width: 100%; 
+    padding-bottom: 8px; 
+  }
+
+  .btn-editar-perfil-icon img {
+    width: 38px; 
+    height: 38px;
+  }
+
+  /* ESCONDE o botão de texto 'Editar Perfil' no mobile */
+  .head-actions .btn-editar-perfil {
+    display: none;
   }
 
   .parte2 {
