@@ -39,10 +39,15 @@ header nav a {
   text-decoration: none;
   margin-left: 1rem;
   font-weight: 500;
+  -webkit-tap-highlight-color: transparent;
 }
 
 header nav a:hover {
   text-decoration: none;
+}
+
+.header-actions a{
+  -webkit-tap-highlight-color: transparent;
 }
 
 .start {
@@ -159,7 +164,9 @@ header nav a:hover {
 .hero-content .btn:hover {
   background-color: var(--primary-dark);
 }
-
+.hero-content a{
+  -webkit-tap-highlight-color: transparent;
+}
 .btn-login {
   width: 250px;
   height: 45px;
@@ -218,7 +225,7 @@ header nav a:hover {
 }
 
 .benefit-img img {
-  width: 450px;
+  width: 300px;
   max-width: 100%;
   height: auto;
 }
@@ -295,6 +302,7 @@ header nav a:hover {
   border-radius: 9999px;
   text-decoration: none;
   font-size: 1.125rem;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .cta a:hover {
@@ -313,6 +321,7 @@ footer a {
   color: #d1d5db;
   margin: 0 0.5rem;
   text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 footer a:hover {

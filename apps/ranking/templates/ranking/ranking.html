@@ -18,17 +18,12 @@
             <!-- Ranking Global -->
             <div id="ranking-global" class="ranking-content">
                 <table class="ranking-table">
-                    <thead>
-                        <tr>
-                            <th>Posição</th>
-                            <th>Perfil</th>
-                            <th>Nome</th>
-                            <th>Pontuação</th>
-                        </tr>
-                    </thead>
                     <tbody>
                         {% for perfil in perfis_globais %}
-                        <tr {% if perfil.user == request.user %}class="meu-perfil"{% endif %}>
+                        <tr {% if perfil.user == request.user %}class="meu-perfil{% if forloop.counter == 1 %} primeiro-colocado{% endif %}"
+                            {% elif forloop.counter == 1 %}class="primeiro-colocado"
+                            {% endif %}
+                        >
                             <td>
                                 {% if forloop.counter == 1 %}
                                     <span class="medalha medalha-ouro">🥇</span>
@@ -48,8 +43,8 @@
                                     <img src="/media/fotos_perfil/default.png" class="profile-pic">
                                 {% endif %}
                             </td>
-                            <td>{{ perfil.user.username }}</td>
-                            <td>{{ perfil.xp }}</td>
+                            <td class="username-cell">{{ perfil.user.username }}</td>
+                            <td class="xp-cell">{{ perfil.xp }} XP</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -59,14 +54,6 @@
             <!-- Ranking Amigos -->
             <div id="ranking-amigos" class="ranking-content" style="display: none;">
                 <table class="ranking-table">
-                    <thead>
-                        <tr>
-                            <th>Posição</th>
-                            <th>Perfil</th>
-                            <th>Nome</th>
-                            <th>Pontuação</th>
-                        </tr>
-                    </thead>
                     <tbody>
                         {% for perfil in perfis_amigos %}
                         <tr>

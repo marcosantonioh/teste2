@@ -9,6 +9,8 @@ body {
   max-width: 500px;
   margin: 0 auto;
   margin-top: 100px;
+  padding: 0 10px;
+  /* background-color: aqua; */
 }
 
 .text-center {
@@ -17,43 +19,92 @@ body {
 
 .ranking-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   margin-top: 20px;
-  font-family: Arial, sans-serif;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  /* background-color: rgb(28, 94, 94); */
+  border: 3px solid var(--primary-color);
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 10px;
+  /* table-layout: fixed; */
 }
 
-.ranking-table thead {
-  background-color: var(--primary-color);
-  color: white;
-}
+/* Centraliza por padrão */
+.ranking-table td,
 .ranking-table th {
-  padding: 10px 0;
+  font-size: 1.2em;
+  font-weight: 600;
   text-align: center;
-  font-weight: bold;
-  font-size: 1rem; /* aumenta levemente o tamanho da fonte */
+  padding: 8px 5px; /* Reduzido o padding para evitar que as células fiquem muito largas */
+  white-space: nowrap; /* Impede a quebra de linha para tentar manter o conteúdo em uma linha (será ajustado abaixo) */
+  overflow: hidden;
+  vertical-align: middle;
+  text-overflow: ellipsis; /* Adiciona "..." para indicar texto cortado */
 }
-.ranking-table td {
-  padding: 5px 0px; /* antes: 10px 0px */
-  text-align: center;
-  font-size: 0.9rem; /* reduz levemente o tamanho da fonte */
+
+/* Deixa o nome do usuário alinhado à esquerda */
+.ranking-table .username-cell {
+  text-align: left;
+  white-space: normal;
+  
+}
+
+.medalha{
+    font-size: 2rem; /* ou 20px, 24px, etc. */
+    font-weight: bold;
 }
 
 .foto-cell {
-  text-align: center;
-  vertical-align: middle;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+.posicao{
+  color: green;
+  font-weight: bold;
+}
+
+.xp-cell{
+  text-align: right;
+  padding-right: 10px;
+}
+.username-cell {
+  /* white-space: nowrap; Removido daqui para permitir quebra de linha */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 5px; /* Adicionado um pequeno padding para evitar que o texto grude na borda */
+}
+
+/* Personalização do 1º colocado */
+.primeiro-colocado {
+  background-color: rgb(255, 245, 185);
+  color: rgb(238, 155, 0);
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  transition: background-color 0.3s ease;
+}
+
+.primeiro-colocado .profile-pic {
+  border: 2px solid white;
+  border-radius: 50%;
+}
+
 /* 
 .ranking-table tr:nth-child(even) {
   background-color: var(--border-color);
 } */
 
 .profile-pic {
-  width: 50px;
-  height: 50px;
+  width: 60px; /* Reduzido o tamanho da imagem para ocupar menos espaço */
+  height: 60px;
   border-radius: 50%;
   /* object-fit: cover; */
   /* border: 2px solid #007bff; */
+  display: block; /* Garante que a imagem se comporte como um bloco */
+  margin: 0 auto; /* Centraliza a imagem dentro da célula */
 }
 
 
@@ -89,23 +140,11 @@ body {
 
 
 
-.ranking-table tbody tr.meu-perfil {
-  background-color: var(--border-color) !important;
-  font-weight: bold;
-  /* border-left: 4px solid #28a745; */
-}
-
-
-.medalha{
-    font-size: 2rem; /* ou 20px, 24px, etc. */
-    font-weight: bold;
-  
-}
 
 
 
 .div1 {
-  padding-top: 40px;
+  margin-top: 120px;
   width: 100%;
   height: 80vh;
   /* background-color: #c9c9c9; */
@@ -124,7 +163,6 @@ body {
   justify-content: center;
   /* background-color: #b4b4b4; */
   gap: 10px;
-  margin-top: 40px;
 }
 
 .div3 {
@@ -167,115 +205,63 @@ body {
   height: 20px;
 }
 
-/* Responsividade */
+
 @media (max-width: 768px) {
   .container {
-    max-width: 95%;
-    margin-top: 60px;
+    max-width: 100%;
+    margin-top: 40px;
+    padding: 0 12px; /* Reduz o padding lateral um pouco */
   }
 
+  /* Fontes maiores para legibilidade */
+  .ranking-table td,
   .ranking-table th {
-    padding: 8px 0;
+    font-size: 1.2rem;
+    padding: 12px 4px; /* Mais altura, menos largura de padding */
+  }
+
+  /* Foto de perfil com bom destaque */
+  .profile-pic {
+    width: 65px;
+    height: 65px;
+  }
+
+  /* Medalha grande */
+  .medalha {
+    font-size: 2.4rem;
+  }
+
+  .posicao{
+    font-size: 1.4rem;
+  }
+
+}
+
+/* Telas de celulares menores (até 480px) */
+@media (max-width: 480px) {
+  .container {
+    padding: 0 5px;
+  }
+
+  /* Fontes ainda bem legíveis */
+  .ranking-table th {
     font-size: 0.9rem;
   }
-
   .ranking-table td {
-    padding: 4px 0px;
-    font-size: 0.85rem;
+    font-size: 1rem;
   }
-
+  
   .profile-pic {
-    width: 40px;
-    height: 40px;
+    /* Um bom tamanho que não ocupa muita largura */
+    width: 45px;
+    height: 45px;
   }
 
   .medalha {
     font-size: 1.8rem;
   }
 
-  .btn-ranking {
-    padding: 8px 15px;
-    font-size: 0.9rem;
-  }
-
-  .div1, .div2 {
-    height: auto; /* Altura automática para acomodar conteúdo */
-    padding-top: 20px;
-    padding-bottom: 20px; /* Adiciona padding inferior */
-  }
-
-  .div3 {
-    width: 80%; /* Aumenta a largura relativa */
-    height: auto; /* Altura automática */
-    padding: 10px; /* Adiciona padding interno */
-    flex-direction: column; /* Empilha os itens */
-    gap: 10px; /* Espaço entre itens empilhados */
-  }
-
-  .f1, .f2 {
-    width: 50px;
-    height: 50px;
-  }
-
-  .f3 {
-    width: 100%; /* Ocupa a largura do .div3 */
-    max-width: 170px; /* Limita a largura máxima */
-    height: 18px;
-  }
-
-  .f4 {
-    width: 100%; /* Ocupa a largura do .div3 */
-    max-width: 80px; /* Limita a largura máxima */
-    height: 18px;
-  }
-}
-
-@media (max-width: 480px) {
-  .container {
-    margin-top: 40px;
-  }
-
-  .ranking-table th {
-    font-size: 0.8rem;
-  }
-
-  .ranking-table td {
-    font-size: 0.75rem;
-  }
-
-  .profile-pic {
-    width: 35px;
-    height: 35px;
-  }
-
-  .medalha {
-    font-size: 1.5rem;
-  }
-
-  .btn-ranking {
-    padding: 6px 10px;
-    font-size: 0.8rem;
-    margin: 0 3px;
-  }
-
-  .ranking-switch {
-    margin: 15px 0;
-  }
-
-  .div3 {
-    width: 90%;
-  }
-
-  .f1, .f2 {
-    width: 40px;
-    height: 40px;
-  }
-
-  .f3 {
-    height: 15px;
-  }
-
-  .f4 {
-    height: 15px;
+  .xp-cell {
+    padding-right: 8px;
   }
 }
