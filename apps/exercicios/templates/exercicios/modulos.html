@@ -41,18 +41,19 @@
 
   <!-- Divisão no ranking -->
   <div class="estatisticas-coluna">
-    <div class="divisao">
-      <div class="divisao-icone">
-        <img src="/static/img/ranking/bronze.svg" alt="Símbolo da Divisão Ametista">
+    {% if perfil.divisao %}
+      <div class="divisao">
+        <div class="divisao-icone">
+          <img src="{{ static perfil.divisao.imagem.url }}" alt="Símbolo da {{ perfil.divisao.nome }}">
+        </div>
+        <div class="divisao-info">
+          <h2>{{ perfil.divisao.nome }}</h2>
+          <h4>Sua posição: {{ perfil.posicao_na_divisao }}º</h4>
+          <p class="status">{{ perfil.variacao_posicao }} posições {{ perfil.direcao_variacao }} da zona de rebaixamento!</p>
+          <a href="{% url 'ranking:ranking' %}" class="ver-divisao">Ver divisão</a>
+        </div>
       </div>
-      
-      <div class="divisao-info">
-        <h2>Divisão Ametista</h2>
-        <h4>Sua posição: 13º</h4>
-        <p class="status">3 posições acima da zona de rebaixamento!</p>
-        <a href="#" class="ver-divisao">Ver divisão</a>
-      </div>
-    </div>
+    {% endif %}
 
     <!-- Missões do dia -->
     <div class="missoes-card">

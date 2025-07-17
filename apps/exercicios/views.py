@@ -28,11 +28,23 @@ def main_view(request):
 
 # @login_required(login_url="usuarios:login_usuario")
 def modulos(request):
-    perfil = get_or_create_perfil(request.user)
+    perfil = get_or_create_perfil(request.user)    
     modulos = Modulo.objects.all()
 
+    if perfil: 
+        # O uso de valores fictícios (como 13, 3, acima) é válido enquanto a lógica do ranking não estiver implementada.
+        if perfil.divisao: 
+            perfil.posicao_na_divisao = 13  
+            perfil.variacao_posicao = 3   
+            perfil.direcao_variacao = 'acima' # Or 'abaixo', depending on logic 
+        else:
+            # Pode atribuir valores default, se quiser evitar erro no template
+            perfil.posicao_na_divisao = None
+            perfil.variacao_posicao = None
+            perfil.direcao_variacao = None
+
     context = {
-        'perfil': perfil,  # Vai ser None se o usuário for anônimo
+        'perfil': perfil,  # Will be None if the user is anonymous
         'modulos': modulos
     }
     return render(request, 'exercicios/modulos.html', context)

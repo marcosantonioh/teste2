@@ -3,10 +3,11 @@ from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 from django.utils import timezone
 import datetime
-
+from apps.ranking.models import Divisao
 
 class Perfil(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    divisao = models.ForeignKey(Divisao, on_delete=models.SET_NULL, null=True, blank=True)
     xp = models.IntegerField(default=0, validators=[MinValueValidator(0)], verbose_name="Xp")
     sequencia_dias = models.IntegerField(default=0, validators=[MinValueValidator(0)])
     bio = models.TextField(null=True, blank=True)
