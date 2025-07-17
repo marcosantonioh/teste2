@@ -321,9 +321,15 @@ body {
     color: #272727; /* Cor para ícones inativos */
     flex-grow: 1; /* Faz com que cada link ocupe o mesmo espaço */
     height: 100%;
-    transition: color 0.2s ease;
+    transition: background-color 0.2s ease-out, transform 0.1s ease-out;
   }
-
+  .bottom-nav-link:active {
+    /* Um fundo cinza bem claro e sutil para indicar o toque */
+    background-color: rgba(133, 60, 250, 0.06); 
+    
+    /* Um leve encolhimento para simular um botão sendo pressionado */
+    transform: scale(0.97); 
+  }
   /* Estilo para o ícone */
   .bottom-nav-link i {
     font-size: 24px; /* Tamanho do ícone */

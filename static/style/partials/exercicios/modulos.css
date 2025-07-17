@@ -4,18 +4,105 @@
 /* Estilos gerais */
 body {
   background-color: #ffffff;
-  font-family: Arial, sans-serif;
 }
 
-.container {
+.main-container {
   margin-top: 100px;
   display: flex;
-  flex-direction: column;
+  gap: 2rem;
   flex-wrap: wrap;
   justify-content: center;
+  /* align-items: center; */
+  gap: 20px;
+  padding: 40px 100px;
+  /* background-color: #fadf45; */
+}
+
+.modulos-coluna {
+  flex: 2;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 60%;
+  /* background-color: #44d6aa; */
+}
+
+.estatisticas-coluna {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 300px;
+  /* background-color: #d15353; */
+  border-radius: 12px;
+  padding: 0 1rem;
+  gap: 20px;
+}
+.divisao {
+  /* background-color: #2c2a3a; */
+  border: 1px solid #4a4562;
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 450px;
+  display: flex;
   align-items: center;
   gap: 20px;
-  padding: 40px 20px;
+}
+
+/* Coluna do Ícone */
+.divisao-icone img {
+  width: 80px; /* Tamanho do ícone */
+  height: 80px; /* Tamanho do ícone */
+}
+
+/* Coluna de Informações (texto e link) */
+.divisao-info {
+  display: flex;
+  flex-direction: column; /* Organiza os textos em coluna */
+  gap: 5px; /* Pequeno espaço entre os textos */
+}
+
+/* Título: "Divisão Ametista" */
+.divisao-info h2 {
+  margin: 0;
+  font-size: 1.2em; /* Tamanho da fonte (24px) */
+  font-weight: 700; /* Fonte bem grossa */
+}
+
+/* Subtítulo: "Sua posição: 13º" */
+.divisao-info h4 {
+  margin: 0;
+  font-size: 1em; /* Tamanho da fonte (16px) */
+  font-weight: 400; /* Fonte normal */
+  color: #d1d1d1; /* Cor cinza claro */
+}
+
+/* Parágrafo extra: "3 posições acima..." */
+.divisao-info .status {
+  margin: 0 0 10px 0; /* Margem inferior para separar do link */
+  font-size: 0.9em; /* Tamanho da fonte (14.4px) */
+  color: #bfffbc; /* Cor verde claro */
+}
+
+/* Link: "VER DIVISÃO" */
+.divisao-info .ver-divisao {
+  background-color: #8e44ad; /* Cor de fundo roxa do botão */
+  color: white;
+  padding: 8px 12px;
+  border-radius: 5px;
+  text-decoration: none; /* Remove o sublinhado */
+  font-weight: 700; /* Fonte em negrito */
+  text-transform: uppercase; /* Texto em maiúsculas */
+  text-align: center;
+  align-self: flex-start; /* Alinha o botão à esquerda */
+  transition: background-color 0.3s; /* Efeito suave na cor */
+}
+
+/* Efeito ao passar o mouse sobre o link */
+.divisao-info .ver-divisao:hover {
+  background-color: #72338a;
 }
 
 /* Estilo dos cards */
@@ -38,7 +125,8 @@ body {
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 } */
 
-.card h2, .card h5 {
+.card h2,
+.card h5 {
   text-align: center;
   color: #343a40;
   margin-bottom: 10px;
@@ -77,11 +165,6 @@ body {
   background-color: var(--primary-dark);
 }
 
-
-
-
-
-
 .progress-container {
   position: relative;
   width: 100%;
@@ -93,7 +176,7 @@ body {
   height: 8px; /* barrinha fininha */
   border-radius: 4px;
   overflow: visible; /* permitir o círculo sair */
-  position: relative;;
+  position: relative;
 }
 
 .progress-fill {
@@ -107,7 +190,10 @@ body {
   position: absolute;
   /* top: 50%; */
   right: -18px; /* metade do círculo para alinhar */
-  transform: translate(50%, -50%); /* 50% para direita e centralizar verticalmente */
+  transform: translate(
+    50%,
+    -50%
+  ); /* 50% para direita e centralizar verticalmente */
   width: 36px;
   height: 36px;
   background-color: white;
@@ -124,18 +210,125 @@ body {
   height: 20px;
 }
 
+.missoes-card {
+  background-color: white;
+  border: 1px solid #e5e5e5; /* Borda cinza clara */
+  border-radius: 16px; /* Bordas bem arredondadas */
+  padding: 24px;
+  width: 100%;
+  max-width: 380px; /* Largura máxima do card */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* Sombra suave */
+}
 
+/* Cabeçalho: "Missões do dia" e "VER TODAS" */
+.missoes-header {
+  display: flex;
+  justify-content: space-between; /* Itens nas extremidades */
+  align-items: center;
+  margin-bottom: 24px;
+}
 
+.missoes-header h2 {
+  margin: 0;
+  font-size: 1.25em; /* 20px */
+  color: #3c3c3c;
+  font-weight: 700;
+}
 
+.missoes-header .ver-todas {
+  color: #1cb0f6; /* Cor azul do link */
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 0.9em; /* 14.4px */
+}
+
+/* Lista que agrupa todas as missões */
+.missoes-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 24px; /* Espaço entre cada missão */
+}
+
+/* Container de um item de missão individual */
+.missao-item {
+  display: flex;
+  align-items: center;
+  gap: 16px; /* Espaço entre ícone, texto e baú */
+}
+
+/* Ícones da esquerda (raio, alvo) */
+.missao-item .icone-missao {
+  width: 40px;
+  height: 40px;
+}
+
+/* Container do texto e da barra de progresso */
+.missao-info {
+  flex-grow: 1; /* Faz esta área ocupar o espaço restante */
+}
+
+.missao-info p {
+  margin: 0 0 8px 0;
+  color: #4b4b4b;
+  font-size: 1em; /* 16px */
+  font-weight: 500;
+}
+
+/* Barra de Progresso - Container */
+.progress-bar {
+  background-color: #e5e5e5; /* Cor de fundo da barra */
+  border-radius: 8px;
+  height: 16px;
+  width: 100%;
+  position: relative; /* Necessário para posicionar o texto sobre a barra */
+}
+
+/* Barra de Progresso - Preenchimento */
+.progress-fill {
+  background-color: #ffc800; /* Cor do preenchimento (amarelo) */
+  height: 100%;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Texto dentro da barra de progresso */
+.progress-text {
+  color: #875c00; /* Cor do texto (marrom escuro) */
+  font-weight: 700;
+  font-size: 0.75em; /* 12px */
+  position: absolute; /* Posiciona sobre a barra */
+  width: 100%;
+  text-align: center;
+  left: 0;
+}
+
+/* Ícone do baú (direita) */
+.missao-item .icone-bau {
+  width: 40px;
+  height: 40px;
+}
 
 /* --- Media Queries para Responsividade --- */
 
 /* Para tablets e telas menores (até 768px) */
 @media (max-width: 768px) {
-  .container {
-    margin-top: 10px; /* Ajustar margem superior se necessário */
-    padding: 30px 15px; /* Reduzir padding do container */
+
+  .main-container {
+    margin: 0;
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    /* align-items: center; */
     gap: 20px;
+    padding: 40px 20px;
+    /* background-color: #fadf45; */
+  }
+  
+  .estatisticas-coluna {
+    display: none;
   }
 
   .card {
@@ -184,7 +377,9 @@ body {
     margin-top: 10px;
     padding: 20px 10px;
   }
-
+  .estatisticas-coluna {
+    display: none;
+  }
   .card {
     width: 95%; /* Cards ocupam quase toda a largura */
   }
