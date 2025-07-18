@@ -31,17 +31,6 @@ def modulos(request):
     perfil = get_or_create_perfil(request.user)    
     modulos = Modulo.objects.all()
 
-    if perfil: 
-        # O uso de valores fictícios (como 13, 3, acima) é válido enquanto a lógica do ranking não estiver implementada.
-        if perfil.divisao: 
-            perfil.posicao_na_divisao = 13  
-            perfil.variacao_posicao = 3   
-            perfil.direcao_variacao = 'acima' # Or 'abaixo', depending on logic 
-        else:
-            # Pode atribuir valores default, se quiser evitar erro no template
-            perfil.posicao_na_divisao = None
-            perfil.variacao_posicao = None
-            perfil.direcao_variacao = None
 
     context = {
         'perfil': perfil,  # Will be None if the user is anonymous

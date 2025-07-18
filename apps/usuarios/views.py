@@ -308,3 +308,7 @@ def preferencias(request):
     # Adiciona o perfil ao contexto para que o template possa exibir os valores atuais.
     context = {'perfil': perfil}
     return render(request, 'usuarios/preferencias.html', context)
+
+
+
+

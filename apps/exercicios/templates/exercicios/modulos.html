@@ -44,7 +44,7 @@
     {% if perfil.divisao %}
       <div class="divisao">
         <div class="divisao-icone">
-          <img src="{{ static perfil.divisao.imagem.url }}" alt="Símbolo da {{ perfil.divisao.nome }}">
+          <img src="{% static perfil.divisao.imagem %}" alt="Símbolo da {{ perfil.divisao.nome }}">
         </div>
         <div class="divisao-info">
           <h2>{{ perfil.divisao.nome }}</h2>

@@ -1,7 +1,7 @@
 from django.db.models import Sum
 from apps.exercicios.models import Exercicio, Modulo, Secao, Estacao
 from apps.usuarios.models import Perfil
-
+from apps.usuarios.models import Divisao
 
 def pular_exercicio(exercicio):
     """
@@ -23,9 +23,6 @@ def pular_exercicio(exercicio):
 
 
 def processar_resposta_exercicio(resposta_usuario, exercicio, perfil):
-    """
-    Processa a resposta do usuário, atualiza o estado e retorna o resultado.
-    """
     correta = verificar_resposta(exercicio, resposta_usuario)
     atualizar_estado_do_perfil_e_exercicio(perfil, exercicio, correta)
     return "correto" if correta else "incorreto", correta
@@ -57,9 +54,20 @@ def atualizar_estado_do_perfil_e_exercicio(perfil, exercicio, correta):
         if exercicio.status != "concluido":
             exercicio.status = "concluido"
             exercicio.save()
-            # Futuramente, adicionar XP aqui:
-            # perfil.xp += exercicio.xp
-            # perfil.save()
+            
+            # Adiciona XP
+            perfil.xp += exercicio.xp
+
+            # Atribui divisão Bronze se ainda não tiver e XP > 0
+            if perfil.divisao is None and perfil.xp > 0:
+                try:
+                    divisao_bronze = Divisao.objects.get(nome="Bronze")
+                    perfil.divisao = divisao_bronze
+                except Divisao.DoesNotExist:
+                    pass  # Evita erro caso a divisão ainda não exista
+
+            perfil.save()
+    
     else:
         if perfil.vidas_atuais > 0:
             perfil.vidas_atuais -= 1

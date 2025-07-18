@@ -325,7 +325,7 @@ body {
   }
   .bottom-nav-link:active {
     /* Um fundo cinza bem claro e sutil para indicar o toque */
-    background-color: rgba(133, 60, 250, 0.06); 
+    background-color: rgba(133, 60, 250, 0.226); 
     
     /* Um leve encolhimento para simular um botão sendo pressionado */
     transform: scale(0.97); 
