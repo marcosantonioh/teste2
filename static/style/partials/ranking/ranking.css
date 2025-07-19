@@ -6,10 +6,12 @@ body {
 
 
 .container {
+  width: 100%;
   max-width: 500px;
   margin: 0 auto;
   margin-top: 100px;
   padding: 0 10px;
+  box-sizing: border-box;
   /* background-color: aqua; */
 }
 
@@ -70,6 +72,13 @@ body {
 .xp-cell{
   text-align: right;
   padding-right: 10px;
+}
+
+.xp-cell img {
+  width: 30px; /* Tamanho da imagem de XP */
+  height: 30px; /* Tamanho da imagem de XP */
+  vertical-align: middle; /* Alinha a imagem com o texto */
+  margin-right: 5px; /* Espaço entre a imagem e o texto */
 }
 .username-cell {
   /* white-space: nowrap; Removido daqui para permitir quebra de linha */
@@ -211,6 +220,12 @@ body {
     max-width: 100%;
     margin-top: 40px;
     padding: 0 12px; /* Reduz o padding lateral um pouco */
+  }
+
+  .xp-cell img {
+    width: 28px;
+    height: 28px;
+    margin-right: 4px;
   }
 
   /* Fontes maiores para legibilidade */

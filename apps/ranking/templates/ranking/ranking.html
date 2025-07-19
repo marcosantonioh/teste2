@@ -43,8 +43,17 @@
                                     <img src="/media/fotos_perfil/default.png" class="profile-pic">
                                 {% endif %}
                             </td>
-                            <td class="username-cell">{{ perfil.user.username }}</td>
-                            <td class="xp-cell">{{ perfil.xp }} XP</td>
+                            <td class="username-cell">
+                                {% if perfil.user.username|length > 6 %}
+                                    {{ perfil.user.username|slice:":6" }}...
+                                {% else %}
+                                    {{ perfil.user.username }}
+                                {% endif %}
+                            </td>
+                            <td class="xp-cell">
+                                <img src="/static/img/xp.svg" alt="">
+                                {{ perfil.xp }} XP
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>
