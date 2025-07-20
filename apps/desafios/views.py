@@ -2,23 +2,22 @@ from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from apps.usuarios.models import Perfil
+from apps.desafios.models import DesafioUsuario
+
 # Create your views here.
 
-# @login_required(login_url="login_usuario")
+@login_required
 def desafios(request):
     
-    perfil = None
-    usuario_logado = request.user.is_authenticated
-    if usuario_logado:
+    desafios_usuario = DesafioUsuario.objects.filter(usuario=request.user)
+    
+    for du in desafios_usuario:
         try:
-            perfil = Perfil.objects.get(user=request.user)
-        except ObjectDoesNotExist:
-            perfil = Perfil.objects.create(user=request.user)
+            du.porcentagem = int((du.progresso / du.desafio.meta) * 100)
+        except ZeroDivisionError:
+            du.porcentagem = 0
     
-    
-    context = {
-        'perfil': perfil,
-        'usuario_logado': usuario_logado,
-    }
-    
-    return render(request, "desafios/desafios.html", context)
+    return render(request, 'apps/exercicios/modulos.html', {
+        'desafios_usuario': desafios_usuario
+    })
+

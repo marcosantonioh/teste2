@@ -83,6 +83,16 @@ class Perfil(models.Model):
         # Garante que não retornamos um tempo negativo se a tarefa estiver atrasada
         return max(tempo_restante, datetime.timedelta(seconds=0))
 
+    @property
+    def posicao_no_ranking(self):
+        ids_ordenados = Perfil.objects.order_by('-xp', '-sequencia_dias').values_list('user_id', flat=True)
+        try:
+            return list(ids_ordenados).index(self.user.id) + 1
+        except ValueError:
+            return None
+
+
+
 class Amizade(models.Model):
     remetente = models.ForeignKey(User, related_name='amizades_enviadas', on_delete=models.CASCADE)
     destinatario = models.ForeignKey(User, related_name='amizades_recebidas', on_delete=models.CASCADE)

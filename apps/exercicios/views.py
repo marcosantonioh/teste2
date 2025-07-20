@@ -1,11 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from apps.usuarios.models import Perfil
-from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Sum
 from apps.exercicios.models import Exercicio, Modulo, Secao, Estacao
 from apps.mecanicas_jogo import services as mecanicas_services
-from django.http import Http404
+from apps.desafios.models import DesafioUsuario
+
 
 def get_or_create_perfil(user):
     if not user.is_authenticated:
@@ -26,17 +26,31 @@ def main_view(request):
     }
     return render( request, 'exercicios/main.html', context)
 
-# @login_required(login_url="usuarios:login_usuario")
-def modulos(request):
-    perfil = get_or_create_perfil(request.user)    
-    modulos = Modulo.objects.all()
 
+@login_required
+def modulos(request):
+    perfil = get_or_create_perfil(request.user)
+    modulos = Modulo.objects.all()
+    
+    # Busca os desafios do usuário logado
+    desafios_usuario = DesafioUsuario.objects.filter(usuario=request.user)
+    
+    # Calcula o progresso em porcentagem
+    for du in desafios_usuario:
+        try:
+            du.porcentagem = int((du.progresso / du.desafio.meta) * 100)
+        except ZeroDivisionError:
+            du.porcentagem = 0
 
     context = {
-        'perfil': perfil,  # Will be None if the user is anonymous
-        'modulos': modulos
+        'perfil': perfil,
+        'modulos': modulos,
+        'desafios_usuario': desafios_usuario
     }
+
     return render(request, 'exercicios/modulos.html', context)
+
+
 
 def percurso(request, modulo_id):
     

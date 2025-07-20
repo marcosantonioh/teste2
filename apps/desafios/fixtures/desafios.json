@@ -1,0 +1,52 @@
+[
+  {
+    "model": "desafios.desafio",
+    "pk": 1,
+    "fields": {
+      "titulo": "Complete as suas próximas 3 lições",
+      "meta": 3,
+      "imagem": "img/desafios/alvo.svg",
+      "bau_imagem": "img/desafios/bau_madeira_closed.svg"
+    }
+  },
+  {
+    "model": "desafios.desafio",
+    "pk": 2,
+    "fields": {
+      "titulo": "Complete as suas próximas 5 lições",
+      "meta": 5,
+      "imagem": "img/desafios/alvo.svg",
+      "bau_imagem": "img/desafios/bau_prata_closed.svg"
+    }
+  },
+  {
+    "model": "desafios.desafio",
+    "pk": 3,
+    "fields": {
+      "titulo": "Complete as suas próximas 7 lições",
+      "meta": 7,
+      "imagem": "img/desafios/alvo.svg",
+      "bau_imagem": "img/desafios/bau_ouro_closed.svg"
+    }
+  },
+  {
+    "model": "desafios.desafio",
+    "pk": 4,
+    "fields": {
+      "titulo": "Ganhe 50 XP",
+      "meta": 50,
+      "imagem": "img/desafios/xp.svg",
+      "bau_imagem": "img/desafios/bau_madeira_closed.svg"
+    }
+  },
+  {
+    "model": "desafios.desafio",
+    "pk": 5,
+    "fields": {
+      "titulo": "Ganhe 100 XP",
+      "meta": 100,
+      "imagem": "img/desafios/xp.svg",
+      "bau_imagem": "img/desafios/bau_prata_closed.svg"
+    }
+  }
+]

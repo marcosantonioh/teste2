@@ -11,48 +11,55 @@
   <!-- Coluna dos Módulos -->
   <div class="modulos-coluna">
     {% for modulo in modulos %}
-      <div class="card">
-        <h2>{{ modulo.nome }}</h2>
-        <div class="card-body">
-          <div class="progress-container">
-            <div class="progress-bar">
-              <div class="progress-fill" style="width: 6.6%"></div>
-            </div>
-            <div class="trophy-circle">
-              <img
-                src="{% static 'img/trofeu.svg' %}"
-                alt="Troféu"
-                class="trophy-icon"
-              />
-            </div>
+    <div class="card">
+      <h2>{{ modulo.nome }}</h2>
+      <div class="card-body">
+        <div class="progress-container">
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 6.6%"></div>
           </div>
-
-          <div>
-            <p class="card-text">{{ modulo.descricao }}</p>
+          <div class="trophy-circle">
+            <img
+              src="{% static 'img/trofeu.svg' %}"
+              alt="Troféu"
+              class="trophy-icon"
+            />
           </div>
-          <a href="{% url 'exercicios:percurso' modulo_id=modulo.id %}">Entrar</a>
         </div>
+
+        <div>
+          <p class="card-text">{{ modulo.descricao }}</p>
+        </div>
+        <a
+          href="{% url 'exercicios:percurso' modulo_id=modulo.id %}"
+          class="botao-com-som"
+          >Entrar</a
+        >
       </div>
+    </div>
     {% endfor %}
   </div>
 
-
-  
+  {% if user.is_authenticated %}
 
   <!-- Divisão no ranking -->
   <div class="estatisticas-coluna">
     {% if perfil.divisao %}
-      <div class="divisao">
-        <div class="divisao-icone">
-          <img src="{% static perfil.divisao.imagem %}" alt="Símbolo da {{ perfil.divisao.nome }}">
-        </div>
-        <div class="divisao-info">
-          <h2>{{ perfil.divisao.nome }}</h2>
-          <h4>Sua posição: {{ perfil.posicao_na_divisao }}º</h4>
-          <p class="status">{{ perfil.variacao_posicao }} posições {{ perfil.direcao_variacao }} da zona de rebaixamento!</p>
-          <a href="{% url 'ranking:ranking' %}" class="ver-divisao">Ver divisão</a>
-        </div>
+    <div class="divisao">
+      <div class="divisao-icone">
+        <img
+          src="{% static perfil.divisao.imagem %}"
+          alt="Símbolo da {{ perfil.divisao.nome }}"
+        />
       </div>
+      <div class="divisao-info">
+        <h2>{{ perfil.divisao.nome }}</h2>
+        <h4>Sua posição: <span>{{ perfil.posicao_no_ranking }}º</span></h4>
+        <a href="{% url 'ranking:ranking' %}" class="ver-divisao"
+          >Ver divisão</a
+        >
+      </div>
+    </div>
     {% endif %}
 
     <!-- Missões do dia -->
@@ -63,50 +70,33 @@
       </div>
 
       <div class="missoes-lista">
-
+        {% if desafios_usuario %} {% for du in desafios_usuario %}
         <div class="missao-item">
-          <img class="icone-missao" src="" alt="Ícone de xp">
+          <img
+            class="icone-missao"
+            src="{% static du.desafio.imagem %}"
+            alt="Ícone do desafio"
+          />
           <div class="missao-info">
-            <p>Ganhe 50 XP</p>
+            <p>{{ du.desafio.titulo }}</p>
             <div class="progress-bar">
-              <div class="progress-fill" style="width: 56%;"></div>
-              <span class="progress-text">28 / 50</span>
+              <div class="progress-fill" style="width: {{ du.porcentagem }}%;"></div>
+              <span class="progress-text">{{ du.progresso }} / {{ du.desafio.meta }}</span>
             </div>
           </div>
-          <img class="icone-bau" src="" alt="Baú de recompensa">
+          <img
+            class="icone-bau"
+            src="{% static du.desafio.bau_imagem %}"
+            alt="Baú de recompensa"
+          />
         </div>
-
-        <div class="missao-item">
-          <img class="icone-missao" src="" alt="Ícone de alvo">
-          <div class="missao-info">
-            <p>Faça 2 lições perfeitas</p>
-            <div class="progress-bar">
-              <div class="progress-fill" style="width: 0%;"></div>
-              <span class="progress-text">0 / 2</span>
-            </div>
-          </div>
-          <img class="icone-bau" src="" alt="Baú de recompensa">
-        </div>
-
-        <div class="missao-item">
-          <img class="icone-missao" src="" alt="Ícone de raio">
-          <div class="missao-info">
-            <p>Ganhe 20 XP de superbônus</p>
-            <div class="progress-bar">
-              <div class="progress-fill" style="width: 40%;"></div>
-              <span class="progress-text">8 / 20</span>
-            </div>
-          </div>
-          <img class="icone-bau" src="" alt="Baú de recompensa">
-        </div>
-
+        {% endfor %} {% else %}
+        <p>Você ainda não possui missões ativas.</p>
+        {% endif %}
       </div>
     </div>
-
-
   </div>
-
-  
+  {% endif %}
 </div>
 
 {% endblock %}

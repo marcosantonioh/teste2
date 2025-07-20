@@ -75,8 +75,13 @@ body {
 .divisao-info h4 {
   margin: 0;
   font-size: 1em; /* Tamanho da fonte (16px) */
-  font-weight: 400; /* Fonte normal */
-  color: #d1d1d1; /* Cor cinza claro */
+  font-weight: 500; /* Fonte normal */
+}
+
+.divisao-info h4 span {
+  font-size: 1.2em; /* Tamanho da fonte (16px) */
+  color: var(--success); /* Cor cinza claro */
+  font-weight: 800; /* Fonte em negrito */
 }
 
 /* Parágrafo extra: "3 posições acima..." */
