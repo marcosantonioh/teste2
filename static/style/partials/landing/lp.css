@@ -46,8 +46,10 @@ header nav a:hover {
   text-decoration: none;
 }
 
-.header-actions a{
-  -webkit-tap-highlight-color: transparent;
+.header-actions{
+  display: flex;
+  gap: 1.5rem;
+  /* background-color: #16a34a; */
 }
 
 .start {
@@ -75,6 +77,14 @@ header nav a:hover {
 .login:hover {
   background-color: var(--primary-dark);
 }
+
+
+.logo {
+  color: var(--primary-color);
+  width: 150px;
+  height: auto;
+}
+
 
 /* Hero section */
 .hero {

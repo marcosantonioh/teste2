@@ -93,7 +93,7 @@ body {
 
 /* Link: "VER DIVISÃO" */
 .divisao-info .ver-divisao {
-  background-color: #8e44ad; /* Cor de fundo roxa do botão */
+  background-color: var(--primary-color); /* Cor de fundo roxa do botão */
   color: white;
   padding: 8px 12px;
   border-radius: 5px;
@@ -107,7 +107,7 @@ body {
 
 /* Efeito ao passar o mouse sobre o link */
 .divisao-info .ver-divisao:hover {
-  background-color: #72338a;
+  background-color: var(--primary-dark);
 }
 
 /* Estilo dos cards */
@@ -290,7 +290,7 @@ body {
 
 /* Barra de Progresso - Preenchimento */
 .progress-fill {
-  background-color: #ffc800; /* Cor do preenchimento (amarelo) */
+  background-color: var(--success); /* Cor do preenchimento (amarelo) */
   height: 100%;
   border-radius: 8px;
   display: flex;
@@ -298,16 +298,6 @@ body {
   justify-content: center;
 }
 
-/* Texto dentro da barra de progresso */
-.progress-text {
-  color: #875c00; /* Cor do texto (marrom escuro) */
-  font-weight: 700;
-  font-size: 0.75em; /* 12px */
-  position: absolute; /* Posiciona sobre a barra */
-  width: 100%;
-  text-align: center;
-  left: 0;
-}
 
 /* Ícone do baú (direita) */
 .missao-item .icone-bau {
