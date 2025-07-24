@@ -133,3 +133,69 @@
   height: 25px;
   object-fit: contain;
 }
+
+
+
+
+
+/* Para tablets e celulares (telas menores que 992px) */
+@media (max-width: 992px) {
+  .container {
+    margin-top: 0px;
+    /* Altera o layout para vertical e reduz o padding lateral */
+    flex-direction: column;
+    padding: 20px 40px;
+    gap: 30px; /* Adiciona um espaço entre as seções empilhadas */
+  }
+
+  /* Faz com que as seções ocupem toda a largura */
+  .left-section,
+  .right-section {
+    flex: none; /* Remove a proporção flex */
+    width: 100%;
+  }
+
+  .missoes-card {
+    /* O card agora ocupa 100% da largura da sua seção */
+    width: 100%;
+  }
+
+  .missoes-header h2 {
+    font-size: 1.3rem; /* Reduz um pouco o título para telas menores */
+  }
+}
+
+/* Ajustes finos para celulares (telas menores que 600px) */
+@media (max-width: 600px) {
+  .container {
+    /* Reduz ainda mais o padding em telas muito pequenas */
+    padding: 20px 5px;
+  }
+
+  .missoes-header {
+    /* Empilha o título e o link "Ver todas" se necessário */
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .missoes-header h2 {
+    font-size: 1.2rem;
+  }
+
+  .missao-item {
+    /* Permite que o texto e a barra de progresso fiquem abaixo do ícone se o espaço for muito pequeno */
+    flex-wrap: wrap; 
+    padding: 12px 15px;
+    /* background-color: #4caf50; */
+
+    border-bottom: 2px solid var(--border-color);
+    background-color: transparent;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  
+  .missao-info p {
+    font-size: 0.95rem; /* Ajusta o tamanho da fonte da missão */
+  }
+}

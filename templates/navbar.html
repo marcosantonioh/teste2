@@ -96,20 +96,27 @@
     <!-- Barra de Navegação Inferior para Mobile -->
     <nav class="bottom-navbar">
       <a href="{% url 'exercicios:modulos' %}" class="bottom-nav-link {% if request.resolver_match.view_name == 'exercicios:modulos' %}active{% endif %}">
-        <i class='bx bxs-home'></i>
-        <span>Aprender</span>
+          <i class='bx bx-home icon-inactive'></i>      
+          <i class='bx bxs-home icon-active'></i>        
+          <span>Aprender</span>
       </a>
+
       <a href="{% url 'ranking:ranking' %}" class="bottom-nav-link {% if request.resolver_match.view_name == 'ranking:ranking' %}active{% endif %}">
-        <i class='bx bxs-bar-chart-alt-2'></i>
-        <span>Ranking</span>
+          <i class='bx bx-bar-chart-alt-2 icon-inactive'></i>
+          <i class='bx bxs-bar-chart-alt-2 icon-active'></i>
+          <span>Ranking</span>
       </a>
+
       <a href="{% url 'desafios:desafios' %}" class="bottom-nav-link {% if request.resolver_match.view_name == 'desafios:desafios' %}active{% endif %}">
-        <i class='bx bxs-trophy'></i>
-        <span>Desafios</span>
+          <i class='bx bx-trophy icon-inactive'></i>
+          <i class='bx bxs-trophy icon-active'></i>
+          <span>Desafios</span>
       </a>
+
       <a href="{% url 'usuarios:perfil_usuario' %}" class="bottom-nav-link {% if request.resolver_match.view_name == 'usuarios:perfil_usuario' or request.resolver_match.view_name == 'usuarios:editar_perfil' %}active{% endif %}">
-        <i class='bx bxs-user'></i>
-        <span>Perfil</span>
+          <i class='bx bx-user icon-inactive'></i>
+          <i class='bx bxs-user icon-active'></i>
+          <span>Perfil</span>
       </a>
     </nav>
 

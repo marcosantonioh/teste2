@@ -311,6 +311,29 @@ body {
     z-index: 1000; /* Garante que fique acima de outro conteúdo */
   }
 
+
+  /* 1. Por padrão, esconda o ícone preenchido ('icon-active') */
+  .bottom-nav-link .icon-active {
+    display: none;
+  }
+
+  /* 2. Por padrão, mostre o ícone de contorno ('icon-inactive') */
+  .bottom-nav-link .icon-inactive {
+    display: inline-block; /* ou 'block', dependendo do seu layout */
+  }
+
+  /* 3. QUANDO o link tiver a classe .active, inverta a lógica */
+
+  /* 3a. Mostre o ícone preenchido ('icon-active') */
+  .bottom-nav-link.active .icon-active {
+    display: inline-block;
+  }
+
+  /* 3b. Esconda o ícone de contorno ('icon-inactive') */
+  .bottom-nav-link.active .icon-inactive {
+    display: none;
+  }
+
   /* Estilo para cada link/botão na barra inferior */
   .bottom-nav-link {
     display: flex;
@@ -318,14 +341,14 @@ body {
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    color: #272727; /* Cor para ícones inativos */
+    color: #6d6d6d; 
     flex-grow: 1; /* Faz com que cada link ocupe o mesmo espaço */
     height: 100%;
     transition: background-color 0.2s ease-out, transform 0.1s ease-out;
   }
   .bottom-nav-link:active {
     /* Um fundo cinza bem claro e sutil para indicar o toque */
-    background-color: rgba(133, 60, 250, 0.226); 
+    background-color: rgba(133, 60, 250, 0.329); 
     
     /* Um leve encolhimento para simular um botão sendo pressionado */
     transform: scale(0.97); 
