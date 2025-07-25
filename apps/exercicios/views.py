@@ -5,6 +5,9 @@ from django.db.models import Sum
 from apps.exercicios.models import Exercicio, Modulo, Secao, Estacao
 from apps.mecanicas_jogo import services as mecanicas_services
 from apps.desafios.models import DesafioUsuario
+from django.http import JsonResponse 
+from django.urls import reverse
+from django.template.defaultfilters import linebreaksbr # Para formatar o enunciado
 
 
 def get_or_create_perfil(user):
@@ -91,6 +94,10 @@ def obter_alternativas(exercicio):
         alternativas.append(('4', exercicio.alternativa_4))
     return alternativas
 
+
+
+
+
 def resolver_exercicio(request, exercicio_id):
     perfil = get_or_create_perfil(request.user)
     if not perfil: # Se o usuário não estiver autenticado e a função retornar None
@@ -135,6 +142,10 @@ def resolver_exercicio(request, exercicio_id):
     )
 
     if request.method == 'POST':
+        
+        # Verificamos se a requisição veio do nosso script (AJAX)
+        is_ajax = request.POST.get('is_ajax_request') == '1'
+
         acao = request.POST.get('acao')
 
         if acao == 'pular':
@@ -143,30 +154,66 @@ def resolver_exercicio(request, exercicio_id):
 
         elif acao == 'responder':
             resposta_usuario = _extrair_resposta_do_request(request, exercicio.tipo)
-            resposta_submetida = resposta_usuario  # Guarda a resposta para usar no template
-            resultado, correta = mecanicas_services.processar_resposta_exercicio(resposta_usuario, exercicio, perfil)
-            if correta:
-                estacao_atual = exercicio.estacao
-                
-                # Após o exercício atual ser marcado como 'concluido' por 
-                # atualizar_estado_do_perfil_e_exercicio (chamado em processar_resposta),
-                # verificamos se ainda existem outros exercícios 'livre' na estação.
-                exercicios_livres_restantes = Exercicio.objects.filter(
-                    estacao=estacao_atual,
-                    status='livre'  # Busca por exercícios que ainda não foram concluídos
-                ).order_by('id')
 
-                if exercicios_livres_restantes.exists():
-                    # Se ainda há exercícios livres (incluindo os pulados), 
-                    # o botão "Continuar" deve levar ao primeiro deles na ordem de ID.
-                    proximo_exercicio_id_para_continuar = exercicios_livres_restantes.first().id
-                else:
-                    # Não há mais exercícios 'livre', a estação está completa.
-                    # Verifica se a estação já não está marcada como completada para evitar saves desnecessários.
-                    if estacao_atual.status != 'completado': # Verifica se já não está completado
-                        estacao_atual.status = 'completado'
-                        estacao_atual.save()
-                    return redirect('exercicios:estacao_concluida', estacao_id=estacao_atual.id)
+            resultado, correta = mecanicas_services.processar_resposta_exercicio(resposta_usuario, exercicio, perfil)
+            
+            # Se for uma requisição AJAX, vamos montar e retornar uma resposta JSON.
+            if is_ajax:
+                proximo_exercicio_id = None
+                estacao_concluida_url = None
+
+                if correta:
+                    estacao_atual = exercicio.estacao
+                    exercicios_livres_restantes = Exercicio.objects.filter(
+                        estacao=estacao_atual, status='livre'
+                    ).order_by('id')
+
+                    if exercicios_livres_restantes.exists():
+                        proximo_exercicio_id = exercicios_livres_restantes.first().id
+                    else:
+                        if estacao_atual.status != 'completado':
+                            estacao_atual.status = 'completado'
+                            estacao_atual.save()
+                        # Em vez de redirect, enviamos a URL para o frontend redirecionar.
+                        estacao_concluida_url = reverse('exercicios:estacao_concluida', args=[estacao_atual.id])
+
+                # Recalcula o progresso após a resposta para enviar o valor atualizado
+                progresso_percentual, exercicios_concluidos_count, total_exercicios_modulo = mecanicas_services.calcular_progresso(exercicio.modulo)
+
+                # Monta o dicionário de dados para a resposta JSON
+                data = {
+                    'resultado': resultado, # 'correto' ou 'incorreto'
+                    'correta': correta,
+                    'resposta_submetida': resposta_usuario,
+                    'proximo_exercicio_id': proximo_exercicio_id,
+                    'estacao_concluida_url': estacao_concluida_url, # Será null se a estação não terminou
+                    'vidas_atuais': perfil.vidas_atuais,
+                    'sem_vidas': perfil.vidas_atuais <= 0,
+                    'progresso': {
+                        'percentual': progresso_percentual,
+                        'concluidos': exercicios_concluidos_count,
+                        'total': total_exercicios_modulo,
+                    },
+                    'resposta_correta': exercicio.resposta_correta, # ou exercicio.resposta_vf_correta
+
+                }
+                return JsonResponse(data)
+
+            # Se NÃO for AJAX, o código continua como antes, para o caso de o JS falhar.
+            # O código abaixo só será executado se a requisição for um POST normal.
+            resposta_submetida = resposta_usuario
+            proximo_exercicio_id_para_continuar = None
+            if correta:
+                # ... (sua lógica original de encontrar o próximo exercício para o contexto)
+                 estacao_atual = exercicio.estacao
+                 exercicios_livres_restantes = Exercicio.objects.filter(estacao=estacao_atual, status='livre').order_by('id')
+                 if exercicios_livres_restantes.exists():
+                     proximo_exercicio_id_para_continuar = exercicios_livres_restantes.first().id
+                 else:
+                     if estacao_atual.status != 'completado':
+                         estacao_atual.status = 'completado'
+                         estacao_atual.save()
+                     return redirect('exercicios:estacao_concluida', estacao_id=estacao_atual.id)
 
     # Nova lógica para decidir se o modal de saída deve ser mostrado
     mostrar_modal_confirmacao_saida = progresso_percentual > 0
@@ -216,3 +263,29 @@ def estacao_concluida_view(request, estacao_id):
         'modulo_id': estacao.secao.modulo.id, # Para o botão "Voltar ao Percurso"
     }
     return render(request, 'exercicios/estacao_concluida.html', context)
+
+
+
+
+
+def get_exercicio_data(request, exercicio_id):
+    """
+    Endpoint de API que retorna os dados de um exercício em JSON
+    para serem usados pelo frontend.
+    """
+    exercicio = get_object_or_404(Exercicio, id=exercicio_id)
+    
+    # Aqui você pode customizar exatamente quais dados quer enviar
+    # para reconstruir a tela do exercício.
+    data = {
+        'id': exercicio.id,
+        'tipo': exercicio.tipo,
+        'enunciado': linebreaksbr(exercicio.enunciado) if exercicio.enunciado else '',
+        'codigo': exercicio.codigo if exercicio.codigo else '',
+        'imagem_url': exercicio.imagem.url if exercicio.imagem else None,
+        # Obtém as alternativas como uma lista de tuplas (numero, texto)
+        'alternativas': list(obter_alternativas(exercicio)) if exercicio.tipo == 'mcq' else [],
+        'url_resolucao': reverse('exercicios:resolver_exercicio', args=[exercicio.id])
+    }
+    
+    return JsonResponse(data)
