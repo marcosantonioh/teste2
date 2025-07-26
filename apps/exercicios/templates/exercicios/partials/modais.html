@@ -1,0 +1,53 @@
+<!-- Modal de Sem Vidas -->
+<div
+  id="modalSemVidas"
+  class="modal"
+  data-redirect="{% url 'exercicios:percurso' exercicio.modulo.id %}"
+  role="dialog"
+  aria-modal="true"
+  style="display: none"
+>
+  <div class="modal-conteudo">
+    <button class="fechar" onclick="fecharModal()">
+      <img src="/static/img/close-2.svg" class="exit-icon" alt="Fechar" />
+    </button>
+    <img
+      src="/static/img/mascote/sem_vidas.svg"
+      class="mascote-modal"
+      alt="Mascote Triste"
+    />
+    <h2>Você ficou sem vidas!</h2>
+    <p>
+      Adquira mais vidas para continuar ou aguarde até que elas recarreguem.
+    </p>
+    <div class="modal-botoes">
+      <button onclick="fecharModal()" class="btn-cancelar">Entendi</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Confirmação de Saída -->
+<div
+  id="modalSair"
+  class="modal"
+  data-redirect="{% url 'exercicios:percurso' exercicio.modulo.id %}"
+  role="dialog"
+  aria-modal="true"
+  style="display: none"
+>
+  <div class="modal-conteudo">
+    <button class="fechar" onclick="fecharModalSair()">
+      <img src="/static/img/close-2.svg" class="exit-icon" alt="Fechar" />
+    </button>
+    <img
+      src="/static/img/mascote/sad.svg"
+      class="mascote-modal"
+      alt="Mascote Triste"
+    />
+    <h2>Deseja realmente sair do exercício?</h2>
+    <div class="modal-botoes">
+      <button onclick="fecharModalSair()" class="btn-cancelar">Cancelar</button>
+      <a href="{% url 'exercicios:percurso' 1%}" class="btn-sair">Sair</a>
+    </div>
+  </div>
+</div>

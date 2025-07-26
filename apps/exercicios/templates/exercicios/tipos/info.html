@@ -1,0 +1,16 @@
+<div class="exercicio-info-layout">
+  <div class="exercicio-info-conteudo">
+    {% if exercicio.enunciado %}
+    <p class="exercicio-enunciado">{{ exercicio.enunciado|linebreaksbr }}</p>
+    {% endif %}
+  </div>
+  <div class="exercicio-info-imagem-container">
+    {% if exercicio.imagem %}
+    <img
+      src="{{ exercicio.imagem.url }}"
+      alt="{{ exercicio.titulo }}"
+      class="exercicio-imagem"
+    />
+    {% endif %}
+  </div>
+</div>

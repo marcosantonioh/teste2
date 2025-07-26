@@ -1,0 +1,40 @@
+<div class="exercicio-mcq-layout">
+  {# Novo container para o layout de duas colunas #}
+  <div class="exercicio-mcq-conteudo">
+    {# Coluna da Esquerda #} {% if exercicio.enunciado %}
+    <p class="exercicio-enunciado">{{ exercicio.enunciado }}</p>
+    {% endif %} {% if exercicio.codigo %}
+    <pre class="exercicio-codigo">{{ exercicio.codigo }}</pre>
+    {% endif %}
+  </div>
+  <div class="exercicio-mcq-alternativas">
+    {# Coluna da Direita #}
+    <div class="alternativas">
+      <h3>Alternativas</h3>
+      {% for numero, texto in alternativas %}
+      <input
+        type="radio"
+        name="resposta"
+        id="alt{{ numero }}"
+        value="{{ numero }}"
+        hidden
+        class="alternativa-exercicio"
+        {%
+        if
+        resultado
+        %}disabled{%
+        endif
+        %}
+      />
+      <label
+        for="alt{{ numero }}"
+        class="botao-alternativa {% if resultado %} {# Se a resposta foi correta, pinta a alternativa certa de verde #} {% if correta and numero == exercicio.resposta_correta %} alternativa-correta {# Se a resposta foi incorreta, pinta apenas a que o usuário marcou de vermelho #} {% elif not correta and numero == resposta_submetida %} alternativa-incorreta {% endif %} {% endif %}"
+      >
+        <span class="numero-alternativa">{{ numero }}</span>
+        <span class="texto-alternativa">{{ texto }}</span>
+      </label>
+
+      {% endfor %}
+    </div>
+  </div>
+</div>
