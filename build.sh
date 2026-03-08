@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
-
-# Ativa o modo de saída em caso de erro
+# Sair imediatamente em caso de erro
 set -o errexit
 
-# Instala as dependências
+# Instala as dependências (incluindo gunicorn e whitenoise)
 pip install -r requirements.txt
 
-# Aplica as migrações
-python manage.py migrate
+# 1. Cria as tabelas primeiro (Crucial para evitar o erro de 'relation does not exist')
+python manage.py migrate --no-input
 
-# Coleta os arquivos estáticos
-python manage.py collectstatic --noinput
+# 2. Coleta os arquivos estáticos depois
+python manage.py collectstatic --no-input
