@@ -21,8 +21,6 @@ def obter_amigos(user):
 
     return User.objects.filter(id__in=amigos_ids)
 
-
-
 # @login_required(login_url="login_usuario")@login_required(login_url="usuarios:login_usuario")
 def ranking(request):
     

@@ -95,9 +95,10 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default=config('DATABASE_URL'),
+        default=os.environ.get("DATABASE_URL"),
+        #default=config('DATABASE_URL'),
         conn_max_age=600,
-        ssl_require=False  # Pode deixar False localmente
+        ssl_require=True  # Pode deixar False localmente
     )
 }
 
