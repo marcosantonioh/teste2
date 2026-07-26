@@ -39,6 +39,7 @@
               type="text"
               name="username"
               placeholder="Digite seu nome"
+              value="{{ form.username.value|default_if_none:'' }}"
               required
             />
             <i class="bx bx-user"></i>
@@ -52,6 +53,7 @@
               type="email"
               name="email"
               placeholder="Digite seu E-mail"
+              value="{{ form.email.value|default_if_none:'' }}"
               required
             />
             <i class="bx bx-envelope"></i>

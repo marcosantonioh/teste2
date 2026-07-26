@@ -8,6 +8,7 @@ from django.db import models
 from django.views.decorators.http import require_POST
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from .forms import CadastroUsuarioForm
 
 
 
@@ -101,34 +102,24 @@ def editar_perfil(request):
 
 def cadastrar_usuario(request):
     if request.method == "POST":
-        # Coletando os dados do formulário
-        username = request.POST["username"]
-        email = request.POST["email"]
-        password = request.POST["password"]
-        password2 = request.POST["password2"]
-        foto = request.FILES.get("foto")  # pega a imagem enviada no form
-        visibilidade_choice = request.POST.get('visibilidade') # Captura a escolha de privacidade
+        form = CadastroUsuarioForm(request.POST)
+        if not form.is_valid():
+            for errors in form.errors.values():
+                for error in errors:
+                    messages.error(request, error)
+            return render(request, "usuarios/cadastro.html", {'form': form})
 
-        
-        
-        # Verificando se as senhas coincidem
-        if password != password2:
-            messages.error(request, "As senhas não coincidem!")
-            return redirect("usuarios:cadastro_usuario")  # Redireciona de volta ao formulário de cadastro
-        
-        # Verificar se o nome de usuário já existe
-        if User.objects.filter(username=username).exists():
-            messages.error(request, "Nome de usuário já está em uso. Escolha outro.")
-            return redirect("usuarios:cadastro_usuario")
-       
-        # Verificando se o e-mail já está registrado
-        if User.objects.filter(email=email).exists():
-            messages.error(request, "Este e-mail já está cadastrado!")
-            return redirect("usuarios:cadastro_usuario")
-    
-        # Criando o usuário
-        user = User.objects.create_user(username=username, email=email, password=password)
-        user.save()
+        username = form.cleaned_data['username']
+        email = form.cleaned_data['email']
+        password = form.cleaned_data['password']
+        foto = request.FILES.get("foto")
+        visibilidade_choice = request.POST.get('visibilidade')
+
+        user = User.objects.create_user(
+            username=username,
+            email=email,
+            password=password,
+        )
 
         # Define o status de visibilidade com base na escolha do usuário
         visibilidade_status = 'privado' if visibilidade_choice == 'privado' else 'publico'
@@ -141,8 +132,7 @@ def cadastrar_usuario(request):
         messages.success(request, "Cadastro realizado com sucesso!")
         return redirect("usuarios:login_usuario")  # Redireciona para a página de login após o cadastro
 
-
-    return render(request, "usuarios/cadastro.html")
+    return render(request, "usuarios/cadastro.html", {'form': CadastroUsuarioForm()})
 
 
 
@@ -308,7 +298,6 @@ def preferencias(request):
     # Adiciona o perfil ao contexto para que o template possa exibir os valores atuais.
     context = {'perfil': perfil}
     return render(request, 'usuarios/preferencias.html', context)
-
 
 
 
