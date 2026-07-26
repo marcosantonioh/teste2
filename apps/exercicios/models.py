@@ -50,6 +50,10 @@ class Estacao(models.Model):
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='bloqueado')
     secao = models.ForeignKey(Secao, related_name='estacoes', on_delete=models.CASCADE)
     nome = models.CharField(max_length=200)
+    disponivel_para_visitantes = models.BooleanField(
+        default=False,
+        help_text='Libera esta estação somente na experiência de demonstração.',
+    )
     # Se precisar de ordem para Estações também, adicione um campo 'ordem' aqui
     
     def __str__(self):

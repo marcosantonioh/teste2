@@ -251,7 +251,7 @@
 
   <script>
     setTimeout(() => {
-      window.location.href = "{% url 'exercicios:modulos' %}";
+      window.location.href = "{{ destino_final|escapejs }}";
     }, 3000);
   </script>
 

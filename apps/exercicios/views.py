@@ -137,6 +137,77 @@ def obter_alternativas(exercicio, request=None):
     ]
 
 
+def _estacao_demonstracao():
+    return get_object_or_404(Estacao, disponivel_para_visitantes=True)
+
+
+def _exercicios_demonstracao(estacao):
+    return list(estacao.exercicios.order_by('id'))
+
+
+def iniciar_demonstracao(request):
+    """Inicia uma experiência limitada e sem persistência para visitantes."""
+    if request.user.is_authenticated:
+        return redirect('exercicios:modulos')
+    if not request.session.get('onboarding_concluido'):
+        return redirect('landing')
+
+    exercicios = _exercicios_demonstracao(_estacao_demonstracao())
+    if not exercicios:
+        return redirect('landing')
+    return redirect('exercicios:resolver_demo', exercicio_id=exercicios[0].id)
+
+
+def resolver_demonstracao(request, exercicio_id):
+    """Exibe e corrige exercícios de demonstração sem alterar dados do jogo."""
+    if request.user.is_authenticated:
+        return redirect('exercicios:modulos')
+    if not request.session.get('onboarding_concluido'):
+        return redirect('landing')
+
+    estacao = _estacao_demonstracao()
+    exercicio = get_object_or_404(Exercicio, id=exercicio_id, estacao=estacao)
+    exercicios = _exercicios_demonstracao(estacao)
+    indice_atual = exercicios.index(exercicio)
+    proximo_exercicio = (
+        exercicios[indice_atual + 1]
+        if indice_atual + 1 < len(exercicios)
+        else None
+    )
+
+    resposta_submetida = None
+    correta = None
+    if request.method == 'POST' and exercicio.tipo != 'info':
+        resposta_submetida = _extrair_resposta_do_request(request, exercicio.tipo)
+        correta = mecanicas_services.verificar_resposta(exercicio, resposta_submetida)
+
+    if exercicio.tipo == 'mcq':
+        alternativas = obter_alternativas(exercicio, request)
+        campo_resposta = 'resposta'
+        resposta_correta = exercicio.resposta_correta
+    elif exercicio.tipo == 'vf':
+        alternativas = [('True', 'Verdadeiro'), ('False', 'Falso')]
+        campo_resposta = 'resposta_vf'
+        resposta_correta = str(exercicio.resposta_vf_correta)
+    else:
+        alternativas = []
+        campo_resposta = None
+        resposta_correta = None
+
+    return render(request, 'exercicios/demonstracao.html', {
+        'estacao': estacao,
+        'exercicio': exercicio,
+        'alternativas': alternativas,
+        'campo_resposta': campo_resposta,
+        'resposta_correta': resposta_correta,
+        'resposta_submetida': resposta_submetida,
+        'correta': correta,
+        'proximo_exercicio': proximo_exercicio,
+        'indice_exercicio': indice_atual + 1,
+        'total_exercicios': len(exercicios),
+    })
+
+
 def limpar_ordens_alternativas_da_estacao(request, estacao):
     """Remove a ordem da tentativa anterior ao reiniciar uma estação."""
     ordens_salvas = request.session.get(CHAVE_ORDEM_ALTERNATIVAS, {})

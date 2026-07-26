@@ -1,0 +1,84 @@
+.demonstracao-container {
+  display: flex;
+  justify-content: center;
+  padding: 48px 20px;
+}
+
+.demonstracao-card {
+  width: min(100%, 760px);
+  padding: 32px;
+  border: 1px solid #e2e2e2;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.demonstracao-identificador,
+.demonstracao-aviso {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.demonstracao-cabecalho {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 12px 0 24px;
+}
+
+.demonstracao-cabecalho h1 { margin: 0; }
+.demonstracao-enunciado { font-size: 1.1rem; line-height: 1.6; }
+.demonstracao-codigo { overflow-x: auto; padding: 16px; border-radius: 8px; background: #f4f4f4; }
+.demonstracao-alternativas { display: grid; gap: 12px; margin: 28px 0; }
+.demonstracao-alternativas input { position: absolute; opacity: 0; }
+
+.demonstracao-alternativa {
+  display: block;
+  padding: 14px 16px;
+  border: 1px solid #aaa;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.demonstracao-alternativas input:checked + .demonstracao-alternativa {
+  border-color: #3094ff;
+  background: #d3f7ff;
+}
+
+.demonstracao-alternativa.alternativa-correta {
+  border-color: var(--success, #2e9b4b);
+  background: var(--success, #2e9b4b);
+  color: #fff;
+}
+
+.demonstracao-alternativa.alternativa-incorreta {
+  border-color: var(--red, #cf3c3c);
+  background: var(--red, #cf3c3c);
+  color: #fff;
+}
+
+.demonstracao-acao {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 12px 20px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--primary-color, #291d76);
+  color: #fff;
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.demonstracao-acao.secundario { background: #555; }
+.demonstracao-feedback { margin-top: 20px; font-weight: 700; }
+.demonstracao-feedback.correto { color: var(--success, #2e9b4b); }
+.demonstracao-feedback.incorreto { color: var(--red, #cf3c3c); }
+.demonstracao-aviso { margin: 28px 0 0; }
+
+@media (max-width: 600px) {
+  .demonstracao-container { padding: 24px 12px; }
+  .demonstracao-card { padding: 24px 20px; }
+  .demonstracao-cabecalho { flex-direction: column; gap: 6px; }
+}

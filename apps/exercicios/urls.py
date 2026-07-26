@@ -4,6 +4,8 @@ from . import views
 app_name = "exercicios"
 
 urlpatterns = [
+    path('demonstracao/', views.iniciar_demonstracao, name='iniciar_demo'),
+    path('demonstracao/exercicio/<int:exercicio_id>/', views.resolver_demonstracao, name='resolver_demo'),
     path("", views.modulos, name="modulos"),
     path("modulos/", views.modulos, name='modulos'),  # ou remova essa, se preferir
     path('resolver/<int:exercicio_id>/', views.resolver_exercicio, name='resolver_exercicio'),

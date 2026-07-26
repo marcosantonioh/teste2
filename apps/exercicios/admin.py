@@ -88,11 +88,11 @@ class SecaoAdmin(admin.ModelAdmin):
 
 @admin.register(Estacao)
 class EstacaoAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'secao', 'status')
-    list_filter = ('secao__modulo', 'secao', 'status')
+    list_display = ('nome', 'secao', 'status', 'disponivel_para_visitantes')
+    list_filter = ('secao__modulo', 'secao', 'status', 'disponivel_para_visitantes')
     search_fields = ('nome',)
     list_editable = ('secao', 'status')
-    fields = ['nome', 'secao', 'status', 'link_adicionar_exercicio_form']
+    fields = ['nome', 'secao', 'status', 'disponivel_para_visitantes', 'link_adicionar_exercicio_form']
     readonly_fields = ['link_adicionar_exercicio_form']
 
     def link_adicionar_exercicio_form(self, obj):

@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse
 
 
 TEMPOS_ESTUDO_VALIDOS = {'leve', 'regular', 'foco_total'}
@@ -77,6 +78,11 @@ def etapa(request, numero):
         'opcoes': etapa_info.get("opcoes"),
         'tipo': etapa_info.get("tipo", "texto"),
         'etapa_atual': numero,
-        'proxima_etapa': numero + 1
+        'proxima_etapa': numero + 1,
+        'destino_final': reverse(
+            'exercicios:modulos'
+            if request.user.is_authenticated
+            else 'exercicios:iniciar_demo'
+        ),
     }
     return render(request, 'onboarding.html', contexto)
