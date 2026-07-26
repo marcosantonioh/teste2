@@ -16,6 +16,11 @@
     <div class="container">
       <form method="POST">
         {% csrf_token %}
+        <img
+          class="auth-logo"
+          src="{% static 'img/Logo_Cventure_white.svg' %}"
+          alt="Cventure"
+        />
         <h3>Cadastro de Usuário</h3>
 
         {% if messages %}

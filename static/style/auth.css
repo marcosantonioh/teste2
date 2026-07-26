@@ -43,6 +43,13 @@ form h3 {
   text-align: center;
 }
 
+.auth-logo {
+  display: block;
+  width: 160px;
+  height: auto;
+  /* margin: 0 auto 24px; */
+}
+
 .input-box {
   /* background-color: rgb(52, 4, 4); */
   width: 100%;
@@ -256,6 +263,11 @@ button:hover {
     width: 100%;
     max-width: 100%; /* deixa usar toda a largura possível */
     padding: 25px 20px;
+  }
+
+  .auth-logo {
+    width: min(180px, 80%);
+    margin-bottom: 20px;
   }
 
   .input-box label {

@@ -1,3 +1,5 @@
+import random
+
 from django.contrib.auth.decorators import login_required
 from apps.usuarios.models import Perfil
 from django.shortcuts import render, get_object_or_404, redirect
@@ -8,6 +10,10 @@ from apps.desafios.models import DesafioUsuario
 from django.http import JsonResponse 
 from django.urls import reverse
 from django.template.defaultfilters import linebreaksbr # Para formatar o enunciado
+
+
+CHAVE_ORDEM_ALTERNATIVAS = 'ordens_alternativas_mcq'
+CHAVE_ULTIMA_ORDEM_ALTERNATIVAS = 'ultimas_ordens_alternativas_mcq'
 
 
 def get_or_create_perfil(user):
@@ -81,8 +87,13 @@ def _extrair_resposta_do_request(request, tipo_exercicio):
         return request.POST.get('resposta_vf')
     return None
 
-def obter_alternativas(exercicio):
-    """Prepara a lista de alternativas para exercícios de múltipla escolha."""
+def obter_alternativas(exercicio, request=None):
+    """Retorna as alternativas na ordem da tentativa atual do usuário.
+
+    A identificação de cada alternativa continua sendo o número originalmente
+    salvo no exercício. Assim, mudar a posição visual não afeta a validação da
+    resposta correta.
+    """
     alternativas = []
     if exercicio.alternativa_1:
         alternativas.append(('1', exercicio.alternativa_1))
@@ -92,7 +103,55 @@ def obter_alternativas(exercicio):
         alternativas.append(('3', exercicio.alternativa_3))
     if exercicio.alternativa_4:
         alternativas.append(('4', exercicio.alternativa_4))
-    return alternativas
+
+    if request is None or len(alternativas) < 2:
+        return alternativas
+
+    chave_exercicio = str(exercicio.id)
+    ordens_salvas = request.session.get(CHAVE_ORDEM_ALTERNATIVAS, {})
+    ultimas_ordens = request.session.get(CHAVE_ULTIMA_ORDEM_ALTERNATIVAS, {})
+    ordem_salva = ordens_salvas.get(chave_exercicio)
+    numeros_alternativas = [numero for numero, _ in alternativas]
+
+    ordem_eh_valida = (
+        isinstance(ordem_salva, list)
+        and len(ordem_salva) == len(numeros_alternativas)
+        and set(ordem_salva) == set(numeros_alternativas)
+    )
+
+    if not ordem_eh_valida:
+        ordem_salva = numeros_alternativas[:]
+        random.shuffle(ordem_salva)
+
+        if ordem_salva == ultimas_ordens.get(chave_exercicio):
+            ordem_salva = ordem_salva[1:] + ordem_salva[:1]
+
+        ordens_salvas[chave_exercicio] = ordem_salva
+        request.session[CHAVE_ORDEM_ALTERNATIVAS] = ordens_salvas
+
+    alternativas_por_numero = dict(alternativas)
+    return [
+        (numero, alternativas_por_numero[numero])
+        for numero in ordem_salva
+    ]
+
+
+def limpar_ordens_alternativas_da_estacao(request, estacao):
+    """Remove a ordem da tentativa anterior ao reiniciar uma estação."""
+    ordens_salvas = request.session.get(CHAVE_ORDEM_ALTERNATIVAS, {})
+    ultimas_ordens = request.session.get(CHAVE_ULTIMA_ORDEM_ALTERNATIVAS, {})
+    houve_alteracao = False
+
+    for exercicio_id in estacao.exercicios.values_list('id', flat=True):
+        chave_exercicio = str(exercicio_id)
+        ordem_anterior = ordens_salvas.pop(chave_exercicio, None)
+        if ordem_anterior is not None:
+            ultimas_ordens[chave_exercicio] = ordem_anterior
+            houve_alteracao = True
+
+    if houve_alteracao:
+        request.session[CHAVE_ORDEM_ALTERNATIVAS] = ordens_salvas
+        request.session[CHAVE_ULTIMA_ORDEM_ALTERNATIVAS] = ultimas_ordens
 
 
 
@@ -105,7 +164,7 @@ def resolver_exercicio(request, exercicio_id):
     
     exercicio = get_object_or_404(Exercicio, id=exercicio_id)
 
-    alternativas = obter_alternativas(exercicio)
+    alternativas = obter_alternativas(exercicio, request)
     resultado = None
     correta = None
     proximo_exercicio_id_para_continuar = None
@@ -243,6 +302,7 @@ def resolver_exercicio(request, exercicio_id):
 
 def iniciar_exercicios(request, exercicio_id):
     exercicio = get_object_or_404(Exercicio, id=exercicio_id)
+    limpar_ordens_alternativas_da_estacao(request, exercicio.estacao)
     mecanicas_services.reiniciar_estacao(exercicio.estacao)
     return redirect('exercicios:resolver_exercicio', exercicio_id=exercicio.id)
 
@@ -284,7 +344,7 @@ def get_exercicio_data(request, exercicio_id):
         'codigo': exercicio.codigo if exercicio.codigo else '',
         'imagem_url': exercicio.imagem.url if exercicio.imagem else None,
         # Obtém as alternativas como uma lista de tuplas (numero, texto)
-        'alternativas': list(obter_alternativas(exercicio)) if exercicio.tipo == 'mcq' else [],
+        'alternativas': obter_alternativas(exercicio, request) if exercicio.tipo == 'mcq' else [],
         'url_resolucao': reverse('exercicios:resolver_exercicio', args=[exercicio.id])
     }
     
