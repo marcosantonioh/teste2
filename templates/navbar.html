@@ -23,9 +23,9 @@
       </div>
 
       <ul class="box-links">
-        <li><a href="{% url 'exercicios:modulos' %}">Aprender</a></li>
-        <li><a href="{% url 'ranking:ranking' %}">Ranking</a></li>
-        <li><a href="{% url 'desafios:desafios' %}">Desafios</a></li>
+        <li><a href="{% url 'exercicios:modulos' %}" class="{% if request.resolver_match.view_name|slice:':11' == 'exercicios:' %}active{% endif %}">Aprender</a></li>
+        <li><a href="{% url 'ranking:ranking' %}" class="{% if request.resolver_match.view_name == 'ranking:ranking' %}active{% endif %}">Ranking</a></li>
+        <li><a href="{% url 'desafios:desafios' %}" class="{% if request.resolver_match.view_name == 'desafios:desafios' %}active{% endif %}">Desafios</a></li>
       </ul>
 
       <div class="user-profile">

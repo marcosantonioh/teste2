@@ -59,6 +59,13 @@ body {
   font-weight: 500;
 }
 
+.box-links li a.active {
+  color: var(--primary-color);
+  font-weight: 700;
+  border-bottom: 3px solid var(--primary-color);
+  padding-bottom: 5px;
+}
+
 .auth-buttons {
   /* background-color: aqua; */
   display: flex;
