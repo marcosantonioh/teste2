@@ -1,11 +1,16 @@
 {% load static %}
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt">
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="UTF-8" />
     <title>Login</title>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="/static/img/fav_icon_laranja_e_branco.svg"
+    />
     <link rel="stylesheet" href="{% static 'style/auth.css' %}" />
     <link
       href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
@@ -25,13 +30,11 @@
         <h3>Login</h3>
 
         {% if messages %}
-          <ul class="messages">
-            {% for message in messages %}
-              {% if 'login' in message.tags %}
-                <li class="message-alert {{ message.tags }}">{{ message }}</li>
-              {% endif %}
-            {% endfor %}
-          </ul>
+        <ul class="messages">
+          {% for message in messages %} {% if 'login' in message.tags %}
+          <li class="message-alert {{ message.tags }}">{{ message }}</li>
+          {% endif %} {% endfor %}
+        </ul>
         {% endif %}
 
         <div class="input-box">

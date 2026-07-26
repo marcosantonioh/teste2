@@ -1,11 +1,16 @@
 {% load static %}
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Repeat</title>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="/static/img/fav_icon_laranja_e_branco.svg"
+    />
     <link rel="stylesheet" href="{% static 'style/navbar.css' %}" />
     <link
       href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
@@ -15,7 +20,9 @@
   <body>
     <nav class="navbar">
       <div class="logo-container">
-        <a href="{% url 'exercicios:modulos' %}"><img src="/static/img/Logo_Cventure.svg" class="logo" alt="logo"></a>
+        <a href="{% url 'exercicios:modulos' %}"
+          ><img src="/static/img/Logo_Cventure.svg" class="logo" alt="logo"
+        /></a>
       </div>
 
       <div class="menu-toggle" onclick="toggleMenu()">
@@ -23,9 +30,27 @@
       </div>
 
       <ul class="box-links">
-        <li><a href="{% url 'exercicios:modulos' %}" class="{% if request.resolver_match.view_name|slice:':11' == 'exercicios:' %}active{% endif %}">Aprender</a></li>
-        <li><a href="{% url 'ranking:ranking' %}" class="{% if request.resolver_match.view_name == 'ranking:ranking' %}active{% endif %}">Ranking</a></li>
-        <li><a href="{% url 'desafios:desafios' %}" class="{% if request.resolver_match.view_name == 'desafios:desafios' %}active{% endif %}">Desafios</a></li>
+        <li>
+          <a
+            href="{% url 'exercicios:modulos' %}"
+            class="{% if request.resolver_match.view_name|slice:':11' == 'exercicios:' %}active{% endif %}"
+            >Aprender</a
+          >
+        </li>
+        <li>
+          <a
+            href="{% url 'ranking:ranking' %}"
+            class="{% if request.resolver_match.view_name == 'ranking:ranking' %}active{% endif %}"
+            >Ranking</a
+          >
+        </li>
+        <li>
+          <a
+            href="{% url 'desafios:desafios' %}"
+            class="{% if request.resolver_match.view_name == 'desafios:desafios' %}active{% endif %}"
+            >Desafios</a
+          >
+        </li>
       </ul>
 
       <div class="user-profile">
@@ -66,7 +91,7 @@
               <img src="{% static 'img/settings.svg' %}" alt="" />
               <a href="{% url 'usuarios:editar_perfil' %}">Configurações</a>
             </div>
-            <hr class="separador-linha">
+            <hr class="separador-linha" />
             <div class="option">
               <img src="{% static 'img/sair.svg' %}" alt="" />
               <a href="{% url 'usuarios:logout_usuario' %}">Sair</a>
@@ -75,13 +100,15 @@
         </div>
 
         {% else %}
-          <!-- Estado específico para usuário visitante: nenhum dado de perfil é renderizado. -->
-          <div class="auth-buttons">
-            <a href="{% url 'usuarios:cadastro_usuario' %}" class="btn register"
-              >Criar Perfil</a
-            >
-            <a href="{% url 'usuarios:login_usuario' %}" class="btn entrar">Entrar</a>
-          </div>
+        <!-- Estado específico para usuário visitante: nenhum dado de perfil é renderizado. -->
+        <div class="auth-buttons">
+          <a href="{% url 'usuarios:cadastro_usuario' %}" class="btn register"
+            >Criar Perfil</a
+          >
+          <a href="{% url 'usuarios:login_usuario' %}" class="btn entrar"
+            >Entrar</a
+          >
+        </div>
         {% endif %}
       </div>
     </nav>
@@ -90,28 +117,40 @@
 
     <!-- Barra de Navegação Inferior para Mobile -->
     <nav class="bottom-navbar">
-      <a href="{% url 'exercicios:modulos' %}" class="bottom-nav-link {% if request.resolver_match.view_name == 'exercicios:modulos' %}active{% endif %}">
-          <i class='bx bx-home icon-inactive'></i>      
-          <i class='bx bxs-home icon-active'></i>        
-          <span>Aprender</span>
+      <a
+        href="{% url 'exercicios:modulos' %}"
+        class="bottom-nav-link {% if request.resolver_match.view_name == 'exercicios:modulos' %}active{% endif %}"
+      >
+        <i class="bx bx-home icon-inactive"></i>
+        <i class="bx bxs-home icon-active"></i>
+        <span>Aprender</span>
       </a>
 
-      <a href="{% url 'ranking:ranking' %}" class="bottom-nav-link {% if request.resolver_match.view_name == 'ranking:ranking' %}active{% endif %}">
-          <i class='bx bx-bar-chart-alt-2 icon-inactive'></i>
-          <i class='bx bxs-bar-chart-alt-2 icon-active'></i>
-          <span>Ranking</span>
+      <a
+        href="{% url 'ranking:ranking' %}"
+        class="bottom-nav-link {% if request.resolver_match.view_name == 'ranking:ranking' %}active{% endif %}"
+      >
+        <i class="bx bx-bar-chart-alt-2 icon-inactive"></i>
+        <i class="bx bxs-bar-chart-alt-2 icon-active"></i>
+        <span>Ranking</span>
       </a>
 
-      <a href="{% url 'desafios:desafios' %}" class="bottom-nav-link {% if request.resolver_match.view_name == 'desafios:desafios' %}active{% endif %}">
-          <i class='bx bx-trophy icon-inactive'></i>
-          <i class='bx bxs-trophy icon-active'></i>
-          <span>Desafios</span>
+      <a
+        href="{% url 'desafios:desafios' %}"
+        class="bottom-nav-link {% if request.resolver_match.view_name == 'desafios:desafios' %}active{% endif %}"
+      >
+        <i class="bx bx-trophy icon-inactive"></i>
+        <i class="bx bxs-trophy icon-active"></i>
+        <span>Desafios</span>
       </a>
 
-      <a href="{% url 'usuarios:perfil_usuario' %}" class="bottom-nav-link {% if request.resolver_match.view_name == 'usuarios:perfil_usuario' or request.resolver_match.view_name == 'usuarios:editar_perfil' %}active{% endif %}">
-          <i class='bx bx-user icon-inactive'></i>
-          <i class='bx bxs-user icon-active'></i>
-          <span>Perfil</span>
+      <a
+        href="{% url 'usuarios:perfil_usuario' %}"
+        class="bottom-nav-link {% if request.resolver_match.view_name == 'usuarios:perfil_usuario' or request.resolver_match.view_name == 'usuarios:editar_perfil' %}active{% endif %}"
+      >
+        <i class="bx bx-user icon-inactive"></i>
+        <i class="bx bxs-user icon-active"></i>
+        <span>Perfil</span>
       </a>
     </nav>
 

@@ -1,11 +1,16 @@
 {% load static %}
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt">
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="UTF-8" />
     <title>Cadastro</title>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="/static/img/fav_icon_laranja_e_branco.svg"
+    />
     <link rel="stylesheet" href="{% static 'style/auth.css' %}" />
     <link
       href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
@@ -86,8 +91,15 @@
           </div>
         </div>
 
-        <label class="custom-checkbox-container">Manter meu perfil privado
-          <input autocomplete="off" type="checkbox" id="visibilidade" name="visibilidade" value="privado">
+        <label class="custom-checkbox-container"
+          >Manter meu perfil privado
+          <input
+            autocomplete="off"
+            type="checkbox"
+            id="visibilidade"
+            name="visibilidade"
+            value="privado"
+          />
           <span class="checkmark"></span>
         </label>
 

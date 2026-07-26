@@ -1,11 +1,16 @@
 {% load static %}
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="UTF-8" />
     <title>Repeat - Aprenda Algoritmos com Gamificação</title>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="/static/img/fav_icon_laranja_e_branco.svg"
+    />
     <link
       rel="stylesheet"
       href="{% static 'style/partials/landing/lp.css' %}"
@@ -14,7 +19,7 @@
   <body>
     <!-- Header -->
     <header class="header">
-      <img src="/static/img/Logo_Cventure.svg" class="logo" alt="logo">
+      <img src="/static/img/Logo_Cventure.svg" class="logo" alt="logo" />
       <div class="header-actions">
         <a href="{% url 'etapa' 1 %}" class="start">Começar</a>
         <a href="{% url 'usuarios:login_usuario' %}" class="login">Login</a>
@@ -33,17 +38,21 @@
         <h2>O jeito fácil e divertido de aprender a programar!</h2>
         <!-- <p>Aprenda lógica de programação com desafios, níveis e recompensas.</p> -->
         <a href="{% url 'etapa' 1 %}" class="btn">Comece agora</a>
-        <a href="{% url 'usuarios:login_usuario' %}" class="btn-login">Já tenho uma conta</a>
+        <a href="{% url 'usuarios:login_usuario' %}" class="btn-login"
+          >Já tenho uma conta</a
+        >
       </div>
     </section>
 
     <!-- Benefícios -->
     <section class="section">
       <div class="benefits">
-
         <section class="benefit">
           <div class="benefit-img">
-            <img src="{% static 'img/gamificado_color.svg' %}" alt="Gamificação" />
+            <img
+              src="{% static 'img/gamificado_color.svg' %}"
+              alt="Gamificação"
+            />
           </div>
           <div class="benefit-content">
             <h4>Interativo e Gamificado</h4>
@@ -55,21 +64,27 @@
         </section>
 
         <section class="benefit">
-          
           <div class="benefit-content">
             <h4>Trilhas claras de aprendizagem</h4>
             <p>
-              Siga um caminho guiado com desafios progressivos, do básico ao avançado..
+              Siga um caminho guiado com desafios progressivos, do básico ao
+              avançado..
             </p>
           </div>
           <div class="benefit-img">
-            <img src="{% static 'img/percurso_color.svg' %}" alt="Aprendizado Flexível" />
+            <img
+              src="{% static 'img/percurso_color.svg' %}"
+              alt="Aprendizado Flexível"
+            />
           </div>
         </section>
 
         <section class="benefit">
           <div class="benefit-img">
-            <img src="{% static 'img/pratica_color.svg' %}" alt="Código na prática" />
+            <img
+              src="{% static 'img/pratica_color.svg' %}"
+              alt="Código na prática"
+            />
           </div>
           <div class="benefit-content">
             <h4>Prática real</h4>

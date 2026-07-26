@@ -1,35 +1,40 @@
 {% load static %}
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}Painel do Professor{% endblock %}</title>
     <!-- Seus links CSS globais ou específicos do painel do professor -->
-    <link rel="stylesheet" href="{% static 'style/global/global.css' %}">
-    <link rel="stylesheet" href="{% static 'style/partials/professor/base_professor.css' %}">
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="/static/img/fav_icon_laranja_e_branco.svg"
+    />
+    <link rel="stylesheet" href="{% static 'style/global/global.css' %}" />
+    <link
+      rel="stylesheet"
+      href="{% static 'style/partials/professor/base_professor.css' %}"
+    />
     {% block extrastyle %}{% endblock %}
-</head>
-<body>
+  </head>
+  <body>
     <header class="professor-header">
-        <h1>Painel do Professor</h1>
-        <nav>
-            <!-- Adicione aqui links de navegação específicos do painel do professor -->
-            <a href="{% url 'professor:listar_exercicios' %}">Meus Exercícios</a>
-            {% if user.is_authenticated %}
-                <span>Olá, {{ user.username }}</span>
-                <a href="{% url 'admin:logout' %}">Sair</a> {# Ou sua URL de logout customizada #}
-            {% endif %}
-        </nav>
+      <h1>Painel do Professor</h1>
+      <nav>
+        <!-- Adicione aqui links de navegação específicos do painel do professor -->
+        <a href="{% url 'professor:listar_exercicios' %}">Meus Exercícios</a>
+        {% if user.is_authenticated %}
+        <span>Olá, {{ user.username }}</span>
+        <a href="{% url 'admin:logout' %}">Sair</a> {# Ou sua URL de logout
+        customizada #} {% endif %}
+      </nav>
     </header>
 
     <main class="professor-main-content">
-        {% block content %}
-        {% endblock %}
+      {% block content %} {% endblock %}
     </main>
 
-    
-
     {% block extrajs %}{% endblock %}
-</body>
+  </body>
 </html>
