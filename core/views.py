@@ -1,5 +1,8 @@
 from django.shortcuts import render, redirect
 
+
+TEMPOS_ESTUDO_VALIDOS = {'leve', 'regular', 'foco_total'}
+
 def landing_page(request):
     if request.user.is_authenticated:
         print("⚠️ Usuário logado:", request.user.username)
@@ -12,8 +15,8 @@ def etapa(request, numero):
     
     etapas = {
         1: {
-            "titulo": "Bem-vindo ao GameLoops!",
-            "mensagem": "GameLoops foi feito para quem quer aprender de forma fácil e divertida.",
+            "titulo": "Bem-vindo ao Cventure!",
+            "mensagem": "Cventure foi feito para quem quer aprender de forma fácil e divertida.",
             "tipo": "texto",
         },
         2: {
@@ -30,9 +33,9 @@ def etapa(request, numero):
             "titulo": "Quanto tempo você quer gastar aprendendo?",
             "tipo": "opcoes",
             "opcoes": [
-                ("Leve", "5 minutos"),
-                ("Regular", "10 minutos"),
-                ("Foco total", "20 minutos"),
+                ("leve", "5 minutos"),
+                ("regular", "10 minutos"),
+                ("foco_total", "20 minutos"),
             ]
         },
         5: {
@@ -51,10 +54,16 @@ def etapa(request, numero):
     if not etapa_info:
         return redirect('etapa', numero=1)  # Redireciona para a primeira se não existir
 
-    # Se for POST, salva a resposta e vai pra próxima
+    # A única etapa com formulário registra a preferência de estudo do visitante.
     if request.method == "POST":
-        resposta = request.POST.get('nivel')
-        request.session[f'resposta_etapa_{numero}'] = resposta
+        if numero != 4:
+            return redirect('etapa', numero=numero)
+
+        tempo_estudo = request.POST.get('tempo')
+        if tempo_estudo not in TEMPOS_ESTUDO_VALIDOS:
+            return redirect('etapa', numero=4)
+
+        request.session['tempo_estudo'] = tempo_estudo
         return redirect('etapa', numero + 1)
 
     # ✅ Marcar que concluiu o onboarding na última etapa

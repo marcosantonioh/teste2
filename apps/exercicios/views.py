@@ -61,6 +61,7 @@ def modulos(request):
 
 
 
+@login_required
 def percurso(request, modulo_id):
     
     # Obtém o módulo com o id fornecido
@@ -304,12 +305,14 @@ def resolver_exercicio(request, exercicio_id):
 
     return render(request, 'exercicios/resolver_exercicio.html', context)
 
+@login_required
 def iniciar_exercicios(request, exercicio_id):
     exercicio = get_object_or_404(Exercicio, id=exercicio_id)
     limpar_ordens_alternativas_da_estacao(request, exercicio.estacao)
     mecanicas_services.reiniciar_estacao(exercicio.estacao)
     return redirect('exercicios:resolver_exercicio', exercicio_id=exercicio.id)
 
+@login_required
 def estacao_concluida_view(request, estacao_id):
     estacao = get_object_or_404(Estacao, id=estacao_id)
     perfil = get_or_create_perfil(request.user)
@@ -332,6 +335,7 @@ def estacao_concluida_view(request, estacao_id):
 
 
 
+@login_required
 def get_exercicio_data(request, exercicio_id):
     """
     Endpoint de API que retorna os dados de um exercício em JSON

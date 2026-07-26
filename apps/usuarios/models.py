@@ -6,6 +6,12 @@ import datetime
 from apps.ranking.models import Divisao
 
 class Perfil(models.Model):
+    TEMPO_ESTUDO_CHOICES = [
+        ('leve', 'Leve — 5 minutos'),
+        ('regular', 'Regular — 10 minutos'),
+        ('foco_total', 'Foco total — 20 minutos'),
+    ]
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     divisao = models.ForeignKey(Divisao, on_delete=models.SET_NULL, null=True, blank=True)
     xp = models.IntegerField(default=0, validators=[MinValueValidator(0)], verbose_name="Xp")
@@ -16,6 +22,13 @@ class Perfil(models.Model):
     data_inicio = models.DateTimeField(default=timezone.now)
     tema = models.CharField(max_length=20, default='claro')
     cristal = models.IntegerField(default=0)
+    tempo_estudo = models.CharField(
+        max_length=20,
+        choices=TEMPO_ESTUDO_CHOICES,
+        null=True,
+        blank=True,
+        help_text='Preferência de duração de estudo definida no onboarding.',
+    )
 
     intervalo_restauracao_por_vida = models.DurationField(default=datetime.timedelta(minutes=15)) 
     vidas_atuais = models.IntegerField(default=5)

@@ -8,6 +8,7 @@ from django.db import models
 from django.views.decorators.http import require_POST
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 from .forms import CadastroUsuarioForm
 
 
@@ -123,9 +124,20 @@ def cadastrar_usuario(request):
 
         # Define o status de visibilidade com base na escolha do usuário
         visibilidade_status = 'privado' if visibilidade_choice == 'privado' else 'publico'
+        tempo_estudo = request.session.get('tempo_estudo')
+        tempos_estudo_validos = dict(Perfil.TEMPO_ESTUDO_CHOICES)
 
-        # Criar o perfil associado ao usuário e com foto se tiver
-        Perfil.objects.create(user=user, foto=foto, visibilidade=visibilidade_status)
+        # Transfere a preferência escolhida no onboarding para o novo perfil.
+        perfil_data = {
+            'user': user,
+            'foto': foto,
+            'visibilidade': visibilidade_status,
+        }
+        if tempo_estudo in tempos_estudo_validos:
+            perfil_data['tempo_estudo'] = tempo_estudo
+
+        Perfil.objects.create(**perfil_data)
+        request.session.pop('tempo_estudo', None)
 
         
         
@@ -153,7 +165,9 @@ def login_usuario(request):
 
 
 
+@never_cache
 def logout_usuario(request):
+    # logout() invalida a sessão atual, removendo inclusive seus dados auxiliares.
     logout(request)
     return redirect("usuarios:login_usuario")
 
@@ -298,6 +312,4 @@ def preferencias(request):
     # Adiciona o perfil ao contexto para que o template possa exibir os valores atuais.
     context = {'perfil': perfil}
     return render(request, 'usuarios/preferencias.html', context)
-
-
 
