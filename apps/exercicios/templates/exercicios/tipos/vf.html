@@ -20,7 +20,7 @@
         />
         <label
           for="vf_true"
-          class="botao-alternativa {% if resultado %} {% if correta and exercicio.resposta_vf_correta %} alternativa-correta {% elif not correta and resposta_submetida == 'True' %} alternativa-incorreta {% endif %} {% endif %}"
+          class="botao-alternativa {% if resultado %} {% if exercicio.resposta_vf_correta %} alternativa-correta {% elif not correta and resposta_submetida == 'True' %} alternativa-incorreta {% endif %} {% endif %}"
           >Verdadeiro</label
         >
         <input
@@ -39,7 +39,7 @@
         />
         <label
           for="vf_false"
-          class="botao-alternativa {% if resultado %} {% if correta and not exercicio.resposta_vf_correta %} alternativa-correta {% elif not correta and resposta_submetida == 'False' %} alternativa-incorreta {% endif %} {% endif %}"
+          class="botao-alternativa {% if resultado %} {% if not exercicio.resposta_vf_correta %} alternativa-correta {% elif not correta and resposta_submetida == 'False' %} alternativa-incorreta {% endif %} {% endif %}"
           >Falso</label
         >
       </div>

@@ -26,6 +26,13 @@ document.addEventListener("DOMContentLoaded", function () {
   // Função genérica para enviar dados via AJAX
   async function enviarAcaoAjax(acao) {
     const formData = new FormData(form);
+
+    if (acao === "responder") {
+      if (form.dataset.respostaEnviada === "true") return;
+      form.dataset.respostaEnviada = "true";
+      disableInputs();
+    }
+
     const url = form.action;
 
     formData.append("acao", acao); // 'responder' ou 'pular'
@@ -56,6 +63,13 @@ document.addEventListener("DOMContentLoaded", function () {
       const data = await response.json();
       processApiResponse(data);
     } catch (error) {
+      if (acao === "responder") {
+        delete form.dataset.respostaEnviada;
+        form.querySelectorAll('input[type="radio"]').forEach((input) => {
+          input.disabled = false;
+        });
+        updateResponderButtonState();
+      }
       console.error(`Erro completo na ação "${acao}":`, error);
       alert(
         "Ocorreu um erro de comunicação com o servidor. Verifique o console."
@@ -171,11 +185,7 @@ document.addEventListener("DOMContentLoaded", function () {
         String(alternativeValue).toLowerCase() ==
         String(data.resposta_correta).toLowerCase()
       ) {
-        label.classList.add(
-          data.correta
-            ? "alternativa-correta"
-            : "alternativa-correta-nao-marcada"
-        );
+        label.classList.add("alternativa-correta");
       }
       if (
         !data.correta &&

@@ -179,6 +179,31 @@ input[type="radio"]:checked + .botao-alternativa .numero-alternativa {
     border-color: white;
 }
 
+/* O feedback deve ter prioridade sobre o estado selecionado (azul). */
+input[type="radio"]:checked + .botao-alternativa.alternativa-correta {
+    background-color: var(--success);
+    border-color: var(--success);
+    color: white;
+}
+
+input[type="radio"]:checked + .botao-alternativa.alternativa-correta .numero-alternativa {
+    background-color: white;
+    color: var(--success);
+    border-color: white;
+}
+
+input[type="radio"]:checked + .botao-alternativa.alternativa-incorreta {
+    background-color: var(--red);
+    border-color: var(--red);
+    color: white;
+}
+
+input[type="radio"]:checked + .botao-alternativa.alternativa-incorreta .numero-alternativa {
+    background-color: white;
+    color: var(--red);
+    border-color: white;
+}
+
 /* Sobrescreve o hover padrão para não mudar de cor após o resultado */
 .botao-alternativa.alternativa-correta:hover {
     background-color: var(--success);

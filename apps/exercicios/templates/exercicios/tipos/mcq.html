@@ -28,7 +28,7 @@
       />
       <label
         for="alt{{ numero }}"
-        class="botao-alternativa {% if resultado %} {# Se a resposta foi correta, pinta a alternativa certa de verde #} {% if correta and numero == exercicio.resposta_correta %} alternativa-correta {# Se a resposta foi incorreta, pinta apenas a que o usuário marcou de vermelho #} {% elif not correta and numero == resposta_submetida %} alternativa-incorreta {% endif %} {% endif %}"
+        class="botao-alternativa {% if resultado %} {% if numero == exercicio.resposta_correta %} alternativa-correta {% elif not correta and numero == resposta_submetida %} alternativa-incorreta {% endif %} {% endif %}"
       >
         <span class="numero-alternativa">{{ numero }}</span>
         <span class="texto-alternativa">{{ texto }}</span>

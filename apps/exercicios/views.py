@@ -253,7 +253,11 @@ def resolver_exercicio(request, exercicio_id):
                         'concluidos': exercicios_concluidos_count,
                         'total': total_exercicios_modulo,
                     },
-                    'resposta_correta': exercicio.resposta_correta, # ou exercicio.resposta_vf_correta
+                    'resposta_correta': (
+                        exercicio.resposta_correta
+                        if exercicio.tipo == 'mcq'
+                        else exercicio.resposta_vf_correta
+                    ),
 
                 }
                 return JsonResponse(data)
