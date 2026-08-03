@@ -96,8 +96,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function processApiResponse(data) {
-    if (data.resumo_estacao && data.resumo_estacao.mostrar) {
-      renderEstacaoSummary(data.resumo_estacao);
+    if (data.estacao_concluida_url) {
+      window.location.href = data.estacao_concluida_url;
       return;
     }
     if (data.sem_vidas) {
@@ -107,37 +107,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     updateProgressBar(data.progresso);
     renderFeedback(data);
-  }
-
-  function renderEstacaoSummary(summaryData) {
-    const baseAcoes = document.querySelector(".base-acoes-exercicio");
-    if (!baseAcoes) return;
-
-    baseAcoes.innerHTML = `
-      <div class="resumo-estacao">
-        <div class="resumo-estacao__cards">
-          <article class="resumo-card resumo-card--gold">
-            <span class="resumo-card__title">Total de XP</span>
-            <strong class="resumo-card__value">⚡ ${summaryData.xp_ganho}</strong>
-          </article>
-          <article class="resumo-card resumo-card--green">
-            <span class="resumo-card__title">EOA!</span>
-            <strong class="resumo-card__value">${summaryData.porcentagem_acertos}%</strong>
-          </article>
-        </div>
-        <div class="resumo-estacao__info">
-          <div class="resumo-info__item">
-            <span>Acertos</span>
-            <strong>${summaryData.acertos}</strong>
-          </div>
-          <div class="resumo-info__item">
-            <span>Erros</span>
-            <strong>${summaryData.erros}</strong>
-          </div>
-        </div>
-        <a href="${summaryData.continuar_url}" class="submit btn-continuar-resumo">Continuar</a>
-      </div>
-    `;
   }
 
   function renderFeedback(data) {

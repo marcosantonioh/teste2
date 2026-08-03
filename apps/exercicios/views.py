@@ -231,9 +231,9 @@ def _obter_resumo_estacao(request, estacao_id):
     resumo_estacoes = request.session.setdefault("resumo_estacoes", {})
     chave = str(estacao_id)
     estacao_atual_id = request.session.get("estacao_resumo_atual_id")
+    total_exercicios = Exercicio.objects.filter(estacao_id=estacao_id).count()
 
-    if estacao_atual_id != chave:
-        total_exercicios = Exercicio.objects.filter(estacao_id=estacao_id).count()
+    if estacao_atual_id != chave or chave not in resumo_estacoes:
         resumo_estacoes[chave] = {
             "acertos": 0,
             "erros": 0,
@@ -241,6 +241,8 @@ def _obter_resumo_estacao(request, estacao_id):
             "total_exercicios": total_exercicios,
         }
         request.session["estacao_resumo_atual_id"] = chave
+    else:
+        resumo_estacoes[chave]["total_exercicios"] = total_exercicios
 
     request.session["resumo_estacoes"] = resumo_estacoes
     return resumo_estacoes[chave]
@@ -485,11 +487,8 @@ def estacao_concluida_view(request, estacao_id):
     )
 
     resumo_estacao = request.session.get("resumo_estacoes", {}).get(str(estacao.id), {})
-    total_exercicios_estacao = (
-        resumo_estacao.get("total_exercicios")
-        or Exercicio.objects.filter(estacao=estacao).count()
-    )
-    acertos = resumo_estacao.get("acertos", 0)
+    total_exercicios_estacao = Exercicio.objects.filter(estacao=estacao).count()
+    acertos = min(resumo_estacao.get('acertos', 0), total_exercicios_estacao)
     erros = resumo_estacao.get("erros", 0)
     xp_ganho = resumo_estacao.get("xp_ganho", 0)
     porcentagem_acertos = (
