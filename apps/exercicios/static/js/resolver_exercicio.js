@@ -144,8 +144,9 @@ document.addEventListener("DOMContentLoaded", function () {
     let newExerciseHtml = "";
     if (data.tipo === "mcq") {
       let alternativasHtml = data.alternativas
-        .map(([numero, texto], index) =>
-          `<input type="radio" name="resposta" id="alt${numero}" value="${numero}" hidden class="alternativa-exercicio" /><label for="alt${numero}" class="botao-alternativa"><span class="numero-alternativa">${index + 1}</span><span class="texto-alternativa">${texto}</span></label>`,
+        .map(
+          ([numero, texto], index) =>
+            `<input type="radio" name="resposta" id="alt${numero}" value="${numero}" hidden class="alternativa-exercicio" /><label for="alt${numero}" class="botao-alternativa"><span class="numero-alternativa">${index + 1}</span><span class="texto-alternativa">${texto}</span></label>`,
         )
         .join("");
       newExerciseHtml = `<div class="formulario"><div class="exercicio-mcq-layout"><div class="exercicio-mcq-conteudo">${
@@ -229,19 +230,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function selectAlternativeByKey(key) {
     const alternativasLabels = form.querySelectorAll(
-      '.alternativas .botao-alternativa, .alternativas-vf .botao-alternativa',
+      ".alternativas .botao-alternativa, .alternativas-vf .botao-alternativa",
     );
     for (const label of alternativasLabels) {
-      const numeroElemento = label.querySelector('.numero-alternativa');
+      const numeroElemento = label.querySelector(".numero-alternativa");
       if (!numeroElemento) continue;
       if (numeroElemento.textContent.trim() !== key) continue;
 
-      const inputId = label.getAttribute('for');
+      const inputId = label.getAttribute("for");
       const alternativa = inputId ? document.getElementById(inputId) : null;
       if (!alternativa || alternativa.disabled) return false;
 
       alternativa.checked = true;
-      const changeEvent = new Event('change', { bubbles: true });
+      const changeEvent = new Event("change", { bubbles: true });
       alternativa.dispatchEvent(changeEvent);
 
       label.focus();
