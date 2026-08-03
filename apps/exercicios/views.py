@@ -226,7 +226,39 @@ def limpar_ordens_alternativas_da_estacao(request, estacao):
         request.session[CHAVE_ULTIMA_ORDEM_ALTERNATIVAS] = ultimas_ordens
 
 
+def _obter_resumo_estacao(request, estacao_id):
+    resumo_estacoes = request.session.setdefault('resumo_estacoes', {})
+    chave = str(estacao_id)
+    estacao_atual_id = request.session.get('estacao_resumo_atual_id')
 
+    if estacao_atual_id != chave:
+        total_exercicios = Exercicio.objects.filter(estacao_id=estacao_id).count()
+        resumo_estacoes[chave] = {
+            'acertos': 0,
+            'erros': 0,
+            'xp_ganho': 0,
+            'total_exercicios': total_exercicios,
+        }
+        request.session['estacao_resumo_atual_id'] = chave
+
+    request.session['resumo_estacoes'] = resumo_estacoes
+    return resumo_estacoes[chave]
+
+
+def _atualizar_resumo_estacao(request, estacao_id, correta, exercicio):
+    resumo = _obter_resumo_estacao(request, estacao_id)
+
+    if correta:
+        resumo['acertos'] += 1
+        resumo['xp_ganho'] += int(exercicio.xp or 0)
+    else:
+        resumo['erros'] += 1
+
+    if resumo['total_exercicios'] == 0:
+        resumo['total_exercicios'] = Exercicio.objects.filter(estacao_id=estacao_id).count()
+
+    request.session['resumo_estacoes'][str(estacao_id)] = resumo
+    return resumo
 
 
 def resolver_exercicio(request, exercicio_id):
@@ -287,11 +319,13 @@ def resolver_exercicio(request, exercicio_id):
             resposta_usuario = _extrair_resposta_do_request(request, exercicio.tipo)
 
             resultado, correta = mecanicas_services.processar_resposta_exercicio(resposta_usuario, exercicio, perfil)
+            resumo_estacao = _atualizar_resumo_estacao(request, exercicio.estacao_id, correta, exercicio)
             
             # Se for uma requisição AJAX, vamos montar e retornar uma resposta JSON.
             if is_ajax:
                 proximo_exercicio_id = None
                 estacao_concluida_url = None
+                mostrar_resumo_estacao = False
 
                 if correta:
                     estacao_atual = exercicio.estacao
@@ -305,11 +339,13 @@ def resolver_exercicio(request, exercicio_id):
                         if estacao_atual.status != 'completado':
                             estacao_atual.status = 'completado'
                             estacao_atual.save()
-                        # Em vez de redirect, enviamos a URL para o frontend redirecionar.
+                        mostrar_resumo_estacao = True
                         estacao_concluida_url = reverse('exercicios:estacao_concluida', args=[estacao_atual.id])
 
                 # Recalcula o progresso após a resposta para enviar o valor atualizado
                 progresso_percentual, exercicios_concluidos_count, total_exercicios_modulo = mecanicas_services.calcular_progresso(exercicio.modulo)
+                total_exercicios_estacao = resumo_estacao['total_exercicios'] or Exercicio.objects.filter(estacao=exercicio.estacao).count()
+                porcentagem_acertos = int((resumo_estacao['acertos'] / total_exercicios_estacao) * 100) if total_exercicios_estacao else 0
 
                 # Monta o dicionário de dados para a resposta JSON
                 data = {
@@ -330,6 +366,15 @@ def resolver_exercicio(request, exercicio_id):
                         if exercicio.tipo == 'mcq'
                         else exercicio.resposta_vf_correta
                     ),
+                    'resumo_estacao': {
+                        'mostrar': mostrar_resumo_estacao,
+                        'acertos': resumo_estacao['acertos'],
+                        'erros': resumo_estacao['erros'],
+                        'xp_ganho': resumo_estacao['xp_ganho'],
+                        'porcentagem_acertos': porcentagem_acertos,
+                        'total_exercicios': total_exercicios_estacao,
+                        'continuar_url': reverse('exercicios:percurso', args=[exercicio.modulo.id]),
+                    },
 
                 }
                 return JsonResponse(data)
@@ -381,24 +426,45 @@ def iniciar_exercicios(request, exercicio_id):
     exercicio = get_object_or_404(Exercicio, id=exercicio_id)
     limpar_ordens_alternativas_da_estacao(request, exercicio.estacao)
     mecanicas_services.reiniciar_estacao(exercicio.estacao)
+    resumo_estacoes = request.session.setdefault('resumo_estacoes', {})
+    resumo_estacoes[str(exercicio.estacao_id)] = {
+        'acertos': 0,
+        'erros': 0,
+        'xp_ganho': 0,
+        'total_exercicios': Exercicio.objects.filter(estacao_id=exercicio.estacao_id).count(),
+    }
+    request.session['resumo_estacoes'] = resumo_estacoes
+    request.session['estacao_resumo_atual_id'] = str(exercicio.estacao_id)
     return redirect('exercicios:resolver_exercicio', exercicio_id=exercicio.id)
 
 @login_required
 def estacao_concluida_view(request, estacao_id):
     estacao = get_object_or_404(Estacao, id=estacao_id)
     perfil = get_or_create_perfil(request.user)
-    # Se perfil for None e for necessário para a view, adicione um tratamento aqui.
 
-    # Calcular XP total da estação
     total_xp_estacao = Exercicio.objects.filter(
         estacao=estacao
     ).aggregate(total_xp=Sum('xp'))['total_xp'] or 0
 
+    resumo_estacao = request.session.get('resumo_estacoes', {}).get(str(estacao.id), {})
+    total_exercicios_estacao = resumo_estacao.get('total_exercicios') or Exercicio.objects.filter(estacao=estacao).count()
+    acertos = resumo_estacao.get('acertos', 0)
+    erros = resumo_estacao.get('erros', 0)
+    xp_ganho = resumo_estacao.get('xp_ganho', 0)
+    porcentagem_acertos = int((acertos / total_exercicios_estacao) * 100) if total_exercicios_estacao else 0
+
     context = {
         'estacao': estacao,
         'total_xp_estacao': total_xp_estacao,
-        'perfil': perfil, # Para a navbar, se necessário
-        'modulo_id': estacao.secao.modulo.id, # Para o botão "Voltar ao Percurso"
+        'perfil': perfil,
+        'modulo_id': estacao.secao.modulo.id,
+        'resumo_estacao': {
+            'acertos': acertos,
+            'erros': erros,
+            'xp_ganho': xp_ganho,
+            'porcentagem_acertos': porcentagem_acertos,
+            'total_exercicios': total_exercicios_estacao,
+        },
     }
     return render(request, 'exercicios/estacao_concluida.html', context)
 

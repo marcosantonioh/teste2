@@ -282,6 +282,95 @@ input[type="radio"]:checked + .botao-alternativa.alternativa-incorreta .numero-a
   }
 }
 
+.resumo-estacao {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px;
+  border-radius: 18px;
+  background: #fff;
+  border: 1px solid #e7eef6;
+  box-shadow: 0 10px 28px rgba(38, 78, 143, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.resumo-estacao__cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.resumo-card {
+  border-radius: 18px;
+  padding: 18px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 120px;
+}
+
+.resumo-card__title {
+  font-size: 0.82rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+.resumo-card__value {
+  font-size: 2rem;
+  line-height: 1;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.resumo-card--gold {
+  background: linear-gradient(180deg, #fff7d9 0%, #fff2b7 100%);
+  border: 1px solid #f9df75;
+  color: #5b4611;
+}
+
+.resumo-card--green {
+  background: linear-gradient(180deg, #e7ffe8 0%, #d2ffd3 100%);
+  border: 1px solid #88d283;
+  color: #1b4623;
+}
+
+.resumo-estacao__info {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.resumo-info__item {
+  padding: 16px;
+  background: #f9fbff;
+  border: 1px solid #dce7f5;
+  border-radius: 14px;
+  text-align: center;
+}
+
+.resumo-info__item span {
+  display: block;
+  color: #5f6d84;
+  margin-bottom: 6px;
+  font-size: 0.92rem;
+}
+
+.resumo-info__item strong {
+  font-size: 1.3rem;
+  color: #162135;
+}
+
+.btn-continuar-resumo {
+  align-self: center;
+  padding: 12px 28px;
+}
+
 /* Estilos base para botões dentro da seção de resultado */
 .resultado .btn-continuar,
 .resultado .btn-tentar-novamente {

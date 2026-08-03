@@ -16,7 +16,7 @@
     border-radius: 12px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
     text-align: center;
-    max-width: 500px;
+    max-width: 620px;
     width: 100%;
 }
 
@@ -49,6 +49,77 @@
 .xp-valor {
     color: var(--success); /* Cor para destacar o XP */
     font-size: 1.5rem;
+}
+
+.resumo-estacao__cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin: 22px 0 12px;
+}
+
+.resumo-card {
+    border-radius: 18px;
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 130px;
+}
+
+.resumo-card__title {
+    font-size: 0.82rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    opacity: 0.9;
+}
+
+.resumo-card__value {
+    font-size: 2.2rem;
+    line-height: 1;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.resumo-card--gold {
+    background: linear-gradient(180deg, #fff7d9 0%, #fff2b7 100%);
+    border: 1px solid #f9df75;
+    color: #5b4611;
+}
+
+.resumo-card--green {
+    background: linear-gradient(180deg, #e7ffe8 0%, #d2ffd3 100%);
+    border: 1px solid #88d283;
+    color: #1b4623;
+}
+
+.resumo-estacao__info {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.resumo-info__item {
+    padding: 16px;
+    background: #f9fbff;
+    border: 1px solid #dce7f5;
+    border-radius: 14px;
+    text-align: center;
+}
+
+.resumo-info__item span {
+    display: block;
+    color: #5f6d84;
+    margin-bottom: 6px;
+    font-size: 0.92rem;
+}
+
+.resumo-info__item strong {
+    font-size: 1.3rem;
+    color: #162135;
 }
 
 .botoes-resultado {
@@ -102,6 +173,10 @@
 
     .xp-valor {
         font-size: 1.4rem;
+    }
+
+    .resumo-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 
