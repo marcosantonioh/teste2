@@ -13,14 +13,13 @@ function fecharModalSair() {
   }
 }
 
-
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.querySelector(".form-layout-container");
   const containerExercicio = document.querySelector(".container-exercicio");
 
   // --- ALTERAÇÃO 1: Capturamos o HTML inicial dos botões ---
   const htmlBotoesPadrao = document.querySelector(
-    ".base-acoes-exercicio"
+    ".base-acoes-exercicio",
   ).innerHTML;
 
   // Função genérica para enviar dados via AJAX
@@ -48,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const errorText = await response.text();
         console.error(
           `O servidor retornou um erro para a ação "${acao}":`,
-          errorText
+          errorText,
         );
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -72,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
       console.error(`Erro completo na ação "${acao}":`, error);
       alert(
-        "Ocorreu um erro de comunicação com o servidor. Verifique o console."
+        "Ocorreu um erro de comunicação com o servidor. Verifique o console.",
       );
     }
   }
@@ -170,7 +169,7 @@ document.addEventListener("DOMContentLoaded", function () {
     history.pushState(null, "", data.url_resolucao);
     form.action = data.url_resolucao;
     const conteudoWrapper = document.querySelector(
-      ".conteudo-exercicio-wrapper"
+      ".conteudo-exercicio-wrapper",
     );
     const baseAcoes = document.querySelector(".base-acoes-exercicio");
     let newExerciseHtml = "";
@@ -178,7 +177,7 @@ document.addEventListener("DOMContentLoaded", function () {
       let alternativasHtml = data.alternativas
         .map(
           ([numero, texto]) =>
-            `<input type="radio" name="resposta" id="alt${numero}" value="${numero}" hidden class="alternativa-exercicio" /><label for="alt${numero}" class="botao-alternativa"><span class="numero-alternativa">${numero}</span><span class="texto-alternativa">${texto}</span></label>`
+            `<input type="radio" name="resposta" id="alt${numero}" value="${numero}" hidden class="alternativa-exercicio" /><label for="alt${numero}" class="botao-alternativa"><span class="numero-alternativa">${numero}</span><span class="texto-alternativa">${texto}</span></label>`,
         )
         .join("");
       newExerciseHtml = `<div class="formulario"><div class="exercicio-mcq-layout"><div class="exercicio-mcq-conteudo">${
@@ -199,7 +198,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function updateProgressBar(progressData) {
     const progressBar = document.querySelector(
-      ".barra-progresso-preenchimento"
+      ".barra-progresso-preenchimento",
     );
     const vidasContador = document.querySelector(".contador-vida");
     if (progressBar) progressBar.style.width = `${progressData.percentual}%`;
@@ -239,14 +238,14 @@ document.addEventListener("DOMContentLoaded", function () {
   function updateResponderButtonState() {
     // A MUDANÇA É APENAS NESTA LINHA:
     const responderButton = document.getElementById(
-      "botao-responder-exercicio"
+      "botao-responder-exercicio",
     );
 
     if (!responderButton) return; // Se o botão não existir, a função para.
 
     // O resto da lógica permanece o mesmo.
     const algumaAlternativaMarcada = form.querySelector(
-      'input[type="radio"]:checked'
+      'input[type="radio"]:checked',
     );
     responderButton.disabled = !algumaAlternativaMarcada;
   }
@@ -259,7 +258,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Adiciona o listener para o clique em "Responder"
     if (botaoResponder) {
       botaoResponder.addEventListener("click", () =>
-        enviarAcaoAjax("responder")
+        enviarAcaoAjax("responder"),
       );
     }
 
@@ -280,7 +279,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const alternativasDiv = form.querySelector(
-      ".alternativas, .alternativas-vf"
+      ".alternativas, .alternativas-vf",
     );
     if (alternativasDiv)
       alternativasDiv.addEventListener("change", updateResponderButtonState);

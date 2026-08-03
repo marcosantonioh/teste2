@@ -10,11 +10,11 @@
 /* Seção para a barra de progresso no topo */
 .barra-progresso-container {
   width: 100%;
-  padding: 10px 20px; 
+  padding: 10px 20px;
   /* background-color: #f0f0f0;  */
-  flex-shrink: 0; 
+  flex-shrink: 0;
   box-sizing: border-box;
-  text-align: center; 
+  text-align: center;
 }
 
 /* Novo container para o formulário que gerencia o layout do conteúdo e ações */
@@ -23,21 +23,20 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex-grow: 1; 
-  min-height: 0; 
+  flex-grow: 1;
+  min-height: 0;
   overflow: hidden;
 }
 
 /* Wrapper para o conteúdo do exercício que será rolável */
 .conteudo-exercicio-wrapper {
-  flex-grow: 1; 
-  overflow-y: auto; 
+  flex-grow: 1;
+  overflow-y: auto;
   width: 80%;
-  padding: 20px 0; 
+  padding: 20px 0;
   box-sizing: border-box;
   /* background-color: #3094ff; */
   overflow: hidden;
-
 }
 
 /* .form-exercicio original - pode ser removido ou adaptado.
@@ -55,7 +54,7 @@
   display: flex;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 25px 25px; 
+  padding: 25px 25px;
   flex-direction: column;
   gap: 1em;
 
@@ -154,71 +153,75 @@ input[type="radio"]:checked + .botao-alternativa .numero-alternativa {
 
 /* Estilos para feedback de alternativas após a resposta */
 .botao-alternativa.alternativa-correta {
-    background-color: var(--success);
-    border-color: var(--success);
-    color: white;
-    cursor: default; /* O cursor não deve indicar que é clicável */
+  background-color: var(--success);
+  border-color: var(--success);
+  color: white;
+  cursor: default; /* O cursor não deve indicar que é clicável */
 }
 
 .botao-alternativa.alternativa-correta .numero-alternativa {
-    background-color: white;
-    color: var(--success);
-    border-color: white;
+  background-color: white;
+  color: var(--success);
+  border-color: white;
 }
 
 .botao-alternativa.alternativa-incorreta {
-    background-color: var(--red);
-    border-color: var(--red);
-    color: white;
-    cursor: default;
+  background-color: var(--red);
+  border-color: var(--red);
+  color: white;
+  cursor: default;
 }
 
 .botao-alternativa.alternativa-incorreta .numero-alternativa {
-    background-color: white;
-    color: var(--red);
-    border-color: white;
+  background-color: white;
+  color: var(--red);
+  border-color: white;
 }
 
 /* O feedback deve ter prioridade sobre o estado selecionado (azul). */
 input[type="radio"]:checked + .botao-alternativa.alternativa-correta {
-    background-color: var(--success);
-    border-color: var(--success);
-    color: white;
+  background-color: var(--success);
+  border-color: var(--success);
+  color: white;
 }
 
-input[type="radio"]:checked + .botao-alternativa.alternativa-correta .numero-alternativa {
-    background-color: white;
-    color: var(--success);
-    border-color: white;
+input[type="radio"]:checked
+  + .botao-alternativa.alternativa-correta
+  .numero-alternativa {
+  background-color: white;
+  color: var(--success);
+  border-color: white;
 }
 
 input[type="radio"]:checked + .botao-alternativa.alternativa-incorreta {
-    background-color: var(--red);
-    border-color: var(--red);
-    color: white;
+  background-color: var(--red);
+  border-color: var(--red);
+  color: white;
 }
 
-input[type="radio"]:checked + .botao-alternativa.alternativa-incorreta .numero-alternativa {
-    background-color: white;
-    color: var(--red);
-    border-color: white;
+input[type="radio"]:checked
+  + .botao-alternativa.alternativa-incorreta
+  .numero-alternativa {
+  background-color: white;
+  color: var(--red);
+  border-color: white;
 }
 
 /* Sobrescreve o hover padrão para não mudar de cor após o resultado */
 .botao-alternativa.alternativa-correta:hover {
-    background-color: var(--success);
+  background-color: var(--success);
 }
 
 .botao-alternativa.alternativa-incorreta:hover {
-    background-color: var(--red);
+  background-color: var(--red);
 }
 /* Base fixa para botões de ação e resultado */
 .base-acoes-exercicio {
   width: 100%;
   padding: 0; /* Garante que não há padding na base que afete o tamanho do resultado */
-  background-color: #fff; 
-  border-top: 1px solid #ddd; 
-  flex-shrink: 0; 
+  background-color: #fff;
+  border-top: 1px solid #ddd;
+  flex-shrink: 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -228,7 +231,7 @@ input[type="radio"]:checked + .botao-alternativa.alternativa-incorreta .numero-a
 
 .resultado {
   padding: 20px;
-  width: 100%; 
+  width: 100%;
   height: 100%; /* Faz com que .resultado ocupe toda a altura do pai */
   box-sizing: border-box; /* Garante que o padding seja incluído na altura total */
   display: flex;
@@ -246,8 +249,8 @@ input[type="radio"]:checked + .botao-alternativa.alternativa-incorreta .numero-a
 }
 
 .resultado.correto {
-  background-color: var(--success); 
-  color: var(--white); 
+  background-color: var(--success);
+  color: var(--white);
   p {
     font-weight: 600;
     font-size: 1.2rem;
@@ -260,8 +263,8 @@ input[type="radio"]:checked + .botao-alternativa.alternativa-incorreta .numero-a
   }
 }
 .resultado.incorreto {
-  background-color: var(--red); 
-  color: var(--white); 
+  background-color: var(--red);
+  color: var(--white);
   .botoes-incorreto {
     display: flex;
     align-items: center;
@@ -396,7 +399,7 @@ input[type="radio"]:checked + .botao-alternativa.alternativa-incorreta .numero-a
 .modal-botoes .btn-sair {
   background-color: var(--red);
   color: white;
-  border: none; 
+  border: none;
   text-decoration: none;
 }
 
@@ -406,14 +409,15 @@ input[type="radio"]:checked + .botao-alternativa.alternativa-incorreta .numero-a
   border: solid 1px #c9c9c9;
 }
 
-.modal-botoes .btn-sair:hover { /* Manter o hover específico */
-  background-color: var(--red-hover); 
+.modal-botoes .btn-sair:hover {
+  /* Manter o hover específico */
+  background-color: var(--red-hover);
 }
 
 /* Modal geral */
 .modal {
   position: fixed;
-  }
+}
 
 /* Modal geral */
 .modal {
@@ -423,7 +427,7 @@ input[type="radio"]:checked + .botao-alternativa.alternativa-incorreta .numero-a
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.6);
-  display: none; 
+  display: none;
   justify-content: center;
   align-items: center;
   z-index: 1000;
@@ -433,30 +437,39 @@ input[type="radio"]:checked + .botao-alternativa.alternativa-incorreta .numero-a
 @keyframes animacaoMascoteFeedback {
   0% {
     opacity: 0;
-    transform: translate(-50%, 30px); /* Começa um pouco abaixo da posição 'bottom' e invisível */
+    transform: translate(
+      -50%,
+      30px
+    ); /* Começa um pouco abaixo da posição 'bottom' e invisível */
   }
   20% {
     opacity: 1;
-    transform: translate(-50%, 0);    /* Aparece na posição 'bottom' definida */
+    transform: translate(-50%, 0); /* Aparece na posição 'bottom' definida */
   }
   80% {
     opacity: 1;
-    transform: translate(-50%, -112.5px); /* Ajustado para velocidade de subida constante */
+    transform: translate(
+      -50%,
+      -112.5px
+    ); /* Ajustado para velocidade de subida constante */
   }
   100% {
     opacity: 0;
-    transform: translate(-50%, -150px); /* Posição final, desaparece completamente */
+    transform: translate(
+      -50%,
+      -150px
+    ); /* Posição final, desaparece completamente */
   }
 }
 
 .mascote-feedback {
   position: fixed; /* Posicionamento em relação à viewport, flutuando sobre tudo */
-  left: 50%;       /* Centraliza horizontalmente */
-  bottom: 100px;   /* Posição inicial vertical (acima da barra de resultados de 90px) */
+  left: 50%; /* Centraliza horizontalmente */
+  bottom: 100px; /* Posição inicial vertical (acima da barra de resultados de 90px) */
   transform: translateX(-50%); /* Ajuste fino para centralização horizontal */
   max-width: 100px; /* Tamanho do mascote, ajuste conforme necessário */
   height: auto;
-  z-index: 2000;    /* Garante que fique acima de outros elementos (ex: modais com z-index 1000) */
+  z-index: 2000; /* Garante que fique acima de outros elementos (ex: modais com z-index 1000) */
   pointer-events: none; /* Para que o mascote não intercepte cliques/eventos do mouse */
   animation: animacaoMascoteFeedback 1s linear forwards; /* Animação mais rápida: alterado de 2s para 1s */
 }
@@ -535,7 +548,6 @@ input[type="radio"]:checked + .botao-alternativa.alternativa-incorreta .numero-a
   height: 1em;
 }
 
-
 /* Adicione ao seu arquivo resolver_exercicio.css */
 
 .exercicio-mcq-layout {
@@ -568,7 +580,6 @@ input[type="radio"]:checked + .botao-alternativa.alternativa-incorreta .numero-a
   margin-bottom: 15px;
   line-height: 1.5;
   font-size: 1.2em;
-
 }
 
 .exercicio-codigo {
@@ -580,7 +591,8 @@ input[type="radio"]:checked + .botao-alternativa.alternativa-incorreta .numero-a
   font-family: monospace; /* Fonte monoespaçada para código */
 }
 
-.exercicio-codigo-input { /* Para a textarea do exercício de código */
+.exercicio-codigo-input {
+  /* Para a textarea do exercício de código */
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
@@ -589,7 +601,8 @@ input[type="radio"]:checked + .botao-alternativa.alternativa-incorreta .numero-a
   margin-top: 10px;
 }
 
-.input-lacuna { /* Estilo para o campo de entrada de texto da lacuna */
+.input-lacuna {
+  /* Estilo para o campo de entrada de texto da lacuna */
   width: 100%;
   padding: 12px;
   border-radius: 10px;
@@ -657,16 +670,14 @@ input[type="radio"]:checked + .botao-alternativa.alternativa-incorreta .numero-a
 
 /* Estilo para quando uma opção V/F é selecionada (destaca a label) */
 .alternativas-vf input[type="radio"]:checked + .botao-alternativa {
-    background-color: #d3f7ff;
-    color: rgb(1, 92, 189);
-    border-color: #3094ff;
-  }
-
-
-
+  background-color: #d3f7ff;
+  color: rgb(1, 92, 189);
+  border-color: #3094ff;
+}
 
 /* Responsividade */
-@media (max-width: 768px) { /* Breakpoint para tablets e celulares em paisagem */
+@media (max-width: 768px) {
+  /* Breakpoint para tablets e celulares em paisagem */
   .formulario {
     padding: 20px 15px; /* Reduz o padding lateral do formulário */
   }
@@ -692,7 +703,7 @@ input[type="radio"]:checked + .botao-alternativa.alternativa-incorreta .numero-a
   }
 
   .exercicio-info-layout {
-    flex-direction: column; 
+    flex-direction: column;
     gap: 2em; /* Espaçamento vertical */
   }
 
@@ -796,8 +807,6 @@ input[type="radio"]:checked + .botao-alternativa.alternativa-incorreta .numero-a
   }
 }
 
-
-
 /* Em seu arquivo .css, por exemplo: static/style/partials/exercicios/resolver_exercicio.css */
 .exercicio-imagem {
   max-width: 300px;
@@ -831,10 +840,8 @@ input[type="radio"]:checked + .botao-alternativa.alternativa-incorreta .numero-a
   margin-bottom: 0; /* Remove a margem inferior do enunciado para melhor alinhamento */
 }
 
-
-
-
-@media (max-width: 480px) { /* Breakpoint para celulares menores em retrato */
+@media (max-width: 480px) {
+  /* Breakpoint para celulares menores em retrato */
   .formulario {
     padding: 15px 10px;
     gap: 0.8em;
@@ -890,7 +897,8 @@ input[type="radio"]:checked + .botao-alternativa.alternativa-incorreta .numero-a
     font-size: 0.9rem;
   }
 
-  .fechar { /* Botão de fechar modal (x) */
+  .fechar {
+    /* Botão de fechar modal (x) */
     font-size: 1.4rem;
     top: 8px;
     right: 12px;

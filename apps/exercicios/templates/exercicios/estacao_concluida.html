@@ -1,41 +1,53 @@
-{% extends 'navbar.html' %}
-{% load static %}
-
-{% block content %}
-<link rel="stylesheet" href="{% static 'style/partials/exercicios/estacao_concluida.css' %}" /> 
+{% extends 'navbar.html' %} {% load static %} {% block content %}
+<link
+  rel="stylesheet"
+  href="{% static 'style/partials/exercicios/estacao_concluida.css' %}"
+/>
 
 <div class="container-estacao-concluida">
-    <div class="conteudo-estacao-concluida">
-        <img src="{% static 'img/mascote/happy.svg' %}" alt="Mascote Feliz" class="mascote-resultado" />
-        <h1>Parabéns!</h1>
-        <p>Você concluiu todos os exercícios da estação "{{ estacao.nome }}"!</p>
+  <div class="conteudo-estacao-concluida">
+    <img
+      src="{% static 'img/mascote/happy.svg' %}"
+      alt="Mascote Feliz"
+      class="mascote-resultado"
+    />
+    <h1>Parabéns!</h1>
+    <p>Você concluiu todos os exercícios da estação "{{ estacao.nome }}"!</p>
 
-        <div class="resumo-estacao__cards">
-            <article class="resumo-card resumo-card--gold">
-                <span class="resumo-card__title">Total de XP</span>
-                <strong class="resumo-card__value">⚡ {{ resumo_estacao.xp_ganho }}</strong>
-            </article>
-            <article class="resumo-card resumo-card--green">
-                <span class="resumo-card__title">EOA!</span>
-                <strong class="resumo-card__value">{{ resumo_estacao.porcentagem_acertos }}%</strong>
-            </article>
-        </div>
-
-        <div class="resumo-estacao__info">
-            <div class="resumo-info__item">
-                <span>Acertos</span>
-                <strong>{{ resumo_estacao.acertos }}</strong>
-            </div>
-            <div class="resumo-info__item">
-                <span>Erros</span>
-                <strong>{{ resumo_estacao.erros }}</strong>
-            </div>
-        </div>
-
-        <div class="botoes-resultado">
-            <a href="{% url 'exercicios:percurso' modulo_id %}" class="btn-voltar-percurso">Continuar</a>
-        </div>
+    <div class="resumo-estacao__cards">
+      <article class="resumo-card resumo-card--gold">
+        <span class="resumo-card__title">Total de XP</span>
+        <strong class="resumo-card__value"
+          >⚡ {{ resumo_estacao.xp_ganho }}</strong
+        >
+      </article>
+      <article class="resumo-card resumo-card--green">
+        <span class="resumo-card__title">EOA!</span>
+        <strong class="resumo-card__value"
+          >{{ resumo_estacao.porcentagem_acertos }}%</strong
+        >
+      </article>
     </div>
+
+    <div class="resumo-estacao__info">
+      <div class="resumo-info__item">
+        <span>Acertos</span>
+        <strong>{{ resumo_estacao.acertos }}</strong>
+      </div>
+      <div class="resumo-info__item">
+        <span>Erros</span>
+        <strong>{{ resumo_estacao.erros }}</strong>
+      </div>
+    </div>
+
+    <div class="botoes-resultado">
+      <a
+        href="{% url 'exercicios:percurso' modulo_id %}"
+        class="btn-voltar-percurso"
+        >Continuar</a
+      >
+    </div>
+  </div>
 </div>
 
 {% endblock %}
