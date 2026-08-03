@@ -488,7 +488,7 @@ def estacao_concluida_view(request, estacao_id):
 
     resumo_estacao = request.session.get("resumo_estacoes", {}).get(str(estacao.id), {})
     total_exercicios_estacao = Exercicio.objects.filter(estacao=estacao).count()
-    acertos = min(resumo_estacao.get('acertos', 0), total_exercicios_estacao)
+    acertos = min(resumo_estacao.get("acertos", 0), total_exercicios_estacao)
     erros = resumo_estacao.get("erros", 0)
     xp_ganho = resumo_estacao.get("xp_ganho", 0)
     porcentagem_acertos = (

@@ -202,17 +202,53 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  function isTypingInTextField(event) {
+    const target = event.target;
+    if (!target) return false;
+    const tag = target.tagName.toLowerCase();
+    if (target.isContentEditable === true) return true;
+    if (tag === 'textarea') return true;
+    if (tag !== 'input') return false;
+
+    const typingInputTypes = [
+      'text',
+      'search',
+      'email',
+      'tel',
+      'url',
+      'password',
+      'number',
+      'date',
+      'datetime-local',
+      'month',
+      'week',
+      'time',
+      'textarea',
+    ];
+    return typingInputTypes.includes(target.type);
+  }
+
+  function selectAlternativeByKey(key) {
+    const alternativa = form.querySelector(
+      `input[type="radio"][value="${key}"]`,
+    );
+    if (!alternativa || alternativa.disabled) return false;
+    alternativa.checked = true;
+    const changeEvent = new Event('change', { bubbles: true });
+    alternativa.dispatchEvent(changeEvent);
+    alternativa.focus();
+    return true;
+  }
+
   // DENTRO DO SEU SCRIPT PRINCIPAL
 
   function updateResponderButtonState() {
-    // A MUDANÇA É APENAS NESTA LINHA:
     const responderButton = document.getElementById(
-      "botao-responder-exercicio",
+      'botao-responder-exercicio',
     );
 
     if (!responderButton) return; // Se o botão não existir, a função para.
 
-    // O resto da lógica permanece o mesmo.
     const algumaAlternativaMarcada = form.querySelector(
       'input[type="radio"]:checked',
     );
@@ -264,6 +300,18 @@ document.addEventListener("DOMContentLoaded", function () {
       if (modalSair) modalSair.style.display = "flex";
     });
   }
+
+  document.addEventListener("keydown", (event) => {
+    if (isTypingInTextField(event)) return;
+    const key = event.key;
+    if (!/^[1-4]$/.test(key)) return;
+
+    const selecionou = selectAlternativeByKey(key);
+    if (selecionou) {
+      event.preventDefault();
+      updateResponderButtonState();
+    }
+  });
 
   if ("{{ sem_vidas|default:'false' }}" === "True") {
     const modalSemVidas = document.getElementById("modalSemVidas");
