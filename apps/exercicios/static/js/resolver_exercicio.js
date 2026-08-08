@@ -183,18 +183,14 @@ document.addEventListener("DOMContentLoaded", function () {
         data.enunciado
           ? `<p class="exercicio-enunciado">${data.enunciado}</p>`
           : ""
-      }<div class="exercicio-vf-alternativas"><div class="alternativas-vf">${
-        `<input type="radio" name="resposta_vf" id="vf_true" value="True" class="alternativa-exercicio-vf" hidden /><label for="vf_true" class="botao-alternativa">Verdadeiro</label><input type="radio" name="resposta_vf" id="vf_false" value="False" class="alternativa-exercicio-vf" hidden /><label for="vf_false" class="botao-alternativa">Falso</label>`
-      }</div></div></div></div>`;
+      }<div class="exercicio-vf-alternativas"><div class="alternativas-vf">${`<input type="radio" name="resposta_vf" id="vf_true" value="True" class="alternativa-exercicio-vf" hidden /><label for="vf_true" class="botao-alternativa">Verdadeiro</label><input type="radio" name="resposta_vf" id="vf_false" value="False" class="alternativa-exercicio-vf" hidden /><label for="vf_false" class="botao-alternativa">Falso</label>`}</div></div></div></div>`;
     } else if (data.tipo === "info") {
       newExerciseHtml = `<div class="formulario"><div class="exercicio-info-layout">${
         data.enunciado
           ? `<p class="exercicio-enunciado">${data.enunciado}</p>`
           : ""
       }${
-        data.codigo
-          ? `<pre class="exercicio-codigo">${data.codigo}</pre>`
-          : ""
+        data.codigo ? `<pre class="exercicio-codigo">${data.codigo}</pre>` : ""
       }${
         data.imagem_url
           ? `<img src="${data.imagem_url}" alt="Imagem do exercício" class="exercicio-imagem" />`

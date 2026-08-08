@@ -596,7 +596,9 @@ def get_exercicio_data(request, exercicio_id):
             )
 
         proximo_exercicio_livre = (
-            mecanicas_services.obter_exercicios_nao_concluidos(exercicio.estacao, request.user)
+            mecanicas_services.obter_exercicios_nao_concluidos(
+                exercicio.estacao, request.user
+            )
             .exclude(id=exercicio.id)
             .order_by("id")
             .first()
