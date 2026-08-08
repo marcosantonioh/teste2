@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Função genérica para enviar dados via AJAX
   async function enviarAcaoAjax(acao) {
+    syncLacunaHiddenInput();
     const formData = new FormData(form);
 
     if (acao === "responder") {
@@ -156,6 +157,20 @@ document.addEventListener("DOMContentLoaded", function () {
       }${
         data.codigo ? `<pre class="exercicio-codigo">${data.codigo}</pre>` : ""
       }</div><div class="exercicio-mcq-alternativas"><div class="alternativas"><h3>Alternativas</h3>${alternativasHtml}</div></div></div></div>`;
+    } else if (data.tipo === "lacuna") {
+      newExerciseHtml = `<div class="formulario"><div class="exercicio-lacuna-layout">${
+        data.enunciado
+          ? `<p class="exercicio-enunciado">${data.enunciado}</p>`
+          : ""
+      }${
+        data.codigo_renderizado
+          ? `<pre class="exercicio-codigo">${data.codigo_renderizado}</pre>`
+          : ""
+      }${
+        data.codigo_renderizado
+          ? `<p class="lacuna-hint">Clique no espaço sublinhado e digite a resposta.</p>`
+          : ""
+      }<input type="hidden" id="resposta" name="resposta" value="" /></div></div>`;
     }
     conteudoWrapper.innerHTML = newExerciseHtml;
 
@@ -200,6 +215,9 @@ document.addEventListener("DOMContentLoaded", function () {
     form.querySelectorAll('input[type="radio"]').forEach((input) => {
       input.disabled = true;
     });
+    form.querySelectorAll('input[type="text"], textarea').forEach((input) => {
+      input.disabled = true;
+    });
   }
 
   function isTypingInTextField(event) {
@@ -226,6 +244,17 @@ document.addEventListener("DOMContentLoaded", function () {
       "textarea",
     ];
     return typingInputTypes.includes(target.type);
+  }
+
+  function syncLacunaHiddenInput() {
+    const lacunaSpan = form.querySelector('.lacuna-marker[contenteditable="true"]');
+    const respostaInput = form.querySelector('input[type="hidden"][name="resposta"]');
+    if (lacunaSpan && respostaInput) {
+      const texto = lacunaSpan.textContent.trim();
+      respostaInput.value = texto === "______" ? "" : texto;
+      return respostaInput.value.trim().length > 0;
+    }
+    return false;
   }
 
   function selectAlternativeByKey(key) {
@@ -282,7 +311,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const algumaAlternativaMarcada = form.querySelector(
       'input[type="radio"]:checked',
     );
-    responderButton.disabled = !algumaAlternativaMarcada;
+    const textoLacuna = form.querySelector('input[type="text"], textarea');
+    const lacunaSpan = form.querySelector('.lacuna-marker[contenteditable="true"]');
+    const lacunaPreenchida = textoLacuna
+      ? textoLacuna.value.trim().length > 0
+      : lacunaSpan
+      ? lacunaSpan.textContent.trim().length > 0
+      : false;
+    responderButton.disabled = !(algumaAlternativaMarcada || lacunaPreenchida);
   }
 
   function initializeEventListeners() {
@@ -318,6 +354,28 @@ document.addEventListener("DOMContentLoaded", function () {
     );
     if (alternativasDiv)
       alternativasDiv.addEventListener("change", updateResponderButtonState);
+
+    const textoLacuna = form.querySelector('input[type="text"], textarea');
+    if (textoLacuna) {
+      textoLacuna.addEventListener("input", updateResponderButtonState);
+    }
+    const lacunaSpan = form.querySelector('.lacuna-marker[contenteditable="true"]');
+    if (lacunaSpan) {
+      lacunaSpan.addEventListener("input", () => {
+        syncLacunaHiddenInput();
+        updateResponderButtonState();
+      });
+      lacunaSpan.addEventListener("focus", () => {
+        if (lacunaSpan.textContent.trim() === "______") {
+          lacunaSpan.textContent = "";
+        }
+      });
+      lacunaSpan.addEventListener("blur", () => {
+        if (lacunaSpan.textContent.trim().length === 0) {
+          lacunaSpan.textContent = "______";
+        }
+      });
+    }
 
     updateResponderButtonState();
   }

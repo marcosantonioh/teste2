@@ -12,7 +12,7 @@
 <div class="container-exercicio">
   <div class="barra-progresso-container">{% include "progress.html" %}</div>
 
-  <form method="POST" class="form-layout-container">
+  <form method="POST" class="form-layout-container" data-modulo-id="{{ modulo_id }}">
     {% csrf_token %}
 
     <!-- Wrapper para o conteúdo do exercício que será rolável -->
@@ -22,11 +22,7 @@
         {% if exercicio.tipo == 'mcq' %}
           {% include "exercicios/tipos/mcq.html"%}
         {% elif exercicio.tipo == 'lacuna' %}
-          {% if exercicio.enunciado %}
-            <p class="exercicio-enunciado">{{ exercicio.enunciado }}</p>
-          {% endif %}
-          <div class="exercicio-lacuna-layout"></div>
-
+          {% include "exercicios/tipos/lacuna.html" %}
         {% elif exercicio.tipo == 'vf' %}
           {% include "exercicios/tipos/vf.html"%}
         {% elif exercicio.tipo == 'info' %}

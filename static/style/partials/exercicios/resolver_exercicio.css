@@ -601,13 +601,59 @@ input[type="radio"]:checked
   margin-top: 10px;
 }
 
+.lacuna-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.lacuna-label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2d3a4a;
+  }
+
+  .lacuna-marker {
+    display: inline-block;
+    min-width: 100px;
+    padding: 4px 10px;
+    background: rgba(93, 156, 255, 0.12);
+    border: 1px dashed #5b9bfb;
+    border-radius: 6px;
+    color: #1f3f78;
+    font-weight: 700;
+    cursor: text;
+    white-space: pre-wrap;
+  }
+
+  .lacuna-marker:focus {
+    outline: 2px solid rgba(93, 156, 255, 0.65);
+    outline-offset: 2px;
+  }
+
+  .lacuna-hint {
+    margin-top: 10px;
+    font-size: 0.95rem;
+    color: #4b576c;
+  }
 .input-lacuna {
-  /* Estilo para o campo de entrada de texto da lacuna */
   width: 100%;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  font-size: 1em;
+  min-height: 110px;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid #ced4da;
+  font-size: 0.98rem;
+  line-height: 1.5;
+  resize: vertical;
+  font-family: inherit;
+  background: #fafbff;
+}
+
+.input-lacuna:focus {
+  outline: none;
+  border-color: #5b9bfb;
+  box-shadow: 0 0 0 4px rgba(93, 156, 255, 0.15);
 }
 
 /* Ajustes para as alternativas se necessário */

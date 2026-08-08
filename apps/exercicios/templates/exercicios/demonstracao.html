@@ -31,22 +31,36 @@
     {% else %}
       <form method="post" class="demonstracao-formulario">
         {% csrf_token %}
-        <div class="demonstracao-alternativas">
-          {% for numero, texto in alternativas %}
-            <input
-              type="radio"
-              name="{{ campo_resposta }}"
-              id="alternativa-{{ numero }}"
-              value="{{ numero }}"
+        {% if exercicio.tipo == 'lacuna' %}
+          <div class="demonstracao-alternativas">
+            <label for="resposta" class="demonstracao-lacuna-label">Preencha a lacuna</label>
+            <textarea
+              name="resposta"
+              id="resposta"
+              class="demonstracao-lacuna-input"
+              rows="4"
               required
               {% if correta is not None %}disabled{% endif %}
-            />
-            <label
-              for="alternativa-{{ numero }}"
-              class="demonstracao-alternativa {% if correta is not None %}{% if numero == resposta_correta %} alternativa-correta{% elif not correta and numero == resposta_submetida %} alternativa-incorreta{% endif %}{% endif %}"
-            >{{ texto }}</label>
-          {% endfor %}
-        </div>
+            >{{ resposta_submetida|default:'' }}</textarea>
+          </div>
+        {% else %}
+          <div class="demonstracao-alternativas">
+            {% for numero, texto in alternativas %}
+              <input
+                type="radio"
+                name="{{ campo_resposta }}"
+                id="alternativa-{{ numero }}"
+                value="{{ numero }}"
+                required
+                {% if correta is not None %}disabled{% endif %}
+              />
+              <label
+                for="alternativa-{{ numero }}"
+                class="demonstracao-alternativa {% if correta is not None %}{% if numero == resposta_correta %} alternativa-correta{% elif not correta and numero == resposta_submetida %} alternativa-incorreta{% endif %}{% endif %}"
+              >{{ texto }}</label>
+            {% endfor %}
+          </div>
+        {% endif %}
 
         {% if correta is None %}
           <button class="demonstracao-acao" type="submit">Responder</button>

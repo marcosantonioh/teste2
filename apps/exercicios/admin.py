@@ -22,7 +22,6 @@ class ExercicioAdmin(ImportExportModelAdmin):
                     "enunciado",
                     "estacao",
                     "modulo",
-                    "status",
                     "xp",
                     "explicacao",
                     "tipo",

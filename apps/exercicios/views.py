@@ -10,6 +10,7 @@ from apps.desafios.models import DesafioUsuario
 from django.http import JsonResponse
 from django.urls import reverse
 from django.template.defaultfilters import linebreaksbr  # Para formatar o enunciado
+from django.utils.html import escape, mark_safe
 
 CHAVE_ORDEM_ALTERNATIVAS = "ordens_alternativas_mcq"
 CHAVE_ULTIMA_ORDEM_ALTERNATIVAS = "ultimas_ordens_alternativas_mcq"
@@ -89,7 +90,7 @@ def percurso(request, modulo_id):
 
 def _extrair_resposta_do_request(request, tipo_exercicio):
     """Função auxiliar para extrair a resposta do usuário do objeto request."""
-    if tipo_exercicio == "mcq":
+    if tipo_exercicio in ["mcq", "lacuna"]:
         return request.POST.get("resposta")
     elif tipo_exercicio == "vf":
         return request.POST.get("resposta_vf")
@@ -192,6 +193,10 @@ def resolver_demonstracao(request, exercicio_id):
         alternativas = [("True", "Verdadeiro"), ("False", "Falso")]
         campo_resposta = "resposta_vf"
         resposta_correta = str(exercicio.resposta_vf_correta)
+    elif exercicio.tipo == "lacuna":
+        alternativas = []
+        campo_resposta = "resposta"
+        resposta_correta = exercicio.resposta_texto_codigo
     else:
         alternativas = []
         campo_resposta = None
@@ -404,10 +409,14 @@ def resolver_exercicio(request, exercicio_id):
                         "total": total_exercicios_modulo,
                     },
                     "resposta_correta": (
-                        exercicio.resposta_correta
-                        if exercicio.tipo == "mcq"
-                        else exercicio.resposta_vf_correta
-                    ),
+                    exercicio.resposta_correta
+                    if exercicio.tipo == "mcq"
+                    else exercicio.resposta_vf_correta
+                    if exercicio.tipo == "vf"
+                    else exercicio.resposta_texto_codigo
+                    if exercicio.tipo == "lacuna"
+                    else None
+                ),
                     "resumo_estacao": {
                         "mostrar": mostrar_resumo_estacao,
                         "acertos": resumo_estacao["acertos"],
@@ -442,6 +451,18 @@ def resolver_exercicio(request, exercicio_id):
                         "exercicios:estacao_concluida", estacao_id=estacao_atual.id
                     )
 
+    # Prepara o código com a marcação da lacuna antes de renderizar o template.
+    codigo_renderizado = None
+    if exercicio.tipo == "lacuna" and exercicio.codigo:
+        marcador = '<span class="lacuna-marker" contenteditable="true">______</span>'
+        if resposta_submetida:
+            marcador = '<span class="lacuna-marker" contenteditable="true">%s</span>' % escape(
+                resposta_submetida
+            )
+        codigo_renderizado = mark_safe(
+            escape(exercicio.codigo).replace("__LACUNA__", marcador)
+        )
+
     # Nova lógica para decidir se o modal de saída deve ser mostrado
     mostrar_modal_confirmacao_saida = progresso_percentual > 0
 
@@ -463,6 +484,7 @@ def resolver_exercicio(request, exercicio_id):
         "total_exercicios_modulo": total_exercicios_modulo,
         "mostrar_modal_confirmacao_saida": mostrar_modal_confirmacao_saida,  # Adicionamos aqui
         "exercicios_pendentes": exercicios_pendentes,  # Adiciona a variável ao contexto
+        "codigo_renderizado": codigo_renderizado,
     }
 
     return render(request, "exercicios/resolver_exercicio.html", context)
@@ -548,5 +570,13 @@ def get_exercicio_data(request, exercicio_id):
         ),
         "url_resolucao": reverse("exercicios:resolver_exercicio", args=[exercicio.id]),
     }
+
+    if exercicio.tipo == "lacuna" and exercicio.codigo:
+        data["codigo_renderizado"] = escape(exercicio.codigo).replace(
+            "__LACUNA__",
+            '<span class="lacuna-marker" contenteditable="true">______</span>',
+        )
+    else:
+        data["codigo_renderizado"] = data["codigo"]
 
     return JsonResponse(data)

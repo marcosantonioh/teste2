@@ -82,6 +82,9 @@ class ExercicioLacunaForm(forms.ModelForm):
             self.fields['tipo'].disabled = True
 
         self.fields['codigo'].required = True
+        self.fields['codigo'].help_text = (
+            'Use o marcador __LACUNA__ no texto ou código para mostrar onde o aluno deve preencher.'
+        )
         self.fields['resposta_texto_codigo'].required = True
 
 

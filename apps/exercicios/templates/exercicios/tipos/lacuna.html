@@ -1,0 +1,16 @@
+<div class="exercicio-lacuna-layout">
+  {% if exercicio.enunciado %}
+  <p class="exercicio-enunciado">{{ exercicio.enunciado }}</p>
+  {% endif %}
+
+  {% if exercicio.codigo %}
+    <pre class="exercicio-codigo">
+      {{ codigo_renderizado }}
+    </pre>
+    {% if "__LACUNA__" in exercicio.codigo %}
+      <!-- <p class="lacuna-hint">Clique no espaço sublinhado e digite a resposta.</p> -->
+    {% endif %}
+  {% endif %}
+
+  <input type="hidden" id="resposta" name="resposta" value="{{ resposta_submetida|default:'' }}" />
+</div>

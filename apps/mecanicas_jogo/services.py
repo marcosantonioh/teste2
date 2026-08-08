@@ -92,7 +92,10 @@ def verificar_resposta(exercicio, resposta_usuario):
     elif exercicio.tipo == "vf":
         resposta_usuario_bool = resposta_usuario == "True"
         return resposta_usuario_bool == exercicio.resposta_vf_correta
-
+    elif exercicio.tipo == 'lacuna':
+        resposta_usuario_str = str(resposta_usuario or '').strip()
+        resposta_correta_str = str(exercicio.resposta_texto_codigo or '').strip()
+        return resposta_usuario_str.lower() == resposta_correta_str.lower()
     return False
 
 
