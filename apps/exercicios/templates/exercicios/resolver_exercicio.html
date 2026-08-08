@@ -23,43 +23,48 @@
     <div class="conteudo-exercicio-wrapper">
       <!-- A div .formulario contém os elementos do exercício -->
       <div class="formulario">
-        {% if exercicio.tipo == 'mcq' %} {% include
-        "exercicios/tipos/mcq.html"%} {% elif exercicio.tipo == 'lacuna' %} {%
-        include "exercicios/tipos/lacuna.html" %} {% elif exercicio.tipo == 'vf'
-        %} {% include "exercicios/tipos/vf.html"%} {% elif exercicio.tipo ==
-        'info' %} {% include "exercicios/tipos/info.html" %} {% endif %}
+        {% if exercicio.tipo == 'mcq' %}
+          {% include "exercicios/tipos/mcq.html" %}
+        {% elif exercicio.tipo == 'lacuna' %}
+          {% include "exercicios/tipos/lacuna.html" %}
+        {% elif exercicio.tipo == 'vf' %}
+          {% include "exercicios/tipos/vf.html" %}
+        {% elif exercicio.tipo == 'info' %}
+          {% include "exercicios/tipos/info.html" %}
+        {% endif %}
       </div>
     </div>
 
     <!-- Base fixa para botões de ação e resultado -->
     <div class="base-acoes-exercicio">
-      {% if exercicio.tipo == 'info' %} {# Para o tipo 'info', não há resposta,
-      apenas o botão de continuar que fica sempre livre #}
-      <div class="resultado">
-        {# Usando a classe 'resultado' para consistência de layout #} {% if
-        proximo_exercicio_id_para_continuar %}
-        <a
-          href="{% url 'exercicios:resolver_exercicio' proximo_exercicio_id_para_continuar %}"
-          class="submit"
-          >Continuar</a
-        >
-        {% else %}
-        <a
-          href="{% url 'exercicios:percurso' exercicio.modulo.id %}"
-          class="submit"
-          >Voltar ao Percurso</a
-        >
-        {% endif %}
-      </div>
-      {% elif not resultado %} {% include "exercicios/botoes/botoes.html" %} {%
-      else %} {% if resultado == 'correto' %} {# Adiciona o mascote para
-      resultado correto #}
-      <img
-        src="{% static 'img/mascote/verde.svg' %}"
-        alt="Mascote Feliz"
-        class="mascote-feedback"
-      />
-      <div class="resultado correto">
+      {% if exercicio.tipo == 'info' %}
+        {# Para o tipo 'info', não há resposta, apenas o botão de continuar #}
+        <div class="resultado">
+          {% if proximo_exercicio_id_para_continuar %}
+            <a
+              href="{% url 'exercicios:resolver_exercicio' proximo_exercicio_id_para_continuar %}"
+              class="submit"
+              >Continuar</a
+            >
+          {% else %}
+            <a
+              href="{% url 'exercicios:percurso' exercicio.modulo.id %}"
+              class="submit"
+              >Voltar ao Percurso</a
+            >
+          {% endif %}
+        </div>
+      {% elif not resultado %}
+        {% include "exercicios/botoes/botoes.html" %}
+      {% else %}
+        {% if resultado == 'correto' %}
+          {# Adiciona o mascote para resultado correto #}
+          <img
+            src="{% static 'img/mascote/verde.svg' %}"
+            alt="Mascote Feliz"
+            class="mascote-feedback"
+          />
+          <div class="resultado correto">
         <svg
           width="48.247559mm"
           height="48.247547mm"
@@ -269,7 +274,9 @@
           </button>
         </div>
       </div>
-      {% endif %} {% endif %}
+          {% endif %}
+        {% endif %}
+      </div>
     </div>
   </form>
 </div>

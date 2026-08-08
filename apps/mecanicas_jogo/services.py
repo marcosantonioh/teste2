@@ -148,6 +148,24 @@ def calcular_progresso(modulo, usuario):
     return progresso_percentual, exercicios_concluidos_count, total_exercicios_modulo
 
 
+def calcular_progresso_estacao(estacao, usuario):
+    exercicios_estacao = Exercicio.objects.filter(estacao=estacao)
+    total_exercicios_estacao = exercicios_estacao.count()
+    if total_exercicios_estacao == 0:
+        return 0, 0, 0
+
+    if not usuario or not usuario.is_authenticated:
+        return 0, 0, total_exercicios_estacao
+
+    exercicios_concluidos_count = ExercicioUsuario.objects.filter(
+        usuario=usuario, exercicio__estacao=estacao, status="concluido"
+    ).count()
+    progresso_percentual = int(
+        (exercicios_concluidos_count / total_exercicios_estacao) * 100
+    )
+    return progresso_percentual, exercicios_concluidos_count, total_exercicios_estacao
+
+
 def reiniciar_estacao(estacao, usuario):
     if not usuario or not usuario.is_authenticated:
         return

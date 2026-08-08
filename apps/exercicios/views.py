@@ -293,7 +293,7 @@ def resolver_exercicio(request, exercicio_id):
     # Calcular progresso para a barra superior ANTES de qualquer modificação de status.
     # Assim, a barra reflete o estado no momento em que o exercício é exibido.
     progresso_percentual, exercicios_concluidos_count, total_exercicios_modulo = (
-        mecanicas_services.calcular_progresso(exercicio.modulo, request.user)
+        mecanicas_services.calcular_progresso_estacao(exercicio.estacao, request.user)
     )
 
     # Lógica para exercícios informativos (tipo 'info')
@@ -381,8 +381,8 @@ def resolver_exercicio(request, exercicio_id):
                     progresso_percentual,
                     exercicios_concluidos_count,
                     total_exercicios_modulo,
-                ) = mecanicas_services.calcular_progresso(
-                    exercicio.modulo, request.user
+                ) = mecanicas_services.calcular_progresso_estacao(
+                    exercicio.estacao, request.user
                 )
                 total_exercicios_estacao = (
                     resumo_estacao["total_exercicios"]
