@@ -71,6 +71,12 @@ def percurso(request, modulo_id):
     )
     perfil = get_or_create_perfil(request.user)
 
+    for secao in secoes:
+        for estacao in secao.estacoes.all():
+            estacao.status = mecanicas_services.obter_status_estacao(
+                estacao, request.user
+            )
+
     context = {
         "modulo": modulo,
         "secoes": secoes,
@@ -282,34 +288,31 @@ def resolver_exercicio(request, exercicio_id):
     # Calcular progresso para a barra superior ANTES de qualquer modificação de status.
     # Assim, a barra reflete o estado no momento em que o exercício é exibido.
     progresso_percentual, exercicios_concluidos_count, total_exercicios_modulo = (
-        mecanicas_services.calcular_progresso(exercicio.modulo)
+        mecanicas_services.calcular_progresso(exercicio.modulo, request.user)
     )
 
     # Lógica para exercícios informativos (tipo 'info')
     # Isso é executado em uma requisição GET, antes do processamento do POST.
     if exercicio.tipo == "info":
         # Marca o exercício informativo como concluído ao ser visualizado, para não ficar preso nele.
-        if exercicio.status == "livre":
-            exercicio.status = "concluido"
-            exercicio.save()
+        if mecanicas_services.obter_status_exercicio(exercicio, request.user) == "livre":
+            mecanicas_services.marcar_exercicio_concluido(exercicio, perfil, request.user)
             # Opcional: Adicionar XP se exercícios informativos valerem pontos.
             # perfil.xp_total += exercicio.xp
             # perfil.save()
 
         # Após marcar como concluído, busca o próximo exercício livre na estação.
         estacao_atual = exercicio.estacao
-        proximo_exercicio_livre = (
-            Exercicio.objects.filter(estacao=estacao_atual, status="livre")
-            .order_by("id")
-            .first()
-        )
+        proximo_exercicio_livre = mecanicas_services.obter_exercicios_nao_concluidos(
+            estacao_atual, request.user
+        ).order_by("id").first()
 
         if proximo_exercicio_livre:
             proximo_exercicio_id_para_continuar = proximo_exercicio_livre.id
 
     # Calcula os exercícios pendentes na estação para usar no template.
-    exercicios_pendentes = Exercicio.objects.filter(
-        estacao=exercicio.estacao, status="livre"
+    exercicios_pendentes = mecanicas_services.obter_exercicios_nao_concluidos(
+        exercicio.estacao, request.user
     )
 
     if request.method == "POST":
@@ -320,7 +323,7 @@ def resolver_exercicio(request, exercicio_id):
         acao = request.POST.get("acao")
 
         if acao == "pular":
-            proximo_exercicio = mecanicas_services.pular_exercicio(exercicio)
+            proximo_exercicio = mecanicas_services.pular_exercicio(exercicio, request.user)
             return redirect(
                 "exercicios:resolver_exercicio", exercicio_id=proximo_exercicio.id
             )
@@ -329,7 +332,7 @@ def resolver_exercicio(request, exercicio_id):
             resposta_usuario = _extrair_resposta_do_request(request, exercicio.tipo)
 
             resultado, correta = mecanicas_services.processar_resposta_exercicio(
-                resposta_usuario, exercicio, perfil
+                resposta_usuario, exercicio, perfil, request.user
             )
             resumo_estacao = _atualizar_resumo_estacao(
                 request, exercicio.estacao_id, correta, exercicio
@@ -343,16 +346,13 @@ def resolver_exercicio(request, exercicio_id):
 
                 if correta:
                     estacao_atual = exercicio.estacao
-                    exercicios_livres_restantes = Exercicio.objects.filter(
-                        estacao=estacao_atual, status="livre"
+                    exercicios_livres_restantes = mecanicas_services.obter_exercicios_nao_concluidos(
+                        estacao_atual, request.user
                     ).order_by("id")
 
                     if exercicios_livres_restantes.exists():
                         proximo_exercicio_id = exercicios_livres_restantes.first().id
                     else:
-                        if estacao_atual.status != "completado":
-                            estacao_atual.status = "completado"
-                            estacao_atual.save()
                         mostrar_resumo_estacao = True
                         estacao_concluida_url = reverse(
                             "exercicios:estacao_concluida", args=[estacao_atual.id]
@@ -363,7 +363,7 @@ def resolver_exercicio(request, exercicio_id):
                     progresso_percentual,
                     exercicios_concluidos_count,
                     total_exercicios_modulo,
-                ) = mecanicas_services.calcular_progresso(exercicio.modulo)
+                ) = mecanicas_services.calcular_progresso(exercicio.modulo, request.user)
                 total_exercicios_estacao = (
                     resumo_estacao["total_exercicios"]
                     or Exercicio.objects.filter(estacao=exercicio.estacao).count()
@@ -412,19 +412,15 @@ def resolver_exercicio(request, exercicio_id):
             resposta_submetida = resposta_usuario
             proximo_exercicio_id_para_continuar = None
             if correta:
-                # ... (sua lógica original de encontrar o próximo exercício para o contexto)
                 estacao_atual = exercicio.estacao
-                exercicios_livres_restantes = Exercicio.objects.filter(
-                    estacao=estacao_atual, status="livre"
+                exercicios_livres_restantes = mecanicas_services.obter_exercicios_nao_concluidos(
+                    estacao_atual, request.user
                 ).order_by("id")
                 if exercicios_livres_restantes.exists():
                     proximo_exercicio_id_para_continuar = (
                         exercicios_livres_restantes.first().id
                     )
                 else:
-                    if estacao_atual.status != "completado":
-                        estacao_atual.status = "completado"
-                        estacao_atual.save()
                     return redirect(
                         "exercicios:estacao_concluida", estacao_id=estacao_atual.id
                     )
@@ -459,7 +455,7 @@ def resolver_exercicio(request, exercicio_id):
 def iniciar_exercicios(request, exercicio_id):
     exercicio = get_object_or_404(Exercicio, id=exercicio_id)
     limpar_ordens_alternativas_da_estacao(request, exercicio.estacao)
-    mecanicas_services.reiniciar_estacao(exercicio.estacao)
+    mecanicas_services.reiniciar_estacao(exercicio.estacao, request.user)
     resumo_estacoes = request.session.setdefault("resumo_estacoes", {})
     resumo_estacoes[str(exercicio.estacao_id)] = {
         "acertos": 0,

@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db.models.signals import post_save
@@ -85,7 +86,6 @@ class Exercicio(models.Model):
     codigo = models.TextField(null=True, blank=True)
     imagem = models.ImageField(upload_to='exercicios/imagens/', null=True, blank=True, help_text="Imagem para exercícios informativos.")
     tipo = models.CharField(max_length=50, choices=TIPO_CHOICES)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='livre')
     xp = models.IntegerField(default=10)
     explicacao = models.TextField(null=True, blank=True)
 
@@ -117,6 +117,28 @@ class Exercicio(models.Model):
         null=True, blank=True,
         help_text="Resposta correta para exercícios de Verdadeiro ou Falso (True para Verdadeiro, False para Falso)."
     )
+
+    class Meta:
+        ordering = ['id'] # Ou outra ordem padrão desejada para exercícios
+        
+    def __str__(self):
+        return self.titulo or "Exercício sem título"
+
+
+class ExercicioUsuario(models.Model):
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    exercicio = models.ForeignKey(Exercicio, related_name='progresso_usuarios', on_delete=models.CASCADE)
+    status = models.CharField(max_length=20, choices=Exercicio.STATUS_CHOICES, default='livre')
+    criado_em = models.DateTimeField(auto_now_add=True)
+    atualizado_em = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('usuario', 'exercicio')
+        verbose_name = 'Progresso de Exercício'
+        verbose_name_plural = 'Progresso de Exercícios'
+
+    def __str__(self):
+        return f"{self.usuario.username} - {self.exercicio} ({self.status})"
 
     class Meta:
         ordering = ['id'] # Ou outra ordem padrão desejada para exercícios
