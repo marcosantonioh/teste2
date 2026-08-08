@@ -609,34 +609,34 @@ input[type="radio"]:checked
 }
 
 .lacuna-label {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #2d3a4a;
-  }
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2d3a4a;
+}
 
-  .lacuna-marker {
-    display: inline-block;
-    min-width: 100px;
-    padding: 4px 10px;
-    background: rgba(93, 156, 255, 0.12);
-    border: 1px dashed #5b9bfb;
-    border-radius: 6px;
-    color: #1f3f78;
-    font-weight: 700;
-    cursor: text;
-    white-space: pre-wrap;
-  }
+.lacuna-marker {
+  display: inline-block;
+  min-width: 100px;
+  padding: 4px 10px;
+  background: rgba(93, 156, 255, 0.12);
+  border: 1px dashed #5b9bfb;
+  border-radius: 6px;
+  color: #1f3f78;
+  font-weight: 700;
+  cursor: text;
+  white-space: pre-wrap;
+}
 
-  .lacuna-marker:focus {
-    outline: 2px solid rgba(93, 156, 255, 0.65);
-    outline-offset: 2px;
-  }
+.lacuna-marker:focus {
+  outline: 2px solid rgba(93, 156, 255, 0.65);
+  outline-offset: 2px;
+}
 
-  .lacuna-hint {
-    margin-top: 10px;
-    font-size: 0.95rem;
-    color: #4b576c;
-  }
+.lacuna-hint {
+  margin-top: 10px;
+  font-size: 0.95rem;
+  color: #4b576c;
+}
 .input-lacuna {
   width: 100%;
   min-height: 110px;

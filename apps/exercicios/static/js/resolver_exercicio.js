@@ -247,8 +247,12 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function syncLacunaHiddenInput() {
-    const lacunaSpan = form.querySelector('.lacuna-marker[contenteditable="true"]');
-    const respostaInput = form.querySelector('input[type="hidden"][name="resposta"]');
+    const lacunaSpan = form.querySelector(
+      '.lacuna-marker[contenteditable="true"]',
+    );
+    const respostaInput = form.querySelector(
+      'input[type="hidden"][name="resposta"]',
+    );
     if (lacunaSpan && respostaInput) {
       const texto = lacunaSpan.textContent.trim();
       respostaInput.value = texto === "______" ? "" : texto;
@@ -312,12 +316,14 @@ document.addEventListener("DOMContentLoaded", function () {
       'input[type="radio"]:checked',
     );
     const textoLacuna = form.querySelector('input[type="text"], textarea');
-    const lacunaSpan = form.querySelector('.lacuna-marker[contenteditable="true"]');
+    const lacunaSpan = form.querySelector(
+      '.lacuna-marker[contenteditable="true"]',
+    );
     const lacunaPreenchida = textoLacuna
       ? textoLacuna.value.trim().length > 0
       : lacunaSpan
-      ? lacunaSpan.textContent.trim().length > 0
-      : false;
+        ? lacunaSpan.textContent.trim().length > 0
+        : false;
     responderButton.disabled = !(algumaAlternativaMarcada || lacunaPreenchida);
   }
 
@@ -359,7 +365,9 @@ document.addEventListener("DOMContentLoaded", function () {
     if (textoLacuna) {
       textoLacuna.addEventListener("input", updateResponderButtonState);
     }
-    const lacunaSpan = form.querySelector('.lacuna-marker[contenteditable="true"]');
+    const lacunaSpan = form.querySelector(
+      '.lacuna-marker[contenteditable="true"]',
+    );
     if (lacunaSpan) {
       lacunaSpan.addEventListener("input", () => {
         syncLacunaHiddenInput();

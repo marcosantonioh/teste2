@@ -409,14 +409,18 @@ def resolver_exercicio(request, exercicio_id):
                         "total": total_exercicios_modulo,
                     },
                     "resposta_correta": (
-                    exercicio.resposta_correta
-                    if exercicio.tipo == "mcq"
-                    else exercicio.resposta_vf_correta
-                    if exercicio.tipo == "vf"
-                    else exercicio.resposta_texto_codigo
-                    if exercicio.tipo == "lacuna"
-                    else None
-                ),
+                        exercicio.resposta_correta
+                        if exercicio.tipo == "mcq"
+                        else (
+                            exercicio.resposta_vf_correta
+                            if exercicio.tipo == "vf"
+                            else (
+                                exercicio.resposta_texto_codigo
+                                if exercicio.tipo == "lacuna"
+                                else None
+                            )
+                        )
+                    ),
                     "resumo_estacao": {
                         "mostrar": mostrar_resumo_estacao,
                         "acertos": resumo_estacao["acertos"],
@@ -456,8 +460,9 @@ def resolver_exercicio(request, exercicio_id):
     if exercicio.tipo == "lacuna" and exercicio.codigo:
         marcador = '<span class="lacuna-marker" contenteditable="true">______</span>'
         if resposta_submetida:
-            marcador = '<span class="lacuna-marker" contenteditable="true">%s</span>' % escape(
-                resposta_submetida
+            marcador = (
+                '<span class="lacuna-marker" contenteditable="true">%s</span>'
+                % escape(resposta_submetida)
             )
         codigo_renderizado = mark_safe(
             escape(exercicio.codigo).replace("__LACUNA__", marcador)
