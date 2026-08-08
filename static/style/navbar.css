@@ -216,18 +216,18 @@ body {
   /* margin-bottom: 5px; */
 }
 
-.option img {
-  /* background-color: rgb(127, 202, 77); */
-  margin-left: 10px;
-  width: 1.5em;
-}
-
 .option a {
   margin-left: 10px;
   text-decoration: none;
   color: #333;
   display: flex;
+  align-items: center;
   width: 100%;
+}
+
+.option a img {
+  margin-right: 15px;
+  width: 1.5em;
 }
 
 .option:hover {

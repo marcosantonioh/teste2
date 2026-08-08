@@ -1,11 +1,18 @@
+var dropdown = document.getElementById("dropdownMenu");
+var userDiv = document.querySelector(".user");
+
 function toggleDropdown() {
-  document.getElementById("dropdownMenu").classList.toggle("show");
+  dropdown.classList.toggle("show");
 }
+
+// Fecha o menu ao clicar numa opção (evita ação duplicada entre o link e o document click)
+document.querySelector(".dropdown-menu").addEventListener("click", function (event) {
+  event.stopPropagation();
+  dropdown.classList.remove("show");
+});
 
 // Fecha o menu ao clicar fora dele
 document.addEventListener("click", function (event) {
-  var dropdown = document.getElementById("dropdownMenu");
-  var userDiv = document.querySelector(".user");
   if (!userDiv.contains(event.target)) {
     dropdown.classList.remove("show");
   }
