@@ -6,146 +6,170 @@ from django.dispatch import receiver
 
 
 class Modulo(models.Model):
-    
+
     nome = models.CharField(max_length=200)
     descricao = models.TextField()
-    ordem = models.PositiveIntegerField(default=0, help_text="Define a ordem de exibição do módulo (menor número aparece primeiro).")
-    
+    ordem = models.PositiveIntegerField(
+        default=0,
+        help_text="Define a ordem de exibição do módulo (menor número aparece primeiro).",
+    )
+
     def __str__(self):
         return self.nome
-    
+
     class Meta:
-        ordering = ['ordem', 'id'] # Ordena por 'ordem', depois por 'id' como desempate
+        ordering = ["ordem", "id"]  # Ordena por 'ordem', depois por 'id' como desempate
 
 
 class Secao(models.Model):
-    
+
     # Definindo as opções de status
     STATUS_CHOICES = [
-        ('completado', 'Completado'),
-        ('livre', 'Livre'),
-        ('bloqueado', 'Bloqueado'),
+        ("completado", "Completado"),
+        ("livre", "Livre"),
+        ("bloqueado", "Bloqueado"),
     ]
-    
-    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='livre')
-    modulo = models.ForeignKey(Modulo, related_name='secoes', on_delete=models.CASCADE)
+
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default="livre")
+    modulo = models.ForeignKey(Modulo, related_name="secoes", on_delete=models.CASCADE)
     nome = models.CharField(max_length=200)
-    ordem = models.PositiveIntegerField(default=0, help_text="Define a ordem de exibição da seção dentro do módulo (menor número aparece primeiro).")
-    
+    ordem = models.PositiveIntegerField(
+        default=0,
+        help_text="Define a ordem de exibição da seção dentro do módulo (menor número aparece primeiro).",
+    )
+
     def __str__(self):
         return self.nome
 
     class Meta:
-        ordering = ['ordem', 'id'] # Ordena por 'ordem', depois por 'id' como desempate
+        ordering = ["ordem", "id"]  # Ordena por 'ordem', depois por 'id' como desempate
 
 
 class Estacao(models.Model):
-    
+
     # Definindo as opções de status
     STATUS_CHOICES = [
-        ('completado', 'Completado'),
-        ('livre', 'Livre'),
-        ('bloqueado', 'Bloqueado'),
+        ("completado", "Completado"),
+        ("livre", "Livre"),
+        ("bloqueado", "Bloqueado"),
     ]
-    
-    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='bloqueado')
-    secao = models.ForeignKey(Secao, related_name='estacoes', on_delete=models.CASCADE)
+
+    status = models.CharField(
+        max_length=50, choices=STATUS_CHOICES, default="bloqueado"
+    )
+    secao = models.ForeignKey(Secao, related_name="estacoes", on_delete=models.CASCADE)
     nome = models.CharField(max_length=200)
     disponivel_para_visitantes = models.BooleanField(
         default=False,
-        help_text='Libera esta estação somente na experiência de demonstração.',
+        help_text="Libera esta estação somente na experiência de demonstração.",
     )
     # Se precisar de ordem para Estações também, adicione um campo 'ordem' aqui
-    
+
     def __str__(self):
         return self.nome
-    
+
     class Meta:
-        ordering = ['id'] # Ou ['ordem', 'id'] se adicionar campo de ordem
+        ordering = ["id"]  # Ou ['ordem', 'id'] se adicionar campo de ordem
 
 
 # Create your models here.
 class Exercicio(models.Model):
-    
+
     STATUS_CHOICES = [
-        ('livre', 'Livre'),         # Pronto para ser resolvido ou pulado
-        ('concluido', 'Concluído'), # Resolvido corretamente
+        ("livre", "Livre"),  # Pronto para ser resolvido ou pulado
+        ("concluido", "Concluído"),  # Resolvido corretamente
     ]
 
     TIPO_CHOICES = [
-        ('mcq', 'Múltipla Escolha'),
-        ('lacuna', 'Lacuna'),
-        ('info', 'Informativo'),
-        ('vf', 'Verdadeiro ou Falso'),
+        ("mcq", "Múltipla Escolha"),
+        ("lacuna", "Lacuna"),
+        ("info", "Informativo"),
+        ("vf", "Verdadeiro ou Falso"),
     ]
-    
-    modulo = models.ForeignKey(Modulo, on_delete=models.CASCADE)  # A chave estrangeira para o modelo Modulo
-    estacao = models.ForeignKey(Estacao, related_name='exercicios', on_delete=models.CASCADE, default=1)
+
+    modulo = models.ForeignKey(
+        Modulo, on_delete=models.CASCADE
+    )  # A chave estrangeira para o modelo Modulo
+    estacao = models.ForeignKey(
+        Estacao, related_name="exercicios", on_delete=models.CASCADE, default=1
+    )
     titulo = models.CharField(max_length=200, null=True, blank=True)
     enunciado = models.TextField(null=True, blank=True)
     codigo = models.TextField(null=True, blank=True)
-    imagem = models.ImageField(upload_to='exercicios/imagens/', null=True, blank=True, help_text="Imagem para exercícios informativos.")
+    imagem = models.ImageField(
+        upload_to="exercicios/imagens/",
+        null=True,
+        blank=True,
+        help_text="Imagem para exercícios informativos.",
+    )
     tipo = models.CharField(max_length=50, choices=TIPO_CHOICES)
     xp = models.IntegerField(default=10)
     explicacao = models.TextField(null=True, blank=True)
 
-
     # Campos para múltipla escolha
-    alternativa_1 = models.CharField(max_length=300,null=True, blank=True)
-    alternativa_2 = models.CharField(max_length=300,null=True, blank=True)
-    alternativa_3 = models.CharField(max_length=300,null=True, blank=True)
-    alternativa_4 = models.CharField(max_length=300,null=True, blank=True)
+    alternativa_1 = models.CharField(max_length=300, null=True, blank=True)
+    alternativa_2 = models.CharField(max_length=300, null=True, blank=True)
+    alternativa_3 = models.CharField(max_length=300, null=True, blank=True)
+    alternativa_4 = models.CharField(max_length=300, null=True, blank=True)
 
     RESPOSTAS_CHOICES = [
-        ('1', 'Alternativa 1'),
-        ('2', 'Alternativa 2'),
-        ('3', 'Alternativa 3'),
-        ('4', 'Alternativa 4'),
+        ("1", "Alternativa 1"),
+        ("2", "Alternativa 2"),
+        ("3", "Alternativa 3"),
+        ("4", "Alternativa 4"),
     ]
 
     resposta_correta = models.CharField(
-        max_length=1, choices=RESPOSTAS_CHOICES, null=True, blank=True,
-        help_text="Relevante para exercícios de Múltipla Escolha."
+        max_length=1,
+        choices=RESPOSTAS_CHOICES,
+        null=True,
+        blank=True,
+        help_text="Relevante para exercícios de Múltipla Escolha.",
     )
 
     resposta_texto_codigo = models.TextField(
-        null=True, blank=True,
-        help_text="Resposta esperada para exercícios de preencher a lacuna."
+        null=True,
+        blank=True,
+        help_text="Resposta esperada para exercícios de preencher a lacuna.",
     )
 
     resposta_vf_correta = models.BooleanField(
-        null=True, blank=True,
-        help_text="Resposta correta para exercícios de Verdadeiro ou Falso (True para Verdadeiro, False para Falso)."
+        null=True,
+        blank=True,
+        help_text="Resposta correta para exercícios de Verdadeiro ou Falso (True para Verdadeiro, False para Falso).",
     )
 
     class Meta:
-        ordering = ['id'] # Ou outra ordem padrão desejada para exercícios
-        
+        ordering = ["id"]  # Ou outra ordem padrão desejada para exercícios
+
     def __str__(self):
         return self.titulo or "Exercício sem título"
 
 
 class ExercicioUsuario(models.Model):
     usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    exercicio = models.ForeignKey(Exercicio, related_name='progresso_usuarios', on_delete=models.CASCADE)
-    status = models.CharField(max_length=20, choices=Exercicio.STATUS_CHOICES, default='livre')
+    exercicio = models.ForeignKey(
+        Exercicio, related_name="progresso_usuarios", on_delete=models.CASCADE
+    )
+    status = models.CharField(
+        max_length=20, choices=Exercicio.STATUS_CHOICES, default="livre"
+    )
     criado_em = models.DateTimeField(auto_now_add=True)
     atualizado_em = models.DateTimeField(auto_now=True)
 
     class Meta:
-        unique_together = ('usuario', 'exercicio')
-        verbose_name = 'Progresso de Exercício'
-        verbose_name_plural = 'Progresso de Exercícios'
+        unique_together = ("usuario", "exercicio")
+        verbose_name = "Progresso de Exercício"
+        verbose_name_plural = "Progresso de Exercícios"
 
     def __str__(self):
         return f"{self.usuario.username} - {self.exercicio} ({self.status})"
 
     class Meta:
-        ordering = ['id'] # Ou outra ordem padrão desejada para exercícios
-        
+        ordering = ["id"]  # Ou outra ordem padrão desejada para exercícios
+
     def __str__(self):
         return self.titulo or "Exercício sem título"
-
 
 
 @receiver(post_save, sender=Estacao)
@@ -161,17 +185,23 @@ def atualizar_status_estacoes_adjacentes(sender, instance, created, **kwargs):
         # Lógica para a primeira estação da seção ser 'livre'
         # Considera a estação com o menor ID como a primeira.
         # Se houver um campo 'ordem', seria melhor usá-lo.
-        primeira_estacao_na_secao = Estacao.objects.filter(secao=secao).order_by('id').first()
-        if instance == primeira_estacao_na_secao and instance.status == 'bloqueado':
+        primeira_estacao_na_secao = (
+            Estacao.objects.filter(secao=secao).order_by("id").first()
+        )
+        if instance == primeira_estacao_na_secao and instance.status == "bloqueado":
             # Usar update para evitar recursão do sinal se instance.save() fosse chamado
-            Estacao.objects.filter(pk=instance.pk).update(status='livre')
+            Estacao.objects.filter(pk=instance.pk).update(status="livre")
             # Atualiza a instância localmente se necessário para o restante do código no mesmo request,
             # mas o update já salvou no DB.
-            instance.status = 'livre' 
+            instance.status = "livre"
 
-    if instance.status == 'completado':
+    if instance.status == "completado":
         # Lógica para liberar a próxima estação na mesma seção
-        proxima_estacao = Estacao.objects.filter(secao=secao, id__gt=instance.id).order_by('id').first()
-        if proxima_estacao and proxima_estacao.status == 'bloqueado':
+        proxima_estacao = (
+            Estacao.objects.filter(secao=secao, id__gt=instance.id)
+            .order_by("id")
+            .first()
+        )
+        if proxima_estacao and proxima_estacao.status == "bloqueado":
             # Usar update para evitar recursão do sinal
-            Estacao.objects.filter(pk=proxima_estacao.pk).update(status='livre')
+            Estacao.objects.filter(pk=proxima_estacao.pk).update(status="livre")

@@ -295,17 +295,26 @@ def resolver_exercicio(request, exercicio_id):
     # Isso é executado em uma requisição GET, antes do processamento do POST.
     if exercicio.tipo == "info":
         # Marca o exercício informativo como concluído ao ser visualizado, para não ficar preso nele.
-        if mecanicas_services.obter_status_exercicio(exercicio, request.user) == "livre":
-            mecanicas_services.marcar_exercicio_concluido(exercicio, perfil, request.user)
+        if (
+            mecanicas_services.obter_status_exercicio(exercicio, request.user)
+            == "livre"
+        ):
+            mecanicas_services.marcar_exercicio_concluido(
+                exercicio, perfil, request.user
+            )
             # Opcional: Adicionar XP se exercícios informativos valerem pontos.
             # perfil.xp_total += exercicio.xp
             # perfil.save()
 
         # Após marcar como concluído, busca o próximo exercício livre na estação.
         estacao_atual = exercicio.estacao
-        proximo_exercicio_livre = mecanicas_services.obter_exercicios_nao_concluidos(
-            estacao_atual, request.user
-        ).order_by("id").first()
+        proximo_exercicio_livre = (
+            mecanicas_services.obter_exercicios_nao_concluidos(
+                estacao_atual, request.user
+            )
+            .order_by("id")
+            .first()
+        )
 
         if proximo_exercicio_livre:
             proximo_exercicio_id_para_continuar = proximo_exercicio_livre.id
@@ -323,7 +332,9 @@ def resolver_exercicio(request, exercicio_id):
         acao = request.POST.get("acao")
 
         if acao == "pular":
-            proximo_exercicio = mecanicas_services.pular_exercicio(exercicio, request.user)
+            proximo_exercicio = mecanicas_services.pular_exercicio(
+                exercicio, request.user
+            )
             return redirect(
                 "exercicios:resolver_exercicio", exercicio_id=proximo_exercicio.id
             )
@@ -346,9 +357,11 @@ def resolver_exercicio(request, exercicio_id):
 
                 if correta:
                     estacao_atual = exercicio.estacao
-                    exercicios_livres_restantes = mecanicas_services.obter_exercicios_nao_concluidos(
-                        estacao_atual, request.user
-                    ).order_by("id")
+                    exercicios_livres_restantes = (
+                        mecanicas_services.obter_exercicios_nao_concluidos(
+                            estacao_atual, request.user
+                        ).order_by("id")
+                    )
 
                     if exercicios_livres_restantes.exists():
                         proximo_exercicio_id = exercicios_livres_restantes.first().id
@@ -363,7 +376,9 @@ def resolver_exercicio(request, exercicio_id):
                     progresso_percentual,
                     exercicios_concluidos_count,
                     total_exercicios_modulo,
-                ) = mecanicas_services.calcular_progresso(exercicio.modulo, request.user)
+                ) = mecanicas_services.calcular_progresso(
+                    exercicio.modulo, request.user
+                )
                 total_exercicios_estacao = (
                     resumo_estacao["total_exercicios"]
                     or Exercicio.objects.filter(estacao=exercicio.estacao).count()
@@ -413,9 +428,11 @@ def resolver_exercicio(request, exercicio_id):
             proximo_exercicio_id_para_continuar = None
             if correta:
                 estacao_atual = exercicio.estacao
-                exercicios_livres_restantes = mecanicas_services.obter_exercicios_nao_concluidos(
-                    estacao_atual, request.user
-                ).order_by("id")
+                exercicios_livres_restantes = (
+                    mecanicas_services.obter_exercicios_nao_concluidos(
+                        estacao_atual, request.user
+                    ).order_by("id")
+                )
                 if exercicios_livres_restantes.exists():
                     proximo_exercicio_id_para_continuar = (
                         exercicios_livres_restantes.first().id

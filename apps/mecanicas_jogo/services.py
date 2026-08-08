@@ -7,20 +7,20 @@ def obter_status_exercicio(exercicio, usuario):
     if not usuario or not usuario.is_authenticated:
         return exercicio.status
 
-    progresso = ExercicioUsuario.objects.filter(usuario=usuario, exercicio=exercicio).first()
-    return progresso.status if progresso else 'livre'
+    progresso = ExercicioUsuario.objects.filter(
+        usuario=usuario, exercicio=exercicio
+    ).first()
+    return progresso.status if progresso else "livre"
 
 
 def obter_exercicios_nao_concluidos(estacao, usuario):
-    exercicios = Exercicio.objects.filter(estacao=estacao).order_by('id')
+    exercicios = Exercicio.objects.filter(estacao=estacao).order_by("id")
     if not usuario or not usuario.is_authenticated:
-        return exercicios.filter(status='livre')
+        return exercicios.filter(status="livre")
 
     concluidos_ids = ExercicioUsuario.objects.filter(
-        usuario=usuario,
-        exercicio__estacao=estacao,
-        status='concluido'
-    ).values_list('exercicio_id', flat=True)
+        usuario=usuario, exercicio__estacao=estacao, status="concluido"
+    ).values_list("exercicio_id", flat=True)
     return exercicios.exclude(id__in=concluidos_ids)
 
 
@@ -30,43 +30,41 @@ def obter_status_estacao(estacao, usuario):
 
     total_exercicios = Exercicio.objects.filter(estacao=estacao).count()
     if total_exercicios == 0:
-        return 'bloqueado'
+        return "bloqueado"
 
     concluidos = ExercicioUsuario.objects.filter(
-        usuario=usuario,
-        exercicio__estacao=estacao,
-        status='concluido'
+        usuario=usuario, exercicio__estacao=estacao, status="concluido"
     ).count()
     if concluidos == total_exercicios:
-        return 'completado'
+        return "completado"
 
-    secoes = list(Estacao.objects.filter(secao=estacao.secao).order_by('id'))
+    secoes = list(Estacao.objects.filter(secao=estacao.secao).order_by("id"))
     if not secoes:
-        return 'bloqueado'
+        return "bloqueado"
 
     if secoes[0] == estacao:
-        return 'livre'
+        return "livre"
 
     try:
         indice = secoes.index(estacao)
     except ValueError:
-        return 'bloqueado'
+        return "bloqueado"
 
     estacao_anterior = secoes[indice - 1]
     total_exercicios_prev = Exercicio.objects.filter(estacao=estacao_anterior).count()
     if total_exercicios_prev == 0:
-        return 'livre'
+        return "livre"
 
     concluidos_prev = ExercicioUsuario.objects.filter(
-        usuario=usuario,
-        exercicio__estacao=estacao_anterior,
-        status='concluido'
+        usuario=usuario, exercicio__estacao=estacao_anterior, status="concluido"
     ).count()
-    return 'livre' if concluidos_prev == total_exercicios_prev else 'bloqueado'
+    return "livre" if concluidos_prev == total_exercicios_prev else "bloqueado"
 
 
 def pular_exercicio(exercicio, usuario):
-    pendentes = obter_exercicios_nao_concluidos(exercicio.estacao, usuario).order_by('id')
+    pendentes = obter_exercicios_nao_concluidos(exercicio.estacao, usuario).order_by(
+        "id"
+    )
 
     if pendentes.count() > 1:
         proximo = pendentes.filter(id__gt=exercicio.id).first()
@@ -78,7 +76,7 @@ def pular_exercicio(exercicio, usuario):
 def processar_resposta_exercicio(resposta_usuario, exercicio, perfil, usuario):
     correta = verificar_resposta(exercicio, resposta_usuario)
     atualizar_estado_do_perfil_e_exercicio(perfil, exercicio, usuario, correta)
-    return 'correto' if correta else 'incorreto', correta
+    return "correto" if correta else "incorreto", correta
 
 
 def marcar_exercicio_concluido(exercicio, perfil, usuario):
@@ -86,13 +84,13 @@ def marcar_exercicio_concluido(exercicio, perfil, usuario):
 
 
 def verificar_resposta(exercicio, resposta_usuario):
-    if exercicio.tipo == 'mcq':
-        resposta_usuario_str = str(resposta_usuario or '').strip()
-        resposta_correta_str = str(exercicio.resposta_correta or '').strip()
+    if exercicio.tipo == "mcq":
+        resposta_usuario_str = str(resposta_usuario or "").strip()
+        resposta_correta_str = str(exercicio.resposta_correta or "").strip()
         return resposta_usuario_str == resposta_correta_str
 
-    elif exercicio.tipo == 'vf':
-        resposta_usuario_bool = resposta_usuario == 'True'
+    elif exercicio.tipo == "vf":
+        resposta_usuario_bool = resposta_usuario == "True"
         return resposta_usuario_bool == exercicio.resposta_vf_correta
 
     return False
@@ -103,9 +101,7 @@ def obter_ou_criar_progresso(exercicio, usuario):
         return None
 
     progresso, _ = ExercicioUsuario.objects.get_or_create(
-        usuario=usuario,
-        exercicio=exercicio,
-        defaults={'status': 'livre'}
+        usuario=usuario, exercicio=exercicio, defaults={"status": "livre"}
     )
     return progresso
 
@@ -113,14 +109,14 @@ def obter_ou_criar_progresso(exercicio, usuario):
 def atualizar_estado_do_perfil_e_exercicio(perfil, exercicio, usuario, correta):
     if correta:
         progresso = obter_ou_criar_progresso(exercicio, usuario)
-        if progresso and progresso.status != 'concluido':
-            progresso.status = 'concluido'
+        if progresso and progresso.status != "concluido":
+            progresso.status = "concluido"
             progresso.save()
 
             perfil.xp += exercicio.xp
             if perfil.divisao is None and perfil.xp > 0:
                 try:
-                    divisao_bronze = Divisao.objects.get(nome='Bronze')
+                    divisao_bronze = Divisao.objects.get(nome="Bronze")
                     perfil.divisao = divisao_bronze
                 except Divisao.DoesNotExist:
                     pass
@@ -141,11 +137,11 @@ def calcular_progresso(modulo, usuario):
         return 0, 0, total_exercicios_modulo
 
     exercicios_concluidos_count = ExercicioUsuario.objects.filter(
-        usuario=usuario,
-        exercicio__estacao__secao__modulo=modulo,
-        status='concluido'
+        usuario=usuario, exercicio__estacao__secao__modulo=modulo, status="concluido"
     ).count()
-    progresso_percentual = int((exercicios_concluidos_count / total_exercicios_modulo) * 100)
+    progresso_percentual = int(
+        (exercicios_concluidos_count / total_exercicios_modulo) * 100
+    )
     return progresso_percentual, exercicios_concluidos_count, total_exercicios_modulo
 
 
@@ -153,4 +149,6 @@ def reiniciar_estacao(estacao, usuario):
     if not usuario or not usuario.is_authenticated:
         return
 
-    ExercicioUsuario.objects.filter(usuario=usuario, exercicio__estacao=estacao).delete()
+    ExercicioUsuario.objects.filter(
+        usuario=usuario, exercicio__estacao=estacao
+    ).delete()
