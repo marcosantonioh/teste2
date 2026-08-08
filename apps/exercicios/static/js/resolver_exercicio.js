@@ -16,6 +16,11 @@ function fecharModalSair() {
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.querySelector(".form-layout-container");
   const containerExercicio = document.querySelector(".container-exercicio");
+  const pathPercurso = form.dataset.percursoUrl || "/exercicios/percurso/";
+  const semVidasInicial =
+    form.dataset.semVidas === "True" || form.dataset.semVidas === "true";
+  const mascoteVerde = "/static/img/mascote/verde.svg";
+  const mascoteVermelho = "/static/img/mascote/vermelho.svg";
 
   // --- ALTERAÇÃO 1: Capturamos o HTML inicial dos botões ---
   const htmlBotoesPadrao = document.querySelector(
@@ -79,8 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   async function loadNextExercise(nextId) {
     if (!nextId || nextId === "null") {
-      window.location.href =
-        "{% url 'exercicios:percurso' exercicio.modulo.id %}";
+      window.location.href = pathPercurso;
       return;
     }
     const url = `/exercicios/api/exercicio/${nextId}/`;
@@ -115,9 +119,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!baseAcoes) return;
     baseAcoes.innerHTML = "";
     const mascoteSrc =
-      data.resultado === "correto"
-        ? "{% static 'img/mascote/verde.svg' %}"
-        : "{% static 'img/mascote/vermelho.svg' %}";
+      data.resultado === "correto" ? mascoteVerde : mascoteVermelho;
     const feedbackClass = data.resultado;
     const feedbackText =
       data.resultado === "correto"
@@ -135,9 +137,14 @@ document.addEventListener("DOMContentLoaded", function () {
     disableInputs();
   }
 
+  function getDefaultActionButtonsHtml() {
+    return `<div class="container-botoes"><button type="button" id="botao-pular-exercicio" class="pular">Pular</button><button type="button" id="botao-responder-exercicio" class="submit" disabled>Responder</button></div>`;
+  }
+
   function renderNewExercise(data) {
     history.pushState(null, "", data.url_resolucao);
     form.action = data.url_resolucao;
+    delete form.dataset.respostaEnviada;
     const conteudoWrapper = document.querySelector(
       ".conteudo-exercicio-wrapper",
     );
@@ -171,11 +178,40 @@ document.addEventListener("DOMContentLoaded", function () {
           ? `<p class="lacuna-hint">Clique no espaço sublinhado e digite a resposta.</p>`
           : ""
       }<input type="hidden" id="resposta" name="resposta" value="" /></div></div>`;
+    } else if (data.tipo === "vf") {
+      newExerciseHtml = `<div class="formulario"><div class="exercicio-vf-layout"><div class="exercicio-vf-conteudo">${
+        data.enunciado
+          ? `<p class="exercicio-enunciado">${data.enunciado}</p>`
+          : ""
+      }<div class="exercicio-vf-alternativas"><div class="alternativas-vf">${
+        `<input type="radio" name="resposta_vf" id="vf_true" value="True" class="alternativa-exercicio-vf" hidden /><label for="vf_true" class="botao-alternativa">Verdadeiro</label><input type="radio" name="resposta_vf" id="vf_false" value="False" class="alternativa-exercicio-vf" hidden /><label for="vf_false" class="botao-alternativa">Falso</label>`
+      }</div></div></div></div>`;
+    } else if (data.tipo === "info") {
+      newExerciseHtml = `<div class="formulario"><div class="exercicio-info-layout">${
+        data.enunciado
+          ? `<p class="exercicio-enunciado">${data.enunciado}</p>`
+          : ""
+      }${
+        data.codigo
+          ? `<pre class="exercicio-codigo">${data.codigo}</pre>`
+          : ""
+      }${
+        data.imagem_url
+          ? `<img src="${data.imagem_url}" alt="Imagem do exercício" class="exercicio-imagem" />`
+          : ""
+      }</div></div>`;
+    } else {
+      newExerciseHtml = `<div class="formulario"><div class="exercicio-erro"><p>Tipo de exercício não suportado: ${data.tipo}</p></div></div>`;
     }
     conteudoWrapper.innerHTML = newExerciseHtml;
 
-    // --- ALTERAÇÃO 2: Usamos a variável com o HTML salvo ---
-    baseAcoes.innerHTML = htmlBotoesPadrao;
+    if (data.tipo === "info") {
+      baseAcoes.innerHTML = `<div class="resultado"><a href="#" data-next-id="${
+        data.proximo_exercicio_id || "null"
+      }" class="submit btn-continuar-ajax">Continuar</a></div>`;
+    } else {
+      baseAcoes.innerHTML = getDefaultActionButtonsHtml();
+    }
 
     initializeEventListeners();
   }
@@ -418,7 +454,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  if ("{{ sem_vidas|default:'false' }}" === "True") {
+  if (semVidasInicial) {
     const modalSemVidas = document.getElementById("modalSemVidas");
     if (modalSemVidas) modalSemVidas.style.display = "flex";
   }

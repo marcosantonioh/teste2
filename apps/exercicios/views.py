@@ -584,4 +584,25 @@ def get_exercicio_data(request, exercicio_id):
     else:
         data["codigo_renderizado"] = data["codigo"]
 
+    if exercicio.tipo == "info":
+        perfil = get_or_create_perfil(request.user)
+        if (
+            perfil
+            and mecanicas_services.obter_status_exercicio(exercicio, request.user)
+            == "livre"
+        ):
+            mecanicas_services.marcar_exercicio_concluido(
+                exercicio, perfil, request.user
+            )
+
+        proximo_exercicio_livre = (
+            mecanicas_services.obter_exercicios_nao_concluidos(exercicio.estacao, request.user)
+            .exclude(id=exercicio.id)
+            .order_by("id")
+            .first()
+        )
+        data["proximo_exercicio_id"] = (
+            proximo_exercicio_livre.id if proximo_exercicio_livre else None
+        )
+
     return JsonResponse(data)

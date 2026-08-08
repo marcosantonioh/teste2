@@ -16,6 +16,8 @@
     method="POST"
     class="form-layout-container"
     data-modulo-id="{{ modulo_id }}"
+    data-percurso-url="{% url 'exercicios:percurso' exercicio.modulo.id %}"
+    data-sem-vidas="{{ sem_vidas|default:'false' }}"
   >
     {% csrf_token %}
 
