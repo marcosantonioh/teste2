@@ -175,9 +175,9 @@ document.addEventListener("DOMContentLoaded", function () {
           : ""
       }${
         data.codigo_renderizado
-          ? `<p class="lacuna-hint">Clique no espaço sublinhado e digite a resposta.</p>`
+          ? `<p class="lacuna-hint">Clique no campo destacado e digite a resposta.</p>`
           : ""
-      }<input type="hidden" id="resposta" name="resposta" value="" /></div></div>`;
+      }</div></div>`;
     } else if (data.tipo === "vf") {
       newExerciseHtml = `<div class="formulario"><div class="exercicio-vf-layout"><div class="exercicio-vf-conteudo">${
         data.enunciado
@@ -277,18 +277,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function syncLacunaHiddenInput() {
-    const lacunaSpan = form.querySelector(
-      '.lacuna-marker[contenteditable="true"]',
-    );
-    const respostaInput = form.querySelector(
-      'input[type="hidden"][name="resposta"]',
-    );
-    if (lacunaSpan && respostaInput) {
-      const texto = lacunaSpan.textContent.trim();
-      respostaInput.value = texto === "______" ? "" : texto;
-      return respostaInput.value.trim().length > 0;
-    }
-    return false;
+    const lacunaInput = form.querySelector('input.lacuna-marker[name="resposta"]');
+    return lacunaInput ? lacunaInput.value.trim().length > 0 : false;
   }
 
   function selectAlternativeByKey(key) {
@@ -346,13 +336,11 @@ document.addEventListener("DOMContentLoaded", function () {
       'input[type="radio"]:checked',
     );
     const textoLacuna = form.querySelector('input[type="text"], textarea');
-    const lacunaSpan = form.querySelector(
-      '.lacuna-marker[contenteditable="true"]',
-    );
+    const lacunaInput = form.querySelector('input.lacuna-marker[name="resposta"]');
     const lacunaPreenchida = textoLacuna
       ? textoLacuna.value.trim().length > 0
-      : lacunaSpan
-        ? lacunaSpan.textContent.trim().length > 0
+      : lacunaInput
+        ? lacunaInput.value.trim().length > 0
         : false;
     responderButton.disabled = !(algumaAlternativaMarcada || lacunaPreenchida);
   }
@@ -395,24 +383,9 @@ document.addEventListener("DOMContentLoaded", function () {
     if (textoLacuna) {
       textoLacuna.addEventListener("input", updateResponderButtonState);
     }
-    const lacunaSpan = form.querySelector(
-      '.lacuna-marker[contenteditable="true"]',
-    );
-    if (lacunaSpan) {
-      lacunaSpan.addEventListener("input", () => {
-        syncLacunaHiddenInput();
-        updateResponderButtonState();
-      });
-      lacunaSpan.addEventListener("focus", () => {
-        if (lacunaSpan.textContent.trim() === "______") {
-          lacunaSpan.textContent = "";
-        }
-      });
-      lacunaSpan.addEventListener("blur", () => {
-        if (lacunaSpan.textContent.trim().length === 0) {
-          lacunaSpan.textContent = "______";
-        }
-      });
+    const lacunaInput = form.querySelector('input.lacuna-marker[name="resposta"]');
+    if (lacunaInput) {
+      lacunaInput.addEventListener("input", updateResponderButtonState);
     }
 
     updateResponderButtonState();

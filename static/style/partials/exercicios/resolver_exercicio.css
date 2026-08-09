@@ -615,21 +615,32 @@ input[type="radio"]:checked
 }
 
 .lacuna-marker {
-  display: inline-block;
-  min-width: 100px;
-  padding: 4px 10px;
-  background: rgba(93, 156, 255, 0.12);
-  border: 1px dashed #5b9bfb;
-  border-radius: 6px;
-  color: #1f3f78;
+  /* O servidor define a quantidade de caracteres esperada no campo. */
+  width: calc(var(--tamanho-lacuna, 6) * 1ch + 2rem);
+  min-width: 3.5rem;
+  max-width: min(100%, 32rem);
+  box-sizing: border-box;
+  height: 2.5rem;
+  padding: 0.35rem 0.55rem;
+  background: #e9e5ff;
+  border: 2px solid #5b48c4;
+  border-radius: 0.45rem;
+  color: #2f217e;
   font-weight: 700;
-  cursor: text;
-  white-space: pre-wrap;
+  font: inherit;
+  line-height: 1.2;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease,
+    background-color 0.15s ease;
 }
 
 .lacuna-marker:focus {
-  outline: 2px solid rgba(93, 156, 255, 0.65);
-  outline-offset: 2px;
+  outline: none;
+  background: #fff;
+  border-color: #4732b5;
+  box-shadow: 0 0 0 3px rgba(91, 72, 196, 0.22);
 }
 
 .lacuna-hint {

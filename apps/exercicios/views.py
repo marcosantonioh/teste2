@@ -97,6 +97,26 @@ def _extrair_resposta_do_request(request, tipo_exercicio):
     return None
 
 
+def _marcador_lacuna(exercicio, resposta_submetida=None):
+    """Cria a lacuna com largura proporcional à resposta esperada.
+
+    Somente o tamanho é enviado ao navegador; a resposta correta permanece no
+    banco. Um input nativo torna a digitação acessível e previsível dentro do
+    trecho de código, sem revelar a resposta nem usar sublinhados.
+    """
+    resposta_esperada = (exercicio.resposta_texto_codigo or "").strip()
+    tamanho_lacuna = max(1, len(resposta_esperada))
+    texto_exibido = resposta_submetida or ""
+
+    return (
+        '<input type="text" class="lacuna-marker" name="resposta" '
+        'aria-label="Resposta da lacuna" autocomplete="off" '
+        'spellcheck="false" '
+        f'style="--tamanho-lacuna: {tamanho_lacuna}" '
+        f'value="{escape(texto_exibido)}">'
+    )
+
+
 def obter_alternativas(exercicio, request=None):
     """Retorna as alternativas na ordem da tentativa atual do usuário.
 
@@ -458,12 +478,7 @@ def resolver_exercicio(request, exercicio_id):
     # Prepara o código com a marcação da lacuna antes de renderizar o template.
     codigo_renderizado = None
     if exercicio.tipo == "lacuna" and exercicio.codigo:
-        marcador = '<span class="lacuna-marker" contenteditable="true">______</span>'
-        if resposta_submetida:
-            marcador = (
-                '<span class="lacuna-marker" contenteditable="true">%s</span>'
-                % escape(resposta_submetida)
-            )
+        marcador = _marcador_lacuna(exercicio, resposta_submetida)
         codigo_renderizado = mark_safe(
             escape(exercicio.codigo).replace("__LACUNA__", marcador)
         )
@@ -577,9 +592,11 @@ def get_exercicio_data(request, exercicio_id):
     }
 
     if exercicio.tipo == "lacuna" and exercicio.codigo:
+        tamanho_lacuna = max(1, len((exercicio.resposta_texto_codigo or "").strip()))
+        data["tamanho_lacuna"] = tamanho_lacuna
         data["codigo_renderizado"] = escape(exercicio.codigo).replace(
             "__LACUNA__",
-            '<span class="lacuna-marker" contenteditable="true">______</span>',
+            _marcador_lacuna(exercicio),
         )
     else:
         data["codigo_renderizado"] = data["codigo"]
