@@ -1,0 +1,622 @@
+[
+{
+  "model": "exercicios.modulo",
+  "pk": 1,
+  "fields": {
+    "nome": "Loops",
+    "descricao": "Aprenda laços de repetição em C.",
+    "ordem": 0
+  }
+},
+{
+  "model": "exercicios.modulo",
+  "pk": 2,
+  "fields": {
+    "nome": "Vetor",
+    "descricao": "Aprenda vetores em C",
+    "ordem": 0
+  }
+},
+{
+  "model": "exercicios.modulo",
+  "pk": 3,
+  "fields": {
+    "nome": "Matriz",
+    "descricao": "Conceitos e aprendizado pratico em matriz na linguagem C",
+    "ordem": 0
+  }
+},
+{
+  "model": "exercicios.modulo",
+  "pk": 5,
+  "fields": {
+    "nome": "Demonstração",
+    "descricao": "Uma introdução curta à lógica de programação em C.",
+    "ordem": 0
+  }
+},
+{
+  "model": "exercicios.secao",
+  "pk": 4,
+  "fields": {
+    "status": "livre",
+    "modulo": 1,
+    "nome": "While",
+    "ordem": 1
+  }
+},
+{
+  "model": "exercicios.secao",
+  "pk": 5,
+  "fields": {
+    "status": "livre",
+    "modulo": 1,
+    "nome": "Do-while",
+    "ordem": 2
+  }
+},
+{
+  "model": "exercicios.secao",
+  "pk": 6,
+  "fields": {
+    "status": "bloqueado",
+    "modulo": 1,
+    "nome": "For",
+    "ordem": 3
+  }
+},
+{
+  "model": "exercicios.secao",
+  "pk": 8,
+  "fields": {
+    "status": "livre",
+    "modulo": 2,
+    "nome": "Introdução e Declaração",
+    "ordem": 1
+  }
+},
+{
+  "model": "exercicios.secao",
+  "pk": 9,
+  "fields": {
+    "status": "livre",
+    "modulo": 2,
+    "nome": "Operações Básicas",
+    "ordem": 1
+  }
+},
+{
+  "model": "exercicios.secao",
+  "pk": 10,
+  "fields": {
+    "status": "livre",
+    "modulo": 2,
+    "nome": "Aplicações e Algoritmos Simples",
+    "ordem": 1
+  }
+},
+{
+  "model": "exercicios.secao",
+  "pk": 11,
+  "fields": {
+    "status": "livre",
+    "modulo": 3,
+    "nome": "Introdução e Declaração",
+    "ordem": 1
+  }
+},
+{
+  "model": "exercicios.secao",
+  "pk": 12,
+  "fields": {
+    "status": "livre",
+    "modulo": 3,
+    "nome": "Operações Básicas",
+    "ordem": 1
+  }
+},
+{
+  "model": "exercicios.secao",
+  "pk": 13,
+  "fields": {
+    "status": "livre",
+    "modulo": 3,
+    "nome": "Aplicações e Algoritmos Simples",
+    "ordem": 1
+  }
+},
+{
+  "model": "exercicios.secao",
+  "pk": 14,
+  "fields": {
+    "status": "livre",
+    "modulo": 1,
+    "nome": "Introdução",
+    "ordem": 0
+  }
+},
+{
+  "model": "exercicios.secao",
+  "pk": 16,
+  "fields": {
+    "status": "livre",
+    "modulo": 5,
+    "nome": "Experimente a Cventure",
+    "ordem": 0
+  }
+},
+{
+  "model": "exercicios.estacao",
+  "pk": 17,
+  "fields": {
+    "status": "completado",
+    "secao": 14,
+    "nome": "O que são loops?",
+    "disponivel_para_visitantes": false
+  }
+},
+{
+  "model": "exercicios.estacao",
+  "pk": 19,
+  "fields": {
+    "status": "livre",
+    "secao": 14,
+    "nome": "Estrutura de repetição",
+    "disponivel_para_visitantes": false
+  }
+},
+{
+  "model": "exercicios.estacao",
+  "pk": 20,
+  "fields": {
+    "status": "completado",
+    "secao": 16,
+    "nome": "Primeiros passos em C",
+    "disponivel_para_visitantes": true
+  }
+},
+{
+  "model": "exercicios.estacao",
+  "pk": 21,
+  "fields": {
+    "status": "bloqueado",
+    "secao": 6,
+    "nome": "Conhecendo o for",
+    "disponivel_para_visitantes": false
+  }
+},
+{
+  "model": "exercicios.estacao",
+  "pk": 22,
+  "fields": {
+    "status": "bloqueado",
+    "secao": 6,
+    "nome": "Inicialização, condição e incremento",
+    "disponivel_para_visitantes": false
+  }
+},
+{
+  "model": "exercicios.estacao",
+  "pk": 23,
+  "fields": {
+    "status": "bloqueado",
+    "secao": 14,
+    "nome": "Condição de parada",
+    "disponivel_para_visitantes": false
+  }
+},
+{
+  "model": "exercicios.estacao",
+  "pk": 24,
+  "fields": {
+    "status": "bloqueado",
+    "secao": 14,
+    "nome": "Contadores",
+    "disponivel_para_visitantes": false
+  }
+},
+{
+  "model": "exercicios.estacao",
+  "pk": 25,
+  "fields": {
+    "status": "bloqueado",
+    "secao": 14,
+    "nome": "Desafio: entendendo loops",
+    "disponivel_para_visitantes": false
+  }
+},
+{
+  "model": "exercicios.estacao",
+  "pk": 26,
+  "fields": {
+    "status": "livre",
+    "secao": 4,
+    "nome": "Conhecendo o while",
+    "disponivel_para_visitantes": false
+  }
+},
+{
+  "model": "exercicios.estacao",
+  "pk": 27,
+  "fields": {
+    "status": "bloqueado",
+    "secao": 4,
+    "nome": "Condição do while",
+    "disponivel_para_visitantes": false
+  }
+},
+{
+  "model": "exercicios.estacao",
+  "pk": 28,
+  "fields": {
+    "status": "bloqueado",
+    "secao": 4,
+    "nome": "Contadores com while",
+    "disponivel_para_visitantes": false
+  }
+},
+{
+  "model": "exercicios.estacao",
+  "pk": 29,
+  "fields": {
+    "status": "bloqueado",
+    "secao": 4,
+    "nome": "Acumuladores com while",
+    "disponivel_para_visitantes": false
+  }
+},
+{
+  "model": "exercicios.estacao",
+  "pk": 30,
+  "fields": {
+    "status": "bloqueado",
+    "secao": 4,
+    "nome": "Desafio while",
+    "disponivel_para_visitantes": false
+  }
+},
+{
+  "model": "exercicios.estacao",
+  "pk": 31,
+  "fields": {
+    "status": "livre",
+    "secao": 5,
+    "nome": "Conhecendo o do-while",
+    "disponivel_para_visitantes": false
+  }
+},
+{
+  "model": "exercicios.estacao",
+  "pk": 32,
+  "fields": {
+    "status": "bloqueado",
+    "secao": 5,
+    "nome": "Execute primeiro, teste depois",
+    "disponivel_para_visitantes": false
+  }
+},
+{
+  "model": "exercicios.estacao",
+  "pk": 33,
+  "fields": {
+    "status": "bloqueado",
+    "secao": 5,
+    "nome": "Condição no do-while",
+    "disponivel_para_visitantes": false
+  }
+},
+{
+  "model": "exercicios.estacao",
+  "pk": 34,
+  "fields": {
+    "status": "bloqueado",
+    "secao": 5,
+    "nome": "Aplicações do do-while",
+    "disponivel_para_visitantes": false
+  }
+},
+{
+  "model": "exercicios.estacao",
+  "pk": 35,
+  "fields": {
+    "status": "bloqueado",
+    "secao": 5,
+    "nome": "Desafio do-while",
+    "disponivel_para_visitantes": false
+  }
+},
+{
+  "model": "exercicios.estacao",
+  "pk": 36,
+  "fields": {
+    "status": "bloqueado",
+    "secao": 6,
+    "nome": "Contadores com for",
+    "disponivel_para_visitantes": false
+  }
+},
+{
+  "model": "exercicios.estacao",
+  "pk": 37,
+  "fields": {
+    "status": "bloqueado",
+    "secao": 6,
+    "nome": "Percorrendo sequências",
+    "disponivel_para_visitantes": false
+  }
+},
+{
+  "model": "exercicios.estacao",
+  "pk": 38,
+  "fields": {
+    "status": "bloqueado",
+    "secao": 6,
+    "nome": "Desafio for",
+    "disponivel_para_visitantes": false
+  }
+},
+{
+  "model": "exercicios.exercicio",
+  "pk": 16,
+  "fields": {
+    "modulo": 1,
+    "estacao": 17,
+    "titulo": "O que são loops?",
+    "enunciado": "Loops (ou laços de repetição) são estruturas utilizadas na programação para repetir um bloco de código\r\nenquanto uma condição é verdadeira.\r\n\r\nEles permitem automatizar tarefas repetitivas, como percorrer listas, somar valores ou imprimir padrões.\r\n\r\nEm C, os principais tipos de loops são for, while e do while.",
+    "codigo": "",
+    "imagem": "exercicios/imagens/loop-icon-2048x2048-puej29yn.png",
+    "tipo": "info",
+    "xp": 10,
+    "explicacao": "",
+    "alternativa_1": null,
+    "alternativa_2": null,
+    "alternativa_3": null,
+    "alternativa_4": null,
+    "resposta_correta": null,
+    "resposta_texto_codigo": "",
+    "resposta_vf_correta": null
+  }
+},
+{
+  "model": "exercicios.exercicio",
+  "pk": 17,
+  "fields": {
+    "modulo": 1,
+    "estacao": 17,
+    "titulo": "Finalidade dos Loops",
+    "enunciado": "Qual é a principal finalidade do uso de loops em linguagens de programação?",
+    "codigo": "",
+    "imagem": "",
+    "tipo": "mcq",
+    "xp": 10,
+    "explicacao": "Loops são usados para repetir instruções com base em uma condição lógica. Isso permite automação de tarefas repetitivas.",
+    "alternativa_1": "Declarar variáveis automaticamente",
+    "alternativa_2": "Permitir a repetição de instruções com base em uma condição",
+    "alternativa_3": "Criar interfaces gráficas",
+    "alternativa_4": "Armazenar dados de forma persistente",
+    "resposta_correta": "2",
+    "resposta_texto_codigo": "",
+    "resposta_vf_correta": null
+  }
+},
+{
+  "model": "exercicios.exercicio",
+  "pk": 18,
+  "fields": {
+    "modulo": 1,
+    "estacao": 17,
+    "titulo": "Por que usamos loops?",
+    "enunciado": "Loops ajudam a reduzir a repetição de código ao executar um mesmo conjunto de instruções várias vezes. \r\n\r\nIsso torna os programas mais curtos, organizados, fáceis de modificar e mais eficientes. \r\n\r\nAlém disso, loops são essenciais para resolver problemas que envolvem contagem, busca, iteração sobre estruturas e automação de tarefas.",
+    "codigo": "",
+    "imagem": "",
+    "tipo": "info",
+    "xp": 10,
+    "explicacao": "",
+    "alternativa_1": null,
+    "alternativa_2": null,
+    "alternativa_3": null,
+    "alternativa_4": null,
+    "resposta_correta": null,
+    "resposta_texto_codigo": "",
+    "resposta_vf_correta": null
+  }
+},
+{
+  "model": "exercicios.exercicio",
+  "pk": 19,
+  "fields": {
+    "modulo": 1,
+    "estacao": 17,
+    "titulo": "Onde os loops são mais utilizados?",
+    "enunciado": "Qual das situações mais provavelmente exige o uso de um loop?",
+    "codigo": "",
+    "imagem": "",
+    "tipo": "mcq",
+    "xp": 10,
+    "explicacao": "A soma de vários elementos exige repetição de uma mesma operação – ideal para o uso de loops.",
+    "alternativa_1": "Definir o nome de uma variável",
+    "alternativa_2": "Exibir uma mensagem de erro única",
+    "alternativa_3": "Calcular a soma dos elementos de uma lista com 1000 números",
+    "alternativa_4": "Declarar uma constante matemática",
+    "resposta_correta": "3",
+    "resposta_texto_codigo": "",
+    "resposta_vf_correta": null
+  }
+},
+{
+  "model": "exercicios.exercicio",
+  "pk": 20,
+  "fields": {
+    "modulo": 1,
+    "estacao": 17,
+    "titulo": "Condições em loops",
+    "enunciado": "Todo loop depende de uma condição lógica que determina se ele deve continuar sendo executado ou não.",
+    "codigo": "",
+    "imagem": "",
+    "tipo": "vf",
+    "xp": 7,
+    "explicacao": "Loops usam expressões lógicas que controlam a continuidade da repetição",
+    "alternativa_1": null,
+    "alternativa_2": null,
+    "alternativa_3": null,
+    "alternativa_4": null,
+    "resposta_correta": null,
+    "resposta_texto_codigo": "",
+    "resposta_vf_correta": true
+  }
+},
+{
+  "model": "exercicios.exercicio",
+  "pk": 21,
+  "fields": {
+    "modulo": 5,
+    "estacao": 20,
+    "titulo": "O que é um algoritmo?",
+    "enunciado": "Um algoritmo é uma sequência de passos para resolver um problema. Vamos praticar esse conceito em C.",
+    "codigo": null,
+    "imagem": "",
+    "tipo": "info",
+    "xp": 0,
+    "explicacao": null,
+    "alternativa_1": null,
+    "alternativa_2": null,
+    "alternativa_3": null,
+    "alternativa_4": null,
+    "resposta_correta": null,
+    "resposta_texto_codigo": null,
+    "resposta_vf_correta": null
+  }
+},
+{
+  "model": "exercicios.exercicio",
+  "pk": 22,
+  "fields": {
+    "modulo": 5,
+    "estacao": 20,
+    "titulo": "Resultado de uma soma",
+    "enunciado": "Qual será o valor impresso pelo código?",
+    "codigo": "int resultado = 2 + 3;\nprintf(\"%d\", resultado);",
+    "imagem": "",
+    "tipo": "mcq",
+    "xp": 0,
+    "explicacao": null,
+    "alternativa_1": "2",
+    "alternativa_2": "3",
+    "alternativa_3": "5",
+    "alternativa_4": "23",
+    "resposta_correta": "3",
+    "resposta_texto_codigo": null,
+    "resposta_vf_correta": null
+  }
+},
+{
+  "model": "exercicios.exercicio",
+  "pk": 23,
+  "fields": {
+    "modulo": 5,
+    "estacao": 20,
+    "titulo": "Variáveis em C",
+    "enunciado": "A instrução \"int idade = 18;\" cria uma variável inteira chamada idade.",
+    "codigo": null,
+    "imagem": "",
+    "tipo": "vf",
+    "xp": 0,
+    "explicacao": null,
+    "alternativa_1": null,
+    "alternativa_2": null,
+    "alternativa_3": null,
+    "alternativa_4": null,
+    "resposta_correta": null,
+    "resposta_texto_codigo": null,
+    "resposta_vf_correta": true
+  }
+},
+{
+  "model": "exercicios.exercicio",
+  "pk": 24,
+  "fields": {
+    "modulo": 1,
+    "estacao": 21,
+    "titulo": "FOR-001",
+    "enunciado": "O laço for é uma estrutura utilizada para executar um bloco de código repetidas vezes. Qual alternativa apresenta corretamente as três partes que compõem um laço for?",
+    "codigo": "",
+    "imagem": "",
+    "tipo": "mcq",
+    "xp": 10,
+    "explicacao": "",
+    "alternativa_1": "Variável, vetor e matriz",
+    "alternativa_2": "Declaração, leitura e impressão",
+    "alternativa_3": "Inicialização, condição e incremento",
+    "alternativa_4": "Entrada, processamento e saída",
+    "resposta_correta": "3",
+    "resposta_texto_codigo": "",
+    "resposta_vf_correta": null
+  }
+},
+{
+  "model": "exercicios.exercicio",
+  "pk": 25,
+  "fields": {
+    "modulo": 1,
+    "estacao": 21,
+    "titulo": "FOR-002",
+    "enunciado": "Analise a afirmação:\r\n\r\nNa estrutura for(int i = 0; i < 5; i++),\r\na expressão int i = 0 representa a inicialização do laço.",
+    "codigo": "",
+    "imagem": "",
+    "tipo": "vf",
+    "xp": 10,
+    "explicacao": "A inicialização acontece apenas uma vez, antes da primeira execução do laço. É nela que normalmente criamos a variável de controle.",
+    "alternativa_1": null,
+    "alternativa_2": null,
+    "alternativa_3": null,
+    "alternativa_4": null,
+    "resposta_correta": null,
+    "resposta_texto_codigo": "",
+    "resposta_vf_correta": true
+  }
+},
+{
+  "model": "exercicios.exercicio",
+  "pk": 26,
+  "fields": {
+    "modulo": 1,
+    "estacao": 21,
+    "titulo": "FOR-003",
+    "enunciado": "Observe o código:\r\n\r\nfor(int i = 0; i < 8; i++)\r\n\r\nQual parte determina quando o laço deve parar?",
+    "codigo": "",
+    "imagem": "",
+    "tipo": "mcq",
+    "xp": 15,
+    "explicacao": "A condição é i < 8.\r\n\r\nEnquanto ela for verdadeira, o laço continuará executando.",
+    "alternativa_1": "int i = 0",
+    "alternativa_2": "i++",
+    "alternativa_3": "for",
+    "alternativa_4": "i < 8",
+    "resposta_correta": "4",
+    "resposta_texto_codigo": "",
+    "resposta_vf_correta": null
+  }
+},
+{
+  "model": "exercicios.exercicio",
+  "pk": 27,
+  "fields": {
+    "modulo": 1,
+    "estacao": 21,
+    "titulo": "FOR-004",
+    "enunciado": "Complete a lacuna para que o código repita o comando 5 vezes.",
+    "codigo": "for (int i = 0; i < __LACUNA__; i++) {\r\n    printf(\"Olá\\n\");\r\n}",
+    "imagem": "",
+    "tipo": "lacuna",
+    "xp": 12,
+    "explicacao": "",
+    "alternativa_1": null,
+    "alternativa_2": null,
+    "alternativa_3": null,
+    "alternativa_4": null,
+    "resposta_correta": null,
+    "resposta_texto_codigo": "5",
+    "resposta_vf_correta": null
+  }
+}
+]
