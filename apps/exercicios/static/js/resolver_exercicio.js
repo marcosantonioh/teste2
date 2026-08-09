@@ -213,9 +213,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function updateProgressBar(progressData) {
-    const progressBar = document.querySelector(
-      ".barra-progresso-preenchida",
-    );
+    const progressBar = document.querySelector(".barra-progresso-preenchida");
     const vidasContador = document.querySelector(".contador-vida");
     if (progressBar) progressBar.style.width = `${progressData.percentual}%`;
     if (vidasContador && progressData.vidas_atuais !== undefined)
