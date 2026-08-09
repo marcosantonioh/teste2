@@ -8,6 +8,7 @@
 
     {%if usuario_logado%}
 
+        <div class="ranking-layout">
         <div class="container">
 
             <div class="ranking-switch">
@@ -84,6 +85,21 @@
                 </table>
             </div>
 
+        </div>
+
+        <aside class="divisoes-ranking" aria-label="Divisões do ranking">
+            <h2>Divisões</h2>
+            <div class="divisoes-lista">
+                {% for divisao in divisoes %}
+                    <div class="divisao-item {% if perfil.divisao_id == divisao.id %}divisao-atual{% endif %}">
+                        <img src="{% static divisao.imagem %}" alt="Divisão {{ divisao.nome }}" class="trofeu-divisao">
+                        {% if perfil.divisao_id == divisao.id %}
+                            <span class="nome-divisao-atual">{{ divisao.nome }}</span>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </aside>
         </div>
 
     {%else%}

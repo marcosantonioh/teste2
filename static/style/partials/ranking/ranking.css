@@ -4,15 +4,99 @@ body {
   background-color: #ffffff;
 }
 
+.ranking-layout {
+  width: min(calc(100% - 32px), 760px);
+  margin: 78px auto 40px;
+  display: grid;
+  grid-template-columns: minmax(0, 500px) 150px;
+  align-items: stretch;
+  justify-content: center;
+  gap: 34px;
+  background-color: #28dd28;
+}
 
 .container {
   width: 100%;
   max-width: 500px;
-  margin: 0 auto;
-  margin-top: 100px;
+  margin: 0;
   padding: 0 10px;
   box-sizing: border-box;
   /* background-color: aqua; */
+}
+
+.divisoes-ranking {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 6px;
+  min-height: 0;
+  background-color: #4a3a8f;
+}
+
+.divisoes-ranking h2 {
+  /* margin: 0 0 12px; */
+  color: #28dd28;
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.divisoes-lista {
+  width: 100%;
+  /* Quatro divisões completas e um pequeno trecho da próxima no topo. */
+  flex: 0 0 280px;
+  height: 280px;
+  min-height: 0;
+  display: flex;
+  /* Bronze é o primeiro item no HTML e, por ser a base, fica embaixo. */
+  flex-direction: column-reverse;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 17px;
+  /* Vitrine fixa: as divisões acima aparecem parcialmente, sem rolagem. */
+  overflow: hidden;
+  mask-image: linear-gradient(to bottom, transparent 0, #000 18px, #000 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 18px, #000 100%);
+}
+
+.divisao-item {
+  width: 56px;
+  min-height: 44px;
+  display: grid;
+  place-items: center;
+  opacity: 0.38;
+  filter: grayscale(0.9) blur(0.0px);
+  transition: opacity 0.2s ease, filter 0.2s ease, transform 0.2s ease;
+}
+
+.trofeu-divisao {
+  display: block;
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.divisao-item.divisao-atual {
+  width: 110px;
+  min-height: 98px;
+  margin: 10px 0;
+  opacity: 1;
+  filter: none;
+  transform: scale(1.04);
+}
+
+.divisao-atual .trofeu-divisao {
+  width: 76px;
+  height: 76px;
+  /* filter: drop-shadow(0 8px 10px rgba(82, 62, 178, 0.24)); */
+}
+
+.nome-divisao-atual {
+  margin-top: -2px;
+  color: #4a3a8f;
+  font-size: 0.78rem;
+  font-weight: 800;
 }
 
 .text-center {
@@ -216,10 +300,53 @@ body {
 
 
 @media (max-width: 768px) {
+  .ranking-layout {
+    width: 100%;
+    margin-top: 32px;
+    padding: 0 12px;
+    box-sizing: border-box;
+    grid-template-columns: 1fr;
+  }
+
   .container {
     max-width: 100%;
-    margin-top: 40px;
     padding: 0 12px; /* Reduz o padding lateral um pouco */
+  }
+
+  .divisoes-ranking {
+    padding-top: 18px;
+  }
+
+  .divisoes-lista {
+    flex: 1;
+    height: auto;
+    flex-direction: row;
+    justify-content: center;
+    gap: 4px;
+    overflow: hidden;
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+
+  .divisao-item {
+    width: 40px;
+    min-height: 42px;
+  }
+
+  .trofeu-divisao {
+    width: 34px;
+    height: 34px;
+  }
+
+  .divisao-item.divisao-atual {
+    width: 70px;
+    min-height: 76px;
+    margin: 0;
+  }
+
+  .divisao-atual .trofeu-divisao {
+    width: 58px;
+    height: 58px;
   }
 
   .xp-cell img {
