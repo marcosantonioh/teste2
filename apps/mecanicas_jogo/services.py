@@ -114,16 +114,24 @@ def atualizar_estado_do_perfil_e_exercicio(perfil, exercicio, usuario, correta):
         progresso = obter_ou_criar_progresso(exercicio, usuario)
         if progresso and progresso.status != "concluido":
             progresso.status = "concluido"
-            progresso.save()
+            deve_conceder_xp = not progresso.xp_concedido
 
-            perfil.xp += exercicio.xp
-            if perfil.divisao is None and perfil.xp > 0:
-                try:
-                    divisao_bronze = Divisao.objects.get(nome="Bronze")
-                    perfil.divisao = divisao_bronze
-                except Divisao.DoesNotExist:
-                    pass
-            perfil.save()
+            if deve_conceder_xp:
+                progresso.xp_concedido = True
+            progresso.save(update_fields=["status", "xp_concedido", "atualizado_em"])
+
+            # Ao reiniciar uma estação, o status volta a "livre" para treino,
+            # mas xp_concedido permanece verdadeiro. Assim, o mesmo exercício
+            # nunca entrega XP duas vezes para o mesmo usuário.
+            if deve_conceder_xp:
+                perfil.xp += exercicio.xp
+                if perfil.divisao is None and perfil.xp > 0:
+                    try:
+                        divisao_bronze = Divisao.objects.get(nome="Bronze")
+                        perfil.divisao = divisao_bronze
+                    except Divisao.DoesNotExist:
+                        pass
+                perfil.save()
     else:
         if perfil.vidas_atuais > 0:
             perfil.vidas_atuais -= 1
@@ -170,6 +178,8 @@ def reiniciar_estacao(estacao, usuario):
     if not usuario or not usuario.is_authenticated:
         return
 
+    # Preserva o histórico de XP. Apenas o estado de conclusão é reiniciado
+    # para que a estação possa ser praticada novamente.
     ExercicioUsuario.objects.filter(
         usuario=usuario, exercicio__estacao=estacao
-    ).delete()
+    ).update(status="livre")

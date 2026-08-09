@@ -154,6 +154,10 @@ class ExercicioUsuario(models.Model):
     status = models.CharField(
         max_length=20, choices=Exercicio.STATUS_CHOICES, default="livre"
     )
+    xp_concedido = models.BooleanField(
+        default=False,
+        help_text="Indica se o XP deste exercício já foi entregue ao usuário.",
+    )
     criado_em = models.DateTimeField(auto_now_add=True)
     atualizado_em = models.DateTimeField(auto_now=True)
 
