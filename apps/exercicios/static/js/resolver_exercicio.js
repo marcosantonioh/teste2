@@ -214,7 +214,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function updateProgressBar(progressData) {
     const progressBar = document.querySelector(
-      ".barra-progresso-preenchimento",
+      ".barra-progresso-preenchida",
     );
     const vidasContador = document.querySelector(".contador-vida");
     if (progressBar) progressBar.style.width = `${progressData.percentual}%`;
