@@ -8,6 +8,7 @@ from apps.exercicios.models import Exercicio, Modulo, Secao, Estacao
 from apps.mecanicas_jogo import services as mecanicas_services
 from apps.desafios.models import DesafioUsuario
 from django.http import JsonResponse
+from django.core.exceptions import PermissionDenied
 from django.urls import reverse
 from django.template.defaultfilters import linebreaksbr  # Para formatar o enunciado
 from django.utils.html import escape, mark_safe
@@ -62,25 +63,39 @@ def modulos(request):
 
 @login_required
 def percurso(request, modulo_id):
-
-    # Obtém o módulo com o id fornecido
     modulo = get_object_or_404(Modulo, pk=modulo_id)
-    # Otimização: Usamos prefetch_related para evitar múltiplas queries (problema N+1).
-    # Isso busca todas as seções, suas estações e os exercícios de cada estação de forma eficiente.
-    secoes = Secao.objects.filter(modulo=modulo).prefetch_related(
-        "estacoes__exercicios"
-    )
     perfil = get_or_create_perfil(request.user)
 
-    for secao in secoes:
-        for estacao in secao.estacoes.all():
+    secoes = list(Secao.objects.filter(modulo=modulo).order_by("ordem", "id"))
+    secao_atual = next(
+        (
+            secao
+            for secao in secoes
+            if not mecanicas_services.secao_esta_concluida(secao, request.user)
+        ),
+        None,
+    )
+
+    # Ao terminar o módulo, mantém a última seção visível como referência.
+    if secao_atual is None and secoes:
+        secao_atual = secoes[-1]
+
+    proxima_secao = None
+    if secao_atual:
+        indice_atual = secoes.index(secao_atual)
+        if indice_atual + 1 < len(secoes):
+            proxima_secao = secoes[indice_atual + 1]
+
+        estacoes = secao_atual.estacoes.prefetch_related("exercicios").all()
+        for estacao in estacoes:
             estacao.status = mecanicas_services.obter_status_estacao(
                 estacao, request.user
             )
 
     context = {
         "modulo": modulo,
-        "secoes": secoes,
+        "secao_atual": secao_atual,
+        "proxima_secao": proxima_secao,
         "perfil": perfil,
     }
 
@@ -303,6 +318,11 @@ def resolver_exercicio(request, exercicio_id):
         return redirect("usuarios:login_usuario")  # Ou outra lógica de tratamento
 
     exercicio = get_object_or_404(Exercicio, id=exercicio_id)
+    if (
+        mecanicas_services.obter_status_estacao(exercicio.estacao, request.user)
+        == "bloqueado"
+    ):
+        raise PermissionDenied("Esta estação ainda está bloqueada.")
 
     alternativas = obter_alternativas(exercicio, request)
     resultado = None
@@ -513,6 +533,11 @@ def resolver_exercicio(request, exercicio_id):
 @login_required
 def iniciar_exercicios(request, exercicio_id):
     exercicio = get_object_or_404(Exercicio, id=exercicio_id)
+    if (
+        mecanicas_services.obter_status_estacao(exercicio.estacao, request.user)
+        == "bloqueado"
+    ):
+        raise PermissionDenied("Esta estação ainda está bloqueada.")
     limpar_ordens_alternativas_da_estacao(request, exercicio.estacao)
     mecanicas_services.reiniciar_estacao(exercicio.estacao, request.user)
     resumo_estacoes = request.session.setdefault("resumo_estacoes", {})
@@ -575,6 +600,11 @@ def get_exercicio_data(request, exercicio_id):
     para serem usados pelo frontend.
     """
     exercicio = get_object_or_404(Exercicio, id=exercicio_id)
+    if (
+        mecanicas_services.obter_status_estacao(exercicio.estacao, request.user)
+        == "bloqueado"
+    ):
+        raise PermissionDenied("Esta estação ainda está bloqueada.")
 
     # Aqui você pode customizar exatamente quais dados quer enviar
     # para reconstruir a tela do exercício.

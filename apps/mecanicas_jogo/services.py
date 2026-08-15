@@ -26,7 +26,12 @@ def obter_exercicios_nao_concluidos(estacao, usuario):
 
 def obter_status_estacao(estacao, usuario):
     if not usuario or not usuario.is_authenticated:
-        return estacao.status
+        return "bloqueado"
+
+    # Uma seção só pode ser iniciada quando todas as seções anteriores do
+    # módulo tiverem sido concluídas pelo próprio usuário.
+    if not secao_esta_liberada(estacao.secao, usuario):
+        return "bloqueado"
 
     total_exercicios = Exercicio.objects.filter(estacao=estacao).count()
     if total_exercicios == 0:
@@ -35,7 +40,7 @@ def obter_status_estacao(estacao, usuario):
     concluidos = ExercicioUsuario.objects.filter(
         usuario=usuario, exercicio__estacao=estacao, status="concluido"
     ).count()
-    if concluidos == total_exercicios:
+    if concluidos >= total_exercicios:
         return "completado"
 
     secoes = list(Estacao.objects.filter(secao=estacao.secao).order_by("id"))
@@ -59,6 +64,37 @@ def obter_status_estacao(estacao, usuario):
         usuario=usuario, exercicio__estacao=estacao_anterior, status="concluido"
     ).count()
     return "livre" if concluidos_prev == total_exercicios_prev else "bloqueado"
+
+
+def secao_esta_concluida(secao, usuario):
+    """Informa se o usuário concluiu todas as estações da seção."""
+    estacoes = Estacao.objects.filter(secao=secao).order_by("id")
+    if not estacoes.exists():
+        return False
+
+    return all(
+        obter_status_estacao(estacao, usuario) == "completado"
+        for estacao in estacoes
+    )
+
+
+def secao_esta_liberada(secao, usuario):
+    """Uma seção é liberada somente após a conclusão de suas antecessoras."""
+    if not usuario or not usuario.is_authenticated:
+        return False
+
+    secoes_anteriores = Secao.objects.filter(
+        modulo=secao.modulo, ordem__lt=secao.ordem
+    ).order_by("ordem", "id")
+
+    # Trata também seções com a mesma ordem, mantendo a ordenação do modelo.
+    secoes_anteriores = list(secoes_anteriores) + list(
+        Secao.objects.filter(modulo=secao.modulo, ordem=secao.ordem, id__lt=secao.id)
+        .order_by("id")
+    )
+    return all(
+        secao_esta_concluida(anterior, usuario) for anterior in secoes_anteriores
+    )
 
 
 def pular_exercicio(exercicio, usuario):

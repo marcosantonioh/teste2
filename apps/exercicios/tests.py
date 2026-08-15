@@ -3,7 +3,7 @@ import json
 from django.test import TestCase
 from django.urls import reverse
 
-from apps.exercicios.models import Estacao, Exercicio, Modulo, Secao
+from apps.exercicios.models import Estacao, Exercicio, ExercicioUsuario, Modulo, Secao
 from apps.usuarios.models import Divisao, Perfil
 from django.contrib.auth import get_user_model
 
@@ -15,7 +15,7 @@ class ResolverExercicioResumoEstacaoTests(TestCase):
             email="aluno@example.com",
             password="senha123",
         )
-        self.divisao = Divisao.objects.create(nome="Bronze", ordem=1)
+        self.divisao, _ = Divisao.objects.get_or_create(nome="Bronze")
         self.perfil = Perfil.objects.get(user=self.user)
         self.perfil.divisao = self.divisao
         self.perfil.save(update_fields=["divisao"])
@@ -36,7 +36,6 @@ class ResolverExercicioResumoEstacaoTests(TestCase):
             titulo="Exercício 1",
             enunciado="Pergunta 1",
             tipo="mcq",
-            status="livre",
             xp=10,
             alternativa_1="A",
             alternativa_2="B",
@@ -50,7 +49,6 @@ class ResolverExercicioResumoEstacaoTests(TestCase):
             titulo="Exercício 2",
             enunciado="Pergunta 2",
             tipo="mcq",
-            status="livre",
             xp=20,
             alternativa_1="A",
             alternativa_2="B",
@@ -84,3 +82,86 @@ class ResolverExercicioResumoEstacaoTests(TestCase):
         self.assertEqual(data["resumo_estacao"]["xp_ganho"], 20)
         self.assertEqual(data["resumo_estacao"]["porcentagem_acertos"], 50)
         self.assertEqual(data["resumo_estacao"]["total_exercicios"], 2)
+
+
+class PercursoPorSecaoTests(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(
+            username="aluno-percurso", password="senha123"
+        )
+        self.outro_usuario = get_user_model().objects.create_user(
+            username="outro-aluno", password="senha123"
+        )
+        self.modulo = Modulo.objects.create(nome="Loops", descricao="Desc", ordem=1)
+        self.secoes = [
+            Secao.objects.create(nome=nome, modulo=self.modulo, ordem=ordem)
+            for ordem, nome in enumerate(["Introdução", "While", "Do-while", "For"], 1)
+        ]
+        self.estacoes = []
+        for secao in self.secoes:
+            estacoes_secao = []
+            for numero in range(1, 6):
+                estacao = Estacao.objects.create(nome=f"Estação {numero}", secao=secao)
+                exercicio = Exercicio.objects.create(
+                    modulo=self.modulo,
+                    estacao=estacao,
+                    titulo=f"Exercício {secao.nome} {numero}",
+                    tipo="mcq",
+                    resposta_correta="1",
+                )
+                estacoes_secao.append((estacao, exercicio))
+            self.estacoes.append(estacoes_secao)
+
+    def concluir_estacoes(self, indice_secao, quantidade, inicio=0):
+        for _, exercicio in self.estacoes[indice_secao][inicio : inicio + quantidade]:
+            ExercicioUsuario.objects.create(
+                usuario=self.user, exercicio=exercicio, status="concluido"
+            )
+
+    def test_exibe_somente_secao_atual_e_proxima_bloqueada(self):
+        self.client.force_login(self.user)
+
+        response = self.client.get(reverse("exercicios:percurso", args=[self.modulo.id]))
+
+        self.assertContains(response, "Introdução")
+        self.assertContains(response, "While")
+        self.assertContains(response, "Seção bloqueada")
+        self.assertNotContains(response, "Do-while")
+        self.assertNotContains(response, ">For<", html=False)
+
+    def test_secao_so_desbloqueia_ao_concluir_todas_as_cinco_estacoes(self):
+        self.client.force_login(self.user)
+        self.concluir_estacoes(0, 4)
+
+        response = self.client.get(reverse("exercicios:percurso", args=[self.modulo.id]))
+        self.assertContains(response, "Introdução")
+        self.assertContains(response, "While")
+        self.assertNotContains(response, 'class="section-title">While</h1>')
+
+        self.concluir_estacoes(0, 1, inicio=4)
+        response = self.client.get(reverse("exercicios:percurso", args=[self.modulo.id]))
+        self.assertContains(response, 'class="section-title">While</h1>')
+        self.assertContains(response, "Do-while")
+        self.assertNotContains(response, ">For<", html=False)
+
+        response = self.client.get(reverse("exercicios:percurso", args=[self.modulo.id]))
+        self.assertContains(response, 'class="section-title">While</h1>')
+
+    def test_desbloqueio_e_por_usuario_e_bloqueia_acesso_direto(self):
+        self.concluir_estacoes(0, 5)
+        exercicio_while = self.estacoes[1][0][1]
+
+        self.client.force_login(self.outro_usuario)
+        response = self.client.get(reverse("exercicios:percurso", args=[self.modulo.id]))
+        self.assertContains(response, "Introdução")
+        self.assertNotContains(response, 'class="section-title">While</h1>')
+        self.assertEqual(
+            self.client.get(
+                reverse("exercicios:iniciar_estacao", args=[exercicio_while.id])
+            ).status_code,
+            403,
+        )
+
+        self.client.force_login(self.user)
+        response = self.client.get(reverse("exercicios:percurso", args=[self.modulo.id]))
+        self.assertContains(response, 'class="section-title">While</h1>')

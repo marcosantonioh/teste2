@@ -11,7 +11,7 @@
     {% else %}
       status-default {# Uma classe padrão caso haja outros status ou nenhum #}
     {% endif %}"
-  onclick="toggleDrop('{{ estacao.id }}')"
+  {% if estacao.status != 'bloqueado' %}onclick="toggleDrop('{{ estacao.id }}')"{% endif %}
 >
   {% if estacao.status == 'livre' %}
     <img src="{% static 'img/play.svg' %}" alt="Jogar Estação" class="play-icon" /> {# Ícone preto para fundo branco #}
@@ -27,7 +27,9 @@
   <div class="station-dropdown" id="dropdown-{{ estacao.id }}">
     <span>{{ estacao.nome }}</span>
 
-    {% if estacao.exercicios.all %}
+    {% if estacao.status == 'bloqueado' %}
+      <p class="no-exercise-message">Conclua as estações anteriores para desbloquear.</p>
+    {% elif estacao.exercicios.all %}
       {% if estacao.status == 'completado' %}
         <a
           href="{% url 'exercicios:iniciar_estacao' estacao.exercicios.first.id %}"

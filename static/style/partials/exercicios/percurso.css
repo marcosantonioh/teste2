@@ -63,6 +63,14 @@ body {
   margin-bottom: 1.5rem;
 }
 
+.section-locked {
+  background-color: #8c8c8c;
+}
+
+.section-lock {
+  font-size: 1.4rem;
+}
+
 
 
 

@@ -10,7 +10,7 @@
 
   <div class="container">
 
-    {% for secao in secoes %}
+    {% if secao_atual %}
 
       <div class="header-wrapper">
         <div class="page-header">
@@ -22,7 +22,7 @@
             />
           </a>
           
-          <h1 class="section-title">{{secao.nome}}</h1>
+          <h1 class="section-title">{{ secao_atual.nome }}</h1>
           
           <button class="guide-button">
             <!-- Conteúdo do botão -->
@@ -33,14 +33,23 @@
 
       <div class="module-description">
         <div class="stations">
-          {% for estacao in secao.estacoes.all %}
+          {% for estacao in secao_atual.estacoes.all %}
             <!-- Aqui você inclui o botão -->
             {% include "modules/button-play.html" %}
           {% endfor %}
         </div>
       </div>
 
-    {% endfor %}
+    {% endif %}
+
+    {% if proxima_secao %}
+      <div class="header-wrapper section-locked">
+        <div class="page-header">
+          <h2 class="section-title">{{ proxima_secao.nome }}</h2>
+          <span class="section-lock" aria-label="Seção bloqueada">🔒</span>
+        </div>
+      </div>
+    {% endif %}
 
   </div>
 
