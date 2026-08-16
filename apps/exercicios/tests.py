@@ -208,3 +208,24 @@ class PercursoPorSecaoTests(TestCase):
         self.client.force_login(self.user)
         response = self.client.get(reverse("exercicios:percurso", args=[self.modulo.id]))
         self.assertContains(response, 'class="section-title">While</h1>')
+
+    def test_mapa_exibe_todas_as_secoes_sem_desbloquear_as_bloqueadas(self):
+        self.client.force_login(self.user)
+        self.concluir_estacoes(0, 5)
+
+        response = self.client.get(
+            reverse("exercicios:percurso", args=[self.modulo.id]),
+            {"visualizacao": "todas"},
+        )
+
+        self.assertContains(response, "Todas as seções")
+        self.assertContains(response, 'data-estado="concluida"')
+        self.assertContains(response, 'data-estado="atual"')
+        self.assertContains(response, 'data-estado="bloqueada"')
+        self.assertContains(response, "Introdução")
+        self.assertContains(response, "While")
+        self.assertContains(response, "Do-while")
+        self.assertContains(response, "For")
+        self.assertContains(response, "5 de 5 estações concluídas")
+        self.assertContains(response, "100%")
+        self.assertContains(response, ">Continuar<", html=False)

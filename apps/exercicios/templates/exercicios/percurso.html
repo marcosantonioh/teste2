@@ -10,7 +10,49 @@
 
   <div class="container">
 
-    {% if secao_atual %}
+    <div class="percurso-navegacao">
+      {% if visualizar_todas_secoes %}
+        <a href="{% url 'exercicios:percurso' modulo.id %}" class="percurso-navegacao__link">Percurso principal</a>
+      {% else %}
+        <a href="{% url 'exercicios:percurso' modulo.id %}?visualizacao=todas" class="percurso-navegacao__link">Todas as seções</a>
+      {% endif %}
+    </div>
+
+    {% if visualizar_todas_secoes %}
+      <section class="mapa-secoes" aria-labelledby="tituloMapaSecoes">
+        <h1 id="tituloMapaSecoes">Todas as seções</h1>
+        <ul class="mapa-secoes__lista">
+          {% for item in secoes_mapa %}
+            <li class="mapa-secoes__item mapa-secoes__item--{{ item.estado }}" data-estado="{{ item.estado }}">
+              <div class="mapa-secoes__cabecalho">
+                {% if item.estado == 'concluida' %}
+                  <span aria-hidden="true">✓</span><span>{{ item.secao.nome }}</span><small>Concluída</small>
+                {% elif item.estado == 'atual' %}
+                  <span aria-hidden="true">●</span><span>{{ item.secao.nome }}</span><small>Atual / disponível</small>
+                {% else %}
+                  <span aria-hidden="true">🔒</span><span>{{ item.secao.nome }}</span><small>Bloqueada</small>
+                {% endif %}
+              </div>
+              <div class="mapa-secoes__progresso">
+                <div class="mapa-secoes__progresso-texto">
+                  <span>{{ item.estacoes_concluidas }} de {{ item.total_estacoes }} estações concluídas</span>
+                  <strong>{{ item.progresso_percentual }}%</strong>
+                </div>
+                <div class="mapa-secoes__barra" role="progressbar" aria-valuenow="{{ item.progresso_percentual }}" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso da seção {{ item.secao.nome }}">
+                  <span style="width: {{ item.progresso_percentual }}%"></span>
+                </div>
+              </div>
+              {% if item.estado == 'atual' %}
+                <a href="{% url 'exercicios:percurso' modulo.id %}" class="mapa-secoes__continuar">Continuar</a>
+              {% endif %}
+            </li>
+          {% empty %}
+            <li class="mapa-secoes__vazio">Este módulo ainda não possui seções.</li>
+          {% endfor %}
+        </ul>
+      </section>
+
+    {% elif secao_atual %}
 
       <div class="header-wrapper">
         <div class="page-header">
@@ -42,7 +84,7 @@
 
     {% endif %}
 
-    {% if proxima_secao %}
+    {% if not visualizar_todas_secoes and proxima_secao %}
       <div class="header-wrapper section-locked">
         <div class="page-header">
           <h2 class="section-title">{{ proxima_secao.nome }}</h2>

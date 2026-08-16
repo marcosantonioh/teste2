@@ -77,6 +77,37 @@ def percurso(request, modulo_id):
         None,
     )
 
+    secoes_mapa = []
+    for secao in secoes:
+        estacoes_secao = list(secao.estacoes.all())
+        estacoes_concluidas = sum(
+            mecanicas_services.obter_status_estacao(estacao, request.user)
+            == "completado"
+            for estacao in estacoes_secao
+        )
+        total_estacoes = len(estacoes_secao)
+        progresso_percentual = (
+            int((estacoes_concluidas / total_estacoes) * 100)
+            if total_estacoes
+            else 0
+        )
+
+        if estacoes_concluidas == total_estacoes and total_estacoes:
+            estado_mapa = "concluida"
+        elif secao == secao_atual:
+            estado_mapa = "atual"
+        else:
+            estado_mapa = "bloqueada"
+        secoes_mapa.append(
+            {
+                "secao": secao,
+                "estado": estado_mapa,
+                "estacoes_concluidas": estacoes_concluidas,
+                "total_estacoes": total_estacoes,
+                "progresso_percentual": progresso_percentual,
+            }
+        )
+
     # Ao terminar o módulo, mantém a última seção visível como referência.
     if secao_atual is None and secoes:
         secao_atual = secoes[-1]
@@ -98,6 +129,8 @@ def percurso(request, modulo_id):
         "secao_atual": secao_atual,
         "proxima_secao": proxima_secao,
         "perfil": perfil,
+        "secoes_mapa": secoes_mapa,
+        "visualizar_todas_secoes": request.GET.get("visualizacao") == "todas",
     }
 
     # Adicione o módulo ao contexto e renderize o template
