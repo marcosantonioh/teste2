@@ -47,7 +47,7 @@
     <h2>Deseja realmente sair do exercício?</h2>
     <div class="modal-botoes">
       <button onclick="fecharModalSair()" class="btn-cancelar">Cancelar</button>
-      <a href="{% url 'exercicios:percurso' 1%}" class="btn-sair">Sair</a>
+      <a href="{% url 'exercicios:percurso' exercicio.modulo.id %}" class="btn-sair">Sair</a>
     </div>
   </div>
 </div>
