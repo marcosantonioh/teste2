@@ -1,8 +1,18 @@
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
-from .models import Exercicio, Modulo, Secao, Estacao
+from .models import Exercicio, Modulo, Secao, Estacao, ReporteExercicio
 from import_export.admin import ImportExportModelAdmin
+
+
+@admin.register(ReporteExercicio)
+class ReporteExercicioAdmin(admin.ModelAdmin):
+    list_display = ("id", "exercicio", "motivo", "usuario", "criado_em", "status")
+    list_filter = ("status", "motivo", "exercicio__modulo")
+    search_fields = ("exercicio__titulo", "exercicio__enunciado", "usuario__username")
+    list_select_related = ("exercicio", "usuario")
+    readonly_fields = ("exercicio", "usuario", "motivo", "criado_em")
+    list_editable = ("status",)
 
 
 @admin.register(Exercicio)

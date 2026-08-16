@@ -7,6 +7,54 @@
   flex-direction: column;
 }
 
+.botao-reportar {
+  border: 1px solid #c93636;
+  border-radius: 8px;
+  padding: 12px 18px;
+  background: var(--red);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.report-feedback {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2100;
+  margin: 0;
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: #e7ffe8;
+  color: #1b4623;
+}
+
+.modal-report {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.modal-report--aberto { display: flex; }
+
+.modal-report__conteudo {
+  position: relative;
+  width: min(100%, 420px);
+  padding: 28px;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.modal-report__conteudo form { display: grid; gap: 14px; }
+.modal-report__conteudo select { padding: 10px; border: 1px solid #c7ced8; border-radius: 6px; }
+.modal-report__fechar { position: absolute; top: 8px; right: 12px; border: 0; background: transparent; font-size: 1.8rem; cursor: pointer; }
+
 /* Seção para a barra de progresso no topo */
 .barra-progresso-container {
   width: 100%;

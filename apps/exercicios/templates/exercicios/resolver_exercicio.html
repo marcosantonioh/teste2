@@ -10,6 +10,9 @@
 {% block content %}
 
 <div class="container-exercicio">
+  {% if request.GET.reportado %}
+    <p class="report-feedback" role="status">Obrigado. Seu reporte foi enviado.</p>
+  {% endif %}
   <div class="barra-progresso-container">{% include "progress.html" %}</div>
 
   <form
@@ -155,6 +158,9 @@
           </g>
         </svg>
         <p>Resposta Correta!</p>
+        <button type="button" class="botao-reportar" data-abrir-report>
+          ⚑ Reportar problema
+        </button>
         {% if proximo_exercicio_id_para_continuar %}
         <a
           href="{% url 'exercicios:resolver_exercicio' proximo_exercicio_id_para_continuar %}"
@@ -271,6 +277,10 @@
             Tentar Novamente
           </button>
 
+          <button type="button" class="botao-reportar" data-abrir-report>
+            ⚑ Reportar problema
+          </button>
+
           <button type="submit" name="acao" value="pular" class="btn-continuar">
             Pular Exercício
           </button>
@@ -281,6 +291,25 @@
       </div>
     </div>
   </form>
+</div>
+
+<div class="modal-report" id="modalReport" aria-hidden="true">
+  <div class="modal-report__conteudo" role="dialog" aria-modal="true" aria-labelledby="tituloReport">
+    <button type="button" class="modal-report__fechar" aria-label="Fechar" data-fechar-report>×</button>
+    <h2 id="tituloReport">Reportar problema</h2>
+    <form id="formReport" method="post" action="{% url 'exercicios:reportar_problema' exercicio.id %}">
+      {% csrf_token %}
+      <label for="motivoReport">Qual é o problema?</label>
+      <select name="motivo" id="motivoReport" required>
+        <option value="" selected disabled>Selecione uma opção</option>
+        <option value="enunciado_incorreto">Enunciado incorreto</option>
+        <option value="resposta_incorreta">Resposta incorreta</option>
+        <option value="codigo_com_problema">Código com problema</option>
+        <option value="outro">Outro</option>
+      </select>
+      <button type="submit" class="submit">Enviar</button>
+    </form>
+  </div>
 </div>
 
 {% include "exercicios/partials/modais.html" %}

@@ -176,6 +176,35 @@ class ExercicioUsuario(models.Model):
         return self.titulo or "Exercício sem título"
 
 
+class ReporteExercicio(models.Model):
+    MOTIVO_CHOICES = [
+        ("enunciado_incorreto", "Enunciado incorreto"),
+        ("resposta_incorreta", "Resposta incorreta"),
+        ("codigo_com_problema", "Código com problema"),
+        ("outro", "Outro"),
+    ]
+    STATUS_CHOICES = [
+        ("pendente", "Pendente"),
+        ("resolvido", "Resolvido"),
+    ]
+
+    exercicio = models.ForeignKey(
+        Exercicio, related_name="reportes", on_delete=models.CASCADE
+    )
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    motivo = models.CharField(max_length=30, choices=MOTIVO_CHOICES)
+    criado_em = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pendente")
+
+    class Meta:
+        ordering = ["-criado_em"]
+        verbose_name = "Reporte de exercício"
+        verbose_name_plural = "Reportes de exercícios"
+
+    def __str__(self):
+        return f"Exercício #{self.exercicio_id} — {self.get_motivo_display()}"
+
+
 @receiver(post_save, sender=Estacao)
 def atualizar_status_estacoes_adjacentes(sender, instance, created, **kwargs):
     """

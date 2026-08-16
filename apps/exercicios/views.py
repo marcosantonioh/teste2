@@ -1,10 +1,11 @@
 import random
 
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 from apps.usuarios.models import Perfil
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Sum
-from apps.exercicios.models import Exercicio, Modulo, Secao, Estacao
+from apps.exercicios.models import Exercicio, Modulo, Secao, Estacao, ReporteExercicio
 from apps.mecanicas_jogo import services as mecanicas_services
 from apps.desafios.models import DesafioUsuario
 from django.http import JsonResponse
@@ -528,6 +529,24 @@ def resolver_exercicio(request, exercicio_id):
     }
 
     return render(request, "exercicios/resolver_exercicio.html", context)
+
+
+@login_required
+@require_POST
+def reportar_problema(request, exercicio_id):
+    exercicio = get_object_or_404(Exercicio, id=exercicio_id)
+    motivo = request.POST.get("motivo")
+    motivos_validos = {valor for valor, _ in ReporteExercicio.MOTIVO_CHOICES}
+
+    if motivo not in motivos_validos:
+        return redirect("exercicios:resolver_exercicio", exercicio_id=exercicio.id)
+
+    ReporteExercicio.objects.create(
+        exercicio=exercicio,
+        usuario=request.user,
+        motivo=motivo,
+    )
+    return redirect(f"{reverse('exercicios:resolver_exercicio', args=[exercicio.id])}?reportado=1")
 
 
 @login_required

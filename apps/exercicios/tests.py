@@ -3,9 +3,52 @@ import json
 from django.test import TestCase
 from django.urls import reverse
 
-from apps.exercicios.models import Estacao, Exercicio, ExercicioUsuario, Modulo, Secao
+from apps.exercicios.models import (
+    Estacao,
+    Exercicio,
+    ExercicioUsuario,
+    Modulo,
+    ReporteExercicio,
+    Secao,
+)
 from apps.usuarios.models import Divisao, Perfil
 from django.contrib.auth import get_user_model
+
+
+class ReporteExercicioTests(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(
+            username="aluno-reporte", password="senha123"
+        )
+        modulo = Modulo.objects.create(nome="Loops", descricao="Desc", ordem=1)
+        secao = Secao.objects.create(nome="For", modulo=modulo, ordem=1)
+        estacao = Estacao.objects.create(nome="Estação", secao=secao, status="livre")
+        self.exercicio = Exercicio.objects.create(
+            modulo=modulo,
+            estacao=estacao,
+            titulo="Exercício para reportar",
+            tipo="mcq",
+            resposta_correta="1",
+        )
+
+    def test_cria_reporte_pendente_com_exercicio_usuario_e_motivo(self):
+        self.client.force_login(self.user)
+
+        response = self.client.post(
+            reverse("exercicios:reportar_problema", args=[self.exercicio.id]),
+            {"motivo": "resposta_incorreta"},
+        )
+
+        self.assertRedirects(
+            response,
+            f"{reverse('exercicios:resolver_exercicio', args=[self.exercicio.id])}?reportado=1",
+        )
+        reporte = ReporteExercicio.objects.get()
+        self.assertEqual(reporte.exercicio, self.exercicio)
+        self.assertEqual(reporte.usuario, self.user)
+        self.assertEqual(reporte.motivo, "resposta_incorreta")
+        self.assertEqual(reporte.status, "pendente")
+        self.assertIsNotNone(reporte.criado_em)
 
 
 class ResolverExercicioResumoEstacaoTests(TestCase):

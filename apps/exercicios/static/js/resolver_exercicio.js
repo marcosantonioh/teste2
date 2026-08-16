@@ -127,9 +127,9 @@ document.addEventListener("DOMContentLoaded", function () {
         : "Resposta Incorreta!";
     let actionButtonsHtml = "";
     if (data.resultado === "correto") {
-      actionButtonsHtml = `<a href="#" data-next-id="${data.proximo_exercicio_id}" class="submit btn-continuar-ajax">Continuar</a>`;
+      actionButtonsHtml = `<button type="button" class="botao-reportar" data-abrir-report>⚑ Reportar problema</button><a href="#" data-next-id="${data.proximo_exercicio_id}" class="submit btn-continuar-ajax">Continuar</a>`;
     } else {
-      actionButtonsHtml = `<div class="botoes-incorreto"><button type="button" onclick="window.location.reload();" class="btn-tentar-novamente">Tentar Novamente</button><a href="#" data-next-id="${data.proximo_exercicio_id}" class="btn-continuar btn-continuar-ajax">Pular Exercício</a></div>`;
+      actionButtonsHtml = `<div class="botoes-incorreto"><button type="button" onclick="window.location.reload();" class="btn-tentar-novamente">Tentar Novamente</button><button type="button" class="botao-reportar" data-abrir-report>⚑ Reportar problema</button><a href="#" data-next-id="${data.proximo_exercicio_id}" class="btn-continuar btn-continuar-ajax">Pular Exercício</a></div>`;
     }
     const feedbackHtml = `<img src="${mascoteSrc}" alt="Mascote Feedback" class="mascote-feedback" /><div class="resultado ${feedbackClass}"><p>${feedbackText}</p>${actionButtonsHtml}</div>`;
     baseAcoes.insertAdjacentHTML("beforeend", feedbackHtml);
@@ -144,6 +144,8 @@ document.addEventListener("DOMContentLoaded", function () {
   function renderNewExercise(data) {
     history.pushState(null, "", data.url_resolucao);
     form.action = data.url_resolucao;
+    const formReport = document.getElementById("formReport");
+    if (formReport) formReport.action = `${data.url_resolucao}reportar/`;
     delete form.dataset.respostaEnviada;
     const conteudoWrapper = document.querySelector(
       ".conteudo-exercicio-wrapper",
@@ -400,6 +402,27 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  const modalReport = document.getElementById("modalReport");
+  const fecharReport = document.querySelector("[data-fechar-report]");
+  function abrirModalReport() {
+    if (modalReport) {
+      modalReport.classList.add("modal-report--aberto");
+      modalReport.setAttribute("aria-hidden", "false");
+      document.getElementById("motivoReport")?.focus();
+    }
+  }
+  if (fecharReport && modalReport) {
+    fecharReport.addEventListener("click", () => {
+      modalReport.classList.remove("modal-report--aberto");
+      modalReport.setAttribute("aria-hidden", "true");
+    });
+  }
+  if (modalReport) {
+    modalReport.addEventListener("click", (event) => {
+      if (event.target === modalReport) fecharReport?.click();
+    });
+  }
+
   document.addEventListener("keydown", (event) => {
     if (isTypingInTextField(event)) return;
 
@@ -427,6 +450,11 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   containerExercicio.addEventListener("click", function (event) {
+    const reportButton = event.target.closest("[data-abrir-report]");
+    if (reportButton) {
+      abrirModalReport();
+      return;
+    }
     const target = event.target.closest(".btn-continuar-ajax");
     if (target) {
       event.preventDefault();
