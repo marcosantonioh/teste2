@@ -41,7 +41,9 @@ def main_view(request):
 @login_required
 def modulos(request):
     perfil = get_or_create_perfil(request.user)
-    modulos = Modulo.objects.all()
+    modulos = Modulo.objects.exclude(
+        secoes__estacoes__disponivel_para_visitantes=True
+    ).distinct()
 
     # Busca os desafios do usuário logado
     desafios_usuario = DesafioUsuario.objects.filter(usuario=request.user)
