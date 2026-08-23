@@ -125,6 +125,60 @@ class ResolverExercicioResumoEstacaoTests(TestCase):
         self.assertEqual(data["resumo_estacao"]["total_exercicios"], 2)
 
 
+class ResumoExercicioInformativoTests(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(
+            username="aluno-info", password="senha123"
+        )
+        Perfil.objects.create(user=self.user)
+        modulo = Modulo.objects.create(nome="Módulo Info", descricao="Desc", ordem=1)
+        secao = Secao.objects.create(nome="Seção Info", modulo=modulo, ordem=1)
+        estacao = Estacao.objects.create(nome="Estação Info", secao=secao)
+        self.exercicio_info = Exercicio.objects.create(
+            modulo=modulo,
+            estacao=estacao,
+            titulo="Leia isto",
+            tipo="info",
+            xp=10,
+        )
+        self.exercicio_multipla_escolha = Exercicio.objects.create(
+            modulo=modulo,
+            estacao=estacao,
+            titulo="Responda isto",
+            tipo="mcq",
+            xp=7,
+            alternativa_1="Certa",
+            alternativa_2="Errada",
+            resposta_correta="1",
+        )
+
+    def test_exercicio_informativo_entra_no_resumo_da_estacao(self):
+        self.client.force_login(self.user)
+
+        self.client.get(
+            reverse("exercicios:resolver_exercicio", args=[self.exercicio_info.id])
+        )
+        response = self.client.post(
+            reverse(
+                "exercicios:resolver_exercicio",
+                args=[self.exercicio_multipla_escolha.id],
+            ),
+            {"acao": "responder", "is_ajax_request": "1", "resposta": "1"},
+        )
+
+        data = json.loads(response.content)
+        self.assertTrue(data["resumo_estacao"]["mostrar"])
+        self.assertEqual(data["resumo_estacao"]["acertos"], 2)
+        self.assertEqual(data["resumo_estacao"]["xp_ganho"], 17)
+        self.assertEqual(data["resumo_estacao"]["porcentagem_acertos"], 100)
+
+        resposta_final = self.client.get(
+            reverse("exercicios:estacao_concluida", args=[self.exercicio_info.estacao_id])
+        )
+        self.assertContains(resposta_final, "⚡ 17")
+        self.assertContains(resposta_final, "100%")
+
+
 class PercursoPorSecaoTests(TestCase):
     def setUp(self):
         self.user = get_user_model().objects.create_user(

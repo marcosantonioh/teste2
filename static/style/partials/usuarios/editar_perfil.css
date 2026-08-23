@@ -38,6 +38,10 @@
   margin-bottom: 12px;
 }
 
+.nav-logout {
+  display: none;
+}
+
 .nav-link {
   display: block;
   text-decoration: none;
@@ -276,11 +280,28 @@ input[type="file"] {
     margin-bottom: 10px;
   }
 
+  .nav-logout {
+    display: block;
+    margin-top: 22px;
+  }
+
   .nav-link {
     padding: 12px 16px;
     font-size: 16px;
         border: 1px solid var(--primary-color);
     border-radius: 8px;
+  }
+
+  .nav-link-logout {
+    border-color: var(--red);
+    color: var(--red);
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .nav-link-logout:hover {
+    background-color: #fff1f2;
+    color: var(--red-hover);
   }
 
   .main-content {

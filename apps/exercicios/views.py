@@ -5,7 +5,14 @@ from django.views.decorators.http import require_POST
 from apps.usuarios.models import Perfil
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Sum
-from apps.exercicios.models import Exercicio, Modulo, Secao, Estacao, ReporteExercicio
+from apps.exercicios.models import (
+    Exercicio,
+    ExercicioUsuario,
+    Modulo,
+    Secao,
+    Estacao,
+    ReporteExercicio,
+)
 from apps.mecanicas_jogo import services as mecanicas_services
 from apps.desafios.models import DesafioUsuario
 from django.http import JsonResponse
@@ -385,9 +392,9 @@ def resolver_exercicio(request, exercicio_id):
             mecanicas_services.marcar_exercicio_concluido(
                 exercicio, perfil, request.user
             )
-            # Opcional: Adicionar XP se exercícios informativos valerem pontos.
-            # perfil.xp_total += exercicio.xp
-            # perfil.save()
+            _atualizar_resumo_estacao(
+                request, exercicio.estacao_id, True, exercicio
+            )
 
         # Após marcar como concluído, busca o próximo exercício livre na estação.
         estacao_atual = exercicio.estacao
@@ -624,9 +631,12 @@ def estacao_concluida_view(request, estacao_id):
 
     resumo_estacao = request.session.get("resumo_estacoes", {}).get(str(estacao.id), {})
     total_exercicios_estacao = Exercicio.objects.filter(estacao=estacao).count()
-    acertos = min(resumo_estacao.get("acertos", 0), total_exercicios_estacao)
+    exercicios_concluidos = ExercicioUsuario.objects.filter(
+        usuario=request.user, exercicio__estacao=estacao, status="concluido"
+    ).count()
+    acertos = min(exercicios_concluidos, total_exercicios_estacao)
     erros = resumo_estacao.get("erros", 0)
-    xp_ganho = resumo_estacao.get("xp_ganho", 0)
+    xp_ganho = total_xp_estacao if acertos == total_exercicios_estacao else 0
     porcentagem_acertos = (
         int((acertos / total_exercicios_estacao) * 100)
         if total_exercicios_estacao
