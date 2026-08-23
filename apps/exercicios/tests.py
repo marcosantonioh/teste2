@@ -22,7 +22,7 @@ class ReporteExercicioTests(TestCase):
         )
         modulo = Modulo.objects.create(nome="Loops", descricao="Desc", ordem=1)
         secao = Secao.objects.create(nome="For", modulo=modulo, ordem=1)
-        estacao = Estacao.objects.create(nome="Estação", secao=secao, status="livre")
+        estacao = Estacao.objects.create(nome="Estação", secao=secao)
         self.exercicio = Exercicio.objects.create(
             modulo=modulo,
             estacao=estacao,
@@ -59,7 +59,7 @@ class ResolverExercicioResumoEstacaoTests(TestCase):
             password="senha123",
         )
         self.divisao, _ = Divisao.objects.get_or_create(nome="Bronze")
-        self.perfil = Perfil.objects.get(user=self.user)
+        self.perfil = Perfil.objects.create(user=self.user)
         self.perfil.divisao = self.divisao
         self.perfil.save(update_fields=["divisao"])
 
@@ -69,9 +69,7 @@ class ResolverExercicioResumoEstacaoTests(TestCase):
         self.secao = Secao.objects.create(
             nome="Seção Teste", modulo=self.modulo, ordem=1
         )
-        self.estacao = Estacao.objects.create(
-            nome="Estação Teste", secao=self.secao, status="livre"
-        )
+        self.estacao = Estacao.objects.create(nome="Estação Teste", secao=self.secao)
 
         self.exercicio_1 = Exercicio.objects.create(
             modulo=self.modulo,
@@ -171,6 +169,15 @@ class PercursoPorSecaoTests(TestCase):
         self.assertContains(response, "Seção bloqueada")
         self.assertNotContains(response, "Do-while")
         self.assertNotContains(response, ">For<", html=False)
+
+    def test_primeiro_acesso_exibe_uma_estacao_livre_e_as_demais_bloqueadas(self):
+        self.client.force_login(self.user)
+
+        response = self.client.get(reverse("exercicios:percurso", args=[self.modulo.id]))
+
+        self.assertContains(response, "status-livre", count=1)
+        self.assertContains(response, "status-bloqueado", count=4)
+        self.assertNotContains(response, "status-default")
 
     def test_secao_so_desbloqueia_ao_concluir_todas_as_cinco_estacoes(self):
         self.client.force_login(self.user)

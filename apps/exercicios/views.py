@@ -115,12 +115,13 @@ def percurso(request, modulo_id):
         secao_atual = secoes[-1]
 
     proxima_secao = None
+    estacoes = []
     if secao_atual:
         indice_atual = secoes.index(secao_atual)
         if indice_atual + 1 < len(secoes):
             proxima_secao = secoes[indice_atual + 1]
 
-        estacoes = secao_atual.estacoes.prefetch_related("exercicios").all()
+        estacoes = list(secao_atual.estacoes.prefetch_related("exercicios").all())
         for estacao in estacoes:
             estacao.status = mecanicas_services.obter_status_estacao(
                 estacao, request.user
@@ -129,6 +130,7 @@ def percurso(request, modulo_id):
     context = {
         "modulo": modulo,
         "secao_atual": secao_atual,
+        "estacoes": estacoes,
         "proxima_secao": proxima_secao,
         "perfil": perfil,
         "secoes_mapa": secoes_mapa,

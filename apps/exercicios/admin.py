@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
-from .models import Exercicio, Modulo, Secao, Estacao, ReporteExercicio
+from .models import Exercicio, ExercicioUsuario, Modulo, Secao, Estacao, ReporteExercicio
 from import_export.admin import ImportExportModelAdmin
 
 
@@ -111,11 +111,11 @@ class ExercicioAdmin(ImportExportModelAdmin):
 
 @admin.register(Secao)
 class SecaoAdmin(admin.ModelAdmin):
-    list_display = ("nome", "modulo", "status", "ordem")
-    list_filter = ("modulo", "status")
+    list_display = ("nome", "modulo", "ordem")
+    list_filter = ("modulo",)
     search_fields = ("nome",)
     list_editable = ("ordem",)
-    fields = ["nome", "modulo", "status", "ordem", "link_adicionar_estacao_form"]
+    fields = ["nome", "modulo", "ordem", "link_adicionar_estacao_form"]
     readonly_fields = ["link_adicionar_estacao_form"]
 
     def link_adicionar_estacao_form(self, obj):
@@ -142,14 +142,13 @@ class SecaoAdmin(admin.ModelAdmin):
 
 @admin.register(Estacao)
 class EstacaoAdmin(admin.ModelAdmin):
-    list_display = ("nome", "secao", "status", "disponivel_para_visitantes")
-    list_filter = ("secao__modulo", "secao", "status", "disponivel_para_visitantes")
+    list_display = ("nome", "secao", "disponivel_para_visitantes")
+    list_filter = ("secao__modulo", "secao", "disponivel_para_visitantes")
     search_fields = ("nome",)
-    list_editable = ("secao", "status")
+    list_editable = ("secao",)
     fields = [
         "nome",
         "secao",
-        "status",
         "disponivel_para_visitantes",
         "link_adicionar_exercicio_form",
     ]
@@ -175,6 +174,18 @@ class EstacaoAdmin(admin.ModelAdmin):
             except Secao.DoesNotExist:
                 pass
         return initial
+
+
+@admin.register(ExercicioUsuario)
+class ExercicioUsuarioAdmin(admin.ModelAdmin):
+    """Gerencia o progresso individual, sem alterar o conteúdo compartilhado."""
+
+    list_display = ("usuario", "exercicio", "status", "xp_concedido", "atualizado_em")
+    list_filter = ("usuario", "status", "exercicio__modulo", "exercicio__estacao")
+    search_fields = ("usuario__username", "exercicio__titulo")
+    list_select_related = ("usuario", "exercicio", "exercicio__estacao")
+    list_editable = ("status", "xp_concedido")
+    autocomplete_fields = ("usuario", "exercicio")
 
 
 @admin.register(Modulo)

@@ -75,7 +75,7 @@
 
       <div class="module-description">
         <div class="stations">
-          {% for estacao in secao_atual.estacoes.all %}
+          {% for estacao in estacoes %}
             <!-- Aqui você inclui o botão -->
             {% include "modules/button-play.html" %}
           {% endfor %}

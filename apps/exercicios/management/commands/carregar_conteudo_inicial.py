@@ -60,7 +60,7 @@ class Command(BaseCommand):
             secao, _ = Secao.objects.get_or_create(
                 modulo=modulo,
                 nome=campos["nome"],
-                defaults={"status": campos["status"], "ordem": campos["ordem"]},
+                defaults={"ordem": campos["ordem"]},
             )
             secoes[registro["pk"]] = secao
 
@@ -77,7 +77,6 @@ class Command(BaseCommand):
                 secao=secao,
                 nome=campos["nome"],
                 defaults={
-                    "status": campos["status"],
                     "disponivel_para_visitantes": campos[
                         "disponivel_para_visitantes"
                     ],
