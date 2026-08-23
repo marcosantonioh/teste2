@@ -39,6 +39,11 @@
 
     // Clique nos links da sidebar
     navLinks.forEach(link => {
+      // O logout é uma navegação real; não deve ser tratado como aba de configuração.
+      if (link.classList.contains('nav-link-logout')) {
+        return;
+      }
+
       link.addEventListener('click', function (e) {
         e.preventDefault();
 
