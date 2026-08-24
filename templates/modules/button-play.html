@@ -2,6 +2,7 @@
 
 <div
   class="station-circle
+    {% if estacao.id == estacao_animada_id %}station-circle--animada{% endif %}
     {% if estacao.status == 'livre' %}
       status-livre
     {% elif estacao.status == 'completado' %}
@@ -11,7 +12,7 @@
     {% else %}
       status-default {# Uma classe padrão caso haja outros status ou nenhum #}
     {% endif %}"
-  {% if estacao.status != 'bloqueado' %}onclick="toggleDrop('{{ estacao.id }}')"{% endif %}
+  onclick="toggleDrop('{{ estacao.id }}')"
 >
   {% if estacao.status == 'livre' %}
     <img src="{% static 'img/play.svg' %}" alt="Jogar Estação" class="play-icon" /> {# Ícone preto para fundo branco #}

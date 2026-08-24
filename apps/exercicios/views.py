@@ -123,6 +123,7 @@ def percurso(request, modulo_id):
 
     proxima_secao = None
     estacoes = []
+    estacao_animada_id = None
     if secao_atual:
         indice_atual = secoes.index(secao_atual)
         if indice_atual + 1 < len(secoes):
@@ -134,10 +135,26 @@ def percurso(request, modulo_id):
                 estacao, request.user
             )
 
+        estacao_livre = next(
+            (estacao for estacao in estacoes if estacao.status == "livre"), None
+        )
+        if estacao_livre:
+            estacao_animada_id = estacao_livre.id
+        else:
+            for indice, estacao in enumerate(estacoes[:-1]):
+                proxima_estacao = estacoes[indice + 1]
+                if (
+                    estacao.status == "completado"
+                    and proxima_estacao.status == "bloqueado"
+                ):
+                    estacao_animada_id = estacao.id
+                    break
+
     context = {
         "modulo": modulo,
         "secao_atual": secao_atual,
         "estacoes": estacoes,
+        "estacao_animada_id": estacao_animada_id,
         "proxima_secao": proxima_secao,
         "perfil": perfil,
         "secoes_mapa": secoes_mapa,

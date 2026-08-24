@@ -11,6 +11,19 @@
   z-index: 1; /* Define um z-index base para os círculos */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
   margin: 15px; /* Margem para espaçamento entre múltiplos círculos */
+  isolation: isolate;
+}
+
+/* Anel roxo animado para dar destaque ao percurso sem competir com o ícone. */
+.station-circle--animada::after {
+  content: "";
+  position: absolute;
+  inset: -10px;
+  border: 2px solid rgba(128, 0, 190, 0.72);
+  border-radius: 24%;
+  pointer-events: none;
+  z-index: 0;
+  animation: station-ring-pulse 2.2s ease-out infinite;
 }
 
 .station-circle:hover {
@@ -36,7 +49,7 @@
 .status-bloqueado {
   background-color: #cccccc; /* Fundo cinza (para ícone cinza 'lock.svg') */
   border: 2px solid #a0a0a0; /* Borda cinza mais escura */
-  cursor: not-allowed; /* Cursor para indicar que não é clicável (embora o JS controle o clique) */
+  cursor: pointer; /* Abre os detalhes, mas não permite iniciar a estação. */
 }
 
 .status-default {
@@ -48,6 +61,12 @@
   width: 32px; /* Tamanho de exemplo para o ícone */
   height: 32px; /* Tamanho de exemplo para o ícone */
   object-fit: contain; /* Garante que o ícone se ajuste bem sem distorção */
+  position: relative;
+  z-index: 1;
+}
+
+.station-circle--animada .play-icon {
+  animation: station-icon-float 2.2s ease-in-out infinite;
 }
 
 /* Estilos para o menu dropdown da estação */
@@ -65,6 +84,38 @@
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
   z-index: 1000; /* Garante que o dropdown fique acima de outros elementos */
   text-align: center;
+  z-index: 2; /* Mantém o painel acima do anel animado. */
+}
+
+@keyframes station-icon-float {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-3px) scale(1.08);
+  }
+}
+
+@keyframes station-ring-pulse {
+  0% {
+    opacity: 0.88;
+    transform: scale(0.92);
+  }
+  70% {
+    opacity: 0;
+    transform: scale(1.22);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.22);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .station-circle--animada::after,
+  .station-circle--animada .play-icon {
+    animation: none;
+  }
 }
 
 /* Estilo para o nome da estação no dropdown */

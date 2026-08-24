@@ -232,6 +232,7 @@ class PercursoPorSecaoTests(TestCase):
         self.assertContains(response, "status-livre", count=1)
         self.assertContains(response, "status-bloqueado", count=4)
         self.assertNotContains(response, "status-default")
+        self.assertContains(response, "station-circle--animada", count=1)
 
     def test_secao_so_desbloqueia_ao_concluir_todas_as_cinco_estacoes(self):
         self.client.force_login(self.user)
