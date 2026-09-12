@@ -1,7 +1,32 @@
+/* Percurso vertical: o cabo fica atrás das estações e as conecta pelo centro. */
+.stations {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  padding: 8px 0;
+}
+
+.stations::before {
+  content: "";
+  position: absolute;
+  top: 46px;
+  bottom: 46px;
+  left: 50%;
+  width: 6px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--primary-dark), var(--primary-light), var(--primary-dark));
+  box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.12);
+}
+
 /* Estilos gerais para o círculo da estação */
 .station-circle {
-  padding: 20px; /* Espaçamento interno para o ícone */
-  border-radius: 15%; /* Transforma o div em um círculo */
+  width: 92px;
+  height: 92px;
+  padding: 20px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -10,7 +35,7 @@
   /* transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; */
   z-index: 1; /* Define um z-index base para os círculos */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
-  margin: 15px; /* Margem para espaçamento entre múltiplos círculos */
+  margin: 0;
   isolation: isolate;
 }
 
@@ -20,7 +45,7 @@
   position: absolute;
   inset: -10px;
   border: 2px solid rgba(128, 0, 190, 0.72);
-  border-radius: 24%;
+  border-radius: 50%;
   pointer-events: none;
   z-index: 0;
   animation: station-ring-pulse 2.2s ease-out infinite;
@@ -73,7 +98,7 @@
 .station-dropdown {
   display: none; /* Escondido por padrão, será alternado por JavaScript (função toggleDrop) */
   position: absolute;
-  top: 115%; /* Posição abaixo do círculo (80px + alguma margem) */
+  top: calc(100% + 12px);
   left: 50%;
   transform: translateX(-50%);
   background-color: #ffffff;
@@ -115,6 +140,22 @@
   .station-circle--animada::after,
   .station-circle--animada .play-icon {
     animation: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .stations {
+    gap: 26px;
+  }
+
+  .stations::before {
+    top: 40px;
+    bottom: 40px;
+  }
+
+  .station-circle {
+    width: 80px;
+    height: 80px;
   }
 }
 
