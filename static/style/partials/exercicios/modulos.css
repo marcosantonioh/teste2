@@ -80,7 +80,7 @@ body {
 
 .divisao-info h4 span {
   font-size: 1.2em; /* Tamanho da fonte (16px) */
-  color: var(--success); /* Cor cinza claro */
+  color: var(--primary-color);
   font-weight: 800; /* Fonte em negrito */
 }
 
@@ -290,7 +290,7 @@ body {
 
 /* Barra de Progresso - Preenchimento */
 .progress-fill {
-  background-color: var(--success); /* Cor do preenchimento (amarelo) */
+  background-color: var(--primary-color);
   height: 100%;
   border-radius: 8px;
   display: flex;

@@ -6,6 +6,58 @@ import datetime
 from apps.ranking.models import Divisao
 
 class Perfil(models.Model):
+    AVATARES = {
+        "coruja-logica": {
+            "nome": "Coruja Lógica",
+            "arquivo": "img/avatares/Coruja Lógica.png",
+        },
+        "guardiao-dos-vetores": {
+            "nome": "Guardião dos Vetores",
+            "arquivo": "img/avatares/Guardião dos Vetores.png",
+        },
+        "explorador-azul": {
+            "nome": "Explorador Azul",
+            "arquivo": "img/avatares/Explorador Azul.png",
+        },
+        "raposa-dev": {
+            "nome": "Raposa Dev",
+            "arquivo": "img/avatares/Raposa Dev.png",
+        },
+        "hacker-neon": {
+            "nome": "Hacker Neon",
+            "arquivo": "img/avatares/Hacker Neon.png",
+        },
+        "robo-aprendiz": {
+            "nome": "Robô Aprendiz",
+            "arquivo": "img/avatares/Robô Aprendiz.png",
+        },
+        "explorador-verde": {
+            "nome": "Explorador Verde",
+            "arquivo": "img/avatares/Explorador Verde.png",
+        },
+        "explorador-cyber": {
+            "nome": "Explorador Cyber",
+            "arquivo": "img/avatares/Explorador Cyber.png",
+        },
+        "robo-advanced": {
+            "nome": "Robô Advanced",
+            "arquivo": "img/avatares/Robô Advanced.png",
+        },
+        "lenda-do-percurso": {
+            "nome": "Lenda do Percurso Lendário",
+            "arquivo": "img/avatares/Lenda do Percurso Lendario.png",
+        },
+        "mestre-dos-loops": {
+            "nome": "Mestre dos Loops",
+            "arquivo": "img/avatares/Mestre dos Loops.png",
+        },
+        "panda-code": {
+            "nome": "Panda Code",
+            "arquivo": "img/avatares/Panda Code.png",
+        },
+    }
+    AVATAR_CHOICES = [(chave, dados["nome"]) for chave, dados in AVATARES.items()]
+
     TEMPO_ESTUDO_CHOICES = [
         ('leve', 'Leve — 5 minutos'),
         ('regular', 'Regular — 10 minutos'),
@@ -50,6 +102,12 @@ class Perfil(models.Model):
         blank=True,
         null=True
     )
+    avatar = models.CharField(
+        max_length=50,
+        choices=AVATAR_CHOICES,
+        default="coruja-logica",
+        help_text="Avatar do catálogo selecionado pelo usuário.",
+    )
 
     GÊNEROS = (
         ('M', 'Masculino'),
@@ -65,6 +123,11 @@ class Perfil(models.Model):
 
     def __str__(self):
         return self.user.username
+
+    @property
+    def avatar_arquivo(self):
+        """Caminho estático do avatar, com fallback para uma escolha válida."""
+        return self.AVATARES.get(self.avatar, self.AVATARES["coruja-logica"])["arquivo"]
     
     def tem_vidas(self):
         return self.vidas_atuais > 0

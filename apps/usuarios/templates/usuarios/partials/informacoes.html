@@ -1,29 +1,33 @@
 {% load static %}
 
-<form method="post" enctype="multipart/form-data">
+<form method="post">
     {% csrf_token %}
+    <input type="hidden" name="action" value="salvar_perfil">
 
-    <!-- Foto de Perfil -->
+    <!-- Avatar de Perfil -->
     <div class="profile-photo-section">
-        {% if perfil.foto %}
-        <img id="preview-img" src="{{ perfil.foto.url }}" alt="Foto de Perfil" />
-        {% else %}
-        <img id="preview-img" src="{% static 'img/default.png' %}" alt="Foto padrão" />
-        {% endif %}
-        <div class="foto-actions">
-        <label for="id_foto">Foto de perfil</label><br>
-
-        <!-- Input file escondido -->
-        <input type="file" name="foto" id="id_foto" class="input-foto" style="display: none;" accept="image/*" />
-
-        <div class="foto-botoes">
-            <!-- Botão para abrir seletor de arquivo -->
-            <button type="button" class="btn-foto" onclick="document.getElementById('id_foto').click();">Alterar</button>
-
-            <!-- Botão para deletar -->
-            <button type="submit" name="action" value="deletar_foto" class="btn-foto btn-danger">Remover</button>
-        </div>
-        </div>
+        <img id="preview-img" src="{% static perfil.avatar_arquivo %}" alt="Avatar atual" />
+        <fieldset class="avatar-selection">
+            <legend>Escolha seu avatar</legend>
+            <div class="avatar-grid">
+                {% for avatar in avatares %}
+                    <div class="avatar-option">
+                        <input
+                            type="radio"
+                            id="avatar-{{ avatar.valor }}"
+                            name="avatar"
+                            value="{{ avatar.valor }}"
+                            data-avatar-url="{% static avatar.arquivo %}"
+                            {% if perfil.avatar == avatar.valor %}checked{% endif %}
+                        >
+                        <label for="avatar-{{ avatar.valor }}">
+                            <img src="{% static avatar.arquivo %}" alt="">
+                            <span>{{ avatar.nome }}</span>
+                        </label>
+                    </div>
+                {% endfor %}
+            </div>
+        </fieldset>
     </div>
 
     <!-- Nome -->

@@ -13,8 +13,8 @@
     {% for amigo in amigos|slice:":3" %} 
     <div class="perfil-item">
       <img
-        src="{{ amigo.perfil.foto.url|default:'/static/img/default.png' }}"
-        alt="Foto de {{ amigo.username }}"
+        src="{% static amigo.perfil.avatar_arquivo %}"
+        alt="Avatar de {{ amigo.username }}"
       />
       <div>
         <strong>{{ amigo.username }}</strong><br />
@@ -42,8 +42,8 @@
     {% for amigo in amigos|slice:":3" %}
     <div class="perfil-item">
       <img
-        src="{{ amigo.perfil.foto.url|default:'/static/img/default.png' }}"
-        alt="Foto de {{ amigo.username }}"
+        src="{% static amigo.perfil.avatar_arquivo %}"
+        alt="Avatar de {{ amigo.username }}"
       />
       <div>
         <strong>{{ amigo.username }}</strong><br />

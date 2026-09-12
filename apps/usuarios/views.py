@@ -74,7 +74,7 @@ def editar_perfil(request):
             nome = request.POST.get('Nome')
             email = request.POST.get('email')
             bio = request.POST.get('bio')
-            nova_foto = request.FILES.get('foto')
+            avatar = request.POST.get('avatar')
 
             user = request.user
             user.username = nome
@@ -82,21 +82,21 @@ def editar_perfil(request):
             user.save()
 
             perfil.bio = bio
-            if nova_foto:
-                perfil.foto = nova_foto
+            if avatar in Perfil.AVATARES:
+                perfil.avatar = avatar
             perfil.save()
 
             messages.success(request, "Perfil atualizado com sucesso!")
             return redirect('usuarios:editar_perfil') # Redireciona para a mesma página para ver as alterações.
 
-        if action == "deletar_foto":
-            if perfil.foto:
-                perfil.foto.delete(save=False)  # deleta o arquivo físico
-                perfil.foto = None              # remove do modelo
-                perfil.save()
-            return redirect('usuarios:editar_perfil')
     
-    return render(request, 'usuarios/editar_perfil.html', {'perfil': perfil}) # Passa o perfil no GET também
+    return render(request, 'usuarios/editar_perfil.html', {
+        'perfil': perfil,
+        'avatares': [
+            {'valor': valor, **dados}
+            for valor, dados in Perfil.AVATARES.items()
+        ],
+    })
 
 
 
@@ -113,7 +113,6 @@ def cadastrar_usuario(request):
         username = form.cleaned_data['username']
         email = form.cleaned_data['email']
         password = form.cleaned_data['password']
-        foto = request.FILES.get("foto")
         visibilidade_choice = request.POST.get('visibilidade')
 
         user = User.objects.create_user(
@@ -130,7 +129,6 @@ def cadastrar_usuario(request):
         # Transfere a preferência escolhida no onboarding para o novo perfil.
         perfil_data = {
             'user': user,
-            'foto': foto,
             'visibilidade': visibilidade_status,
         }
         if tempo_estudo in tempos_estudo_validos:
@@ -312,4 +310,3 @@ def preferencias(request):
     # Adiciona o perfil ao contexto para que o template possa exibir os valores atuais.
     context = {'perfil': perfil}
     return render(request, 'usuarios/preferencias.html', context)
-

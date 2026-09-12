@@ -26,11 +26,7 @@
         </div>
 
         <div class="perfil-photo">
-          {% if perfil.foto %}
-          <img src="{{ perfil.foto.url }}" alt="Foto de Perfil" />
-          {% else %}
-          <img src="{% static 'img/default.png' %}" alt="Foto padrão" />
-          {% endif %}
+          <img src="{% static perfil.avatar_arquivo %}" alt="Avatar de {{ perfil.user.username }}" />
         </div>
       </div>
 

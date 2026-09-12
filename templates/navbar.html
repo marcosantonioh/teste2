@@ -74,7 +74,7 @@
         <div class="dropdown">
           <!-- Exibe a imagem e o nome do usuário -->
           <div class="user" onclick="toggleDropdown()">
-            <img src="{% static 'img/user.svg' %}" alt="Usuário" />
+            <img src="{% static perfil.avatar_arquivo %}" alt="Avatar de {{ user.username }}" class="navbar-avatar" />
             <span>{{ user.username }}</span>
           </div>
 
@@ -156,8 +156,12 @@
         href="{% url 'usuarios:perfil_usuario' %}"
         class="bottom-nav-link {% if request.resolver_match.view_name == 'usuarios:perfil_usuario' or request.resolver_match.view_name == 'usuarios:editar_perfil' %}active{% endif %}"
       >
-        <i class="bx bx-user icon-inactive"></i>
-        <i class="bx bxs-user icon-active"></i>
+        {% if user.is_authenticated and perfil %}
+          <img src="{% static perfil.avatar_arquivo %}" alt="" class="bottom-nav-avatar">
+        {% else %}
+          <i class="bx bx-user icon-inactive"></i>
+          <i class="bx bxs-user icon-active"></i>
+        {% endif %}
         <span>Perfil</span>
       </a>
     </nav>

@@ -2,22 +2,17 @@
     return window.innerWidth <= 768;
   }
 
-  function setupFotoPreview() {
-    const inputFoto = document.getElementById('id_foto');
+  function setupAvatarPreview() {
+    const avatarInputs = document.querySelectorAll('input[name="avatar"]');
     const previewImg = document.getElementById('preview-img');
 
-    if (inputFoto && previewImg) {
-      inputFoto.addEventListener('change', function () {
-        const file = this.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = function (e) {
-            previewImg.src = e.target.result;
-          };
-          reader.readAsDataURL(file);
+    avatarInputs.forEach(input => {
+      input.addEventListener('change', function () {
+        if (this.checked && this.dataset.avatarUrl) {
+          previewImg.src = this.dataset.avatarUrl;
         }
       });
-    }
+    });
   }
 
   function voltarParaSidebar() {
@@ -59,11 +54,6 @@
           targetSection.classList.add('active');
         }
 
-        // Executa setup da foto se for "informações"
-        if (sectionId === 'informacoes') {
-          setupFotoPreview();
-        }
-
         // No mobile: esconde a sidebar e mostra o conteúdo
         if (isMobile()) {
           sidebar.classList.add('oculta');
@@ -73,5 +63,5 @@
     });
 
     // Setup inicial
-    setupFotoPreview();
+    setupAvatarPreview();
   });

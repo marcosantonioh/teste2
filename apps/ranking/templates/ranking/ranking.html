@@ -38,11 +38,7 @@
                                                             
                             </td>
                             <td class="foto-cell">
-                                {% if perfil.foto and perfil.foto.url %}
-                                    <img src="{{ perfil.foto.url }}" class="profile-pic">
-                                {% else %}
-                                    <img src="/media/fotos_perfil/default.png" class="profile-pic">
-                                {% endif %}
+                                <img src="{% static perfil.avatar_arquivo %}" class="profile-pic" alt="Avatar de {{ perfil.user.username }}">
                             </td>
                             <td class="username-cell">
                                 {% if perfil.user.username|length > 6 %}
@@ -69,11 +65,7 @@
                         <tr>
                             <td>{{ forloop.counter }}</td>
                             <td class="foto-cell">
-                                {% if perfil.foto and perfil.foto.url %}
-                                    <img src="{{ perfil.foto.url }}" class="profile-pic">
-                                {% else %}
-                                    <img src="/media/fotos_perfil/default.png" class="profile-pic">
-                                {% endif %}
+                                <img src="{% static perfil.avatar_arquivo %}" class="profile-pic" alt="Avatar de {{ perfil.user.username }}">
                             </td>
                             <td>{{ perfil.user.username }}</td>
                             <td>{{ perfil.xp }}</td>

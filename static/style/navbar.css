@@ -203,6 +203,17 @@ body {
   width: 2em;
 }
 
+.user .navbar-avatar {
+  width: 2.2em;
+  height: 2.2em;
+  border: 2px solid var(--primary-color);
+  border-radius: 50%;
+  display: block;
+  object-fit: cover;
+  overflow: hidden;
+  clip-path: circle(50%);
+}
+
 .user span {
   font-size: 1em;
 }
@@ -363,6 +374,18 @@ body {
   .bottom-nav-link i {
     font-size: 24px; /* Tamanho do ícone */
     margin-bottom: 4px; /* Espaço entre o ícone e o texto */
+  }
+
+  .bottom-nav-avatar {
+    width: 25px;
+    height: 25px;
+    margin-bottom: 4px;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    display: block;
+    object-fit: cover;
+    overflow: hidden;
+    clip-path: circle(50%);
   }
 
   /* Estilo para o texto abaixo do ícone */

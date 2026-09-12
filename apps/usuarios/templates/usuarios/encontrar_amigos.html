@@ -30,11 +30,7 @@
                     <ul>
                     {% for item in resultados %}
                     <li class="resultado-item">
-                        {% if item.usuario.perfil.foto %}
-                            <img src="{{ item.usuario.perfil.foto.url }}" alt="Foto" width="40" height="40">
-                        {% else %}
-                            <img src="{% static 'img/default.png' %}" alt="Foto padrão" width="40" height="40">
-                        {% endif %}
+                        <img src="{% static item.usuario.perfil.avatar_arquivo %}" alt="Avatar de {{ item.usuario.username }}" width="40" height="40">
                         <strong>{{ item.usuario.username }}</strong>
 
                         <div class="friendship-status-container" id="friendship-status-{{ item.usuario.id }}">
