@@ -20,6 +20,7 @@ from django.core.exceptions import PermissionDenied
 from django.urls import reverse
 from django.template.defaultfilters import linebreaksbr  # Para formatar o enunciado
 from django.templatetags.static import static
+from django.utils import timezone
 from django.utils.html import escape, mark_safe
 
 CHAVE_ORDEM_ALTERNATIVAS = "ordens_alternativas_mcq"
@@ -53,6 +54,15 @@ def serializar_conquistas_novas(conquistas):
             }
         )
     return conquistas_serializadas
+
+
+def formatar_tempo_estacao(total_segundos):
+    total_segundos = max(0, int(total_segundos or 0))
+    horas, restante = divmod(total_segundos, 3600)
+    minutos, segundos = divmod(restante, 60)
+    if horas:
+        return f"{horas:02d}:{minutos:02d}:{segundos:02d}"
+    return f"{minutos:02d}:{segundos:02d}"
 
 
 # @login_required(login_url="usuarios:login_usuario")
@@ -652,6 +662,7 @@ def iniciar_exercicios(request, exercicio_id):
         "acertos": 0,
         "erros": 0,
         "xp_ganho": 0,
+        "iniciada_em": timezone.now().timestamp(),
         "total_exercicios": Exercicio.objects.filter(
             estacao_id=exercicio.estacao_id
         ).count(),
@@ -674,6 +685,19 @@ def estacao_concluida_view(request, estacao_id):
     )
 
     resumo_estacao = request.session.get("resumo_estacoes", {}).get(str(estacao.id), {})
+    if "tempo_gasto_segundos" not in resumo_estacao:
+        inicio = resumo_estacao.get("iniciada_em")
+        try:
+            resumo_estacao["tempo_gasto_segundos"] = max(
+                0, int(timezone.now().timestamp() - float(inicio))
+            )
+        except (TypeError, ValueError):
+            resumo_estacao["tempo_gasto_segundos"] = 0
+
+        resumo_estacoes = request.session.setdefault("resumo_estacoes", {})
+        resumo_estacoes[str(estacao.id)] = resumo_estacao
+        request.session["resumo_estacoes"] = resumo_estacoes
+
     total_exercicios_estacao = Exercicio.objects.filter(estacao=estacao).count()
     exercicios_concluidos = ExercicioUsuario.objects.filter(
         usuario=request.user, exercicio__estacao=estacao, status="concluido"
@@ -698,6 +722,7 @@ def estacao_concluida_view(request, estacao_id):
             "xp_ganho": xp_ganho,
             "porcentagem_acertos": porcentagem_acertos,
             "total_exercicios": total_exercicios_estacao,
+            "tempo_gasto": formatar_tempo_estacao(resumo_estacao["tempo_gasto_segundos"]),
         },
     }
     return render(request, "exercicios/estacao_concluida.html", context)
