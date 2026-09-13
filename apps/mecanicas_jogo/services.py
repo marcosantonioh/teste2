@@ -111,12 +111,14 @@ def pular_exercicio(exercicio, usuario):
 
 def processar_resposta_exercicio(resposta_usuario, exercicio, perfil, usuario):
     correta = verificar_resposta(exercicio, resposta_usuario)
-    atualizar_estado_do_perfil_e_exercicio(perfil, exercicio, usuario, correta)
-    return "correto" if correta else "incorreto", correta
+    conquistas_novas = atualizar_estado_do_perfil_e_exercicio(
+        perfil, exercicio, usuario, correta
+    )
+    return "correto" if correta else "incorreto", correta, conquistas_novas
 
 
 def marcar_exercicio_concluido(exercicio, perfil, usuario):
-    atualizar_estado_do_perfil_e_exercicio(perfil, exercicio, usuario, True)
+    return atualizar_estado_do_perfil_e_exercicio(exercicio=exercicio, perfil=perfil, usuario=usuario, correta=True)
 
 
 def verificar_resposta(exercicio, resposta_usuario):
@@ -170,11 +172,12 @@ def atualizar_estado_do_perfil_e_exercicio(perfil, exercicio, usuario, correta):
                 perfil.save()
                 from apps.usuarios.services import sincronizar_conquistas
 
-                sincronizar_conquistas(usuario)
+                return sincronizar_conquistas(usuario)
     else:
         if perfil.vidas_atuais > 0:
             perfil.vidas_atuais -= 1
             perfil.save()
+    return []
 
 
 def calcular_progresso(modulo, usuario):

@@ -13,5 +13,11 @@ def sincronizar_conquistas(usuario):
         tipo_requisito=Conquista.TIPO_REQUISITO_EXERCICIOS,
         meta__lte=exercicios_concluidos,
     )
+    novas_conquistas = []
     for conquista in conquistas_disponiveis:
-        ConquistaUsuario.objects.get_or_create(usuario=usuario, conquista=conquista)
+        _, criada = ConquistaUsuario.objects.get_or_create(
+            usuario=usuario, conquista=conquista
+        )
+        if criada:
+            novas_conquistas.append(conquista)
+    return novas_conquistas

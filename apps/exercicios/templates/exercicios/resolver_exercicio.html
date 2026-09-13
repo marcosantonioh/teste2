@@ -293,6 +293,17 @@
   </form>
 </div>
 
+<div class="modal-conquista" id="modalConquista" aria-hidden="true">
+  <div class="modal-conquista__conteudo" role="dialog" aria-modal="true" aria-labelledby="tituloConquista">
+    <button type="button" class="modal-conquista__fechar" aria-label="Fechar" data-fechar-conquista>×</button>
+    <p class="modal-conquista__selo">NOVA CONQUISTA</p>
+    <h2 id="tituloConquista">Conquista desbloqueada!</h2>
+    <div id="conquistasNovas" class="modal-conquista__lista"></div>
+    <button type="button" class="submit" data-fechar-conquista>Continuar</button>
+  </div>
+</div>
+{{ conquistas_novas|json_script:"conquistasIniciais" }}
+
 <div class="modal-report" id="modalReport" aria-hidden="true">
   <div class="modal-report__conteudo" role="dialog" aria-modal="true" aria-labelledby="tituloReport">
     <button type="button" class="modal-report__fechar" aria-label="Fechar" data-fechar-report>×</button>

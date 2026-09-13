@@ -21,6 +21,51 @@ document.addEventListener("DOMContentLoaded", function () {
     form.dataset.semVidas === "True" || form.dataset.semVidas === "true";
   const mascoteVerde = "/static/img/mascote/verde.svg";
   const mascoteVermelho = "/static/img/mascote/vermelho.svg";
+  const modalConquista = document.getElementById("modalConquista");
+  const listaConquistas = document.getElementById("conquistasNovas");
+  let aoFecharModalConquista = null;
+
+  function fecharModalConquista() {
+    if (!modalConquista) return;
+    modalConquista.classList.remove("modal-conquista--aberto");
+    modalConquista.setAttribute("aria-hidden", "true");
+    const acao = aoFecharModalConquista;
+    aoFecharModalConquista = null;
+    if (acao) acao();
+  }
+
+  function mostrarModalConquistas(conquistas, aoFechar = null) {
+    if (!modalConquista || !listaConquistas || !conquistas?.length) {
+      if (aoFechar) aoFechar();
+      return;
+    }
+    listaConquistas.replaceChildren();
+    conquistas.forEach((conquista) => {
+      const item = document.createElement("article");
+      item.className = "modal-conquista__item";
+      if (conquista.avatar_url) {
+        const avatar = document.createElement("img");
+        avatar.className = "modal-conquista__avatar";
+        avatar.src = conquista.avatar_url;
+        avatar.alt = `Avatar ${conquista.avatar_nome || "desbloqueado"}`;
+        item.append(avatar);
+      }
+      const texto = document.createElement("div");
+      const nome = document.createElement("strong");
+      nome.textContent = conquista.nome;
+      const descricao = document.createElement("p");
+      descricao.textContent = conquista.avatar_nome
+        ? `${conquista.descricao} Avatar ${conquista.avatar_nome} desbloqueado!`
+        : conquista.descricao;
+      texto.append(nome, descricao);
+      item.append(texto);
+      listaConquistas.append(item);
+    });
+    aoFecharModalConquista = aoFechar;
+    modalConquista.classList.add("modal-conquista--aberto");
+    modalConquista.setAttribute("aria-hidden", "false");
+    modalConquista.querySelector("[data-fechar-conquista]")?.focus();
+  }
 
   // --- ALTERAÇÃO 1: Capturamos o HTML inicial dos botões ---
   const htmlBotoesPadrao = document.querySelector(
@@ -101,17 +146,20 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function processApiResponse(data) {
-    if (data.estacao_concluida_url) {
-      window.location.href = data.estacao_concluida_url;
-      return;
-    }
-    if (data.sem_vidas) {
-      const modalSemVidas = document.getElementById("modalSemVidas");
-      if (modalSemVidas) modalSemVidas.style.display = "flex";
-      return;
-    }
-    updateProgressBar(data.progresso);
-    renderFeedback(data);
+    const exibirResultado = () => {
+      if (data.estacao_concluida_url) {
+        window.location.href = data.estacao_concluida_url;
+        return;
+      }
+      if (data.sem_vidas) {
+        const modalSemVidas = document.getElementById("modalSemVidas");
+        if (modalSemVidas) modalSemVidas.style.display = "flex";
+        return;
+      }
+      updateProgressBar(data.progresso);
+      renderFeedback(data);
+    };
+    mostrarModalConquistas(data.conquistas_novas, exibirResultado);
   }
 
   function renderFeedback(data) {
@@ -212,6 +260,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     initializeEventListeners();
+    mostrarModalConquistas(data.conquistas_novas);
   }
 
   function updateProgressBar(progressData) {
@@ -423,6 +472,13 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  modalConquista?.querySelectorAll("[data-fechar-conquista]").forEach((botao) => {
+    botao.addEventListener("click", fecharModalConquista);
+  });
+  modalConquista?.addEventListener("click", (event) => {
+    if (event.target === modalConquista) fecharModalConquista();
+  });
+
   document.addEventListener("keydown", (event) => {
     if (isTypingInTextField(event)) return;
 
@@ -463,4 +519,8 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   initializeEventListeners();
+  const conquistasIniciais = JSON.parse(
+    document.getElementById("conquistasIniciais")?.textContent || "[]",
+  );
+  mostrarModalConquistas(conquistasIniciais);
 });

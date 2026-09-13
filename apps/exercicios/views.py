@@ -19,6 +19,7 @@ from django.http import JsonResponse
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse
 from django.template.defaultfilters import linebreaksbr  # Para formatar o enunciado
+from django.templatetags.static import static
 from django.utils.html import escape, mark_safe
 
 CHAVE_ORDEM_ALTERNATIVAS = "ordens_alternativas_mcq"
@@ -29,6 +30,29 @@ def get_or_create_perfil(user):
     if not user.is_authenticated:
         return None
     return Perfil.objects.get_or_create(user=user)[0]
+
+
+def serializar_conquistas_novas(conquistas):
+    """Prepara as novas conquistas para o modal exibido após a resposta."""
+    conquistas_serializadas = []
+    for conquista in conquistas or []:
+        avatar = next(
+            (
+                dados
+                for dados in Perfil.AVATARES.values()
+                if dados.get("conquista") == conquista.codigo
+            ),
+            None,
+        )
+        conquistas_serializadas.append(
+            {
+                "nome": conquista.nome,
+                "descricao": conquista.descricao,
+                "avatar_url": static(avatar["arquivo"]) if avatar else None,
+                "avatar_nome": avatar["nome"] if avatar else None,
+            }
+        )
+    return conquistas_serializadas
 
 
 # @login_required(login_url="usuarios:login_usuario")
@@ -391,6 +415,7 @@ def resolver_exercicio(request, exercicio_id):
     correta = None
     proximo_exercicio_id_para_continuar = None
     resposta_submetida = None  # Variável para guardar a resposta do usuário
+    conquistas_novas = []
 
     # Calcular progresso para a barra superior ANTES de qualquer modificação de status.
     # Assim, a barra reflete o estado no momento em que o exercício é exibido.
@@ -406,7 +431,7 @@ def resolver_exercicio(request, exercicio_id):
             mecanicas_services.obter_status_exercicio(exercicio, request.user)
             == "livre"
         ):
-            mecanicas_services.marcar_exercicio_concluido(
+            conquistas_novas = mecanicas_services.marcar_exercicio_concluido(
                 exercicio, perfil, request.user
             )
             _atualizar_resumo_estacao(
@@ -449,7 +474,7 @@ def resolver_exercicio(request, exercicio_id):
         elif acao == "responder":
             resposta_usuario = _extrair_resposta_do_request(request, exercicio.tipo)
 
-            resultado, correta = mecanicas_services.processar_resposta_exercicio(
+            resultado, correta, conquistas_novas = mecanicas_services.processar_resposta_exercicio(
                 resposta_usuario, exercicio, perfil, request.user
             )
             resumo_estacao = _atualizar_resumo_estacao(
@@ -534,6 +559,7 @@ def resolver_exercicio(request, exercicio_id):
                             "exercicios:percurso", args=[exercicio.modulo.id]
                         ),
                     },
+                    "conquistas_novas": serializar_conquistas_novas(conquistas_novas),
                 }
                 return JsonResponse(data)
 
@@ -587,6 +613,7 @@ def resolver_exercicio(request, exercicio_id):
         "mostrar_modal_confirmacao_saida": mostrar_modal_confirmacao_saida,  # Adicionamos aqui
         "exercicios_pendentes": exercicios_pendentes,  # Adiciona a variável ao contexto
         "codigo_renderizado": codigo_renderizado,
+        "conquistas_novas": serializar_conquistas_novas(conquistas_novas),
     }
 
     return render(request, "exercicios/resolver_exercicio.html", context)
@@ -721,9 +748,10 @@ def get_exercicio_data(request, exercicio_id):
             and mecanicas_services.obter_status_exercicio(exercicio, request.user)
             == "livre"
         ):
-            mecanicas_services.marcar_exercicio_concluido(
+            conquistas_novas = mecanicas_services.marcar_exercicio_concluido(
                 exercicio, perfil, request.user
             )
+            data["conquistas_novas"] = serializar_conquistas_novas(conquistas_novas)
 
         proximo_exercicio_livre = (
             mecanicas_services.obter_exercicios_nao_concluidos(
