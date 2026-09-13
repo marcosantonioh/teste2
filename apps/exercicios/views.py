@@ -12,6 +12,7 @@ from apps.exercicios.models import (
     Secao,
     Estacao,
     ReporteExercicio,
+    TentativaEstacao,
 )
 from apps.mecanicas_jogo import services as mecanicas_services
 from apps.desafios.models import DesafioUsuario
@@ -25,6 +26,7 @@ from django.utils.html import escape, mark_safe
 
 CHAVE_ORDEM_ALTERNATIVAS = "ordens_alternativas_mcq"
 CHAVE_ULTIMA_ORDEM_ALTERNATIVAS = "ultimas_ordens_alternativas_mcq"
+CHAVE_TENTATIVA_ESTACAO_ATUAL = "tentativa_estacao_atual"
 
 
 def get_or_create_perfil(user):
@@ -657,18 +659,30 @@ def iniciar_exercicios(request, exercicio_id):
         raise PermissionDenied("Esta estação ainda está bloqueada.")
     limpar_ordens_alternativas_da_estacao(request, exercicio.estacao)
     mecanicas_services.reiniciar_estacao(exercicio.estacao, request.user)
+    tentativa = TentativaEstacao.objects.create(
+        usuario=request.user,
+        estacao=exercicio.estacao,
+        primeira_conclusao=not TentativaEstacao.objects.filter(
+            usuario=request.user,
+            estacao=exercicio.estacao,
+            concluida_em__isnull=False,
+        ).exists(),
+    )
     resumo_estacoes = request.session.setdefault("resumo_estacoes", {})
     resumo_estacoes[str(exercicio.estacao_id)] = {
         "acertos": 0,
         "erros": 0,
         "xp_ganho": 0,
-        "iniciada_em": timezone.now().timestamp(),
         "total_exercicios": Exercicio.objects.filter(
             estacao_id=exercicio.estacao_id
         ).count(),
     }
     request.session["resumo_estacoes"] = resumo_estacoes
     request.session["estacao_resumo_atual_id"] = str(exercicio.estacao_id)
+    request.session[CHAVE_TENTATIVA_ESTACAO_ATUAL] = {
+        "id": tentativa.id,
+        "estacao_id": exercicio.estacao_id,
+    }
     return redirect("exercicios:resolver_exercicio", exercicio_id=exercicio.id)
 
 
@@ -685,18 +699,15 @@ def estacao_concluida_view(request, estacao_id):
     )
 
     resumo_estacao = request.session.get("resumo_estacoes", {}).get(str(estacao.id), {})
-    if "tempo_gasto_segundos" not in resumo_estacao:
-        inicio = resumo_estacao.get("iniciada_em")
-        try:
-            resumo_estacao["tempo_gasto_segundos"] = max(
-                0, int(timezone.now().timestamp() - float(inicio))
-            )
-        except (TypeError, ValueError):
-            resumo_estacao["tempo_gasto_segundos"] = 0
-
-        resumo_estacoes = request.session.setdefault("resumo_estacoes", {})
-        resumo_estacoes[str(estacao.id)] = resumo_estacao
-        request.session["resumo_estacoes"] = resumo_estacoes
+    tentativa_atual = request.session.get(CHAVE_TENTATIVA_ESTACAO_ATUAL, {})
+    tentativa = None
+    if tentativa_atual.get("estacao_id") == estacao.id:
+        tentativa = TentativaEstacao.objects.filter(
+            id=tentativa_atual.get("id"),
+            usuario=request.user,
+            estacao=estacao,
+            concluida_em__isnull=True,
+        ).first()
 
     total_exercicios_estacao = Exercicio.objects.filter(estacao=estacao).count()
     exercicios_concluidos = ExercicioUsuario.objects.filter(
@@ -711,6 +722,41 @@ def estacao_concluida_view(request, estacao_id):
         else 0
     )
 
+    if tentativa and acertos < total_exercicios_estacao:
+        proximo_exercicio = mecanicas_services.obter_exercicios_nao_concluidos(
+            estacao, request.user
+        ).first()
+        if proximo_exercicio:
+            return redirect(
+                "exercicios:resolver_exercicio", exercicio_id=proximo_exercicio.id
+            )
+
+    if tentativa:
+        tentativa.concluida_em = timezone.now()
+        tentativa.duracao_segundos = max(
+            0, int((tentativa.concluida_em - tentativa.iniciada_em).total_seconds())
+        )
+        tentativa.acertos = resumo_estacao.get("acertos", acertos)
+        tentativa.erros = erros
+        tentativa.percentual_acertos = porcentagem_acertos
+        tentativa.xp_ganho = resumo_estacao.get("xp_ganho", 0) if tentativa.primeira_conclusao else 0
+        tentativa.save(
+            update_fields=[
+                "concluida_em", "duracao_segundos", "acertos", "erros",
+                "percentual_acertos", "xp_ganho",
+            ]
+        )
+    elif not tentativa:
+        tentativa = TentativaEstacao.objects.filter(
+            usuario=request.user, estacao=estacao, concluida_em__isnull=False
+        ).first()
+
+    tempo_gasto = formatar_tempo_estacao(
+        tentativa.duracao_segundos if tentativa else 0
+    )
+    if tentativa:
+        xp_ganho = tentativa.xp_ganho
+
     context = {
         "estacao": estacao,
         "total_xp_estacao": total_xp_estacao,
@@ -722,7 +768,7 @@ def estacao_concluida_view(request, estacao_id):
             "xp_ganho": xp_ganho,
             "porcentagem_acertos": porcentagem_acertos,
             "total_exercicios": total_exercicios_estacao,
-            "tempo_gasto": formatar_tempo_estacao(resumo_estacao["tempo_gasto_segundos"]),
+            "tempo_gasto": tempo_gasto,
         },
     }
     return render(request, "exercicios/estacao_concluida.html", context)

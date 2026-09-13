@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
-from .models import Exercicio, ExercicioUsuario, Modulo, Secao, Estacao, ReporteExercicio
+from .models import Exercicio, ExercicioUsuario, Modulo, Secao, Estacao, ReporteExercicio, TentativaEstacao
 from import_export.admin import ImportExportModelAdmin
 
 
@@ -13,6 +13,14 @@ class ReporteExercicioAdmin(admin.ModelAdmin):
     list_select_related = ("exercicio", "usuario")
     readonly_fields = ("exercicio", "usuario", "motivo", "criado_em")
     list_editable = ("status",)
+
+
+@admin.register(TentativaEstacao)
+class TentativaEstacaoAdmin(admin.ModelAdmin):
+    list_display = ("usuario", "estacao", "iniciada_em", "concluida_em", "duracao_segundos", "primeira_conclusao")
+    list_filter = ("primeira_conclusao", "estacao__secao__modulo")
+    search_fields = ("usuario__username", "estacao__nome")
+    readonly_fields = ("usuario", "estacao", "iniciada_em", "concluida_em", "duracao_segundos", "primeira_conclusao", "acertos", "erros", "percentual_acertos", "xp_ganho")
 
 
 @admin.register(Exercicio)

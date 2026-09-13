@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.utils import timezone
 
 
 class Modulo(models.Model):
@@ -146,6 +147,27 @@ class ExercicioUsuario(models.Model):
 
     def __str__(self):
         return f"{self.usuario.username} - {self.exercicio} ({self.status})"
+
+
+class TentativaEstacao(models.Model):
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    estacao = models.ForeignKey(Estacao, on_delete=models.CASCADE, related_name="tentativas")
+    iniciada_em = models.DateTimeField(default=timezone.now)
+    concluida_em = models.DateTimeField(null=True, blank=True)
+    duracao_segundos = models.PositiveIntegerField(null=True, blank=True)
+    primeira_conclusao = models.BooleanField(default=False)
+    acertos = models.PositiveIntegerField(default=0)
+    erros = models.PositiveIntegerField(default=0)
+    percentual_acertos = models.PositiveSmallIntegerField(default=0)
+    xp_ganho = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ["-iniciada_em"]
+        verbose_name = "Tentativa de estação"
+        verbose_name_plural = "Tentativas de estação"
+
+    def __str__(self):
+        return f"{self.usuario} — {self.estacao} ({self.iniciada_em:%d/%m/%Y %H:%M})"
 
 
 class ReporteExercicio(models.Model):
