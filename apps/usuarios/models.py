@@ -9,51 +9,69 @@ class Perfil(models.Model):
     AVATARES = {
         "coruja-logica": {
             "nome": "Coruja Lógica",
-            "arquivo": "img/avatares/Coruja Lógica.png",
+            "arquivo": "img/avatares/comuns/Coruja Lógica.png",
+            "raridade": "comum",
         },
         "guardiao-dos-vetores": {
             "nome": "Guardião dos Vetores",
-            "arquivo": "img/avatares/Guardião dos Vetores.png",
+            "arquivo": "img/avatares/lendarios/Guardião dos Vetores.png",
+            "raridade": "lendario",
+            "conquista": "guardiao-da-logica",
         },
         "explorador-azul": {
             "nome": "Explorador Azul",
-            "arquivo": "img/avatares/Explorador Azul.png",
+            "arquivo": "img/avatares/comuns/Explorador Azul.png",
+            "raridade": "comum",
         },
         "raposa-dev": {
             "nome": "Raposa Dev",
-            "arquivo": "img/avatares/Raposa Dev.png",
+            "arquivo": "img/avatares/comuns/Raposa Dev.png",
+            "raridade": "comum",
         },
         "hacker-neon": {
             "nome": "Hacker Neon",
-            "arquivo": "img/avatares/Hacker Neon.png",
+            "arquivo": "img/avatares/raros/Hacker Neon.png",
+            "raridade": "raro",
+            "conquista": "mente-analitica",
         },
         "robo-aprendiz": {
             "nome": "Robô Aprendiz",
-            "arquivo": "img/avatares/Robô Aprendiz.png",
+            "arquivo": "img/avatares/comuns/Robô Aprendiz.png",
+            "raridade": "comum",
         },
         "explorador-verde": {
             "nome": "Explorador Verde",
-            "arquivo": "img/avatares/Explorador Verde.png",
+            "arquivo": "img/avatares/comuns/Explorador Verde.png",
+            "raridade": "comum",
         },
         "explorador-cyber": {
             "nome": "Explorador Cyber",
-            "arquivo": "img/avatares/Explorador Cyber.png",
+            "arquivo": "img/avatares/raros/Explorador Cyber.png",
+            "raridade": "raro",
+            "conquista": "primeiros-passos",
         },
         "robo-advanced": {
             "nome": "Robô Advanced",
-            "arquivo": "img/avatares/Robô Advanced.png",
+            "arquivo": "img/avatares/raros/Robô Advanced.png",
+            "raridade": "raro",
+            "conquista": "construtor-avancado",
         },
         "lenda-do-percurso": {
             "nome": "Lenda do Percurso Lendário",
-            "arquivo": "img/avatares/Lenda do Percurso Lendario.png",
+            "arquivo": "img/avatares/lendarios/Lenda do Percurso Lendario.png",
+            "raridade": "lendario",
+            "conquista": "lenda-do-percurso",
         },
         "mestre-dos-loops": {
             "nome": "Mestre dos Loops",
-            "arquivo": "img/avatares/Mestre dos Loops.png",
+            "arquivo": "img/avatares/raros/Mestre dos Loops.png",
+            "raridade": "raro",
+            "conquista": "dominio-dos-loops",
         },
         "panda-code": {
             "nome": "Panda Code",
-            "arquivo": "img/avatares/Panda Code.png",
+            "arquivo": "img/avatares/comuns/Panda Code.png",
+            "raridade": "comum",
         },
     }
     AVATAR_CHOICES = [(chave, dados["nome"]) for chave, dados in AVATARES.items()]
@@ -128,6 +146,18 @@ class Perfil(models.Model):
     def avatar_arquivo(self):
         """Caminho estático do avatar, com fallback para uma escolha válida."""
         return self.AVATARES.get(self.avatar, self.AVATARES["coruja-logica"])["arquivo"]
+
+    def avatar_desbloqueado(self, codigo_avatar, conquistas_desbloqueadas=None):
+        dados_avatar = self.AVATARES.get(codigo_avatar)
+        if not dados_avatar:
+            return False
+
+        codigo_conquista = dados_avatar.get("conquista")
+        if not codigo_conquista:
+            return True
+        if conquistas_desbloqueadas is not None:
+            return codigo_conquista in conquistas_desbloqueadas
+        return self.user.conquistas.filter(conquista__codigo=codigo_conquista).exists()
     
     def tem_vidas(self):
         return self.vidas_atuais > 0
@@ -166,6 +196,38 @@ class Perfil(models.Model):
             return list(ids_ordenados).index(self.user.id) + 1
         except ValueError:
             return None
+
+
+class Conquista(models.Model):
+    TIPO_REQUISITO_EXERCICIOS = "exercicios_concluidos"
+    TIPO_REQUISITO_CHOICES = [
+        (TIPO_REQUISITO_EXERCICIOS, "Exercícios concluídos"),
+    ]
+
+    codigo = models.SlugField(unique=True)
+    nome = models.CharField(max_length=100)
+    descricao = models.CharField(max_length=255)
+    tipo_requisito = models.CharField(max_length=30, choices=TIPO_REQUISITO_CHOICES)
+    meta = models.PositiveIntegerField()
+
+    class Meta:
+        ordering = ["meta", "nome"]
+
+    def __str__(self):
+        return self.nome
+
+
+class ConquistaUsuario(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name="conquistas")
+    conquista = models.ForeignKey(Conquista, on_delete=models.CASCADE, related_name="usuarios")
+    conquistada_em = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("usuario", "conquista")
+        ordering = ["-conquistada_em"]
+
+    def __str__(self):
+        return f"{self.usuario.username} — {self.conquista.nome}"
 
 
 

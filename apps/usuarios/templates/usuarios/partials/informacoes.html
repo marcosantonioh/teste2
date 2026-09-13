@@ -9,24 +9,33 @@
         <img id="preview-img" src="{% static perfil.avatar_arquivo %}" alt="Avatar atual" />
         <fieldset class="avatar-selection">
             <legend>Escolha seu avatar</legend>
-            <div class="avatar-grid">
-                {% for avatar in avatares %}
-                    <div class="avatar-option">
-                        <input
-                            type="radio"
-                            id="avatar-{{ avatar.valor }}"
-                            name="avatar"
-                            value="{{ avatar.valor }}"
-                            data-avatar-url="{% static avatar.arquivo %}"
-                            {% if perfil.avatar == avatar.valor %}checked{% endif %}
-                        >
-                        <label for="avatar-{{ avatar.valor }}">
-                            <img src="{% static avatar.arquivo %}" alt="">
-                            <span>{{ avatar.nome }}</span>
-                        </label>
+            {% for grupo in grupos_avatar %}
+                <section class="avatar-raridade avatar-raridade--{{ grupo.raridade }}">
+                    <h3>{{ grupo.titulo }}</h3>
+                    <div class="avatar-grid">
+                        {% for avatar in grupo.avatares %}
+                            <div class="avatar-option {% if not avatar.desbloqueado %}avatar-option--bloqueado{% endif %}">
+                                <input
+                                    type="radio"
+                                    id="avatar-{{ avatar.valor }}"
+                                    name="avatar"
+                                    value="{{ avatar.valor }}"
+                                    data-avatar-url="{% static avatar.arquivo %}"
+                                    {% if perfil.avatar == avatar.valor %}checked{% endif %}
+                                    {% if not avatar.desbloqueado %}disabled{% endif %}
+                                >
+                                <label for="avatar-{{ avatar.valor }}">
+                                    <img src="{% static avatar.arquivo %}" alt="">
+                                    <span>{{ avatar.nome }}</span>
+                                    {% if not avatar.desbloqueado %}
+                                        <small>🔒 {{ avatar.requisito }}</small>
+                                    {% endif %}
+                                </label>
+                            </div>
+                        {% endfor %}
                     </div>
-                {% endfor %}
-            </div>
+                </section>
+            {% endfor %}
         </fieldset>
     </div>
 

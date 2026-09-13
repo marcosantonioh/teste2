@@ -2,7 +2,10 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 
-from .models import Perfil
+from apps.exercicios.models import Estacao, Exercicio, ExercicioUsuario, Modulo, Secao
+
+from .models import ConquistaUsuario, Perfil
+from .services import sincronizar_conquistas
 
 
 class AvatarPerfilTests(TestCase):
@@ -15,7 +18,7 @@ class AvatarPerfilTests(TestCase):
 
     def test_avatar_padrao_tem_arquivo_estatico(self):
         self.assertEqual(self.perfil.avatar, "coruja-logica")
-        self.assertEqual(self.perfil.avatar_arquivo, "img/avatares/Coruja Lógica.png")
+        self.assertEqual(self.perfil.avatar_arquivo, "img/avatares/comuns/Coruja Lógica.png")
 
     def test_usuario_pode_selecionar_avatar_do_catalogo(self):
         response = self.client.post(
@@ -51,3 +54,27 @@ class AvatarPerfilTests(TestCase):
 
         self.perfil.refresh_from_db()
         self.assertEqual(self.perfil.avatar, "panda-code")
+
+    def test_conquista_desbloqueia_avatar_raro(self):
+        modulo = Modulo.objects.create(nome="Lógica", descricao="Base")
+        secao = Secao.objects.create(modulo=modulo, nome="Início")
+        estacao = Estacao.objects.create(secao=secao, nome="Estação inicial")
+        for indice in range(5):
+            exercicio = Exercicio.objects.create(
+                modulo=modulo,
+                estacao=estacao,
+                titulo=f"Exercício {indice}",
+                tipo="info",
+            )
+            ExercicioUsuario.objects.create(
+                usuario=self.user, exercicio=exercicio, status="concluido"
+            )
+
+        sincronizar_conquistas(self.user)
+
+        self.assertTrue(
+            ConquistaUsuario.objects.filter(
+                usuario=self.user, conquista__codigo="primeiros-passos"
+            ).exists()
+        )
+        self.assertTrue(self.perfil.avatar_desbloqueado("explorador-cyber"))

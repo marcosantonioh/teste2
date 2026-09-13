@@ -10,6 +10,8 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from .forms import CadastroUsuarioForm
+from .models import Conquista
+from .services import sincronizar_conquistas
 
 
 
@@ -65,6 +67,10 @@ def ver_perfil_usuario(request, username):
 @login_required
 def editar_perfil(request):
     perfil = get_object_or_404(Perfil, user=request.user)
+    sincronizar_conquistas(request.user)
+    conquistas_desbloqueadas = set(
+        perfil.user.conquistas.values_list("conquista__codigo", flat=True)
+    )
 
     if request.method == 'POST':
         action = request.POST.get('action')
@@ -75,6 +81,10 @@ def editar_perfil(request):
             email = request.POST.get('email')
             bio = request.POST.get('bio')
             avatar = request.POST.get('avatar')
+
+            if not perfil.avatar_desbloqueado(avatar, conquistas_desbloqueadas):
+                messages.error(request, "Conclua a conquista necessária para usar este avatar.")
+                return redirect('usuarios:editar_perfil')
 
             user = request.user
             user.username = nome
@@ -90,12 +100,30 @@ def editar_perfil(request):
             return redirect('usuarios:editar_perfil') # Redireciona para a mesma página para ver as alterações.
 
     
+    conquistas = Conquista.objects.in_bulk(field_name="codigo")
+    grupos_avatar = []
+    for raridade, titulo in [
+        ("comum", "Comuns"),
+        ("raro", "Raros"),
+        ("lendario", "Lendários"),
+    ]:
+        avatares = []
+        for valor, dados in Perfil.AVATARES.items():
+            if dados["raridade"] != raridade:
+                continue
+            conquista = conquistas.get(dados.get("conquista"))
+            avatares.append({
+                "valor": valor,
+                **dados,
+                "desbloqueado": perfil.avatar_desbloqueado(valor, conquistas_desbloqueadas),
+                "requisito": conquista.descricao if conquista else "Conquista necessária",
+            })
+        if avatares:
+            grupos_avatar.append({"titulo": titulo, "raridade": raridade, "avatares": avatares})
+
     return render(request, 'usuarios/editar_perfil.html', {
         'perfil': perfil,
-        'avatares': [
-            {'valor': valor, **dados}
-            for valor, dados in Perfil.AVATARES.items()
-        ],
+        'grupos_avatar': grupos_avatar,
     })
 
 

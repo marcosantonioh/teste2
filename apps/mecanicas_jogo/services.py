@@ -168,6 +168,9 @@ def atualizar_estado_do_perfil_e_exercicio(perfil, exercicio, usuario, correta):
                     except Divisao.DoesNotExist:
                         pass
                 perfil.save()
+                from apps.usuarios.services import sincronizar_conquistas
+
+                sincronizar_conquistas(usuario)
     else:
         if perfil.vidas_atuais > 0:
             perfil.vidas_atuais -= 1

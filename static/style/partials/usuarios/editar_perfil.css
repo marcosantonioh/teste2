@@ -94,6 +94,21 @@
   gap: 10px;
 }
 
+.avatar-raridade + .avatar-raridade {
+  margin-top: 18px;
+}
+
+.avatar-raridade h3 {
+  margin: 0 0 8px;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.avatar-raridade--comum h3 { color: #64748b; }
+.avatar-raridade--raro h3 { color: #2563eb; }
+.avatar-raridade--lendario h3 { color: #c47a00; }
+
 .avatar-option input {
   position: absolute;
   opacity: 0;
@@ -129,6 +144,16 @@
   background-color: rgba(var(--primary-color-rgb), 0.08);
 }
 
+.avatar-option--bloqueado label {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
+.avatar-option--bloqueado label:hover {
+  border-color: var(--border-color);
+  transform: none;
+}
+
 .avatar-option img {
   width: 52px;
   height: 52px;
@@ -138,6 +163,12 @@
 
 .avatar-option span {
   font-size: 0.72rem;
+  line-height: 1.1;
+}
+
+.avatar-option small {
+  color: var(--muted-text-color);
+  font-size: 0.65rem;
   line-height: 1.1;
 }
 
