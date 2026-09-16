@@ -23,7 +23,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const mascoteVermelho = "/static/img/mascote/vermelho.svg";
   const modalConquista = document.getElementById("modalConquista");
   const listaConquistas = document.getElementById("conquistasNovas");
+  const modalOfensivaGanha = document.getElementById("modalOfensivaGanha");
+  const totalOfensivaGanha = document.getElementById("totalOfensivaGanha");
+  const diasOfensivaGanha = document.getElementById("diasOfensivaGanha");
   let aoFecharModalConquista = null;
+  let aoFecharModalOfensiva = null;
 
   function fecharModalConquista() {
     if (!modalConquista) return;
@@ -65,6 +69,45 @@ document.addEventListener("DOMContentLoaded", function () {
     modalConquista.classList.add("modal-conquista--aberto");
     modalConquista.setAttribute("aria-hidden", "false");
     modalConquista.querySelector("[data-fechar-conquista]")?.focus();
+  }
+
+  function mostrarModalOfensiva(foiObtida, total, diasSemana, aoFechar) {
+    if (!foiObtida || !modalOfensivaGanha || !totalOfensivaGanha || !diasOfensivaGanha) {
+      aoFechar();
+      return;
+    }
+    totalOfensivaGanha.textContent = total;
+    diasOfensivaGanha.replaceChildren();
+    diasSemana.forEach((dia) => {
+      const item = document.createElement("div");
+      item.className = "modal-ofensiva-ganha__dia";
+      const circulo = document.createElement("span");
+      circulo.className = "modal-ofensiva-ganha__circulo";
+      if (dia.concluido) {
+        circulo.classList.add("modal-ofensiva-ganha__circulo--concluido");
+        const check = document.createElement("img");
+        check.src = "/static/img/check-white.svg";
+        check.alt = "Dia concluído";
+        circulo.append(check);
+      }
+      const inicial = document.createElement("span");
+      inicial.textContent = dia.inicial;
+      item.append(circulo, inicial);
+      diasOfensivaGanha.append(item);
+    });
+    aoFecharModalOfensiva = aoFechar;
+    modalOfensivaGanha.classList.add("modal-ofensiva-ganha--aberto");
+    modalOfensivaGanha.setAttribute("aria-hidden", "false");
+    modalOfensivaGanha.querySelector("[data-fechar-ofensiva-ganha]")?.focus();
+  }
+
+  function fecharModalOfensiva() {
+    if (!modalOfensivaGanha) return;
+    modalOfensivaGanha.classList.remove("modal-ofensiva-ganha--aberto");
+    modalOfensivaGanha.setAttribute("aria-hidden", "true");
+    const acao = aoFecharModalOfensiva;
+    aoFecharModalOfensiva = null;
+    if (acao) acao();
   }
 
   // --- ALTERAÇÃO 1: Capturamos o HTML inicial dos botões ---
@@ -147,17 +190,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function processApiResponse(data) {
     const exibirResultado = () => {
-      if (data.estacao_concluida_url) {
-        window.location.href = data.estacao_concluida_url;
-        return;
-      }
-      if (data.sem_vidas) {
-        const modalSemVidas = document.getElementById("modalSemVidas");
-        if (modalSemVidas) modalSemVidas.style.display = "flex";
-        return;
-      }
-      updateProgressBar(data.progresso);
-      renderFeedback(data);
+      const concluir = () => {
+        if (data.estacao_concluida_url) {
+          window.location.href = data.estacao_concluida_url;
+          return;
+        }
+        if (data.sem_vidas) {
+          const modalSemVidas = document.getElementById("modalSemVidas");
+          if (modalSemVidas) modalSemVidas.style.display = "flex";
+          return;
+        }
+        updateProgressBar(data.progresso);
+        renderFeedback(data);
+      };
+
+      mostrarModalOfensiva(
+        data.ofensiva_obtida,
+        data.ofensiva_atual,
+        data.ofensiva_dias_semana,
+        concluir,
+      );
     };
     mostrarModalConquistas(data.conquistas_novas, exibirResultado);
   }
@@ -475,6 +527,10 @@ document.addEventListener("DOMContentLoaded", function () {
   modalConquista?.querySelectorAll("[data-fechar-conquista]").forEach((botao) => {
     botao.addEventListener("click", fecharModalConquista);
   });
+  modalOfensivaGanha?.querySelector("[data-fechar-ofensiva-ganha]")?.addEventListener(
+    "click",
+    fecharModalOfensiva,
+  );
   modalConquista?.addEventListener("click", (event) => {
     if (event.target === modalConquista) fecharModalConquista();
   });

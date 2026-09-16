@@ -410,6 +410,49 @@ def _atualizar_resumo_estacao(request, estacao_id, correta, exercicio):
     return resumo
 
 
+def _finalizar_tentativa_estacao(request, estacao, resumo_estacao):
+    """Encerra o cronômetro no instante em que a estação é concluída."""
+    tentativa_atual = request.session.get(CHAVE_TENTATIVA_ESTACAO_ATUAL, {})
+    if tentativa_atual.get("estacao_id") != estacao.id:
+        return None
+
+    tentativa = TentativaEstacao.objects.filter(
+        id=tentativa_atual.get("id"),
+        usuario=request.user,
+        estacao=estacao,
+        concluida_em__isnull=True,
+    ).first()
+    if not tentativa:
+        return None
+
+    tentativa.concluida_em = timezone.now()
+    tentativa.duracao_segundos = max(
+        0, int((tentativa.concluida_em - tentativa.iniciada_em).total_seconds())
+    )
+    tentativa.acertos = resumo_estacao.get("acertos", 0)
+    tentativa.erros = resumo_estacao.get("erros", 0)
+    total_exercicios = resumo_estacao.get("total_exercicios", 0)
+    tentativa.percentual_acertos = (
+        int((tentativa.acertos / total_exercicios) * 100)
+        if total_exercicios
+        else 0
+    )
+    tentativa.xp_ganho = (
+        resumo_estacao.get("xp_ganho", 0) if tentativa.primeira_conclusao else 0
+    )
+    tentativa.save(
+        update_fields=[
+            "concluida_em",
+            "duracao_segundos",
+            "acertos",
+            "erros",
+            "percentual_acertos",
+            "xp_ganho",
+        ]
+    )
+    return tentativa
+
+
 def resolver_exercicio(request, exercicio_id):
     perfil = get_or_create_perfil(request.user)
     if not perfil:  # Se o usuário não estiver autenticado e a função retornar None
@@ -485,13 +528,22 @@ def resolver_exercicio(request, exercicio_id):
 
         elif acao == "responder":
             resposta_usuario = _extrair_resposta_do_request(request, exercicio.tipo)
+            ultima_estacao_ofensiva_antes = perfil.ultima_estacao_ofensiva
 
             resultado, correta, conquistas_novas = mecanicas_services.processar_resposta_exercicio(
                 resposta_usuario, exercicio, perfil, request.user
             )
+            ofensiva_obtida = (
+                correta
+                and perfil.ultima_estacao_ofensiva != ultima_estacao_ofensiva_antes
+            )
             resumo_estacao = _atualizar_resumo_estacao(
                 request, exercicio.estacao_id, correta, exercicio
             )
+            if correta and mecanicas_services.estacao_esta_concluida(
+                exercicio.estacao, request.user
+            ):
+                _finalizar_tentativa_estacao(request, exercicio.estacao, resumo_estacao)
 
             # Se for uma requisição AJAX, vamos montar e retornar uma resposta JSON.
             if is_ajax:
@@ -542,6 +594,9 @@ def resolver_exercicio(request, exercicio_id):
                     "estacao_concluida_url": estacao_concluida_url,  # Será null se a estação não terminou
                     "vidas_atuais": perfil.vidas_atuais,
                     "sem_vidas": perfil.vidas_atuais <= 0,
+                    "ofensiva_obtida": ofensiva_obtida,
+                    "ofensiva_atual": perfil.ofensiva_atual,
+                    "ofensiva_dias_semana": perfil.dias_semana_ofensiva,
                     "progresso": {
                         "percentual": progresso_percentual,
                         "concluidos": exercicios_concluidos_count,
@@ -722,6 +777,11 @@ def estacao_concluida_view(request, estacao_id):
         else 0
     )
 
+    # Esta é a confirmação final do fluxo da estação. O método do perfil
+    # impede que a mesma data seja contabilizada mais de uma vez.
+    if acertos == total_exercicios_estacao and total_exercicios_estacao:
+        perfil.registrar_estacao_concluida()
+
     if tentativa and acertos < total_exercicios_estacao:
         proximo_exercicio = mecanicas_services.obter_exercicios_nao_concluidos(
             estacao, request.user
@@ -732,20 +792,15 @@ def estacao_concluida_view(request, estacao_id):
             )
 
     if tentativa:
-        tentativa.concluida_em = timezone.now()
-        tentativa.duracao_segundos = max(
-            0, int((tentativa.concluida_em - tentativa.iniciada_em).total_seconds())
+        tentativa_finalizada = _finalizar_tentativa_estacao(
+            request, estacao, resumo_estacao
         )
-        tentativa.acertos = resumo_estacao.get("acertos", acertos)
-        tentativa.erros = erros
-        tentativa.percentual_acertos = porcentagem_acertos
-        tentativa.xp_ganho = resumo_estacao.get("xp_ganho", 0) if tentativa.primeira_conclusao else 0
-        tentativa.save(
-            update_fields=[
-                "concluida_em", "duracao_segundos", "acertos", "erros",
-                "percentual_acertos", "xp_ganho",
-            ]
-        )
+        if tentativa_finalizada:
+            tentativa = tentativa_finalizada
+        else:
+            tentativa = TentativaEstacao.objects.filter(
+                usuario=request.user, estacao=estacao, concluida_em__isnull=False
+            ).first()
     elif not tentativa:
         tentativa = TentativaEstacao.objects.filter(
             usuario=request.user, estacao=estacao, concluida_em__isnull=False

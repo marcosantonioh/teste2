@@ -125,6 +125,41 @@ class ResolverExercicioResumoEstacaoTests(TestCase):
         self.assertEqual(data["resumo_estacao"]["total_exercicios"], 2)
 
 
+    def test_concluir_estacao_completa_registra_ofensiva(self):
+        self.client.force_login(self.user)
+        self.client.post(
+            reverse("exercicios:resolver_exercicio", args=[self.exercicio_1.id]),
+            {"acao": "responder", "is_ajax_request": "1", "resposta": "2"},
+        )
+        response = self.client.post(
+            reverse("exercicios:resolver_exercicio", args=[self.exercicio_2.id]),
+            {"acao": "responder", "is_ajax_request": "1", "resposta": "3"},
+        )
+
+        data = json.loads(response.content)
+        self.client.get(data["estacao_concluida_url"])
+        self.perfil.refresh_from_db()
+
+        self.assertEqual(self.perfil.sequencia_dias, 1)
+
+    def test_tempo_da_estacao_para_no_ultimo_exercicio_correto(self):
+        self.client.force_login(self.user)
+        self.client.get(reverse("exercicios:iniciar_estacao", args=[self.exercicio_1.id]))
+
+        self.client.post(
+            reverse("exercicios:resolver_exercicio", args=[self.exercicio_1.id]),
+            {"acao": "responder", "is_ajax_request": "1", "resposta": "2"},
+        )
+        self.client.post(
+            reverse("exercicios:resolver_exercicio", args=[self.exercicio_2.id]),
+            {"acao": "responder", "is_ajax_request": "1", "resposta": "3"},
+        )
+
+        tentativa = self.estacao.tentativas.get(usuario=self.user)
+        self.assertIsNotNone(tentativa.concluida_em)
+        self.assertIsNotNone(tentativa.duracao_segundos)
+
+
 class ResumoExercicioInformativoTests(TestCase):
     def setUp(self):
         self.user = get_user_model().objects.create_user(

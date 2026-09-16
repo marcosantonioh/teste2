@@ -199,7 +199,7 @@
   }
 
   .conteudo-estacao-concluida {
-    padding: 20px 25px;
+    padding: 20px 12px;
     box-shadow: none; /* Remove a sombra para um visual mais limpo */
     border: 1px solid #eee; /* Adiciona uma borda sutil */
   }
@@ -213,6 +213,31 @@
   }
 
   .resumo-estacao__cards {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin: 16px 0 10px;
+  }
+
+  .resumo-card {
+    border-radius: 12px;
+    gap: 8px;
+    min-height: 82px;
+    padding: 10px 4px;
+  }
+
+  .resumo-card__title {
+    font-size: 0.54rem;
+    letter-spacing: 0.08em;
+  }
+
+  .resumo-card__value {
+    font-size: 1.28rem;
+    gap: 0.2rem;
+    justify-content: center;
+    white-space: nowrap;
+  }
+
+  .resumo-card--purple .resumo-card__value {
+    font-size: 1.08rem;
   }
 }

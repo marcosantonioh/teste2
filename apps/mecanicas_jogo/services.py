@@ -147,6 +147,18 @@ def obter_ou_criar_progresso(exercicio, usuario):
     return progresso
 
 
+def estacao_esta_concluida(estacao, usuario):
+    """Informa se todos os exercícios da estação foram concluídos pelo usuário."""
+    total_exercicios = Exercicio.objects.filter(estacao=estacao).count()
+    if total_exercicios == 0:
+        return False
+
+    concluidos = ExercicioUsuario.objects.filter(
+        usuario=usuario, exercicio__estacao=estacao, status="concluido"
+    ).count()
+    return concluidos == total_exercicios
+
+
 def atualizar_estado_do_perfil_e_exercicio(perfil, exercicio, usuario, correta):
     if correta:
         progresso = obter_ou_criar_progresso(exercicio, usuario)
@@ -161,6 +173,7 @@ def atualizar_estado_do_perfil_e_exercicio(perfil, exercicio, usuario, correta):
             # Ao reiniciar uma estação, o status volta a "livre" para treino,
             # mas xp_concedido permanece verdadeiro. Assim, o mesmo exercício
             # nunca entrega XP duas vezes para o mesmo usuário.
+            conquistas_novas = []
             if deve_conceder_xp:
                 perfil.xp += exercicio.xp
                 if perfil.divisao is None and perfil.xp > 0:
@@ -172,7 +185,14 @@ def atualizar_estado_do_perfil_e_exercicio(perfil, exercicio, usuario, correta):
                 perfil.save()
                 from apps.usuarios.services import sincronizar_conquistas
 
-                return sincronizar_conquistas(usuario)
+                conquistas_novas = sincronizar_conquistas(usuario)
+
+            # A ofensiva é contabilizada somente ao concluir toda a estação,
+            # e o próprio perfil limita o ganho a uma vez por dia.
+            if estacao_esta_concluida(exercicio.estacao, usuario):
+                perfil.registrar_estacao_concluida()
+
+            return conquistas_novas
     else:
         if perfil.vidas_atuais > 0:
             perfil.vidas_atuais -= 1

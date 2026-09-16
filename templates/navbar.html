@@ -65,10 +65,17 @@
             <img src="{% static 'img/cristal.svg' %}" />
             <p>{{ perfil.cristal }}</p>
           </div>
-          <div class="group">
+          <button
+            type="button"
+            class="group grupo-ofensiva{% if perfil.ofensiva_atual == 0 %} ofensiva-inativa{% endif %}"
+            data-abrir-modal-ofensiva
+            aria-haspopup="dialog"
+            aria-controls="modalOfensiva"
+            aria-label="Ver detalhes da sua ofensiva"
+          >
             <img src="{% static 'img/fire.svg' %}" />
-            <p>{{ perfil.sequencia_dias }}</p>
-          </div>
+            <p>{{ perfil.ofensiva_atual }}</p>
+          </button>
         </div>
 
         <div class="dropdown">
@@ -129,6 +136,24 @@
       </div>
     </nav>
 
+    {% if user.is_authenticated and perfil %}
+    <div
+      class="modal-ofensiva"
+      id="modalOfensiva"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="tituloModalOfensiva"
+      hidden
+    >
+      <div class="modal-ofensiva__conteudo">
+        <button type="button" class="modal-ofensiva__fechar" data-fechar-modal-ofensiva aria-label="Fechar modal">&times;</button>
+        <img src="{% static 'img/fire.svg' %}" class="modal-ofensiva__icone{% if perfil.ofensiva_atual == 0 %} ofensiva-inativa{% endif %}" alt="">
+        <p class="modal-ofensiva__sobretitulo">Sua ofensiva atual</p>
+        <h2 id="tituloModalOfensiva">{{ perfil.ofensiva_atual }} dia{{ perfil.ofensiva_atual|pluralize }}</h2>
+      </div>
+    </div>
+    {% endif %}
+
     <div class="content">{% block content %} {% endblock %}</div>
 
     <!-- Barra de Navegação Inferior para Mobile -->
@@ -171,5 +196,6 @@
     </nav>
 
     <script src="{% static 'js/dropdown.js' %}"></script>
+    <script src="{% static 'js/ofensiva_modal.js' %}"></script>
   </body>
 </html>

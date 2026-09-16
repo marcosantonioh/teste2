@@ -86,6 +86,11 @@ class Perfil(models.Model):
     divisao = models.ForeignKey(Divisao, on_delete=models.SET_NULL, null=True, blank=True)
     xp = models.IntegerField(default=0, validators=[MinValueValidator(0)], verbose_name="Xp")
     sequencia_dias = models.IntegerField(default=0, validators=[MinValueValidator(0)])
+    ultima_estacao_ofensiva = models.DateField(
+        null=True,
+        blank=True,
+        help_text="Último dia em que uma estação completa contou para a ofensiva.",
+    )
     bio = models.TextField(null=True, blank=True)
     seguidores = models.IntegerField(default=0)
     seguidos = models.IntegerField(default=0)
@@ -104,10 +109,6 @@ class Perfil(models.Model):
     vidas_atuais = models.IntegerField(default=5)
     max_vidas = models.IntegerField(default=5)
     ultima_restauracao_vida = models.DateTimeField(default=timezone.now)
-    cooldown_ofensiva = models.DurationField(default=datetime.timedelta(hours=1))
-    ultima_ofensiva_usada = models.DateTimeField(null=True, blank=True)
-
-    
     visibilidade = models.CharField(
         max_length=10,
         choices=[('publico', 'Público'), ('privado', 'Privado')],
@@ -162,17 +163,54 @@ class Perfil(models.Model):
     def tem_vidas(self):
         return self.vidas_atuais > 0
 
-    def pode_usar_ofensiva(self):
-        if not self.ultima_ofensiva_usada:
-            return True
-        tempo_passado = timezone.now() - self.ultima_ofensiva_usada
-        return tempo_passado >= self.cooldown_ofensiva
+    @staticmethod
+    def _data_atual_ofensiva():
+        """Obtém a data local, inclusive em projetos configurados com USE_TZ=False."""
+        agora = timezone.now()
+        return timezone.localtime(agora).date() if timezone.is_aware(agora) else agora.date()
 
-    def tempo_para_proxima_ofensiva(self):
-        if self.pode_usar_ofensiva():
-            return datetime.timedelta(seconds=0)
-        tempo_restante = (self.ultima_ofensiva_usada + self.cooldown_ofensiva) - timezone.now()
-        return max(tempo_restante, datetime.timedelta(seconds=0))
+    @property
+    def ofensiva_atual(self):
+        """Retorna a ofensiva ativa; sequências interrompidas aparecem como zero."""
+        if not self.ultima_estacao_ofensiva:
+            return 0
+        dias_sem_estudar = (
+            self._data_atual_ofensiva() - self.ultima_estacao_ofensiva
+        ).days
+        return self.sequencia_dias if 0 <= dias_sem_estudar <= 1 else 0
+
+    def registrar_estacao_concluida(self, data_conclusao=None):
+        """Conta no máximo uma estação completa por dia para a ofensiva."""
+        hoje = data_conclusao or self._data_atual_ofensiva()
+        if self.ultima_estacao_ofensiva == hoje:
+            return False
+
+        ontem = hoje - datetime.timedelta(days=1)
+        self.sequencia_dias = (
+            self.sequencia_dias + 1
+            if self.ultima_estacao_ofensiva == ontem
+            else 1
+        )
+        self.ultima_estacao_ofensiva = hoje
+        self.save(update_fields=["sequencia_dias", "ultima_estacao_ofensiva"])
+        return True
+
+    @property
+    def dias_semana_ofensiva(self):
+        """Retorna os sete dias da semana com os dias ativos da ofensiva."""
+        hoje = self._data_atual_ofensiva()
+        inicio_semana = hoje - datetime.timedelta(days=hoje.weekday())
+        iniciais = ("S", "T", "Q", "Q", "S", "S", "D")
+        ofensiva = self.ofensiva_atual
+        dias = []
+        for indice, inicial in enumerate(iniciais):
+            data = inicio_semana + datetime.timedelta(days=indice)
+            distancia_para_hoje = (hoje - data).days
+            dias.append({
+                "inicial": inicial,
+                "concluido": 0 <= distancia_para_hoje < ofensiva,
+            })
+        return dias
 
     @property
     def tempo_restante_para_proxima_vida(self):

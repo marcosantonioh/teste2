@@ -302,6 +302,17 @@
     <button type="button" class="submit" data-fechar-conquista>Continuar</button>
   </div>
 </div>
+
+<div class="modal-ofensiva-ganha" id="modalOfensivaGanha" aria-hidden="true">
+  <div class="modal-ofensiva-ganha__conteudo" role="dialog" aria-modal="true" aria-labelledby="tituloOfensivaGanha">
+    <div class="modal-ofensiva-ganha__total" id="tituloOfensivaGanha">
+      <img src="{% static 'img/fire.svg' %}" class="modal-ofensiva-ganha__icone" alt="">
+      <strong id="totalOfensivaGanha"></strong>
+    </div>
+    <div class="modal-ofensiva-ganha__semana" id="diasOfensivaGanha" aria-label="Dias da semana da ofensiva"></div>
+    <button type="button" class="submit" data-fechar-ofensiva-ganha>Continuar</button>
+  </div>
+</div>
 {{ conquistas_novas|json_script:"conquistasIniciais" }}
 
 <div class="modal-report" id="modalReport" aria-hidden="true">

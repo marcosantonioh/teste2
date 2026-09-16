@@ -122,6 +122,90 @@
 
 .modal-conquista__item p { margin: 3px 0 0; color: #5b5264; font-size: 0.9rem; }
 
+.modal-ofensiva-ganha {
+  align-items: center;
+  background: rgba(22, 12, 30, 0.62);
+  display: none;
+  inset: 0;
+  justify-content: center;
+  padding: 1rem;
+  position: fixed;
+  z-index: 3000;
+}
+
+.modal-ofensiva-ganha--aberto { display: flex; }
+
+.modal-ofensiva-ganha__conteudo {
+  align-items: center;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.28);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  max-width: 380px;
+  padding: 2.25rem 1.4rem;
+  text-align: center;
+  width: 100%;
+}
+
+.modal-ofensiva-ganha__icone {
+  filter: drop-shadow(0 8px 10px rgba(241, 135, 34, 0.3));
+  height: 62px;
+  width: 62px;
+}
+
+.modal-ofensiva-ganha__total {
+  align-items: center;
+  display: flex;
+  gap: 0.65rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.modal-ofensiva-ganha__total strong {
+  color: #302037;
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.modal-ofensiva-ganha__semana {
+  display: grid;
+  gap: 0.55rem;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.modal-ofensiva-ganha__dia {
+  align-items: center;
+  color: #766a7d;
+  display: flex;
+  flex-direction: column;
+  font-size: 0.76rem;
+  font-weight: 700;
+  gap: 0.45rem;
+}
+
+.modal-ofensiva-ganha__circulo {
+  align-items: center;
+  background: #eeeaf0;
+  border-radius: 50%;
+  display: flex;
+  height: 34px;
+  justify-content: center;
+  width: 34px;
+}
+
+.modal-ofensiva-ganha__circulo img {
+  height: 17px;
+  width: 17px;
+}
+
+.modal-ofensiva-ganha__circulo--concluido {
+  background: var(--primary-color);
+}
+
 /* Seção para a barra de progresso no topo */
 .barra-progresso-container {
   width: 100%;

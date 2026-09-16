@@ -161,6 +161,109 @@ body {
   font-size: 1rem;
   text-align: center;
 }
+
+button.grupo-ofensiva {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  padding: 0.35rem 0.55rem;
+}
+
+button.grupo-ofensiva:hover,
+button.grupo-ofensiva:focus-visible {
+  background: #fff4e9;
+  border-radius: 9px;
+  outline: 2px solid #f18722;
+  outline-offset: 2px;
+}
+
+.ofensiva-inativa img,
+img.ofensiva-inativa {
+  filter: grayscale(1) brightness(0.72);
+  opacity: 0.42;
+}
+
+.modal-ofensiva[hidden] {
+  display: none;
+}
+
+.modal-ofensiva {
+  align-items: center;
+  background: rgba(25, 15, 31, 0.58);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: 1rem;
+  position: fixed;
+  z-index: 2000;
+}
+
+.modal-ofensiva__conteudo {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.25);
+  box-sizing: border-box;
+  max-width: 390px;
+  padding: 2.5rem 2rem 2rem;
+  position: relative;
+  text-align: center;
+  width: 100%;
+}
+
+.modal-ofensiva__fechar {
+  background: transparent;
+  border: 0;
+  color: #6e6475;
+  cursor: pointer;
+  font-size: 2rem;
+  line-height: 1;
+  position: absolute;
+  right: 1rem;
+  top: 0.8rem;
+}
+
+.modal-ofensiva__icone {
+  filter: drop-shadow(0 6px 10px rgba(241, 135, 34, 0.28));
+  height: 68px;
+  margin-bottom: 0.5rem;
+  width: 68px;
+}
+
+.modal-ofensiva__sobretitulo {
+  color: #75687e;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.modal-ofensiva h2 {
+  color: #2d2035;
+  font-size: 2rem;
+  margin: 0.25rem 0 0.75rem;
+}
+
+.modal-ofensiva__descricao {
+  color: #5f5466;
+  line-height: 1.5;
+  margin: 0 auto 1.25rem;
+  max-width: 300px;
+}
+
+.modal-ofensiva__regra {
+  align-items: center;
+  background: #fff5eb;
+  border-radius: 10px;
+  color: #8d4d10;
+  display: flex;
+  font-size: 0.9rem;
+  gap: 0.6rem;
+  padding: 0.85rem;
+  text-align: left;
+}
+
+.modal-ofensiva-aberta {
+  overflow: hidden;
+}
 .dropdown {
   position: relative;
   display: inline-block;
