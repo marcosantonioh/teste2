@@ -4,7 +4,7 @@ from django.urls import reverse
 
 from apps.exercicios.models import Estacao, Exercicio, ExercicioUsuario, Modulo, Secao
 
-from .models import ConquistaUsuario, Perfil
+from .models import Amizade, ConquistaUsuario, Perfil
 from .services import sincronizar_conquistas
 
 
@@ -78,3 +78,51 @@ class AvatarPerfilTests(TestCase):
             ).exists()
         )
         self.assertTrue(self.perfil.avatar_desbloqueado("explorador-cyber"))
+
+
+class AmizadeTests(TestCase):
+    def setUp(self):
+        self.ana = User.objects.create_user(username='ana', password='senha-segura')
+        self.bruno = User.objects.create_user(username='bruno', password='senha-segura')
+        self.carla = User.objects.create_user(username='carla', password='senha-segura')
+        for usuario in (self.ana, self.bruno, self.carla):
+            Perfil.objects.create(user=usuario)
+
+    def test_enviar_e_aceitar_solicitacao(self):
+        self.client.force_login(self.ana)
+        resposta = self.client.post(reverse('usuarios:enviar_solicitacao', args=[self.bruno.id]))
+        self.assertEqual(resposta.status_code, 302)
+        amizade = Amizade.objects.get(remetente=self.ana, destinatario=self.bruno)
+        self.assertEqual(amizade.status, Amizade.STATUS_PENDENTE)
+
+        self.client.force_login(self.bruno)
+        resposta = self.client.post(reverse('usuarios:aceitar_solicitacao', args=[amizade.id]))
+        self.assertEqual(resposta.status_code, 302)
+        amizade.refresh_from_db()
+        self.assertEqual(amizade.status, Amizade.STATUS_ACEITA)
+
+    def test_apenas_destinatario_responde_solicitacao(self):
+        amizade = Amizade.objects.create(remetente=self.ana, destinatario=self.bruno)
+        self.client.force_login(self.carla)
+        resposta = self.client.post(reverse('usuarios:aceitar_solicitacao', args=[amizade.id]))
+        self.assertEqual(resposta.status_code, 404)
+        amizade.refresh_from_db()
+        self.assertEqual(amizade.status, Amizade.STATUS_PENDENTE)
+
+    def test_menu_exibe_notificacao_para_solicitacao_recebida(self):
+        Amizade.objects.create(remetente=self.ana, destinatario=self.bruno)
+        self.client.force_login(self.bruno)
+
+        resposta = self.client.get(reverse('usuarios:amigos'))
+
+        self.assertContains(resposta, 'notificacao-amigos')
+        self.assertContains(resposta, '1 solicitações de amizade pendentes')
+
+    def test_nao_cria_solicitacao_para_si_mesmo_ou_duplicada(self):
+        self.client.force_login(self.ana)
+        self.client.post(reverse('usuarios:enviar_solicitacao', args=[self.ana.id]))
+        self.assertFalse(Amizade.objects.exists())
+
+        Amizade.objects.create(remetente=self.bruno, destinatario=self.ana)
+        self.client.post(reverse('usuarios:enviar_solicitacao', args=[self.bruno.id]))
+        self.assertEqual(Amizade.objects.count(), 1)

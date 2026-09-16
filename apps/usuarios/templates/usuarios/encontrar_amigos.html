@@ -40,12 +40,24 @@
                                     <input type="hidden" name="query_original" value="{{ query }}">
                                     <button type="submit" class="btn-seguir">Seguir</button>
                                 </form>
-                            {% elif item.status == 'pendente' %}
+                            {% elif item.status == 'pendente' and item.direcao == 'enviada' %}
                                 <form method="post" action="{% url 'usuarios:remover_amigo' item.usuario.id %}" class="form-amizade form-cancelar">
                                     {% csrf_token %}
-                                    <button type="button" class="btn-pendente btn-cancelar-solicitacao" data-user-id="{{ item.usuario.id }}">
-                                        Solicitação pendente
+                                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                    <button type="submit" class="btn-pendente">
+                                        Cancelar solicitação
                                     </button>
+                                </form>
+                            {% elif item.status == 'pendente' and item.direcao == 'recebida' %}
+                                <form method="post" action="{% url 'usuarios:aceitar_solicitacao' item.amizade_id %}" class="form-amizade">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                    <button type="submit" class="btn-seguir">Aceitar</button>
+                                </form>
+                                <form method="post" action="{% url 'usuarios:recusar_solicitacao' item.amizade_id %}" class="form-amizade">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                    <button type="submit" class="btn-pendente">Recusar</button>
                                 </form>
                             {% elif item.status == 'aceita' %}
                                 <span class="amigo-confirmado">Já são amigos</span>

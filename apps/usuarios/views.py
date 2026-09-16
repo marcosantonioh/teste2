@@ -4,9 +4,10 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from .models import Perfil, Amizade
 from django.db.models import Q
-from django.db import models
+from django.db import transaction
 from django.views.decorators.http import require_POST
 from django.urls import reverse
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from .forms import CadastroUsuarioForm
@@ -202,20 +203,20 @@ def logout_usuario(request):
 @login_required
 def amigos(request):
     user = request.user
-    perfil = Perfil.objects.get(user=user)
-
-    # Pessoas que o usuário segue (ele foi o remetente da amizade aceita)
-    seguindo_amizades = Amizade.objects.filter(remetente=user, status='aceita')
-    seguindo = [amizade.destinatario for amizade in seguindo_amizades]
-
-    # Pessoas que seguem o usuário (ele foi o destinatário da amizade aceita)
-    seguidores_amizades = Amizade.objects.filter(destinatario=user, status='aceita')
-    seguidores = [amizade.remetente for amizade in seguidores_amizades]
+    perfil = get_object_or_404(Perfil, user=user)
+    relacoes = Amizade.objects.filter(
+        Q(remetente=user) | Q(destinatario=user),
+        status=Amizade.STATUS_ACEITA,
+    ).select_related('remetente__perfil', 'destinatario__perfil')
+    lista_amigos = [relacao.outro_usuario(user) for relacao in relacoes]
+    pendentes = Amizade.objects.filter(
+        destinatario=user, status=Amizade.STATUS_PENDENTE
+    ).select_related('remetente__perfil')
 
     return render(request, 'usuarios/amigos.html', {
-        'seguindo': seguindo,
-        'seguidores': seguidores,
-        'perfil': perfil
+        'amigos': lista_amigos,
+        'pendentes': pendentes,
+        'perfil': perfil,
     })
 
 
@@ -242,12 +243,16 @@ def encontrar_amigos(request):
         status_map = {}
         for amizade in amizades:
             outro_usuario_id = amizade.destinatario_id if amizade.remetente_id == user.id else amizade.remetente_id
-            status_map[outro_usuario_id] = amizade.status
+            status_map[outro_usuario_id] = {
+                'status': amizade.status,
+                'direcao': 'enviada' if amizade.remetente_id == user.id else 'recebida',
+                'amizade_id': amizade.id,
+            }
 
         # Monta a lista final de resultados com o status de cada um
         for u in resultados_brutos:
-            status = status_map.get(u.id, 'nenhum') # 'nenhum' = sem relação
-            resultados_finais.append({'usuario': u, 'status': status})
+            relacao = status_map.get(u.id, {'status': 'nenhum'})
+            resultados_finais.append({'usuario': u, **relacao})
 
     return render(request, 'usuarios/encontrar_amigos.html', {
         'resultados': resultados_finais,
@@ -259,28 +264,26 @@ def convidar_amigos(request):
     return render(request, 'usuarios/convidar_amigos.html')
 
 
+def _redirecionar_apos_acao(request, padrao):
+    destino = request.POST.get('next')
+    if destino and url_has_allowed_host_and_scheme(destino, {request.get_host()}):
+        return redirect(destino)
+    return redirect(padrao)
+
+
 def enviar_solicitacao(remetente, destinatario):
-    if remetente != destinatario:
-        # Verifica se já existe uma solicitação em qualquer direção
-        existente = Amizade.objects.filter(
-            Q(remetente=remetente, destinatario=destinatario) |
-            Q(remetente=destinatario, destinatario=remetente)
-        ).exists()
+    """Cria uma solicitação, impedindo relações duplicadas em qualquer sentido."""
+    if remetente == destinatario:
+        return None
 
-        if not existente:
-            amizade = Amizade.objects.create(remetente=remetente, destinatario=destinatario)
-            return amizade
-
-
-def aceitar_solicitacao(amizade_id):
-    amizade = get_object_or_404(Amizade, id=amizade_id)
-    if amizade.status == 'pendente':
-        amizade.status = 'aceita'
-        amizade.save()
-
-def aceitar_solicitacao_view(request, amizade_id):
-    aceitar_solicitacao(amizade_id)
-    return redirect("usuarios:solicitacoes")
+    with transaction.atomic():
+        existente = Amizade.objects.select_for_update().filter(
+            Q(remetente=remetente, destinatario=destinatario)
+            | Q(remetente=destinatario, destinatario=remetente)
+        ).first()
+        if existente:
+            return None
+        return Amizade.objects.create(remetente=remetente, destinatario=destinatario)
 
 @login_required
 @require_POST
@@ -288,31 +291,55 @@ def enviar_solicitacao_view(request, destinatario_id):
     destinatario = get_object_or_404(User, id=destinatario_id)
     remetente = request.user
     
-    # Reutiliza a lógica de negócio para criar a solicitação
-    enviar_solicitacao(remetente, destinatario)
-    
-    messages.success(request, f"Solicitação de amizade enviada para {destinatario.username}.")
+    # Reutiliza a lógica de negócio para criar a solicitação.
+    if enviar_solicitacao(remetente, destinatario):
+        messages.success(request, f"Solicitação de amizade enviada para {destinatario.username}.")
+    else:
+        messages.error(request, "Não foi possível enviar esta solicitação.")
     
     # Redireciona de volta para a página de busca, mantendo a query original
     query = request.POST.get('query_original', '')
     redirect_url = reverse('usuarios:encontrar_amigos') + (f'?q={query}' if query else '')
     return redirect(redirect_url)
 
-def solicitacoes_pendentes(request):
-    pendentes = Amizade.objects.filter(destinatario=request.user, status='pendente')
-    return render(request, "usuarios/solicitacoes.html", {"pendentes": pendentes})
+@login_required
+@require_POST
+def responder_solicitacao(request, amizade_id, resposta):
+    amizade = get_object_or_404(
+        Amizade,
+        id=amizade_id,
+        destinatario=request.user,
+        status=Amizade.STATUS_PENDENTE,
+    )
+    amizade.status = (
+        Amizade.STATUS_ACEITA if resposta == 'aceitar' else Amizade.STATUS_RECUSADA
+    )
+    amizade.save(update_fields=['status'])
+    messages.success(
+        request,
+        'Solicitação aceita.' if resposta == 'aceitar' else 'Solicitação recusada.',
+    )
+    return _redirecionar_apos_acao(request, 'usuarios:amigos')
 
 
 
+@login_required
 @require_POST
 def remover_amigo(request, amigo_id):
-    Amizade.objects.filter(
-        Q(remetente=request.user, destinatario_id=amigo_id) |
-        Q(remetente_id=amigo_id, destinatario=request.user),
-        status__in=['aceita', 'pendente']  # inclui pendente também
-    ).delete()
-    messages.success(request, "Solicitação ou amizade removida.")
-    return redirect("usuarios:amigos")
+    relacao = get_object_or_404(
+        Amizade.objects.filter(
+            Q(remetente=request.user, destinatario_id=amigo_id)
+            | Q(remetente_id=amigo_id, destinatario=request.user),
+            status__in=[Amizade.STATUS_ACEITA, Amizade.STATUS_PENDENTE],
+        )
+    )
+    # Apenas quem enviou pode cancelar uma solicitação pendente.
+    if relacao.status == Amizade.STATUS_PENDENTE and relacao.remetente_id != request.user.id:
+        messages.error(request, 'Use as opções da solicitação para respondê-la.')
+    else:
+        relacao.delete()
+        messages.success(request, 'Solicitação ou amizade removida.')
+    return _redirecionar_apos_acao(request, 'usuarios:amigos')
 
 
 

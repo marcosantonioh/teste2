@@ -232,17 +232,40 @@ class ConquistaUsuario(models.Model):
 
 
 class Amizade(models.Model):
+    STATUS_PENDENTE = "pendente"
+    STATUS_ACEITA = "aceita"
+    STATUS_RECUSADA = "recusada"
+
     remetente = models.ForeignKey(User, related_name='amizades_enviadas', on_delete=models.CASCADE)
     destinatario = models.ForeignKey(User, related_name='amizades_recebidas', on_delete=models.CASCADE)
     status = models.CharField(
         max_length=10,
-        choices=[('pendente', 'Pendente'), ('aceita', 'Aceita'), ('recusada', 'Recusada')],
-        default='pendente'
+        choices=[
+            (STATUS_PENDENTE, 'Pendente'),
+            (STATUS_ACEITA, 'Aceita'),
+            (STATUS_RECUSADA, 'Recusada'),
+        ],
+        default=STATUS_PENDENTE
     )
     data_solicitacao = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         unique_together = ('remetente', 'destinatario')
+        constraints = [
+            models.CheckConstraint(
+                condition=~models.Q(remetente=models.F('destinatario')),
+                name='amizade_usuarios_distintos',
+            ),
+        ]
 
     def __str__(self):
         return f"{self.remetente} → {self.destinatario} ({self.status})"
+
+    def outro_usuario(self, usuario):
+        """Retorna a outra pessoa da relação ou gera erro para usuário alheio."""
+        if usuario_id := getattr(usuario, "id", None):
+            if self.remetente_id == usuario_id:
+                return self.destinatario
+            if self.destinatario_id == usuario_id:
+                return self.remetente
+        raise ValueError("O usuário não participa desta amizade.")

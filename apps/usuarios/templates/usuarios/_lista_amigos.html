@@ -4,8 +4,7 @@
 <div class="box lista">
   <!-- Abas -->
   <div class="tabs">
-    <button class="tab active" onclick="mostrarAba('segue')">Segue</button>
-    <button class="tab" onclick="mostrarAba('seguidores')">Seguidores</button>
+    <button class="tab active" onclick="mostrarAba('segue')">Amigos</button>
   </div>
 
   <!-- Conteúdo das Abas -->
@@ -38,34 +37,6 @@
     {% endif %}
   </div>
 
-  <div id="seguidores" class="tab-content">
-    {% for amigo in amigos|slice:":3" %}
-    <div class="perfil-item">
-      <img
-        src="{% static amigo.perfil.avatar_arquivo %}"
-        alt="Avatar de {{ amigo.username }}"
-      />
-      <div>
-        <strong>{{ amigo.username }}</strong><br />
-        <span>{{ amigo.perfil.xp }} XP</span>
-      </div>
-    </div>
-    {% empty %}
-
-     <div class="info">
-      <img src="/static/img/cacto.svg" alt="" class="sad-mascote" />
-      <p>Você ainda não tem seguidores.</p>
-    </div>
-    
-
-    {% endfor %} {% if amigos|length > 3 %}
-    <div class="ver-mais">
-      <a href="{% url 'usuarios:amigos' %}"
-        >Ver mais {{ amigos|length|add:"-3" }}</a
-      >
-    </div>
-    {% endif %}
-  </div>
 </div>
 
 <!-- Script de abas (mantido junto ao componente para ser autossuficiente) -->

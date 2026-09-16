@@ -197,6 +197,7 @@ body {
   gap: 10px;
   /* background-color: aqua; */
   padding: 5px 10px;
+  position: relative;
 }
 
 .user img {
@@ -216,6 +217,18 @@ body {
 
 .user span {
   font-size: 1em;
+}
+
+.user .notificacao-perfil {
+  background: #e53935;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  height: 0.72rem;
+  min-width: 0.72rem;
+  padding: 0;
+  position: absolute;
+  right: 0.28rem;
+  top: 0.28rem;
 }
 .option {
   display: flex;
@@ -239,6 +252,24 @@ body {
 .option a img {
   margin-right: 15px;
   width: 1.5em;
+}
+
+.option a .notificacao-amigos {
+  align-items: center;
+  background: #e53935;
+  border: 2px solid #fff;
+  border-radius: 999px;
+  color: #fff;
+  display: inline-flex;
+  font-size: 0.72rem;
+  font-weight: 700;
+  height: 1.35rem;
+  justify-content: center;
+  line-height: 1;
+  margin-left: auto;
+  margin-right: 0.7rem;
+  min-width: 1.35rem;
+  padding: 0 0.22rem;
 }
 
 .option:hover {

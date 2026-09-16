@@ -76,6 +76,9 @@
           <div class="user" onclick="toggleDropdown()">
             <img src="{% static perfil.avatar_arquivo %}" alt="Avatar de {{ user.username }}" class="navbar-avatar" />
             <span>{{ user.username }}</span>
+            {% if solicitacoes_amizade_pendentes %}
+              <span class="notificacao-perfil" aria-label="Há solicitações de amizade pendentes"></span>
+            {% endif %}
           </div>
 
           <div class="dropdown-menu" id="dropdownMenu">
@@ -89,6 +92,11 @@
               <a href="{% url 'usuarios:amigos' %}">
                 <img src="{% static 'img/amigos.svg' %}" alt="" />
                 Amigos
+                {% if solicitacoes_amizade_pendentes %}
+                  <span class="notificacao-amigos" aria-label="{{ solicitacoes_amizade_pendentes }} solicitações de amizade pendentes">
+                    {{ solicitacoes_amizade_pendentes }}
+                  </span>
+                {% endif %}
               </a>
             </div>
             <div class="option">

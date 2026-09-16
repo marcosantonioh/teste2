@@ -15,5 +15,7 @@ urlpatterns = [
     path("perfil/amigos/convidar", views.convidar_amigos, name="convidar_amigos"),
     path("perfil/<str:username>/", views.ver_perfil_usuario, name="ver_perfil_usuario"),
     path('enviar-solicitacao/<int:destinatario_id>/', views.enviar_solicitacao_view, name='enviar_solicitacao'),
+    path('solicitacoes/<int:amizade_id>/aceitar/', views.responder_solicitacao, {'resposta': 'aceitar'}, name='aceitar_solicitacao'),
+    path('solicitacoes/<int:amizade_id>/recusar/', views.responder_solicitacao, {'resposta': 'recusar'}, name='recusar_solicitacao'),
     path('remover-amigo/<int:amigo_id>/', views.remover_amigo, name='remover_amigo'),
 ]

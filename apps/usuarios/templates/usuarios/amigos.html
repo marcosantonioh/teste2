@@ -22,6 +22,26 @@
     </div>
   </div>
 
+  {% if pendentes %}
+  <section class="box solicitacoes">
+    <h4>Solicitações recebidas ({{ pendentes|length }})</h4>
+    {% for solicitacao in pendentes %}
+      <div class="perfil-item">
+        <img src="{% static solicitacao.remetente.perfil.avatar_arquivo %}" alt="Avatar de {{ solicitacao.remetente.username }}">
+        <strong>{{ solicitacao.remetente.username }}</strong>
+        <form method="post" action="{% url 'usuarios:aceitar_solicitacao' solicitacao.id %}">
+          {% csrf_token %}
+          <button type="submit">Aceitar</button>
+        </form>
+        <form method="post" action="{% url 'usuarios:recusar_solicitacao' solicitacao.id %}">
+          {% csrf_token %}
+          <button type="submit">Recusar</button>
+        </form>
+      </div>
+    {% endfor %}
+  </section>
+  {% endif %}
+
 </div>
 
 

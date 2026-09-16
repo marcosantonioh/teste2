@@ -153,6 +153,7 @@
   justify-content: space-between;
   padding: 12px;
   border-bottom: 1px solid #ddd;
+  gap: 0.75rem;
 }
 
 .resultado-item img {
@@ -223,4 +224,54 @@
 
 .resultado-item .btn-pendente:hover {
     background-color: #e0b70e;
+}
+
+.amigo-confirmado {
+  background: #ebf8ef;
+  border-radius: 999px;
+  color: #268243 !important;
+  padding: 0.45rem 0.75rem;
+}
+
+.friendship-status-container {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  justify-content: flex-end;
+}
+
+.resultado-item .btn-seguir {
+  background: var(--primary-color);
+}
+
+.resultado-item .btn-seguir:hover {
+  background: var(--primary-dark);
+}
+
+@media (max-width: 700px) {
+  .box1,
+  .box2,
+  .left,
+  .right {
+    width: 100%;
+  }
+
+  .box2 {
+    flex-direction: column;
+  }
+
+  .resultado-item {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .resultado-item img {
+    width: 52px;
+  }
+
+  .friendship-status-container {
+    width: 100%;
+    justify-content: flex-start;
+  }
 }
