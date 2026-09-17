@@ -14,15 +14,17 @@
     {% endif %}"
   onclick="toggleDrop('{{ estacao.id }}')"
 >
-  {% if estacao.status == 'livre' %}
-    <img src="{% static 'img/play.svg' %}" alt="Jogar Estação" class="play-icon" /> {# Ícone preto para fundo branco #}
-  {% elif estacao.status == 'completado' %}
-    <img src="{% static 'img/check-white.svg' %}" alt="Estação Concluída" class="play-icon" /> {# Ícone branco para fundo roxo #}
-  {% elif estacao.status == 'bloqueado' %}
-    <img src="{% static 'img/lock.svg' %}" alt="Estação Bloqueada" class="play-icon" /> {# Ícone cinza para fundo cinza #}
-  {% else %}
-    <img src="{% static 'img/play-white.svg' %}" alt="Estação" class="play-icon" /> {# Ícone de fallback (branco por padrão) #}
-  {% endif %}
+  <span class="station-tile">
+    {% if estacao.status == 'livre' %}
+      <img src="{% static 'img/play.svg' %}" alt="Jogar Estação" class="play-icon" />
+    {% elif estacao.status == 'completado' %}
+      <img src="{% static 'img/check-white.svg' %}" alt="Estação Concluída" class="play-icon" />
+    {% elif estacao.status == 'bloqueado' %}
+      <img src="{% static 'img/lock.svg' %}" alt="Estação Bloqueada" class="play-icon" />
+    {% else %}
+      <img src="{% static 'img/play-white.svg' %}" alt="Estação" class="play-icon" />
+    {% endif %}
+  </span>
 
   <!-- Círculo de estação -->
   <div class="station-dropdown" id="dropdown-{{ estacao.id }}">

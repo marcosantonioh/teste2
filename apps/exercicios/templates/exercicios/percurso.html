@@ -83,6 +83,7 @@
 
       <div class="module-description">
         <div class="stations">
+          <svg class="percurso-conectores" aria-hidden="true"></svg>
           {% for estacao in estacoes %}
             <!-- Aqui você inclui o botão -->
             {% include "modules/button-play.html" %}
@@ -172,6 +173,34 @@
     modal.classList.remove('modal-bau-estacao--aberto');
     modal.setAttribute('aria-hidden', 'true');
   }
+
+  function desenharConectoresPercurso() {
+    const percurso = document.querySelector('.stations');
+    const svg = percurso?.querySelector('.percurso-conectores');
+    if (!percurso || !svg) return;
+
+    const pontos = [...percurso.querySelectorAll('.station-circle, .bau-estacao')];
+    const limites = percurso.getBoundingClientRect();
+    svg.setAttribute('viewBox', `0 0 ${limites.width} ${limites.height}`);
+    svg.replaceChildren();
+
+    for (let indice = 0; indice < pontos.length - 1; indice += 1) {
+      const atual = pontos[indice].getBoundingClientRect();
+      const proximo = pontos[indice + 1].getBoundingClientRect();
+      const x1 = atual.left - limites.left + atual.width / 2;
+      const y1 = atual.top - limites.top + atual.height / 2;
+      const x2 = proximo.left - limites.left + proximo.width / 2;
+      const y2 = proximo.top - limites.top + proximo.height / 2;
+      const meioY = (y1 + y2) / 2;
+      const caminho = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      caminho.setAttribute('d', `M ${x1} ${y1} C ${x1} ${meioY}, ${x2} ${meioY}, ${x2} ${y2}`);
+      caminho.setAttribute('class', 'percurso-conectores__linha');
+      svg.append(caminho);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', desenharConectoresPercurso);
+  window.addEventListener('resize', desenharConectoresPercurso);
 
   {% if abrir_modal_bau %}
     abrirModalBau();

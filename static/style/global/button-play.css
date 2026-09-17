@@ -1,59 +1,111 @@
-/* Percurso vertical: o cabo fica atrás das estações e as conecta pelo centro. */
+/* Percurso em zigue-zague: cada ponto ocupa uma faixa vertical própria. */
 .stations {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 32px;
-  padding: 8px 0;
+  width: min(100%, 680px);
+  gap: 18px;
+  padding: 8px 8%;
 }
 
 .stations::before {
-  content: "";
+  display: none;
+}
+
+.percurso-conectores {
   position: absolute;
-  top: 46px;
-  bottom: 46px;
-  left: 50%;
-  width: 6px;
-  transform: translateX(-50%);
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--primary-dark), var(--primary-light), var(--primary-dark));
-  box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.12);
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.percurso-conectores__linha {
+  fill: none;
+  stroke: rgba(113, 42, 174, 0.64);
+  stroke-width: 6;
+  stroke-linecap: round;
+  filter: drop-shadow(0 2px 1px rgba(57, 15, 94, 0.15));
+}
+
+/* O SVG é o primeiro filho; os nós seguem esquerda → centro → direita → centro. */
+.stations > :nth-child(4n + 2) {
+  align-self: flex-start;
+}
+
+.stations > :nth-child(4n + 3),
+.stations > :nth-child(4n + 5) {
+  align-self: center;
+}
+
+.stations > :nth-child(4n + 4) {
+  align-self: flex-end;
 }
 
 /* Estilos gerais para o círculo da estação */
 .station-circle {
-  width: 92px;
-  height: 92px;
-  padding: 20px;
-  border-radius: 50%;
+  --tile-top: #a74ef4;
+  --tile-side: #6f23ad;
+  width: 148px;
+  height: 112px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  border-radius: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative; /* Necessário para o posicionamento absoluto do dropdown */
   cursor: pointer;
-  /* transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; */
   z-index: 1; /* Define um z-index base para os círculos */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
   margin: 0;
   isolation: isolate;
 }
 
-/* Anel roxo animado para dar destaque ao percurso sem competir com o ícone. */
-.station-circle--animada::after {
+.station-tile {
+  position: relative;
+  display: block;
+  width: 148px;
+  height: 112px;
+  filter: drop-shadow(0 9px 5px rgba(54, 18, 84, 0.2));
+}
+
+.station-tile::before,
+.station-tile::after {
   content: "";
   position: absolute;
-  inset: -10px;
-  border: 2px solid rgba(128, 0, 190, 0.72);
-  border-radius: 50%;
+  left: 0;
+  width: 148px;
   pointer-events: none;
-  z-index: 0;
-  animation: station-ring-pulse 2.2s ease-out infinite;
+}
+
+/* Face superior em losango e a face inferior formam o bloco em perspectiva. */
+.station-tile::before {
+  top: 0;
+  height: 112px;
+  background: linear-gradient(135deg, #c67aff, var(--tile-top));
+  clip-path: polygon(50% 0, 100% 28%, 50% 58%, 0 28%);
+  z-index: 2;
+}
+
+.station-tile::after {
+  top: 0;
+  height: 112px;
+  background: linear-gradient(90deg, #57168d, var(--tile-side), #471174);
+  clip-path: polygon(0 28%, 50% 58%, 100% 28%, 100% 48%, 50% 78%, 0 48%);
+  z-index: 1;
+}
+
+/* Anel roxo animado para dar destaque à próxima estação. */
+.station-circle--animada .station-tile {
+  animation: station-tile-pulse 2.2s ease-out infinite;
 }
 
 .station-circle:hover {
-  /* transform: scale(1.05); */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Sombra mais pronunciada no hover */
+  transform: translateY(-3px);
 }
 
 .station-circle.station-circle-active {
@@ -62,32 +114,35 @@
 
 /* Estilos específicos para cada status do círculo */
 .status-livre {
-  background-color: #ffffff; /* Fundo branco (para ícone preto 'play.svg') */
-  border: 3px solid var(--primary-color); /* Borda verde para indicar 'livre' ou 'jogável' */
+  --tile-top: #c879ff;
+  --tile-side: #7b2eb8;
 }
 
 .status-completado {
-  background-color: var(--primary-color); /* Fundo roxo (para ícone branco 'check-white.svg') */
-  border: 2px solid var(--primary-dark); /* Borda roxa mais escura */
+  --tile-top: #8f3bd0;
+  --tile-side: #58188e;
 }
 
 .status-bloqueado {
-  background-color: #cccccc; /* Fundo cinza (para ícone cinza 'lock.svg') */
-  border: 2px solid #a0a0a0; /* Borda cinza mais escura */
+  --tile-top: #b5a0c5;
+  --tile-side: #7b688a;
   cursor: pointer; /* Abre os detalhes, mas não permite iniciar a estação. */
 }
 
 .status-default {
-  background-color: #555e67; /* Fundo cinza escuro/ardósia (para ícone branco 'play-white.svg') */
+  --tile-top: #9c56cf;
+  --tile-side: #63228e;
 }
 
 /* Estilos para o ícone dentro do círculo */
 .play-icon {
-  width: 32px; /* Tamanho de exemplo para o ícone */
-  height: 32px; /* Tamanho de exemplo para o ícone */
+  width: 36px;
+  height: 36px;
   object-fit: contain; /* Garante que o ícone se ajuste bem sem distorção */
   position: relative;
-  z-index: 1;
+  z-index: 3;
+  top: 24px;
+  left: 56px;
 }
 
 .station-circle--animada .play-icon {
@@ -176,8 +231,13 @@
   }
 }
 
+@keyframes station-tile-pulse {
+  0%, 100% { filter: drop-shadow(0 9px 5px rgba(54, 18, 84, 0.2)); }
+  50% { filter: drop-shadow(0 0 13px rgba(166, 77, 244, 0.86)); }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .station-circle--animada::after,
+  .station-circle--animada .station-tile,
   .station-circle--animada .play-icon {
     animation: none;
   }
@@ -187,17 +247,19 @@
 
 @media (max-width: 480px) {
   .stations {
-    gap: 26px;
-  }
-
-  .stations::before {
-    top: 40px;
-    bottom: 40px;
+    gap: 14px;
+    padding-left: 0;
+    padding-right: 0;
   }
 
   .station-circle {
-    width: 80px;
-    height: 80px;
+    transform: scale(0.88);
+    margin: -6px 0;
+  }
+
+  .bau-estacao {
+    transform: scale(0.88);
+    margin: -6px 0;
   }
 }
 
