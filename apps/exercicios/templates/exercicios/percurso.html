@@ -10,6 +10,14 @@
 
   <div class="container">
 
+    {% if messages %}
+      <div class="percurso-mensagens" aria-live="polite">
+        {% for message in messages %}
+          <p class="percurso-mensagem percurso-mensagem--{{ message.tags }}">{{ message }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+
     <div class="percurso-navegacao">
       {% if visualizar_todas_secoes %}
         <a href="{% url 'exercicios:percurso' modulo.id %}" class="percurso-navegacao__link">Percurso principal</a>
@@ -78,9 +86,59 @@
           {% for estacao in estacoes %}
             <!-- Aqui você inclui o botão -->
             {% include "modules/button-play.html" %}
+            {% if forloop.counter == 2 and bau_estacao %}
+              {% include "modules/bau-estacao.html" %}
+            {% endif %}
           {% endfor %}
         </div>
       </div>
+
+      {% if bau_estacao %}
+        <div class="modal-bau-estacao" id="modalBauEstacao" aria-hidden="true">
+          <div class="modal-bau-estacao__conteudo" role="dialog" aria-modal="true" aria-labelledby="tituloModalBau">
+            <button type="button" class="modal-bau-estacao__fechar" aria-label="Fechar" onclick="fecharModalBau()">×</button>
+            <img src="{% static 'img/baus/bau_estation.png' %}" alt="Baú de recompensa" class="modal-bau-estacao__imagem">
+            {% if bau_estacao.status == 'bloqueado' %}
+              <h2 id="tituloModalBau">Baú bloqueado</h2>
+              <p>Conclua as duas primeiras estações para desbloquear esta recompensa.</p>
+              <button type="button" class="modal-bau-estacao__botao" onclick="fecharModalBau()">Entendi</button>
+            {% elif bau_estacao.status == 'desbloqueado' %}
+              <h2 id="tituloModalBau">Recompensa disponível!</h2>
+              <div class="modal-bau-estacao__recompensas" aria-label="Recompensas do baú">
+                <article class="modal-bau-estacao__recompensa">
+                  <img src="{% static 'img/cristal.svg' %}" alt="">
+                  <strong>+{{ bau_estacao.cristais }}</strong>
+                  <span>Cristais</span>
+                </article>
+                <article class="modal-bau-estacao__recompensa">
+                  <img src="{% static 'img/xp.svg' %}" alt="">
+                  <strong>+{{ bau_estacao.xp }}</strong>
+                  <span>XP</span>
+                </article>
+              </div>
+              <form method="post" action="{% url 'exercicios:coletar_bau_estacao' secao_atual.id %}">
+                {% csrf_token %}
+                <button type="submit" class="modal-bau-estacao__botao">Coletar recompensa</button>
+              </form>
+            {% else %}
+              <h2 id="tituloModalBau">Recompensa coletada!</h2>
+              <div class="modal-bau-estacao__recompensas" aria-label="Recompensas coletadas">
+                <article class="modal-bau-estacao__recompensa">
+                  <img src="{% static 'img/cristal.svg' %}" alt="">
+                  <strong>+{{ bau_estacao.cristais }}</strong>
+                  <span>Cristais</span>
+                </article>
+                <article class="modal-bau-estacao__recompensa">
+                  <img src="{% static 'img/xp.svg' %}" alt="">
+                  <strong>+{{ bau_estacao.xp }}</strong>
+                  <span>XP</span>
+                </article>
+              </div>
+              <button type="button" class="modal-bau-estacao__botao" onclick="fecharModalBau()">Continuar</button>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
 
     {% endif %}
 
@@ -100,6 +158,25 @@
 
 
 <script>
+  function abrirModalBau() {
+    const modal = document.getElementById('modalBauEstacao');
+    if (!modal) return;
+    modal.classList.add('modal-bau-estacao--aberto');
+    modal.setAttribute('aria-hidden', 'false');
+    modal.querySelector('button:not(.modal-bau-estacao__fechar)')?.focus();
+  }
+
+  function fecharModalBau() {
+    const modal = document.getElementById('modalBauEstacao');
+    if (!modal) return;
+    modal.classList.remove('modal-bau-estacao--aberto');
+    modal.setAttribute('aria-hidden', 'true');
+  }
+
+  {% if abrir_modal_bau %}
+    abrirModalBau();
+  {% endif %}
+
   function toggleDrop(estacaoId) {
     const targetDropdownId = `dropdown-${estacaoId}`;
     const targetDropdown = document.getElementById(targetDropdownId);

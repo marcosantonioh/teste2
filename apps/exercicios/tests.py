@@ -5,6 +5,7 @@ from django.urls import reverse
 
 from apps.exercicios.models import (
     Estacao,
+    BauEstacaoUsuario,
     Exercicio,
     ExercicioUsuario,
     Modulo,
@@ -13,6 +14,7 @@ from apps.exercicios.models import (
 )
 from apps.usuarios.models import Divisao, Perfil
 from django.contrib.auth import get_user_model
+from apps.mecanicas_jogo import services as mecanicas_services
 
 
 class ReporteExercicioTests(TestCase):
@@ -231,6 +233,59 @@ class ResumoExercicioInformativoTests(TestCase):
                 exercicio=self.exercicio_info,
                 status="concluido",
             ).exists()
+        )
+
+
+class BauEstacaoTests(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(
+            username="aluno-bau", password="senha123"
+        )
+        self.perfil = Perfil.objects.create(user=self.user)
+        self.modulo = Modulo.objects.create(nome="Módulo Baú", descricao="Desc", ordem=1)
+        self.secao = Secao.objects.create(nome="Seção Baú", modulo=self.modulo, ordem=1)
+        self.estacoes = []
+        for numero in range(1, 4):
+            estacao = Estacao.objects.create(
+                nome=f"Estação {numero}", secao=self.secao
+            )
+            exercicio = Exercicio.objects.create(
+                modulo=self.modulo,
+                estacao=estacao,
+                titulo=f"Exercício {numero}",
+                tipo="mcq",
+                resposta_correta="1",
+            )
+            self.estacoes.append((estacao, exercicio))
+
+    def test_bau_desbloqueia_apos_segunda_estacao_e_libera_terceira_ao_coletar(self):
+        self.client.force_login(self.user)
+        for _, exercicio in self.estacoes[:2]:
+            ExercicioUsuario.objects.create(
+                usuario=self.user, exercicio=exercicio, status="concluido"
+            )
+
+        response = self.client.get(
+            reverse("exercicios:percurso", args=[self.modulo.id])
+        )
+        self.assertContains(response, "Baú desbloqueado!")
+
+        response = self.client.post(
+            reverse("exercicios:coletar_bau_estacao", args=[self.secao.id])
+        )
+        self.assertRedirects(
+            response,
+            f"{reverse('exercicios:percurso', args=[self.modulo.id])}?bau_coletado=1",
+        )
+        self.assertTrue(
+            BauEstacaoUsuario.objects.filter(usuario=self.user, secao=self.secao).exists()
+        )
+        self.perfil.refresh_from_db()
+        self.assertEqual(self.perfil.cristal, 5)
+        self.assertEqual(self.perfil.xp, 25)
+        self.assertEqual(
+            mecanicas_services.obter_status_estacao(self.estacoes[2][0], self.user),
+            "livre",
         )
 
 

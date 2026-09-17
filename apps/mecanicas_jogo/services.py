@@ -1,5 +1,12 @@
 from django.db.models import Sum
-from apps.exercicios.models import Exercicio, Modulo, Secao, Estacao, ExercicioUsuario
+from apps.exercicios.models import (
+    BauEstacaoUsuario,
+    Exercicio,
+    Modulo,
+    Secao,
+    Estacao,
+    ExercicioUsuario,
+)
 from apps.usuarios.models import Divisao
 
 
@@ -53,6 +60,13 @@ def obter_status_estacao(estacao, usuario):
     try:
         indice = secoes.index(estacao)
     except ValueError:
+        return "bloqueado"
+
+    # O terceiro ponto do percurso é liberado pela coleta do baú que aparece
+    # após a segunda estação. As demais estações seguem a regra normal.
+    if indice == 2 and not BauEstacaoUsuario.objects.filter(
+        usuario=usuario, secao=estacao.secao
+    ).exists():
         return "bloqueado"
 
     estacao_anterior = secoes[indice - 1]

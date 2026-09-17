@@ -94,6 +94,46 @@
   animation: station-icon-float 2.2s ease-in-out infinite;
 }
 
+/* Baú especial inserido entre a segunda e a terceira estação. */
+.bau-estacao {
+  width: 116px;
+  min-height: 100px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.bau-estacao__imagem {
+  width: 84px;
+  height: 84px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 5px rgba(0, 0, 0, 0.18));
+}
+
+.bau-estacao--bloqueado .bau-estacao__imagem {
+  filter: grayscale(1) brightness(0.62) drop-shadow(0 4px 5px rgba(0, 0, 0, 0.18));
+}
+
+.bau-estacao--desbloqueado .bau-estacao__imagem {
+  animation: bau-pulse 1.8s ease-in-out infinite;
+}
+
+.bau-estacao--coletado .bau-estacao__imagem {
+  opacity: 0.62;
+  filter: grayscale(0.7);
+}
+
+@keyframes bau-pulse {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-4px) scale(1.06); }
+}
+
 /* Estilos para o menu dropdown da estação */
 .station-dropdown {
   display: none; /* Escondido por padrão, será alternado por JavaScript (função toggleDrop) */
@@ -141,6 +181,8 @@
   .station-circle--animada .play-icon {
     animation: none;
   }
+
+  .bau-estacao--desbloqueado .bau-estacao__imagem { animation: none; }
 }
 
 @media (max-width: 480px) {

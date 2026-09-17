@@ -1,0 +1,15 @@
+{% load static %}
+
+<button
+  type="button"
+  class="bau-estacao bau-estacao--{{ bau_estacao.status }}"
+  aria-label="Abrir baú de recompensa"
+  aria-controls="modalBauEstacao"
+  onclick="abrirModalBau()"
+>
+  <img
+    src="{% static 'img/baus/bau_estation.png' %}"
+    alt="{% if bau_estacao.status == 'coletado' %}Baú coletado{% else %}Baú de recompensa{% endif %}"
+    class="bau-estacao__imagem"
+  />
+</button>

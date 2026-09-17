@@ -51,6 +51,26 @@ class Estacao(models.Model):
         ordering = ["id"]  # Ou ['ordem', 'id'] se adicionar campo de ordem
 
 
+class BauEstacaoUsuario(models.Model):
+    """Registra a coleta única do baú inserido no percurso de cada seção."""
+
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    secao = models.ForeignKey(
+        Secao, related_name="bau_coletas", on_delete=models.CASCADE
+    )
+    cristais_recebidos = models.PositiveIntegerField(default=5)
+    xp_recebido = models.PositiveIntegerField(default=25)
+    coletado_em = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("usuario", "secao")
+        verbose_name = "Baú de estação coletado"
+        verbose_name_plural = "Baús de estação coletados"
+
+    def __str__(self):
+        return f"{self.usuario} — Baú da seção {self.secao}"
+
+
 # Create your models here.
 class Exercicio(models.Model):
 

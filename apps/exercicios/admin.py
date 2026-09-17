@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html, format_html_join
-from .models import Exercicio, ExercicioUsuario, Modulo, Secao, Estacao, ReporteExercicio, TentativaEstacao
+from .models import BauEstacaoUsuario, Exercicio, ExercicioUsuario, Modulo, Secao, Estacao, ReporteExercicio, TentativaEstacao
 from import_export.admin import ImportExportModelAdmin
 
 
@@ -21,6 +21,14 @@ class TentativaEstacaoAdmin(admin.ModelAdmin):
     list_filter = ("primeira_conclusao", "estacao__secao__modulo")
     search_fields = ("usuario__username", "estacao__nome")
     readonly_fields = ("usuario", "estacao", "iniciada_em", "concluida_em", "duracao_segundos", "primeira_conclusao", "acertos", "erros", "percentual_acertos", "xp_ganho")
+
+
+@admin.register(BauEstacaoUsuario)
+class BauEstacaoUsuarioAdmin(admin.ModelAdmin):
+    list_display = ("usuario", "secao", "cristais_recebidos", "xp_recebido", "coletado_em")
+    list_filter = ("secao__modulo", "secao")
+    search_fields = ("usuario__username", "secao__nome")
+    readonly_fields = ("usuario", "secao", "cristais_recebidos", "xp_recebido", "coletado_em")
 
 
 @admin.register(Exercicio)

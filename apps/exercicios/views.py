@@ -1,6 +1,8 @@
 import random
 
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.db import transaction
 from django.views.decorators.http import require_POST
 from apps.usuarios.models import Perfil
 from django.shortcuts import render, get_object_or_404, redirect
@@ -11,6 +13,7 @@ from apps.exercicios.models import (
     Modulo,
     Secao,
     Estacao,
+    BauEstacaoUsuario,
     ReporteExercicio,
     TentativaEstacao,
 )
@@ -186,6 +189,25 @@ def percurso(request, modulo_id):
                     estacao_animada_id = estacao.id
                     break
 
+    bau_estacao = None
+    if secao_atual and len(estacoes) >= 3:
+        primeiras_estacoes = estacoes[:2]
+        primeiras_concluidas = all(
+            mecanicas_services.obter_status_estacao(estacao, request.user)
+            == "completado"
+            for estacao in primeiras_estacoes
+        )
+        bau_coletado = BauEstacaoUsuario.objects.filter(
+            usuario=request.user, secao=secao_atual
+        ).first()
+        bau_estacao = {
+            "status": "coletado" if bau_coletado else (
+                "desbloqueado" if primeiras_concluidas else "bloqueado"
+            ),
+            "cristais": bau_coletado.cristais_recebidos if bau_coletado else 5,
+            "xp": bau_coletado.xp_recebido if bau_coletado else 25,
+        }
+
     context = {
         "modulo": modulo,
         "secao_atual": secao_atual,
@@ -195,10 +217,42 @@ def percurso(request, modulo_id):
         "perfil": perfil,
         "secoes_mapa": secoes_mapa,
         "visualizar_todas_secoes": request.GET.get("visualizacao") == "todas",
+        "bau_estacao": bau_estacao,
+        "abrir_modal_bau": request.GET.get("bau_coletado") == "1",
     }
 
     # Adicione o módulo ao contexto e renderize o template
     return render(request, "exercicios/percurso.html", context)
+
+
+@login_required
+@require_POST
+def coletar_bau_estacao(request, secao_id):
+    """Entrega uma única recompensa após as duas primeiras estações da seção."""
+    secao = get_object_or_404(Secao, pk=secao_id)
+    estacoes = list(secao.estacoes.order_by("id")[:2])
+
+    if len(estacoes) < 2 or not all(
+        mecanicas_services.obter_status_estacao(estacao, request.user) == "completado"
+        for estacao in estacoes
+    ):
+        messages.error(request, "Conclua as duas primeiras estações para desbloquear o baú.")
+        return redirect("exercicios:percurso", modulo_id=secao.modulo_id)
+
+    with transaction.atomic():
+        perfil = Perfil.objects.select_for_update().get(user=request.user)
+        coleta, criada = BauEstacaoUsuario.objects.get_or_create(
+            usuario=request.user,
+            secao=secao,
+            defaults={"cristais_recebidos": 5, "xp_recebido": 25},
+        )
+        if criada:
+            perfil.cristal += coleta.cristais_recebidos
+            perfil.xp += coleta.xp_recebido
+            perfil.save(update_fields=["cristal", "xp"])
+
+    percurso_url = reverse("exercicios:percurso", args=[secao.modulo_id])
+    return redirect(f"{percurso_url}?bau_coletado=1")
 
 
 def _extrair_resposta_do_request(request, tipo_exercicio):

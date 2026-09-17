@@ -11,6 +11,7 @@ urlpatterns = [
     path('resolver/<int:exercicio_id>/', views.resolver_exercicio, name='resolver_exercicio'),
     path('resolver/<int:exercicio_id>/reportar/', views.reportar_problema, name='reportar_problema'),
     path('percurso/<int:modulo_id>/', views.percurso, name='percurso'),
+    path('percurso/secao/<int:secao_id>/bau/coletar/', views.coletar_bau_estacao, name='coletar_bau_estacao'),
     path('iniciar_estacao/<int:exercicio_id>/', views.iniciar_exercicios, name='iniciar_estacao'),
     path('estacao_concluida/<int:estacao_id>/', views.estacao_concluida_view, name='estacao_concluida'),
     path('api/exercicio/<int:exercicio_id>/', views.get_exercicio_data, name='api_get_exercicio_data'),
