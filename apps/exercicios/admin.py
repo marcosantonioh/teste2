@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import reverse
-from django.utils.html import format_html
+from django.utils.html import format_html, format_html_join
 from .models import Exercicio, ExercicioUsuario, Modulo, Secao, Estacao, ReporteExercicio, TentativaEstacao
 from import_export.admin import ImportExportModelAdmin
 
@@ -158,9 +158,34 @@ class EstacaoAdmin(admin.ModelAdmin):
         "nome",
         "secao",
         "disponivel_para_visitantes",
+        "exercicios_da_estacao",
         "link_adicionar_exercicio_form",
     ]
-    readonly_fields = ["link_adicionar_exercicio_form"]
+    readonly_fields = ["exercicios_da_estacao", "link_adicionar_exercicio_form"]
+
+    def exercicios_da_estacao(self, obj):
+        """Exibe os exercícios vinculados à estação com acesso à edição."""
+        if not obj.pk:
+            return "Salve a estação primeiro para visualizar seus exercícios."
+
+        exercicios = obj.exercicios.all()
+        if not exercicios:
+            return "Esta estação ainda não possui exercícios."
+
+        return format_html_join(
+            "",
+            '<div style="margin: 0 0 8px"><a href="{}">{}</a> <span style="color: var(--body-quiet-color)">— {}</span></div>',
+            (
+                (
+                    reverse("admin:exercicios_exercicio_change", args=(exercicio.pk,)),
+                    exercicio.titulo or f"Exercício #{exercicio.pk}",
+                    exercicio.get_tipo_display(),
+                )
+                for exercicio in exercicios
+            ),
+        )
+
+    exercicios_da_estacao.short_description = "Exercícios desta Estação"
 
     def link_adicionar_exercicio_form(self, obj):
         if obj.pk:

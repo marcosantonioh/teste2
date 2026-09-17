@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const diasOfensivaGanha = document.getElementById("diasOfensivaGanha");
   let aoFecharModalConquista = null;
   let aoFecharModalOfensiva = null;
+  let respostaAtual = null;
 
   function fecharModalConquista() {
     if (!modalConquista) return;
@@ -189,29 +190,32 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function processApiResponse(data) {
-    const exibirResultado = () => {
-      const concluir = () => {
-        if (data.estacao_concluida_url) {
-          window.location.href = data.estacao_concluida_url;
-          return;
-        }
-        if (data.sem_vidas) {
-          const modalSemVidas = document.getElementById("modalSemVidas");
-          if (modalSemVidas) modalSemVidas.style.display = "flex";
-          return;
-        }
-        updateProgressBar(data.progresso);
-        renderFeedback(data);
-      };
+    if (data.sem_vidas) {
+      const modalSemVidas = document.getElementById("modalSemVidas");
+      if (modalSemVidas) modalSemVidas.style.display = "flex";
+      return;
+    }
+    updateProgressBar(data.progresso);
+    renderFeedback(data);
+  }
 
+  function continuarAposFeedback(data, nextId) {
+    const seguir = () => {
+      if (data.estacao_concluida_url) {
+        window.location.href = data.estacao_concluida_url;
+        return;
+      }
+      loadNextExercise(nextId);
+    };
+    const mostrarOfensiva = () =>
       mostrarModalOfensiva(
         data.ofensiva_obtida,
         data.ofensiva_atual,
         data.ofensiva_dias_semana,
-        concluir,
+        seguir,
       );
-    };
-    mostrarModalConquistas(data.conquistas_novas, exibirResultado);
+
+    mostrarModalConquistas(data.conquistas_novas, mostrarOfensiva);
   }
 
   function renderFeedback(data) {
@@ -226,8 +230,9 @@ document.addEventListener("DOMContentLoaded", function () {
         ? "Resposta Correta!"
         : "Resposta Incorreta!";
     let actionButtonsHtml = "";
+    respostaAtual = data;
     if (data.resultado === "correto") {
-      actionButtonsHtml = `<button type="button" class="botao-reportar" data-abrir-report>⚑ Reportar problema</button><a href="#" data-next-id="${data.proximo_exercicio_id}" class="submit btn-continuar-ajax">Continuar</a>`;
+      actionButtonsHtml = `<button type="button" class="botao-reportar" data-abrir-report>⚑ Reportar problema</button><a href="#" data-next-id="${data.proximo_exercicio_id}" class="submit btn-continuar-ajax" data-resposta-correta="true">Continuar</a>`;
     } else {
       actionButtonsHtml = `<div class="botoes-incorreto"><button type="button" onclick="window.location.reload();" class="btn-tentar-novamente">Tentar Novamente</button><button type="button" class="botao-reportar" data-abrir-report>⚑ Reportar problema</button><a href="#" data-next-id="${data.proximo_exercicio_id}" class="btn-continuar btn-continuar-ajax">Pular Exercício</a></div>`;
     }
@@ -306,7 +311,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (data.tipo === "info") {
       baseAcoes.innerHTML = `<div class="resultado"><a href="#" data-next-id="${
         data.proximo_exercicio_id || "null"
-      }" class="submit btn-continuar-ajax">Continuar</a></div>`;
+      }" data-estacao-concluida-url="${data.estacao_concluida_url || ""}" class="submit btn-continuar-ajax">Continuar</a></div>`;
     } else {
       baseAcoes.innerHTML = getDefaultActionButtonsHtml();
     }
@@ -570,6 +575,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const target = event.target.closest(".btn-continuar-ajax");
     if (target) {
       event.preventDefault();
+      if (target.dataset.respostaCorreta === "true" && respostaAtual) {
+        continuarAposFeedback(respostaAtual, target.dataset.nextId);
+        return;
+      }
+      if (target.dataset.estacaoConcluidaUrl) {
+        window.location.href = target.dataset.estacaoConcluidaUrl;
+        return;
+      }
       loadNextExercise(target.dataset.nextId);
     }
   });

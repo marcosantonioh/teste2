@@ -51,6 +51,12 @@
               class="submit"
               >Continuar</a
             >
+          {% elif estacao_concluida_url_para_continuar %}
+            <a
+              href="{{ estacao_concluida_url_para_continuar }}"
+              class="submit"
+              >Continuar</a
+            >
           {% else %}
             <a
               href="{% url 'exercicios:percurso' exercicio.modulo.id %}"

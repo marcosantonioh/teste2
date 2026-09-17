@@ -469,6 +469,7 @@ def resolver_exercicio(request, exercicio_id):
     resultado = None
     correta = None
     proximo_exercicio_id_para_continuar = None
+    estacao_concluida_url_para_continuar = None
     resposta_submetida = None  # Variável para guardar a resposta do usuário
     conquistas_novas = []
 
@@ -505,6 +506,12 @@ def resolver_exercicio(request, exercicio_id):
 
         if proximo_exercicio_livre:
             proximo_exercicio_id_para_continuar = proximo_exercicio_livre.id
+        elif mecanicas_services.estacao_esta_concluida(estacao_atual, request.user):
+            resumo_estacao = _obter_resumo_estacao(request, estacao_atual.id)
+            _finalizar_tentativa_estacao(request, estacao_atual, resumo_estacao)
+            estacao_concluida_url_para_continuar = reverse(
+                "exercicios:estacao_concluida", args=[estacao_atual.id]
+            )
 
     # Calcula os exercícios pendentes na estação para usar no template.
     exercicios_pendentes = mecanicas_services.obter_exercicios_nao_concluidos(
@@ -673,6 +680,7 @@ def resolver_exercicio(request, exercicio_id):
         "alternativas": alternativas,
         "resposta_submetida": resposta_submetida,  # Passa a resposta do usuário para o template
         "proximo_exercicio_id_para_continuar": proximo_exercicio_id_para_continuar,  # Ainda útil para o botão continuar normal
+        "estacao_concluida_url_para_continuar": estacao_concluida_url_para_continuar,
         "sem_vidas": sem_vidas,
         "progresso_percentual": progresso_percentual,
         "exercicios_concluidos_count": exercicios_concluidos_count,
@@ -890,5 +898,13 @@ def get_exercicio_data(request, exercicio_id):
         data["proximo_exercicio_id"] = (
             proximo_exercicio_livre.id if proximo_exercicio_livre else None
         )
+        if not proximo_exercicio_livre and mecanicas_services.estacao_esta_concluida(
+            exercicio.estacao, request.user
+        ):
+            resumo_estacao = _obter_resumo_estacao(request, exercicio.estacao_id)
+            _finalizar_tentativa_estacao(request, exercicio.estacao, resumo_estacao)
+            data["estacao_concluida_url"] = reverse(
+                "exercicios:estacao_concluida", args=[exercicio.estacao_id]
+            )
 
     return JsonResponse(data)

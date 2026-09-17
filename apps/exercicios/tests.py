@@ -213,6 +213,26 @@ class ResumoExercicioInformativoTests(TestCase):
         self.assertContains(resposta_final, "⚡ 17")
         self.assertContains(resposta_final, "100%")
 
+    def test_ultimo_exercicio_informativo_leva_para_conclusao_da_estacao(self):
+        self.client.force_login(self.user)
+        self.exercicio_multipla_escolha.delete()
+
+        response = self.client.get(
+            reverse("exercicios:resolver_exercicio", args=[self.exercicio_info.id])
+        )
+
+        url_conclusao = reverse(
+            "exercicios:estacao_concluida", args=[self.exercicio_info.estacao_id]
+        )
+        self.assertContains(response, url_conclusao)
+        self.assertTrue(
+            ExercicioUsuario.objects.filter(
+                usuario=self.user,
+                exercicio=self.exercicio_info,
+                status="concluido",
+            ).exists()
+        )
+
 
 class PercursoPorSecaoTests(TestCase):
     def setUp(self):
