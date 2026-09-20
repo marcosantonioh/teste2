@@ -1,8 +1,50 @@
+from django import forms
 from django.contrib import admin
+from django.core.exceptions import ValidationError
 from django.urls import reverse
 from django.utils.html import format_html, format_html_join
 from .models import BauEstacaoUsuario, Exercicio, ExercicioUsuario, Modulo, Secao, Estacao, ReporteExercicio, TentativaEstacao
 from import_export.admin import ImportExportModelAdmin
+
+
+class ExercicioAdminForm(forms.ModelForm):
+    """Apresenta respostas alternativas como texto simples no Django Admin."""
+
+    respostas_aceitas = forms.CharField(
+        required=False,
+        widget=forms.Textarea(
+            attrs={
+                "rows": 5,
+                "cols": 60,
+                "placeholder": "Uma alternativa por linha. Ex:\n++contador\ncontador += 1",
+            }
+        ),
+        help_text="Opcional. Informe uma resposta aceita por linha; espaços e ; final são ignorados.",
+    )
+
+    class Meta:
+        model = Exercicio
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance.pk:
+            respostas = [
+                self.instance.resposta_texto_codigo,
+                *(self.instance.respostas_aceitas or []),
+            ]
+            self.initial["respostas_aceitas"] = "\n".join(
+                resposta for resposta in respostas if resposta
+            )
+
+    def clean_respostas_aceitas(self):
+        respostas = self.cleaned_data["respostas_aceitas"].splitlines()
+        respostas = list(
+            dict.fromkeys(resposta.strip() for resposta in respostas if resposta.strip())
+        )
+        if self.cleaned_data.get("tipo") == "lacuna" and not respostas:
+            raise ValidationError("Informe pelo menos uma resposta aceita.")
+        return respostas
 
 
 @admin.register(ReporteExercicio)
@@ -33,6 +75,7 @@ class BauEstacaoUsuarioAdmin(admin.ModelAdmin):
 
 @admin.register(Exercicio)
 class ExercicioAdmin(ImportExportModelAdmin):
+    form = ExercicioAdminForm
     list_display = ("titulo", "estacao", "modulo", "tipo")
     list_filter = ("estacao__secao__modulo", "estacao__secao", "estacao", "tipo")
     search_fields = ("titulo", "enunciado")
@@ -77,7 +120,7 @@ class ExercicioAdmin(ImportExportModelAdmin):
                     "exercicio-tipo",
                     "exercicio-lacuna",
                 ),  # Mostra para o tipo 'lacuna'
-                "fields": ("codigo", "resposta_texto_codigo"),
+                "fields": ("codigo", "respostas_aceitas"),
             },
         ),
         (

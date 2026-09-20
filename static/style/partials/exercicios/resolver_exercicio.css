@@ -8,11 +8,11 @@
 }
 
 .botao-reportar {
-  border: 1px solid #c93636;
+  border: 1px solid var(--primary-color);
   border-radius: 8px;
   padding: 12px 18px;
-  background: var(--red);
-  color: #fff;
+  background: var(--white);
+  color: var(--primary-color);
   cursor: pointer;
   font-weight: 600;
 }
@@ -790,6 +790,26 @@ input[type="radio"]:checked
   font-family: monospace; /* Fonte monoespaçada para código */
 }
 
+.ide-editor { overflow: hidden; margin-bottom: .8rem; border: 1px solid #35284b; border-radius: 12px; background: #191622; box-shadow: 0 12px 28px rgba(30, 15, 50, .16); color: #e9e1f2; }
+.ide-editor__cabecalho, .ide-editor__rodape { display: flex; align-items: center; min-height: 2.6rem; padding: 0 1rem; background: #282135; color: #c9bed8; font: .8rem "Courier New", monospace; }
+.ide-editor__cabecalho { gap: .9rem; border-bottom: 1px solid #35284b; }
+.ide-editor__controles { display: flex; gap: .35rem; }
+.ide-editor__controles span { width: .65rem; height: .65rem; border-radius: 50%; background: #ff6159; }
+.ide-editor__controles span:nth-child(2) { background: #ffbd2e; }
+.ide-editor__controles span:nth-child(3) { background: #28c840; }
+.ide-editor__arquivo b { display: inline-grid; width: 1.15rem; height: 1.15rem; place-items: center; margin-right: .35rem; border-radius: 3px; background: #6a0dad; color: #fff; font-size: .7rem; }
+.ide-editor__linguagem { margin-left: auto; color: #aa8fca; }
+.ide-editor__codigo.exercicio-codigo { margin: 0; padding: 1rem 0; overflow-x: auto; border-radius: 0; background: #191622; color: #e9e1f2; font: .95rem/1.75 "Courier New", monospace; }
+.ide-code__linha { display: flex; min-width: max-content; }
+.ide-code__numero { width: 3.5rem; flex: 0 0 3.5rem; padding-right: 1rem; color: #756a83; text-align: right; user-select: none; }
+.ide-code__conteudo { min-width: 1ch; padding-right: 1.25rem; white-space: pre; }
+.ide-token--palavra { color: #c792ea; }
+.ide-token--numero { color: #f78c6c; }
+.ide-editor .lacuna-marker { margin: -.2rem 0; background: #2f2150; border-color: #a66bff; color: #fff; font-family: inherit; }
+.ide-editor .lacuna-marker:focus { background: #3b2964; border-color: #d4b8ff; box-shadow: 0 0 0 3px rgba(166, 107, 255, .28); }
+.ide-editor__rodape { min-height: 2rem; gap: 1rem; border-top: 1px solid #35284b; color: #9d91ac; font-size: .72rem; }
+.ide-editor__rodape span:last-child { margin-left: auto; color: #c4a5f2; }
+
 .exercicio-codigo-input {
   /* Para a textarea do exercício de código */
   width: 100%;
@@ -814,8 +834,8 @@ input[type="radio"]:checked
 }
 
 .lacuna-marker {
-  /* O servidor define a quantidade de caracteres esperada no campo. */
-  width: calc(var(--tamanho-lacuna, 6) * 1ch + 2rem);
+  /* Cresce conforme o aluno digita, preservando a largura mínima esperada. */
+  width: calc(var(--tamanho-lacuna-dinamico, var(--tamanho-lacuna, 6)) * 1ch + 2rem);
   min-width: 3.5rem;
   max-width: min(100%, 32rem);
   box-sizing: border-box;

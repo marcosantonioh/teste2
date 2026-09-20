@@ -33,7 +33,8 @@ if not SECRET_KEY:
     raise RuntimeError("A variável de ambiente DJANGO_SECRET_KEY não está definida!")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
+DEBUG = os.environ.get("DJANGO_DEBUG", "false").lower() == "true"
 
 ALLOWED_HOSTS = []
 LOGIN_URL = '/login/'
@@ -101,7 +102,8 @@ DATABASES = {
         default=os.environ.get('DATABASE_URL'),
         conn_max_age=600,
         conn_health_checks=True,
-        ssl_require=True # ISSO FORÇA A CONEXÃO SSL
+        ssl_require=os.environ.get("DB_SSL_REQUIRE", "false").lower() == "true",
+        # ssl_require=True # ISSO FORÇA A CONEXÃO SSL
     )
 }
 

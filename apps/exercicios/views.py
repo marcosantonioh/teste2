@@ -1,4 +1,5 @@
 import random
+import re
 
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -271,17 +272,49 @@ def _marcador_lacuna(exercicio, resposta_submetida=None):
     banco. Um input nativo torna a digitação acessível e previsível dentro do
     trecho de código, sem revelar a resposta nem usar sublinhados.
     """
-    resposta_esperada = (exercicio.resposta_texto_codigo or "").strip()
-    tamanho_lacuna = max(1, len(resposta_esperada))
+    respostas = [
+        exercicio.resposta_texto_codigo or "",
+        *(exercicio.respostas_aceitas or []),
+    ]
+    tamanho_lacuna = max(1, *(len(resposta.strip()) for resposta in respostas))
     texto_exibido = resposta_submetida or ""
 
     return (
         '<input type="text" class="lacuna-marker" name="resposta" '
         'aria-label="Resposta da lacuna" autocomplete="off" '
         'spellcheck="false" '
+        f'data-tamanho-min="{tamanho_lacuna}" '
         f'style="--tamanho-lacuna: {tamanho_lacuna}" '
         f'value="{escape(texto_exibido)}">'
     )
+
+
+def _renderizar_codigo_ide(exercicio, resposta_submetida=None):
+    """Renderiza código C seguro, com realce simples e linhas para o mini-editor."""
+    marcador = _marcador_lacuna(exercicio, resposta_submetida)
+    trechos = exercicio.codigo.split("__LACUNA__")
+
+    def realcar(trecho):
+        trecho = str(escape(trecho))
+        trecho = re.sub(
+            r"\b(int|char|float|double|void|while|for|do|if|else|return)\b",
+            r'<span class="ide-token--palavra">\1</span>',
+            trecho,
+        )
+        return re.sub(
+            r"\b(\d+)\b", r'<span class="ide-token--numero">\1</span>', trecho
+        )
+
+    codigo = marcador.join(realcar(trecho) for trecho in trechos)
+    linhas = codigo.splitlines() or [""]
+    codigo_com_linhas = "".join(
+        '<span class="ide-code__linha">'
+        f'<span class="ide-code__numero">{numero}</span>'
+        f'<span class="ide-code__conteudo">{linha or "&nbsp;"}</span>'
+        "</span>"
+        for numero, linha in enumerate(linhas, start=1)
+    )
+    return mark_safe(codigo_com_linhas)
 
 
 def obter_alternativas(exercicio, request=None):
@@ -714,10 +747,7 @@ def resolver_exercicio(request, exercicio_id):
     # Prepara o código com a marcação da lacuna antes de renderizar o template.
     codigo_renderizado = None
     if exercicio.tipo == "lacuna" and exercicio.codigo:
-        marcador = _marcador_lacuna(exercicio, resposta_submetida)
-        codigo_renderizado = mark_safe(
-            escape(exercicio.codigo).replace("__LACUNA__", marcador)
-        )
+        codigo_renderizado = _renderizar_codigo_ide(exercicio, resposta_submetida)
 
     # Nova lógica para decidir se o modal de saída deve ser mostrado
     mostrar_modal_confirmacao_saida = progresso_percentual > 0
@@ -920,12 +950,13 @@ def get_exercicio_data(request, exercicio_id):
     }
 
     if exercicio.tipo == "lacuna" and exercicio.codigo:
-        tamanho_lacuna = max(1, len((exercicio.resposta_texto_codigo or "").strip()))
+        respostas = [
+            exercicio.resposta_texto_codigo or "",
+            *(exercicio.respostas_aceitas or []),
+        ]
+        tamanho_lacuna = max(1, *(len(resposta.strip()) for resposta in respostas))
         data["tamanho_lacuna"] = tamanho_lacuna
-        data["codigo_renderizado"] = escape(exercicio.codigo).replace(
-            "__LACUNA__",
-            _marcador_lacuna(exercicio),
-        )
+        data["codigo_renderizado"] = _renderizar_codigo_ide(exercicio)
     else:
         data["codigo_renderizado"] = data["codigo"]
 

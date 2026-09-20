@@ -92,13 +92,17 @@ body {
   padding: 11px 16px;
   border: 0;
   border-radius: 8px;
-  background: #d99100;
-  color: #fff;
+  background: var(--primary-color);
+  color: var(--white);
   font: inherit;
   font-weight: 700;
   cursor: pointer;
 }
-.modal-bau-estacao__botao:hover { background: #a66e00; }
+.modal-bau-estacao__botao:hover { background: var(--primary-dark); }
+.modal-bau-estacao__botao:focus-visible {
+  outline: 3px solid rgba(160, 102, 210, 0.45);
+  outline-offset: 3px;
+}
 
 .mapa-secoes {
   padding: 28px;

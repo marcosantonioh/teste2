@@ -131,6 +131,11 @@ class Exercicio(models.Model):
         blank=True,
         help_text="Resposta esperada para exercícios de preencher a lacuna.",
     )
+    respostas_aceitas = models.JSONField(
+        default=list,
+        blank=True,
+        help_text="Outras respostas aceitas para a lacuna.",
+    )
 
     resposta_vf_correta = models.BooleanField(
         null=True,

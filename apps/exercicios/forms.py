@@ -60,12 +60,25 @@ class ExercicioMultiplaEscolhaForm(forms.ModelForm):
 
 
 class ExercicioLacunaForm(forms.ModelForm):
+    respostas_aceitas = forms.CharField(
+        required=False,
+        widget=forms.Textarea(
+            attrs={
+                "rows": 5,
+                "cols": 60,
+                "placeholder": "Uma alternativa por linha. Ex:\n++contador\ncontador += 1",
+            }
+        ),
+        help_text="Opcional. Informe uma resposta aceita por linha; espaços e ; final são ignorados.",
+    )
+
     class Meta:
         model = Exercicio
         fields = BASE_EXERCICIO_FIELDS + [
             "tipo",
             "codigo",  # Reutilizando 'codigo' para o texto com a lacuna
             "resposta_texto_codigo",
+            "respostas_aceitas",
         ]
         widgets = {
             **COMMON_WIDGETS,
@@ -104,6 +117,14 @@ class ExercicioLacunaForm(forms.ModelForm):
             "Use o marcador __LACUNA__ no texto ou código para mostrar onde o aluno deve preencher."
         )
         self.fields["resposta_texto_codigo"].required = True
+        if self.instance.pk and self.instance.respostas_aceitas:
+            self.initial["respostas_aceitas"] = "\n".join(
+                self.instance.respostas_aceitas
+            )
+
+    def clean_respostas_aceitas(self):
+        respostas = self.cleaned_data["respostas_aceitas"].splitlines()
+        return list(dict.fromkeys(resposta.strip() for resposta in respostas if resposta.strip()))
 
 
 class ExercicioVerdadeiroFalsoForm(forms.ModelForm):

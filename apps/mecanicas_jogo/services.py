@@ -145,10 +145,21 @@ def verificar_resposta(exercicio, resposta_usuario):
         resposta_usuario_bool = resposta_usuario == "True"
         return resposta_usuario_bool == exercicio.resposta_vf_correta
     elif exercicio.tipo == "lacuna":
-        resposta_usuario_str = str(resposta_usuario or "").strip()
-        resposta_correta_str = str(exercicio.resposta_texto_codigo or "").strip()
-        return resposta_usuario_str.lower() == resposta_correta_str.lower()
+        resposta_normalizada = normalizar_resposta_lacuna(resposta_usuario)
+        respostas_aceitas = [exercicio.resposta_texto_codigo, *exercicio.respostas_aceitas]
+        return resposta_normalizada in {
+            normalizar_resposta_lacuna(resposta)
+            for resposta in respostas_aceitas
+            if resposta
+        }
     return False
+
+
+def normalizar_resposta_lacuna(resposta):
+    """Compara código de lacuna sem diferenças irrelevantes de formato."""
+    resposta = str(resposta or "").strip().lower()
+    resposta = resposta.rstrip(";").strip()
+    return "".join(resposta.split())
 
 
 def obter_ou_criar_progresso(exercicio, usuario):

@@ -2,9 +2,15 @@
   {% if exercicio.enunciado %}
   <p class="exercicio-enunciado">{{ exercicio.enunciado }}</p>
   {% endif %} {% if exercicio.codigo %}
-  <pre class="exercicio-codigo">
-      {{ codigo_renderizado }}
-    </pre
+  <section class="ide-editor" aria-label="Editor de código C">
+    <header class="ide-editor__cabecalho">
+      <div class="ide-editor__controles" aria-hidden="true"><span></span><span></span><span></span></div>
+      <span class="ide-editor__arquivo"><b>C</b> main.c</span>
+      <span class="ide-editor__linguagem">C</span>
+    </header>
+    <pre class="exercicio-codigo ide-editor__codigo">{{ codigo_renderizado }}</pre>
+    <footer class="ide-editor__rodape"><span>C</span><span>UTF-8</span><span>Complete a linha destacada</span></footer>
+  </section>
   >
   {% if "__LACUNA__" in exercicio.codigo %}
   {% endif %} {% endif %}

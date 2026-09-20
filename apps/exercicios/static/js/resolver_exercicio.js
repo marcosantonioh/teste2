@@ -278,7 +278,7 @@ document.addEventListener("DOMContentLoaded", function () {
           : ""
       }${
         data.codigo_renderizado
-          ? `<pre class="exercicio-codigo">${data.codigo_renderizado}</pre>`
+          ? `<section class="ide-editor" aria-label="Editor de código C"><header class="ide-editor__cabecalho"><div class="ide-editor__controles" aria-hidden="true"><span></span><span></span><span></span></div><span class="ide-editor__arquivo"><b>C</b> main.c</span><span class="ide-editor__linguagem">C</span></header><pre class="exercicio-codigo ide-editor__codigo">${data.codigo_renderizado}</pre><footer class="ide-editor__rodape"><span>C</span><span>UTF-8</span><span>Complete a linha destacada</span></footer></section>`
           : ""
       }${
         data.codigo_renderizado
@@ -389,6 +389,12 @@ document.addEventListener("DOMContentLoaded", function () {
     return lacunaInput ? lacunaInput.value.trim().length > 0 : false;
   }
 
+  function atualizarLarguraLacuna(input) {
+    const tamanhoMinimo = Number(input.dataset.tamanhoMin || 1);
+    const tamanhoAtual = Math.max(tamanhoMinimo, input.value.length + 1);
+    input.style.setProperty("--tamanho-lacuna-dinamico", tamanhoAtual);
+  }
+
   function selectAlternativeByKey(key) {
     const alternativasLabels = form.querySelectorAll(
       ".alternativas .botao-alternativa, .alternativas-vf .botao-alternativa",
@@ -493,7 +499,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     const lacunaInput = form.querySelector('input.lacuna-marker[name="resposta"]');
     if (lacunaInput) {
-      lacunaInput.addEventListener("input", updateResponderButtonState);
+      atualizarLarguraLacuna(lacunaInput);
+      lacunaInput.addEventListener("input", () => {
+        atualizarLarguraLacuna(lacunaInput);
+        updateResponderButtonState();
+      });
     }
 
     updateResponderButtonState();
