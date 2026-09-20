@@ -12,29 +12,31 @@
   <div class="modulos-coluna">
     {% for modulo in modulos %}
     <div class="card">
-      <h2>{{ modulo.nome }}</h2>
       <div class="card-body">
-        <div class="progress-container">
-          <div class="progress-bar">
-            <div class="progress-fill" style="width: 6.6%"></div>
+        <div class="modulo-conteudo">
+          <span class="modulo-etiqueta">MÓDULO {{ forloop.counter }}</span>
+          <h2>{{ modulo.nome }}</h2>
+          <div class="modulo-progresso">
+            <div class="progress-container">
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 6.6%"></div>
+              </div>
+            </div>
+            <strong>6%</strong>
           </div>
-          <div class="trophy-circle">
-            <img
-              src="{% static 'img/trofeu.svg' %}"
-              alt="Troféu"
-              class="trophy-icon"
-            />
-          </div>
-        </div>
-
-        <div>
           <p class="card-text">{{ modulo.descricao }}</p>
+          <a
+            href="{% url 'exercicios:percurso' modulo_id=modulo.id %}"
+            class="botao-com-som"
+            >Entrar <span aria-hidden="true">→</span></a
+          >
         </div>
-        <a
-          href="{% url 'exercicios:percurso' modulo_id=modulo.id %}"
-          class="botao-com-som"
-          >Entrar</a
-        >
+        <div class="modulo-ilustracao">
+          {% if modulo.imagem %}
+          <img src="{% static modulo.imagem %}" alt="Ilustração do módulo {{ modulo.nome }}" />
+          {% endif %}
+        </div>
+        
       </div>
     </div>
     {% endfor %}

@@ -115,14 +115,9 @@ body {
   background-color: var(--white);
   border: 1px solid var(--black);
   border-radius: 12px;
-  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
-  width: 500px;
+  width: min(100%, 620px);
   min-height: 250px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  /* transition: transform 0.3s ease, box-shadow 0.3s ease; */
-  padding: 20px;
+  padding: 12px;
 }
 /* 
 .card:hover {
@@ -132,18 +127,44 @@ body {
 
 .card h2,
 .card h5 {
-  text-align: center;
+  text-align: left;
   color: #343a40;
-  margin-bottom: 10px;
+  margin: 0;
+}
+
+.modulo-ilustracao {
+  display: grid;
+  place-items: center;
+  width: 215px;
+  min-width: 215px;
+  min-height: 205px;
+  overflow: hidden;
+  border: 1px solid #ded7e6;
+  border-radius: 28px;
+  background: #faf8fc;
+}
+
+.modulo-ilustracao img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .card-body {
   width: 100%;
   display: flex;
+  align-items: stretch;
+  gap: 48px;
+}
+
+.modulo-conteudo {
+  display: flex;
+  flex: 1;
+  min-width: 0;
   flex-direction: column;
-  align-items: center;
-  gap: 15px;
-  text-align: center;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 16px;
 }
 
 .card-body .img img {
@@ -152,8 +173,10 @@ body {
 }
 
 .card-text {
+  margin: 0;
   font-size: 1rem;
   color: #6c757d;
+  text-align: left;
 }
 
 .card-body a {
@@ -173,7 +196,7 @@ body {
 .progress-container {
   position: relative;
   width: 100%;
-  margin: 20px 0;
+  margin: 0;
 }
 
 .progress-bar {
@@ -305,6 +328,128 @@ body {
   height: 40px;
 }
 
+/* Cards de módulo — painel neon inspirado na tela de percurso. */
+.modulos-coluna .card {
+  position: relative;
+  width: min(100%, 960px);
+  min-height: 360px;
+  overflow: hidden;
+  padding: 26px 42px;
+  border: 2px solid #6532d7;
+  border-radius: 34px;
+  background:
+    linear-gradient(rgba(118, 46, 224, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(118, 46, 224, 0.08) 1px, transparent 1px),
+    radial-gradient(circle at 68% 50%, rgba(101, 23, 220, 0.28), transparent 36%),
+    linear-gradient(118deg, #080d30 0%, #0f1242 54%, #10153d 100%);
+  background-size: 42px 42px, 42px 42px, auto, auto;
+  box-shadow: 0 20px 44px rgba(27, 8, 79, 0.3), inset 0 0 36px rgba(113, 44, 239, 0.12);
+}
+
+.modulos-coluna .card-body {
+  position: relative;
+  z-index: 1;
+  min-height: 306px;
+  align-items: center;
+  gap: 38px;
+}
+
+.modulos-coluna .modulo-conteudo {
+  max-width: 52%;
+  gap: 24px;
+}
+
+.modulos-coluna .card h2 {
+  color: #fff;
+  font-size: clamp(2.4rem, 5vw, 4.7rem);
+  font-weight: 800;
+  letter-spacing: -0.055em;
+  line-height: 0.9;
+}
+
+.modulo-etiqueta {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  padding: 0.55rem 1.1rem;
+  border: 1px solid #7d4af3;
+  border-radius: 999px;
+  background: rgba(92, 38, 182, 0.28);
+  box-shadow: inset 0 0 14px rgba(171, 113, 255, 0.16);
+  color: #c294ff;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.modulos-coluna .modulo-progresso {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 16px;
+}
+
+.modulos-coluna .progress-container { flex: 1; }
+.modulos-coluna .progress-bar {
+  height: 16px;
+  overflow: hidden;
+  border: 2px solid #394779;
+  border-radius: 999px;
+  background: #20264c;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+.modulos-coluna .progress-fill {
+  min-width: 14px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #c053ff, #7e2cff);
+  box-shadow: 0 0 12px rgba(187, 78, 255, 0.85);
+}
+.modulo-progresso strong { color: #cfb2ff; font-size: 1.35rem; }
+
+.modulos-coluna .card-text {
+  color: #aeb9e4;
+  font-size: clamp(1rem, 1.8vw, 1.25rem);
+  line-height: 1.45;
+}
+
+.modulos-coluna .card-body a {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.4rem;
+  padding: 0.85rem 1.7rem;
+  border: 2px solid #b871ff;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #7134ea, #a346f3);
+  box-shadow: 0 8px 18px rgba(120, 46, 240, 0.4), inset 0 1px rgba(255, 255, 255, 0.28);
+  color: #fff;
+  font-size: 1.4rem;
+}
+.modulos-coluna .card-body a span { font-size: 2rem; font-weight: 400; line-height: 0.7; }
+
+/* O SVG permanece intacto; apenas o painel externo deixa de ter bordas. */
+.modulos-coluna .modulo-ilustracao {
+  width: min(42%, 370px);
+  min-width: 0;
+  min-height: 260px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.modulos-coluna .modulo-ilustracao img { filter: drop-shadow(0 14px 22px rgba(12, 1, 51, 0.42)); }
+
+.modulos-coluna .trophy-circle {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 68px;
+  height: 68px;
+  transform: none;
+  border-color: #b86bff;
+  background: rgba(21, 20, 68, 0.75);
+  box-shadow: 0 0 16px rgba(178, 84, 255, 0.42);
+}
+.modulos-coluna .trophy-icon { width: 36px; height: 36px; }
+
 /* --- Media Queries para Responsividade --- */
 
 /* Para tablets e telas menores (até 768px) */
@@ -331,6 +476,18 @@ body {
     max-width: 450px; /* Um limite para não ficarem excessivamente largos */
     min-height: auto; /* Altura se ajusta ao conteúdo */
     padding: 15px;
+  }
+
+  .card-body {
+    flex-direction: column;
+  }
+
+  .modulo-ilustracao {
+    width: min(80%, 220px);
+    min-width: 0;
+    min-height: 120px;
+    align-self: center;
+    order: -1;
   }
 
   .card h2 {
@@ -379,6 +536,11 @@ body {
     width: 95%; /* Cards ocupam quase toda a largura */
   }
 
+  .modulo-ilustracao {
+    width: min(75%, 180px);
+    min-height: 100px;
+  }
+
   .card h2 {
     font-size: 1.2em;
   }
@@ -404,4 +566,37 @@ body {
     width: 16px;
     height: 16px;
   }
+}
+
+@media (max-width: 768px) {
+  .modulos-coluna .card {
+    min-height: auto;
+    padding: 22px;
+    border-radius: 26px;
+  }
+
+  .modulos-coluna .card-body {
+    min-height: 0;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .modulos-coluna .modulo-conteudo {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .modulos-coluna .modulo-ilustracao {
+    width: min(80%, 220px);
+    min-height: 120px;
+    order: -1;
+  }
+}
+
+@media (max-width: 480px) {
+  .modulos-coluna .card { padding: 18px; }
+  .modulos-coluna .card h2 { font-size: 2.55rem; }
+  .modulos-coluna .modulo-ilustracao { width: min(75%, 180px); min-height: 100px; }
+  .modulos-coluna .trophy-circle { width: 48px; height: 48px; }
+  .modulos-coluna .trophy-icon { width: 26px; height: 26px; }
 }

@@ -274,10 +274,10 @@ class ExercicioUsuarioAdmin(admin.ModelAdmin):
 
 @admin.register(Modulo)
 class ModuloAdmin(admin.ModelAdmin):
-    list_display = ("nome", "descricao", "ordem")
+    list_display = ("nome", "imagem", "descricao", "ordem")
     search_fields = ("nome", "descricao")
     list_editable = ("ordem",)
-    fields = ["nome", "descricao", "ordem", "link_adicionar_secao_form"]
+    fields = ["nome", "descricao", "imagem", "ordem", "link_adicionar_secao_form"]
     readonly_fields = ["link_adicionar_secao_form"]
 
     def link_adicionar_secao_form(self, obj):

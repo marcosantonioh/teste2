@@ -8,6 +8,12 @@ class Modulo(models.Model):
 
     nome = models.CharField(max_length=200)
     descricao = models.TextField()
+    imagem = models.CharField(
+        max_length=255,
+        blank=True,
+        default="",
+        help_text="Caminho da ilustração estática do módulo. Ex.: img/modulos/loops.svg",
+    )
     ordem = models.PositiveIntegerField(
         default=0,
         help_text="Define a ordem de exibição do módulo (menor número aparece primeiro).",

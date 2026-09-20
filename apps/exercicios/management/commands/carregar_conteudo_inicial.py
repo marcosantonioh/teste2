@@ -41,6 +41,7 @@ class Command(BaseCommand):
                 nome=campos["nome"],
                 defaults={
                     "descricao": campos["descricao"],
+                    "imagem": campos.get("imagem", ""),
                     "ordem": campos["ordem"],
                 },
             )

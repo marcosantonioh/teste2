@@ -5,6 +5,7 @@
   "fields": {
     "nome": "Loops",
     "descricao": "Aprenda laços de repetição em C.",
+    "imagem": "img/modulos/loops.svg",
     "ordem": 0
   }
 },
