@@ -45,8 +45,6 @@ def etapa(request, numero):
             "tipo": "notification",
         },
         6: {
-            "titulo": "Só um segundo... !",
-            "mensagem": "Iniciando Ambiente.",
             "tipo": "carregamento",
         },
     }

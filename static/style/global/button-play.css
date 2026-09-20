@@ -49,8 +49,8 @@
 .station-circle {
   --tile-top: #a74ef4;
   --tile-side: #6f23ad;
-  width: 148px;
-  height: 112px;
+  width: 124px;
+  height: 94px;
   padding: 0;
   border: 0;
   background: transparent;
@@ -67,9 +67,11 @@
 
 .station-tile {
   position: relative;
-  display: block;
-  width: 148px;
-  height: 112px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 124px;
+  height: 94px;
   filter: drop-shadow(0 9px 5px rgba(54, 18, 84, 0.2));
 }
 
@@ -78,14 +80,14 @@
   content: "";
   position: absolute;
   left: 0;
-  width: 148px;
+  width: 124px;
   pointer-events: none;
 }
 
 /* Face superior em losango e a face inferior formam o bloco em perspectiva. */
 .station-tile::before {
   top: 0;
-  height: 112px;
+  height: 94px;
   background: linear-gradient(135deg, #c67aff, var(--tile-top));
   clip-path: polygon(50% 0, 100% 28%, 50% 58%, 0 28%);
   z-index: 2;
@@ -93,7 +95,7 @@
 
 .station-tile::after {
   top: 0;
-  height: 112px;
+  height: 94px;
   background: linear-gradient(90deg, #57168d, var(--tile-side), #471174);
   clip-path: polygon(0 28%, 50% 58%, 100% 28%, 100% 48%, 50% 78%, 0 48%);
   z-index: 1;
@@ -136,13 +138,11 @@
 
 /* Estilos para o ícone dentro do círculo */
 .play-icon {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   object-fit: contain; /* Garante que o ícone se ajuste bem sem distorção */
   position: relative;
   z-index: 3;
-  top: 24px;
-  left: 56px;
 }
 
 .station-circle--animada .play-icon {
@@ -180,8 +180,60 @@
 }
 
 .bau-estacao--coletado .bau-estacao__imagem {
-  opacity: 0.62;
-  filter: grayscale(0.7);
+  opacity: 1;
+  filter: drop-shadow(0 4px 5px rgba(0, 0, 0, 0.18));
+}
+
+/* Holograma do mascote ao lado do baú: ele se desmaterializa em partículas. */
+.bau-estacao-linha {
+  align-self: stretch;
+  width: 100%;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+}
+
+.stations > .bau-estacao-linha {
+  align-self: stretch;
+}
+
+.mascote-percurso {
+  position: relative;
+  width: 118px;
+  aspect-ratio: 94 / 63;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.mascote-percurso img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.mascote-percurso__holograma {
+  animation: holograma-desligar 8s ease-in-out infinite alternate;
+}
+
+.mascote-percurso__desligando {
+  opacity: 0;
+  animation: holograma-particulas-visivel 8s linear infinite alternate;
+}
+
+@keyframes holograma-desligar {
+  0%, 32% { opacity: 1; filter: brightness(1); transform: translateY(0); }
+  16% { opacity: 1; filter: brightness(1); transform: translateY(-5px); }
+  44%, 100% { opacity: 0; filter: brightness(1.5); transform: translateY(0); }
+}
+
+@keyframes holograma-particulas-visivel {
+  0%, 32% { opacity: 0; }
+  44%, 100% { opacity: 1; }
 }
 
 @keyframes bau-pulse {
@@ -243,6 +295,12 @@
   }
 
   .bau-estacao--desbloqueado .bau-estacao__imagem { animation: none; }
+
+  .mascote-percurso__holograma,
+  .mascote-percurso__desligando { animation: none; }
+
+  .mascote-percurso__holograma { opacity: 0; }
+  .mascote-percurso__desligando { opacity: 1; }
 }
 
 @media (max-width: 480px) {
@@ -260,6 +318,13 @@
   .bau-estacao {
     transform: scale(0.88);
     margin: -6px 0;
+  }
+
+  .bau-estacao-linha { min-height: 88px; }
+
+  .mascote-percurso {
+    transform: scale(0.84);
+    transform-origin: right center;
   }
 }
 

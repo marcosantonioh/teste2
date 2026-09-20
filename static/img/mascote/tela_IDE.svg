@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="161.90543mm"
+   height="129.86856mm"
+   viewBox="0 0 161.90543 129.86856"
+   version="1.1"
+   id="svg5"
+   xml:space="preserve"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+     id="defs2"><style>
+       .mensagem-carregamento {
+         fill: #eee8ff;
+         font-family: "DejaVu Sans Mono", monospace;
+         font-size: 6.2px;
+         font-weight: 700;
+         opacity: 0;
+         transform-box: fill-box;
+         transform-origin: left center;
+       }
+       #status-1 { animation: status-1 6s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+       #status-2 { animation: status-2 6s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+       #status-3 { animation: status-3 6s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+       @keyframes status-1 {
+         0%, 5% { opacity: 0; transform: translateY(3px); }
+         18%, 100% { opacity: 1; transform: translateY(0); }
+       }
+       @keyframes status-2 {
+         0%, 28% { opacity: 0; transform: translateY(3px); }
+         42%, 100% { opacity: 1; transform: translateY(0); }
+       }
+       @keyframes status-3 {
+         0%, 54% { opacity: 0; transform: translateY(3px); }
+         68%, 100% { opacity: 1; transform: translateY(0); }
+       }
+     </style></defs><g
+     id="layer1"
+     transform="translate(-1074.3073,-5440.5703)"><path
+       style="fill:#2c1c75;fill-opacity:1;stroke:none;stroke-width:0.300001"
+       d="m 1101.2653,5470.9512 c -5.455,0 -9.8466,5.576 -9.8466,12.502 v 74.4837 c 0,6.9259 4.3916,12.5019 9.8466,12.5019 h 107.9902 c 5.4552,0 9.846,-5.576 9.846,-12.5019 v -74.4837 c 0,-6.926 -4.3908,-12.502 -9.846,-12.502 z"
+       id="path938" /><rect
+       style="fill:#101132;fill-opacity:1;stroke:none;stroke-width:0.0999998;stroke-linecap:round;stroke-linejoin:round"
+       id="rect932"
+       width="118.44915"
+       height="76.063721"
+       x="1096.0355"
+       y="5488.6499"
+       ry="7.6542106" /><path
+       style="fill:#2c1c75;fill-opacity:1;stroke:none;stroke-width:0.300001"
+       d="m 1186.4769,5440.5701 -21.4301,21.4291 h 42.8593 z"
+       id="path939" /><path
+       style="fill:#2c1c75;fill-opacity:1;stroke:none;stroke-width:0.300001"
+       d="m 1121.1763,5440.5701 -21.4301,21.4291 h 42.8591 z"
+       id="path940" /><g
+       id="g949"
+       style="stroke-width:0.582379"
+       transform="matrix(1.7170954,0,0,1.7170954,-639.26224,5094.2954)"><rect
+         style="opacity:1;fill:#1a1a1a;fill-opacity:1;stroke-width:0.174714"
+         id="rect948"
+         width="5.0686364"
+         height="27.438751"
+         x="997.94666"
+         y="228.9108"
+         ry="2.5343182" /><rect
+         style="opacity:1;fill:#00ff00;fill-opacity:1;stroke-width:0.174714"
+         id="rect949"
+         width="2.0752575"
+         height="5.3405709"
+         x="999.44336"
+         y="239.95988"
+         ry="0.49326977" /></g><g
+       id="g954"
+       style="stroke-width:0.582379"
+       transform="matrix(1.7170954,0,0,1.7170954,-639.26224,5094.2954)"><rect
+         style="opacity:1;fill:#1a1a1a;fill-opacity:1;stroke-width:0.174714"
+         id="rect951"
+         width="5.0686364"
+         height="27.438751"
+         x="1087.1683"
+         y="228.9108"
+         ry="2.5343182" /><rect
+         style="opacity:1;fill:#00ff00;fill-opacity:1;stroke-width:0.174714"
+         id="rect954"
+         width="2.0752575"
+         height="5.3405709"
+         x="1088.665"
+         y="239.95988"
+         ry="0.49326977" /></g><circle
+       style="fill:#7e42f6;fill-opacity:1;stroke:none;stroke-width:0.0999998;stroke-linecap:round;stroke-linejoin:round"
+       id="path959"
+       cx="1105.0127"
+       cy="5480.8242"
+       r="3.6548967" /><circle
+       style="fill:#7e42f6;fill-opacity:1;stroke:none;stroke-width:0.0999998;stroke-linecap:round;stroke-linejoin:round"
+       id="circle959"
+       cx="1118.8381"
+       cy="5480.8242"
+       r="3.6548967" /><circle
+       style="fill:#7e42f6;fill-opacity:1;stroke:none;stroke-width:0.0999998;stroke-linecap:round;stroke-linejoin:round"
+       id="circle960"
+       cx="1132.6635"
+       cy="5480.8242"
+       r="3.6548967" /><g
+       aria-label="Status de preparação do ambiente"><text
+         id="status-1"
+         class="mensagem-carregamento"
+         x="1101"
+         y="5517">• Carregando ambiente...</text><text
+         id="status-2"
+         class="mensagem-carregamento"
+         x="1101"
+         y="5531">• Preparando exercícios...</text><text
+         id="status-3"
+         class="mensagem-carregamento"
+         x="1101"
+         y="5545">• Quase lá!</text></g></g></svg>

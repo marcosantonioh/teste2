@@ -1,15 +1,29 @@
 {% load static %}
 
-<button
-  type="button"
-  class="bau-estacao bau-estacao--{{ bau_estacao.status }}"
-  aria-label="Abrir baú de recompensa"
-  aria-controls="modalBauEstacao"
-  onclick="abrirModalBau()"
->
-  <img
-    src="{% static 'img/baus/bau_estation.png' %}"
-    alt="{% if bau_estacao.status == 'coletado' %}Baú coletado{% else %}Baú de recompensa{% endif %}"
-    class="bau-estacao__imagem"
-  />
-</button>
+<div class="bau-estacao-linha">
+  <span class="mascote-percurso" aria-hidden="true">
+    <img
+      src="{% static 'img/mascote/robo1.svg' %}"
+      alt=""
+      class="mascote-percurso__holograma"
+    />
+    <img
+      src="{% static 'img/mascote/sumindo.svg' %}"
+      alt=""
+      class="mascote-percurso__desligando"
+    />
+  </span>
+  <button
+    type="button"
+    class="bau-estacao bau-estacao--{{ bau_estacao.status }}"
+    aria-label="Abrir baú de recompensa"
+    aria-controls="modalBauEstacao"
+    onclick="abrirModalBau()"
+  >
+    <img
+      src="{% if bau_estacao.status == 'coletado' %}{% static 'img/baus/bau_estation_aberto.png' %}{% else %}{% static 'img/baus/bau_estation.png' %}{% endif %}"
+      alt="{% if bau_estacao.status == 'coletado' %}Baú aberto e recompensa coletada{% else %}Baú de recompensa{% endif %}"
+      class="bau-estacao__imagem"
+    />
+  </button>
+</div>

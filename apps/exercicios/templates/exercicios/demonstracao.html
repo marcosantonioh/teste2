@@ -6,12 +6,8 @@
 
 <main class="demonstracao-container">
   <section class="demonstracao-card">
-    <p class="demonstracao-identificador">
-      Modo visitante · {{ estacao.nome }}
-    </p>
     <div class="demonstracao-cabecalho">
       <h1>{{ exercicio.titulo }}</h1>
-      <span>Exercício {{ indice_exercicio }} de {{ total_exercicios }}</span>
     </div>
 
     {% if exercicio.enunciado %}
@@ -110,9 +106,6 @@
     </form>
     {% endif %}
 
-    <p class="demonstracao-aviso">
-      Esta demonstração não registra XP, vidas, progresso ou ranking.
-    </p>
   </section>
 </main>
 {% endblock %}

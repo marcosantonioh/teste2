@@ -98,7 +98,11 @@
         <div class="modal-bau-estacao" id="modalBauEstacao" aria-hidden="true">
           <div class="modal-bau-estacao__conteudo" role="dialog" aria-modal="true" aria-labelledby="tituloModalBau">
             <button type="button" class="modal-bau-estacao__fechar" aria-label="Fechar" onclick="fecharModalBau()">×</button>
-            <img src="{% static 'img/baus/bau_estation.png' %}" alt="Baú de recompensa" class="modal-bau-estacao__imagem">
+            <img
+              src="{% if bau_estacao.status == 'coletado' %}{% static 'img/baus/bau_estation_aberto.png' %}{% else %}{% static 'img/baus/bau_estation.png' %}{% endif %}"
+              alt="{% if bau_estacao.status == 'coletado' %}Baú aberto e recompensa coletada{% else %}Baú de recompensa{% endif %}"
+              class="modal-bau-estacao__imagem"
+            >
             {% if bau_estacao.status == 'bloqueado' %}
               <h2 id="tituloModalBau">Baú bloqueado</h2>
               <p>Conclua as duas primeiras estações para desbloquear esta recompensa.</p>

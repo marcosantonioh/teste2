@@ -43,8 +43,23 @@ body{
   align-items: center;
   margin: 0 auto;
   margin-top: 1rem;
-  transition: background-color 0.3s;
-  background-color: #1b5fe7;
+  border: 0;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s, transform 0.2s;
+  background-color: var(--primary-color);
+}
+
+.btn:hover {
+  background-color: var(--primary-dark);
+}
+
+.btn:focus-visible {
+  outline: 3px solid rgba(var(--primary-color-rgb), 0.35);
+  outline-offset: 3px;
+}
+
+.btn:active {
+  transform: translateY(1px);
 }
 
 .etapa-form {
@@ -75,8 +90,8 @@ body{
 
 .option-box:hover,
 .option-box:has(input:checked) {
-  border-color: #4f46e5;
-  background-color: #eef2ff;
+  border-color: var(--primary-color);
+  background-color: rgba(var(--primary-color-rgb), 0.08);
 }
 
 .option-box input[type="radio"] {
@@ -96,7 +111,7 @@ body{
 }
 
 .option-box input[type="radio"]:checked {
-  border: 5px solid #4f46e5;
+  border: 5px solid var(--primary-color);
 }
 
 .option-box span {
@@ -152,6 +167,13 @@ body{
   margin-top: 2em;
 }
 
+.tela-ide {
+  display: block;
+  width: min(100%, 520px);
+  height: auto;
+  margin: 1rem auto 0;
+}
+
 .mensagem-notificacao {
   font-size: 1rem;
   margin-bottom: 1rem;
@@ -170,13 +192,13 @@ body{
 }
 
 .btn-permitir {
-  background-color: #28a745;
+  background-color: var(--primary-color);
   color: white;
 }
 
 .btn-negar {
-  background-color: #ccc;
-  color: #333;
+  background-color: var(--primary-light);
+  color: var(--white);
 }
 
 .botoes-notificacao .btn {
@@ -189,7 +211,7 @@ body{
 }
 
 .botoes-notificacao .btn:hover {
-  filter: brightness(0.9);
+  background-color: var(--primary-dark);
 }
 
 
