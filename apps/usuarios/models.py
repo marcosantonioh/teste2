@@ -97,6 +97,12 @@ class Perfil(models.Model):
     data_inicio = models.DateTimeField(default=timezone.now)
     tema = models.CharField(max_length=20, default='claro')
     cristal = models.IntegerField(default=0)
+    meta_ofensiva = models.PositiveSmallIntegerField(
+        null=True,
+        blank=True,
+        help_text='Meta de dias seguidos escolhida após a demonstração.',
+    )
+    recompensa_demo_recebida = models.BooleanField(default=False)
     tempo_estudo = models.CharField(
         max_length=20,
         choices=TEMPO_ESTUDO_CHOICES,

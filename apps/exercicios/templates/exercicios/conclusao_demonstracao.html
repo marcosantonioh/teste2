@@ -1,0 +1,65 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sua jornada na Cventure</title>
+  <link rel="stylesheet" href="{% static 'style/partials/exercicios/conclusao_demonstracao.css' %}">
+</head>
+<body>
+<main class="jornada">
+  <header class="jornada-topo">
+    <img src="{% static 'img/Logo_Cventure_white.svg' %}" alt="Cventure" class="jornada-logo">
+    <div class="jornada-etapas" aria-label="Etapa {{ etapa }} de 4">
+      {% for numero in '1234' %}<span class="{% if forloop.counter <= etapa %}ativa{% endif %}"></span>{% endfor %}
+    </div>
+  </header>
+
+  {% if etapa == 1 %}
+  <form method="post" class="jornada-corpo jornada-meta">
+    {% csrf_token %}
+    <img src="{% static 'img/mascote/robo_oi.svg' %}" alt="Mascote da Cventure" class="jornada-mascote">
+    <p class="jornada-selo">Sua próxima aventura</p>
+    <h1>Escolha sua meta de ofensiva</h1>
+    <p>Quantos dias seguidos você quer aprender? Escolha uma meta para começar sua jornada.</p>
+    <fieldset class="jornada-opcoes">
+      <legend class="sr-only">Escolha uma meta de ofensiva</legend>
+      {% for dias, descricao in metas %}
+      <label class="jornada-opcao">
+        <input type="radio" name="meta" value="{{ dias }}" required {% if meta_escolhida == dias %}checked{% endif %}>
+        <span><strong>{{ dias }} dias de ofensiva</strong><small>{{ descricao }}</small></span>
+      </label>
+      {% endfor %}
+    </fieldset>
+    <div class="jornada-rodape"><span></span><button type="submit" class="jornada-botao">Eu consigo!</button></div>
+  </form>
+  {% elif etapa == 2 %}
+  <section class="jornada-corpo jornada-recompensa">
+    <img src="{% static 'img/mascote/happy.svg' %}" alt="Mascote da Cventure comemorando" class="jornada-mascote">
+    <p class="jornada-selo">Primeira missão cumprida</p>
+    <h1>Você chegou ao fim da primeira aventura!</h1>
+    <p>Você explorou os primeiros conceitos de programação em C.</p>
+    <div class="jornada-premio"><img src="{% static 'img/xp.svg' %}" alt=""><div><strong>Recompensa: 10 XP</strong><div class="jornada-barra"><span></span></div><small>Missão completa</small></div></div>
+    <div class="jornada-rodape"><a href="{% url 'exercicios:iniciar_demo' %}" class="jornada-botao secundario">Revisar lição</a><a href="{% url 'exercicios:conclusao_demo' 3 %}" class="jornada-botao">Continuar</a></div>
+  </section>
+  {% elif etapa == 3 %}
+  <section class="jornada-corpo jornada-recompensa">
+    <img src="{% static 'img/baus/bau_estation_aberto.png' %}" alt="Baú de cristais aberto" class="jornada-bau">
+    <p class="jornada-selo">Baú da primeira aventura</p>
+    <h1>Você ganhou 5 cristais!</h1>
+    <p>Seus 10 XP e 5 cristais serão adicionados ao perfil quando você criar sua conta.</p>
+    <div class="jornada-rodape"><a href="{% url 'exercicios:iniciar_demo' %}" class="jornada-botao secundario">Revisar lição</a><a href="{% url 'exercicios:conclusao_demo' 4 %}" class="jornada-botao">Continuar</a></div>
+  </section>
+  {% else %}
+  <section class="jornada-corpo jornada-convite">
+    <img src="{% static 'img/mascote/robo_oi.svg' %}" alt="Mascote da Cventure" class="jornada-mascote">
+    <p class="jornada-selo">Continue sua jornada</p>
+    <h1>Hora de criar seu perfil!</h1>
+    <p>Salve sua meta de {{ meta_escolhida }} dias, receba suas recompensas e continue aprendendo C.</p>
+    <div class="jornada-convite-acoes"><a href="{% url 'usuarios:cadastro_usuario' %}" class="jornada-botao">Criar meu perfil</a><a href="{% url 'landing' %}" class="jornada-botao secundario">Depois</a></div>
+  </section>
+  {% endif %}
+</main>
+</body>
+</html>

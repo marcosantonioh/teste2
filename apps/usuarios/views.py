@@ -163,8 +163,19 @@ def cadastrar_usuario(request):
         if tempo_estudo in tempos_estudo_validos:
             perfil_data['tempo_estudo'] = tempo_estudo
 
+        meta_ofensiva = request.session.get('meta_ofensiva')
+        if request.session.get('demo_concluida') and meta_ofensiva in (7, 14, 30, 50):
+            perfil_data.update({
+                'meta_ofensiva': meta_ofensiva,
+                'xp': 10,
+                'cristal': 5,
+                'recompensa_demo_recebida': True,
+            })
+
         Perfil.objects.create(**perfil_data)
         request.session.pop('tempo_estudo', None)
+        request.session.pop('meta_ofensiva', None)
+        request.session.pop('demo_concluida', None)
 
         
         

@@ -1,111 +1,67 @@
-{% extends 'navbar.html' %} {% load static %} {% block content %}
-<link
-  rel="stylesheet"
-  href="{% static 'style/partials/exercicios/demonstracao.css' %}"
-/>
-
-<main class="demonstracao-container">
-  <section class="demonstracao-card">
-    <div class="demonstracao-cabecalho">
-      <h1>{{ exercicio.titulo }}</h1>
+{% load static %}
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ exercicio.titulo }} | Cventure</title>
+  <link rel="stylesheet" href="{% static 'style/partials/exercicios/demonstracao.css' %}">
+</head>
+<body>
+<main class="demo-pagina">
+  <header class="demo-progresso">
+    <a href="{% url 'landing' %}" class="demo-sair" aria-label="Sair da demonstração">×</a>
+    <div class="demo-progresso-corpo">
+      <div class="demo-trilha" role="progressbar" aria-label="Progresso da demonstração" aria-valuenow="{{ progresso_percentual }}" aria-valuemin="0" aria-valuemax="100"><div style="width: {{ progresso_percentual }}%"></div></div>
     </div>
-
-    {% if exercicio.enunciado %}
-    <p class="demonstracao-enunciado">{{ exercicio.enunciado }}</p>
-    {% endif %} {% if exercicio.codigo %}
-    <pre class="demonstracao-codigo">{{ exercicio.codigo }}</pre>
-    {% endif %} {% if exercicio.tipo == 'info' %} {% if proximo_exercicio %}
-    <a
-      class="demonstracao-acao"
-      href="{% url 'exercicios:resolver_demo' proximo_exercicio.id %}"
-      >Continuar</a
-    >
-    {% else %}
-    <div class="demonstracao-final">
-      <p>Você concluiu a demonstração!</p>
-      <a class="demonstracao-acao" href="{% url 'usuarios:cadastro_usuario' %}"
-        >Criar meu perfil</a
-      >
+    <div class="demo-vidas" aria-label="Total de 5 vidas"><img src="{% static 'img/heart.svg' %}" alt=""><strong>5</strong></div>
+  </header>
+  <form method="post" class="demo-layout">
+    {% csrf_token %}
+    <div class="demo-conteudo">
+      <section class="demo-card">
+        <h1>{{ exercicio.titulo }}</h1>
+        {% if exercicio.enunciado %}<p class="demo-enunciado">{{ exercicio.enunciado }}</p>{% endif %}
+        {% if exercicio.tipo == 'lacuna' and codigo_lacuna %}
+          <section class="ide-editor" aria-label="Editor de código C">
+            <header class="ide-editor__cabecalho">
+              <div class="ide-editor__controles" aria-hidden="true"><span></span><span></span><span></span></div>
+              <span class="ide-editor__arquivo"><b>C</b> main.c</span>
+              <span class="ide-editor__linguagem">C</span>
+            </header>
+            <pre class="exercicio-codigo ide-editor__codigo">{{ codigo_lacuna }}</pre>
+            <footer class="ide-editor__rodape"><span>C</span><span>UTF-8</span><span>Complete a linha destacada</span></footer>
+          </section>
+        {% elif exercicio.codigo %}<pre class="demo-codigo"><code>{{ codigo_colorido }}</code></pre>{% endif %}
+        {% if exercicio.tipo != 'info' and exercicio.tipo != 'lacuna' %}
+          <fieldset class="demo-alternativas" {% if correta != None %}disabled{% endif %}>
+            <legend class="sr-only">Escolha uma resposta</legend>
+            {% for numero, texto in alternativas %}
+              <input type="radio" name="{{ campo_resposta }}" id="alternativa-{{ numero }}" value="{{ numero }}" required {% if resposta_submetida == numero %}checked{% endif %}>
+              <label for="alternativa-{{ numero }}" class="demo-alternativa {% if correta != None %}{% if numero == resposta_correta %}alternativa-correta{% elif not correta and numero == resposta_submetida %}alternativa-incorreta{% endif %}{% endif %}">{{ texto }}</label>
+            {% endfor %}
+          </fieldset>
+        {% endif %}
+      </section>
     </div>
-    {% endif %} {% else %}
-    <form method="post" class="demonstracao-formulario">
-      {% csrf_token %} {% if exercicio.tipo == 'lacuna' %}
-      <div class="demonstracao-alternativas">
-        <label for="resposta" class="demonstracao-lacuna-label"
-          >Preencha a lacuna</label
-        >
-        <textarea
-          name="resposta"
-          id="resposta"
-          class="demonstracao-lacuna-input"
-          rows="4"
-          required
-          {%
-          if
-          correta
-          is
-          not
-          None
-          %}disabled{%
-          endif
-          %}
-        >
-{{ resposta_submetida|default:'' }}</textarea
-        >
+    <footer class="demo-acoes {% if correta == True %}demo-correto{% elif correta == False %}demo-incorreto{% endif %}">
+      <div class="demo-acoes-interior">
+        {% if correta == True %}<p class="demo-feedback" role="status">✓ Resposta correta!</p>{% elif correta == False %}<p class="demo-feedback" role="status">Resposta incorreta. Tente novamente!</p>{% endif %}
+        {% if correta == None and exercicio.tipo != 'info' %}
+          {% if proximo_exercicio %}<a class="demo-botao secundario demo-pular" href="{% url 'exercicios:resolver_demo' proximo_exercicio.id %}">Pular</a>{% else %}<span class="demo-botao secundario desabilitado demo-pular">Pular</span>{% endif %}
+        {% endif %}
+        <div class="demo-botoes">
+          {% if correta == True or exercicio.tipo == 'info' %}
+            {% if proximo_exercicio %}<a class="demo-botao principal" href="{% url 'exercicios:resolver_demo' proximo_exercicio.id %}">Continuar</a>{% else %}<a class="demo-botao principal" href="{% url 'exercicios:conclusao_demo' 1 %}">Continuar</a>{% endif %}
+          {% elif correta == False %}
+            <a class="demo-botao principal" href="{% url 'exercicios:resolver_demo' exercicio.id %}">Tentar novamente</a>
+          {% else %}
+            <button class="demo-botao principal" type="submit">Responder</button>
+          {% endif %}
+        </div>
       </div>
-      {% else %}
-      <div class="demonstracao-alternativas">
-        {% for numero, texto in alternativas %}
-        <input
-          type="radio"
-          name="{{ campo_resposta }}"
-          id="alternativa-{{ numero }}"
-          value="{{ numero }}"
-          required
-          {%
-          if
-          correta
-          is
-          not
-          None
-          %}disabled{%
-          endif
-          %}
-        />
-        <label
-          for="alternativa-{{ numero }}"
-          class="demonstracao-alternativa {% if correta is not None %}{% if numero == resposta_correta %} alternativa-correta{% elif not correta and numero == resposta_submetida %} alternativa-incorreta{% endif %}{% endif %}"
-          >{{ texto }}</label
-        >
-        {% endfor %}
-      </div>
-      {% endif %} {% if correta is None %}
-      <button class="demonstracao-acao" type="submit">Responder</button>
-      {% elif correta %}
-      <div class="demonstracao-feedback correto">Resposta correta!</div>
-      {% if proximo_exercicio %}
-      <a
-        class="demonstracao-acao"
-        href="{% url 'exercicios:resolver_demo' proximo_exercicio.id %}"
-        >Próximo exercício</a
-      >
-      {% else %}
-      <a class="demonstracao-acao" href="{% url 'usuarios:cadastro_usuario' %}"
-        >Criar meu perfil</a
-      >
-      {% endif %} {% else %}
-      <div class="demonstracao-feedback incorreto">
-        Resposta incorreta. Tente novamente!
-      </div>
-      <a
-        class="demonstracao-acao secundario"
-        href="{% url 'exercicios:resolver_demo' exercicio.id %}"
-        >Tentar novamente</a
-      >
-      {% endif %}
-    </form>
-    {% endif %}
-
-  </section>
+    </footer>
+  </form>
 </main>
-{% endblock %}
+</body>
+</html>

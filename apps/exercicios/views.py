@@ -1,5 +1,6 @@
 import random
 import re
+from copy import copy
 
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -317,6 +318,25 @@ def _renderizar_codigo_ide(exercicio, resposta_submetida=None):
     return mark_safe(codigo_com_linhas)
 
 
+def _realcar_codigo_demonstracao(codigo):
+    """Realce simples de C, escapando todo conteúdo antes de gerar HTML."""
+    padrao = re.compile(
+        r'(?P<comentario>//[^\n]*)|(?P<string>"(?:\\.|[^"\\])*")|'
+        r'(?P<palavra>\b(?:int|char|float|double|void|while|for|do|if|else|return)\b)|'
+        r'(?P<funcao>\b(?:printf|scanf)\b)|(?P<numero>\b\d+\b)'
+    )
+    partes = []
+    inicio = 0
+    for item in padrao.finditer(codigo):
+        partes.append(str(escape(codigo[inicio:item.start()])))
+        partes.append(
+            f'<span class="demo-token-{item.lastgroup}">{escape(item.group())}</span>'
+        )
+        inicio = item.end()
+    partes.append(str(escape(codigo[inicio:])))
+    return mark_safe(''.join(partes))
+
+
 def obter_alternativas(exercicio, request=None):
     """Retorna as alternativas na ordem da tentativa atual do usuário.
 
@@ -404,6 +424,8 @@ def resolver_demonstracao(request, exercicio_id):
     if request.method == "POST" and exercicio.tipo != "info":
         resposta_submetida = _extrair_resposta_do_request(request, exercicio.tipo)
         correta = mecanicas_services.verificar_resposta(exercicio, resposta_submetida)
+        if correta and proximo_exercicio is None:
+            request.session["demo_concluida"] = True
 
     if exercicio.tipo == "mcq":
         alternativas = obter_alternativas(exercicio, request)
@@ -422,12 +444,20 @@ def resolver_demonstracao(request, exercicio_id):
         campo_resposta = None
         resposta_correta = None
 
+    codigo_lacuna = None
+    if exercicio.tipo == "lacuna" and exercicio.codigo:
+        exercicio_editor = copy(exercicio)
+        exercicio_editor.codigo = exercicio.codigo.replace("___", "__LACUNA__", 1)
+        codigo_lacuna = _renderizar_codigo_ide(exercicio_editor, resposta_submetida)
+
     return render(
         request,
         "exercicios/demonstracao.html",
         {
             "estacao": estacao,
             "exercicio": exercicio,
+            "codigo_colorido": _realcar_codigo_demonstracao(exercicio.codigo or ""),
+            "codigo_lacuna": codigo_lacuna,
             "alternativas": alternativas,
             "campo_resposta": campo_resposta,
             "resposta_correta": resposta_correta,
@@ -436,9 +466,40 @@ def resolver_demonstracao(request, exercicio_id):
             "proximo_exercicio": proximo_exercicio,
             "indice_exercicio": indice_atual + 1,
             "total_exercicios": len(exercicios),
+            "progresso_percentual": round((indice_atual + (1 if correta or exercicio.tipo == "info" else 0)) * 100 / len(exercicios)),
         },
     )
 
+
+
+def conclusao_demonstracao(request, etapa):
+    """Quatro telas após a última resposta correta da demonstração."""
+    if request.user.is_authenticated:
+        return redirect("exercicios:modulos")
+    if not request.session.get("onboarding_concluido"):
+        return redirect("landing")
+    if not request.session.get("demo_concluida"):
+        return redirect("exercicios:iniciar_demo")
+    if etapa not in (1, 2, 3, 4):
+        return redirect("exercicios:conclusao_demo", etapa=1)
+
+    metas = [(7, "Boa"), (14, "Ótima"), (30, "Incrível"), (50, "Imparável")]
+    if etapa == 1 and request.method == "POST":
+        try:
+            meta = int(request.POST.get("meta", ""))
+        except ValueError:
+            meta = None
+        if meta in dict(metas):
+            request.session["meta_ofensiva"] = meta
+            return redirect("exercicios:conclusao_demo", etapa=2)
+    if etapa > 1 and request.session.get("meta_ofensiva") not in dict(metas):
+        return redirect("exercicios:conclusao_demo", etapa=1)
+
+    return render(request, "exercicios/conclusao_demonstracao.html", {
+        "etapa": etapa,
+        "metas": metas,
+        "meta_escolhida": request.session.get("meta_ofensiva"),
+    })
 
 def limpar_ordens_alternativas_da_estacao(request, estacao):
     """Remove a ordem da tentativa anterior ao reiniciar uma estação."""
