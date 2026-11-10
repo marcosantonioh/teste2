@@ -17,22 +17,22 @@
 
       <div class="missoes-lista">
         {% if desafios_usuario %} {% for du in desafios_usuario %}
-        <div class="missao-item">
+        <div class="missao-item {% if du.concluida_em %}missao-concluida{% endif %}">
           <img
             class="icone-missao"
-            src="{% static du.desafio.imagem %}"
+            src="{% static du.imagem %}"
             alt="Ícone do desafio"
           />
           <div class="missao-info">
-            <p>{{ du.desafio.titulo }}</p>
+            <p>{{ du.titulo }}</p><small class="missao-recompensa">{% if du.concluida_em %}Concluída · +{{ du.cristais_recompensa }} cristais recebidos{% else %}Recompensa: {{ du.cristais_recompensa }} cristais{% endif %}</small>
             <div class="progress-bar">
               <div class="progress-fill" style="width: {{ du.porcentagem }}%;"></div>
-              <span class="progress-text">{{ du.progresso }} / {{ du.desafio.meta }}</span>
+              <span class="progress-text">{{ du.progresso }} / {{ du.meta }}</span>
             </div>
           </div>
           <img
             class="icone-bau"
-            src="{% static du.desafio.bau_imagem %}"
+            src="{% static du.bau_imagem %}"
             alt="Baú de recompensa"
           />
         </div>

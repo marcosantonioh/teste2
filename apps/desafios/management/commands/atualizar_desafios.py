@@ -1,30 +1,15 @@
-from django.core.management.base import BaseCommand
-from desafios.models import Desafio, DesafioUsuario
 from django.contrib.auth import get_user_model
-import random
+from django.core.management.base import BaseCommand
+
+from apps.desafios.services import missoes_do_dia
+
 
 class Command(BaseCommand):
-    help = 'Atualiza 3 desafios diários para cada usuário'
+    help = 'Garante as três missões do dia sem apagar o progresso existente.'
 
     def handle(self, *args, **kwargs):
-        User = get_user_model()
-        usuarios = User.objects.all()
-        desafios = list(Desafio.objects.all())
-
-        for usuario in usuarios:
-            # Remove desafios antigos do usuário
-            DesafioUsuario.objects.filter(usuario=usuario).delete()
-
-            # Escolhe 3 desafios aleatórios (ou os primeiros 3, mude como quiser)
-            novos_desafios = random.sample(desafios, k=3) if len(desafios) >=3 else desafios
-
-            # Cria as novas relações com progresso zerado
-            for desafio in novos_desafios:
-                DesafioUsuario.objects.create(
-                    usuario=usuario,
-                    desafio=desafio,
-                    progresso=0,
-                    finalizado=False
-                )
-
-        self.stdout.write(self.style.SUCCESS('Desafios diários atualizados com sucesso!'))
+        quantidade = 0
+        for usuario in get_user_model().objects.iterator():
+            missoes_do_dia(usuario)
+            quantidade += 1
+        self.stdout.write(self.style.SUCCESS(f'Missões do dia verificadas para {quantidade} usuário(s).'))

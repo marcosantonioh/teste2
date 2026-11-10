@@ -6,8 +6,7 @@
 />
 <link rel="stylesheet" href="{% static 'style/global/button-play.css' %}">
 
-<body>
-
+<div class="percurso-pagina">
   <div class="container">
 
     {% if messages %}
@@ -18,17 +17,18 @@
       </div>
     {% endif %}
 
-    <div class="percurso-navegacao">
+    <nav class="percurso-navegacao" aria-label="Navegação do percurso">
+      <a href="{% url 'exercicios:modulos' %}" class="percurso-navegacao__link percurso-navegacao__voltar"><span aria-hidden="true">←</span> Voltar aos módulos</a>
       {% if visualizar_todas_secoes %}
         <a href="{% url 'exercicios:percurso' modulo.id %}" class="percurso-navegacao__link">Percurso principal</a>
       {% else %}
         <a href="{% url 'exercicios:percurso' modulo.id %}?visualizacao=todas" class="percurso-navegacao__link">Todas as seções</a>
       {% endif %}
-    </div>
+    </nav>
 
     {% if visualizar_todas_secoes %}
       <section class="mapa-secoes" aria-labelledby="tituloMapaSecoes">
-        <h1 id="tituloMapaSecoes">Todas as seções</h1>
+        <p class="percurso-sobretitulo">{{ modulo.nome }}</p><h1 id="tituloMapaSecoes">Sua jornada</h1><p class="mapa-secoes__intro">Escolha uma seção para acompanhar seu progresso.</p>
         <ul class="mapa-secoes__lista">
           {% for item in secoes_mapa %}
             <li class="mapa-secoes__item mapa-secoes__item--{{ item.estado }}" data-estado="{{ item.estado }}">
@@ -62,28 +62,14 @@
 
     {% elif secao_atual %}
 
-      <div class="header-wrapper">
-        <div class="page-header">
-          <a href="{% url 'exercicios:modulos' %}" class="back-button">
-            <img
-              src="/static/img/back_white.svg"
-              alt="Voltar"
-              class="back-icon"
-            />
-          </a>
-          
-          <h1 class="section-title">{{ secao_atual.nome }}</h1>
-          
-          <button class="guide-button">
-            <!-- Conteúdo do botão -->
-          </button>
-        </div>
-      </div>
-
-
       <div class="module-description">
         <div class="stations">
           <svg class="percurso-conectores" aria-hidden="true"></svg>
+          <div class="percurso-inicio">
+            <span class="percurso-inicio__fala">Vamos nessa?</span>
+            <img src="{% static 'img/mascote/robo2.svg' %}" alt="Mascote da Cventure">
+            <strong>INÍCIO</strong>
+          </div>
           {% for estacao in estacoes %}
             <!-- Aqui você inclui o botão -->
             {% include "modules/button-play.html" %}
@@ -158,9 +144,7 @@
 
   </div>
 
-
-</body>
-
+</div>
 
 <script>
   function abrirModalBau() {
@@ -183,7 +167,16 @@
     const svg = percurso?.querySelector('.percurso-conectores');
     if (!percurso || !svg) return;
 
-    const pontos = [...percurso.querySelectorAll('.station-circle, .bau-estacao')];
+    const pontos = [...percurso.querySelectorAll('.percurso-inicio, .station-circle, .bau-estacao')];
+    const itens = [...percurso.children].filter(item => item !== svg);
+    const compacto = window.matchMedia('(max-width: 700px)').matches;
+    const posicoes = compacto ? [50, 31, 68, 31, 68, 31, 68] : [12, 31, 53, 75, 58, 37, 19];
+    const passo = compacto ? 125 : 135;
+    itens.forEach((item, indice) => {
+      item.style.left = `${posicoes[indice % posicoes.length]}%`;
+      item.style.top = `${indice * passo + (compacto ? 40 : 48)}px`;
+    });
+    percurso.style.height = `${itens.length * passo + 65}px`;
     const limites = percurso.getBoundingClientRect();
     svg.setAttribute('viewBox', `0 0 ${limites.width} ${limites.height}`);
     svg.replaceChildren();

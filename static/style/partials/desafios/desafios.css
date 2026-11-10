@@ -199,3 +199,5 @@
     font-size: 0.95rem; /* Ajusta o tamanho da fonte da missão */
   }
 }
+.missao-recompensa { display: block; margin: -2px 0 8px; color: #735293; font-size: .82rem; font-weight: 700; }
+.missao-concluida { border: 1px solid #b7dfbd; background: #f0faf1; }

@@ -20,7 +20,7 @@ from apps.exercicios.models import (
     TentativaEstacao,
 )
 from apps.mecanicas_jogo import services as mecanicas_services
-from apps.desafios.models import DesafioUsuario
+from apps.desafios.services import missoes_do_dia
 from django.http import JsonResponse
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse
@@ -93,15 +93,7 @@ def modulos(request):
         secoes__estacoes__disponivel_para_visitantes=True
     ).distinct()
 
-    # Busca os desafios do usuário logado
-    desafios_usuario = DesafioUsuario.objects.filter(usuario=request.user)
-
-    # Calcula o progresso em porcentagem
-    for du in desafios_usuario:
-        try:
-            du.porcentagem = int((du.progresso / du.desafio.meta) * 100)
-        except ZeroDivisionError:
-            du.porcentagem = 0
+    desafios_usuario = missoes_do_dia(request.user)
 
     context = {
         "perfil": perfil,
@@ -174,6 +166,13 @@ def percurso(request, modulo_id):
         for estacao in estacoes:
             estacao.status = mecanicas_services.obter_status_estacao(
                 estacao, request.user
+            )
+            total_exercicios = estacao.exercicios.count()
+            concluidos = ExercicioUsuario.objects.filter(
+                usuario=request.user, exercicio__estacao=estacao, status="concluido"
+            ).count()
+            estacao.progresso_percentual = (
+                round(concluidos * 100 / total_exercicios) if total_exercicios else 0
             )
 
         estacao_livre = next(

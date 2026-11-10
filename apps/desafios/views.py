@@ -2,19 +2,13 @@ from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from apps.usuarios.models import Perfil
-from apps.desafios.models import DesafioUsuario
+from apps.desafios.services import missoes_do_dia
 from datetime import datetime, time
-import math
+from django.utils import timezone
 
 @login_required
 def desafios(request):
-    desafios_usuario = DesafioUsuario.objects.filter(usuario=request.user)
-
-    for du in desafios_usuario:
-        try:
-            du.porcentagem = int((du.progresso / du.desafio.meta) * 100)
-        except ZeroDivisionError:
-            du.porcentagem = 0
+    desafios_usuario = missoes_do_dia(request.user)
 
     try:
         perfil = Perfil.objects.get(user=request.user)
@@ -22,8 +16,12 @@ def desafios(request):
         perfil = None
 
     # Cálculo de horas restantes até o fim do dia
-    agora = datetime.now()
+    agora = timezone.now()
+    if timezone.is_aware(agora):
+        agora = timezone.localtime(agora)
     fim_do_dia = datetime.combine(agora.date(), time(23, 59, 59))
+    if timezone.is_aware(agora):
+        fim_do_dia = timezone.make_aware(fim_do_dia, timezone.get_current_timezone())
     tempo_restante = fim_do_dia - agora
     segundos_restantes = int(tempo_restante.total_seconds())
     horas_restantes = segundos_restantes // 3600

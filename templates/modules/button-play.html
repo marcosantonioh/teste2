@@ -14,6 +14,7 @@
     {% endif %}"
   onclick="toggleDrop('{{ estacao.id }}')"
 >
+  <span class="station-numero">{{ forloop.counter }}</span>
   <span class="station-tile">
     {% if estacao.status == 'livre' %}
       <img src="{% static 'img/play.svg' %}" alt="Jogar Estação" class="play-icon" />
@@ -26,6 +27,8 @@
     {% endif %}
   </span>
 
+  <span class="station-nome">{{ estacao.nome }}</span>
+  <span class="station-progresso" role="progressbar" aria-label="Progresso da estação {{ estacao.nome }}" aria-valuenow="{{ estacao.progresso_percentual }}" aria-valuemin="0" aria-valuemax="100"><span style="width: {{ estacao.progresso_percentual }}%"></span></span>
   <!-- Círculo de estação -->
   <div class="station-dropdown" id="dropdown-{{ estacao.id }}">
     <span>{{ estacao.nome }}</span>

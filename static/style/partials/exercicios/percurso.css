@@ -370,3 +370,205 @@ body {
     box-sizing: border-box;
   }
 }
+
+/* Mapa de aventura da Cventure. */
+body { background: #090821; }
+.percurso-pagina {
+  min-height: 100vh;
+  padding: 1px 20px 70px;
+  color: #eee8ff;
+  background:
+    radial-gradient(circle at 18% 22%, rgba(76, 28, 160, .25), transparent 24%),
+    radial-gradient(circle at 80% 35%, rgba(99, 22, 186, .2), transparent 29%),
+    radial-gradient(circle at 45% 84%, rgba(36, 26, 123, .28), transparent 34%),
+    linear-gradient(155deg, #080a28, #0b0623 58%, #10062b);
+  overflow: hidden;
+}
+.percurso-pagina .container { width: min(100%, 1400px); max-width: none; margin: 90px auto 0; }
+.percurso-pagina .percurso-navegacao { margin: 0 0 12px; }
+.percurso-pagina .percurso-navegacao__link,
+.percurso-pagina .percurso-voltar { color: #c994ff; text-decoration: none; font-weight: 700; }
+.percurso-pagina .percurso-navegacao__link:hover,
+.percurso-pagina .percurso-voltar:hover { color: #fff; text-decoration: underline; }
+.percurso-hero { position: relative; z-index: 2; padding: 12px 20px 24px; }
+.percurso-hero .percurso-sobretitulo,
+.percurso-sobretitulo { margin: 22px 0 8px; color: #a68cf2; font-size: .9rem; font-weight: 800; letter-spacing: .15em; text-transform: uppercase; }
+.percurso-hero h1 { margin: 0; color: #d1a9ff; font-size: clamp(2.5rem, 5vw, 4.4rem); font-weight: 850; letter-spacing: .03em; text-transform: uppercase; }
+.percurso-hero > p:last-child { margin: 5px 0 0; color: #a9a0dc; font-size: clamp(1.1rem, 2vw, 1.45rem); }
+.percurso-pagina .module-description {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.percurso-pagina .stations {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: none;
+  min-height: 450px;
+  margin: 0;
+  padding: 0;
+  background-image:
+    linear-gradient(rgba(120, 78, 228, .045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(120, 78, 228, .045) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: linear-gradient(transparent, #000 8%, #000 90%, transparent);
+}
+.percurso-pagina .stations > :not(.percurso-conectores) {
+  position: absolute;
+  transform: translateX(-50%);
+}
+.percurso-pagina .percurso-conectores { z-index: 0; }
+.percurso-pagina .percurso-conectores__linha {
+  stroke: #9f32ff;
+  stroke-width: 8;
+  filter: drop-shadow(0 0 5px #b05cff) drop-shadow(0 0 12px #6b16f6);
+}
+.percurso-inicio {
+  z-index: 1;
+  width: 180px;
+  height: 175px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+.percurso-inicio img { height: 115px; width: 130px; object-fit: contain; filter: drop-shadow(0 0 16px rgba(45, 215, 255, .8)); }
+.percurso-inicio strong { padding: 5px 19px; border: 2px solid #8752ef; border-radius: 99px; background: #16103d; color: #e7deff; box-shadow: 0 0 18px rgba(139, 65, 255, .38); }
+.percurso-inicio__fala { position: absolute; left: 75%; top: -23px; width: max-content; padding: 9px 13px; border: 2px solid #a45cff; border-radius: 12px; background: #1d0c3d; color: #eccfff; font-weight: 700; }
+.percurso-pagina .station-circle {
+  width: 170px;
+  height: 167px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0;
+  text-align: center;
+}
+.percurso-pagina .station-tile { flex: 0 0 94px; }
+.percurso-pagina .station-numero {
+  position: absolute;
+  top: -18px;
+  z-index: 4;
+  min-width: 38px;
+  padding: 3px 8px;
+  border: 2px solid #997cff;
+  border-radius: 13px;
+  background: #11123f;
+  color: #d2c9ff;
+  font-weight: 800;
+  box-shadow: 0 0 10px rgba(136, 72, 250, .45);
+}
+.percurso-pagina .station-nome { display: block; max-width: 170px; margin: -6px 0 9px; color: #eee8ff; font-size: 1rem; font-weight: 700; line-height: 1.2; }
+.percurso-pagina .station-progresso { display: block; width: 100px; height: 7px; overflow: hidden; border-radius: 99px; background: #30245b; }
+.percurso-pagina .station-progresso span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #ba43ff, #7131ec); box-shadow: 0 0 10px #a32cff; }
+.percurso-pagina .status-bloqueado .station-tile { filter: grayscale(.5) brightness(.7); }
+.percurso-pagina .status-bloqueado .station-nome { color: #aca0d4; }
+.percurso-pagina .status-bloqueado .station-progresso span { background: #706397; box-shadow: none; }
+.percurso-pagina .station-dropdown { top: 140px; z-index: 12; border: 1px solid #7342bd; background: #fdfbff; }
+.percurso-pagina .station-circle:hover { transform: translateX(-50%) translateY(-4px); }
+.percurso-pagina .station-circle--animada .station-tile { filter: drop-shadow(0 0 14px rgba(160, 58, 255, .9)); }
+.percurso-pagina .bau-estacao-linha { width: 170px; height: 160px; min-height: 0; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; z-index: 1; }
+.percurso-pagina .bau-estacao-linha .mascote-percurso { display: none; }
+.percurso-pagina .bau-estacao { width: 130px; min-height: 118px; }
+.percurso-pagina .bau-estacao__imagem { width: 106px; height: 106px; filter: drop-shadow(0 0 15px rgba(255, 160, 30, .62)); }
+.percurso-pagina .bau-estacao-linha::after { content: "RECOMPENSA"; padding: 5px 11px; border: 1px solid #d69231; border-radius: 99px; color: #ffd27a; font-size: .75rem; font-weight: 800; letter-spacing: .09em; }
+.percurso-pagina .header-wrapper.section-locked { margin: 8px 20px 0; border: 1px solid #67538c; background: rgba(38, 22, 75, .75); }
+.percurso-pagina .mapa-secoes { padding: 20px; border: 0; background: transparent; }
+.percurso-pagina .mapa-secoes h1 { margin-bottom: 6px; color: #d1a9ff; font-size: clamp(2rem, 4vw, 3.5rem); text-transform: uppercase; }
+.percurso-pagina .mapa-secoes__intro { margin: 0 0 24px; color: #b2a3dc; }
+.percurso-pagina .mapa-secoes__lista { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.percurso-pagina .mapa-secoes__item { border: 1px solid #6443a5; border-radius: 18px; background: #1b1442; color: #e8dfff; box-shadow: 0 12px 22px rgba(0,0,0,.2); }
+.percurso-pagina .mapa-secoes__item--atual { border-color: #b45aff; box-shadow: 0 0 22px rgba(133, 46, 252, .27); }
+.percurso-pagina .mapa-secoes__item--bloqueada { opacity: .65; }
+.percurso-pagina .mapa-secoes__barra { background: #3d2d6d; }
+.percurso-pagina .mapa-secoes__barra span { background: #aa49ff; }
+@media (max-width: 700px) {
+  .percurso-pagina { padding-inline: 10px; }
+  .percurso-pagina .container { margin-top: 10px; }
+  .percurso-hero { padding-inline: 10px; }
+  .percurso-hero h1 { font-size: 2.35rem; }
+  .percurso-pagina .station-circle,
+  .percurso-pagina .bau-estacao-linha { width: 145px; }
+  .percurso-inicio { width: 145px; }
+  .percurso-inicio__fala { left: 50%; top: -28px; }
+  .percurso-pagina .station-nome { font-size: .88rem; }
+  .percurso-pagina .station-dropdown { min-width: 180px; }
+}
+
+/* Cenário gerado para o mapa, com transição suave para percursos longos. */
+.percurso-pagina {
+  background:
+    linear-gradient(180deg, rgba(7, 5, 28, .3) 0, rgba(7, 5, 28, .08) 460px, #090821 1180px),
+    url('/static/img/percurso-cenario.png') center top / 100% auto no-repeat,
+    #090821;
+}
+
+/* Escala compacta do mapa para mostrar mais estações por tela. */
+.percurso-pagina .percurso-inicio { width: 128px; height: 120px; }
+.percurso-pagina .percurso-inicio img { width: 90px; height: 80px; }
+.percurso-pagina .percurso-inicio strong { padding: 3px 13px; font-size: .8rem; }
+.percurso-pagina .percurso-inicio__fala { top: -15px; left: 68%; padding: 6px 9px; font-size: .78rem; }
+.percurso-pagina .station-circle { width: 130px; height: 126px; }
+.percurso-pagina .station-tile { flex-basis: 70px; transform: scale(.74); transform-origin: top center; }
+.percurso-pagina .station-numero { top: -13px; min-width: 30px; padding: 2px 6px; font-size: .8rem; border-radius: 9px; }
+.percurso-pagina .station-nome { max-width: 130px; margin: -3px 0 6px; font-size: .82rem; }
+.percurso-pagina .station-progresso { width: 74px; height: 5px; }
+.percurso-pagina .station-dropdown { top: 107px; }
+.percurso-pagina .bau-estacao-linha { width: 126px; height: 122px; }
+.percurso-pagina .bau-estacao { width: 105px; min-height: 90px; }
+.percurso-pagina .bau-estacao__imagem { width: 76px; height: 76px; }
+.percurso-pagina .bau-estacao-linha::after { padding: 3px 8px; font-size: .65rem; }
+.percurso-pagina .percurso-conectores__linha { stroke-width: 6; }
+@media (max-width: 700px) {
+  .percurso-pagina .percurso-inicio { width: 115px; }
+  .percurso-pagina .station-circle { width: 122px; }
+  .percurso-pagina .station-nome { max-width: 122px; }
+  .percurso-pagina .bau-estacao-linha { width: 115px; }
+}
+
+/* Navegação do percurso: ações alinhadas e com o mesmo peso visual. */
+.percurso-pagina .percurso-navegacao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 60px;
+  margin: 0 0 22px;
+  padding: 0 20px;
+}
+.percurso-pagina .percurso-navegacao__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 9px 17px;
+  border: 1px solid #a45cff;
+  border-radius: 999px;
+  background: rgba(28, 11, 66, .82);
+  color: #ead9ff;
+  font-size: .92rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none;
+  box-shadow: 0 0 12px rgba(155, 56, 255, .22);
+  transition: background .15s ease, border-color .15s ease, transform .15s ease;
+}
+.percurso-pagina .percurso-navegacao__voltar span { margin-right: 8px; font-size: 1.3rem; line-height: .8; }
+.percurso-pagina .percurso-navegacao__link:hover {
+  border-color: #d0a5ff;
+  background: #4a187e;
+  color: #fff;
+  text-decoration: none;
+  transform: translateY(-2px);
+}
+.percurso-pagina .percurso-navegacao__link:focus-visible { outline: 3px solid #d0a5ff; outline-offset: 3px; }
+@media (max-width: 700px) {
+  .percurso-pagina .percurso-navegacao { gap: 8px; padding: 0 4px; margin-bottom: 14px; }
+  .percurso-pagina .percurso-navegacao__link { min-height: 40px; padding: 8px 10px; font-size: .8rem; text-align: center; }
+}

@@ -214,8 +214,18 @@ def atualizar_estado_do_perfil_e_exercicio(perfil, exercicio, usuario, correta):
 
             # A ofensiva é contabilizada somente ao concluir toda a estação,
             # e o próprio perfil limita o ganho a uma vez por dia.
-            if estacao_esta_concluida(exercicio.estacao, usuario):
+            estacao_concluida = estacao_esta_concluida(exercicio.estacao, usuario)
+            if estacao_concluida:
                 perfil.registrar_estacao_concluida()
+
+            from apps.desafios.services import registrar_exercicio_concluido
+
+            registrar_exercicio_concluido(
+                usuario,
+                exercicio.xp if deve_conceder_xp else 0,
+                estacao_concluida=estacao_concluida,
+            )
+            perfil.refresh_from_db(fields=['cristal'])
 
             return conquistas_novas
     else:
