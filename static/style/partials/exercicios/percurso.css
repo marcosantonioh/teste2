@@ -501,11 +501,10 @@ body { background: #090821; }
   .percurso-pagina .station-dropdown { min-width: 180px; }
 }
 
-/* Cenário gerado para o mapa, com transição suave para percursos longos. */
+/* Cenário do percurso fornecido para a jornada. */
 .percurso-pagina {
   background:
-    linear-gradient(180deg, rgba(7, 5, 28, .3) 0, rgba(7, 5, 28, .08) 460px, #090821 1180px),
-    url('/static/img/percurso-cenario.png') center top / 100% auto no-repeat,
+    url('/static/img/percurso-canion-violeta.png') center top / 100% auto no-repeat,
     #090821;
 }
 

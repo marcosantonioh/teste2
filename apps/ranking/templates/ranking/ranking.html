@@ -1,157 +1,98 @@
-{% extends 'navbar.html' %} 
-{%load static%}
-
+{% extends 'navbar.html' %}
+{% load static %}
 {% block content %}
-
 <link rel="stylesheet" href="{% static 'style/partials/ranking/ranking.css' %}">
 
-
-    {%if usuario_logado%}
-
-        <div class="ranking-layout">
-        <div class="container">
-
-            <div class="ranking-switch">
-                <button class="btn-ranking ativo" onclick="mostrarRanking('global')">Global</button>
-                <button class="btn-ranking" onclick="mostrarRanking('amigos')">Amigos</button>
-            </div>
-
-            <!-- Ranking Global -->
-            <div id="ranking-global" class="ranking-content">
-                <table class="ranking-table">
-                    <tbody>
-                        {% for perfil in perfis_globais %}
-                        <tr {% if perfil.user == request.user %}class="meu-perfil{% if forloop.counter == 1 %} primeiro-colocado{% endif %}"
-                            {% elif forloop.counter == 1 %}class="primeiro-colocado"
-                            {% endif %}
-                        >
-                            <td>
-                                {% if forloop.counter == 1 %}
-                                    <span class="medalha medalha-ouro">🥇</span>
-                                {% elif forloop.counter == 2 %}
-                                    <span class="medalha medalha-prata">🥈</span>
-                                {% elif forloop.counter == 3 %}
-                                    <span class="medalha medalha-bronze">🥉</span>
-                                {% else %}
-                                    <span class="posicao">{{ forloop.counter }}</span>
-                                {% endif %}
-                                                            
-                            </td>
-                            <td class="foto-cell">
-                                <img src="{% static perfil.avatar_arquivo %}" class="profile-pic" alt="Avatar de {{ perfil.user.username }}">
-                            </td>
-                            <td class="username-cell">
-                                {% if perfil.user.username|length > 6 %}
-                                    {{ perfil.user.username|slice:":6" }}...
-                                {% else %}
-                                    {{ perfil.user.username }}
-                                {% endif %}
-                            </td>
-                            <td class="xp-cell">
-                                <img src="/static/img/xp.svg" alt="">
-                                {{ perfil.xp }} XP
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Ranking Amigos -->
-            <div id="ranking-amigos" class="ranking-content" style="display: none;">
-                <table class="ranking-table">
-                    <tbody>
-                        {% for perfil in perfis_amigos %}
-                        <tr>
-                            <td>{{ forloop.counter }}</td>
-                            <td class="foto-cell">
-                                <img src="{% static perfil.avatar_arquivo %}" class="profile-pic" alt="Avatar de {{ perfil.user.username }}">
-                            </td>
-                            <td>{{ perfil.user.username }}</td>
-                            <td>{{ perfil.xp }}</td>
-                        </tr>
-                        {% empty %}
-                        <tr><td colspan="4">Você ainda não tem amigos no ranking.</td></tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-
+<main class="ranking-pagina">
+  <div class="ranking-layout">
+    <header class="ranking-cabecalho">
+      <div class="ranking-titulo">
+        <span class="ranking-coroa" aria-hidden="true">♛</span>
+        <div>
+          <h1>Ranking</h1>
+          <p>Aprender também é uma conquista.</p>
         </div>
+      </div>
+      {% if usuario_logado %}
+      <div class="ranking-switch" role="tablist" aria-label="Tipo de ranking">
+        <button type="button" id="aba-global" class="btn-ranking ativo" role="tab" aria-selected="true" aria-controls="ranking-global" onclick="mostrarRanking('global')"><span aria-hidden="true">◎</span> Global</button>
+        <button type="button" id="aba-amigos" class="btn-ranking" role="tab" aria-selected="false" aria-controls="ranking-amigos" onclick="mostrarRanking('amigos')"><span aria-hidden="true">♟</span> Amigos</button>
+      </div>
+      {% endif %}
+      <p class="ranking-frase">Quanto mais você aprende,<br>mais alto você vai!</p>
+    </header>
 
-        <aside class="divisoes-ranking" aria-label="Divisões do ranking">
-            <h2>Divisões</h2>
-            <div class="divisoes-lista">
-                {% for divisao in divisoes %}
-                    <div class="divisao-item {% if perfil.divisao_id == divisao.id %}divisao-atual{% endif %}">
-                        <img src="{% static divisao.imagem %}" alt="Divisão {{ divisao.nome }}" class="trofeu-divisao">
-                        {% if perfil.divisao_id == divisao.id %}
-                            <span class="nome-divisao-atual">{{ divisao.nome }}</span>
-                        {% endif %}
-                    </div>
-                {% endfor %}
+    {% if usuario_logado %}
+    <div class="ranking-principal">
+      <div class="ranking-lista">
+        <section id="ranking-global" class="ranking-content" role="tabpanel" aria-labelledby="aba-global">
+          <div class="ranking-tabela-cabecalho"><span>#</span><span>Usuário</span><span>⚡ XP</span></div>
+          <ol class="ranking-usuarios">
+            {% for perfil in perfis_globais %}
+            <li class="ranking-usuario {% if forloop.counter == 1 %}primeiro-colocado{% elif forloop.counter == 2 %}segundo-colocado{% elif forloop.counter == 3 %}terceiro-colocado{% endif %} {% if perfil.user == request.user %}meu-perfil{% endif %}">
+              <span class="ranking-posicao {% if forloop.counter <= 3 %}ranking-posicao--podio{% endif %}" aria-label="{{ forloop.counter }}º lugar">{{ forloop.counter }}</span>
+              <img src="{% static perfil.avatar_arquivo %}" class="profile-pic" alt="Avatar de {{ perfil.user.username }}">
+              <span class="ranking-identidade"><strong>{{ perfil.user.username }}</strong>{% if perfil.user == request.user %}<small>Você está aqui</small>{% endif %}</span>
+              <strong class="xp-cell"><span aria-hidden="true">⚡</span> {{ perfil.xp }} <small>XP</small></strong>
+            </li>
+            {% empty %}
+            <li class="ranking-vazio">Ainda não há participantes no ranking.</li>
+            {% endfor %}
+          </ol>
+        </section>
+
+        <section id="ranking-amigos" class="ranking-content" role="tabpanel" aria-labelledby="aba-amigos" hidden>
+          <div class="ranking-tabela-cabecalho"><span>#</span><span>Usuário</span><span>⚡ XP</span></div>
+          <ol class="ranking-usuarios">
+            {% for perfil in perfis_amigos %}
+            <li class="ranking-usuario {% if forloop.counter == 1 %}primeiro-colocado{% elif forloop.counter == 2 %}segundo-colocado{% elif forloop.counter == 3 %}terceiro-colocado{% endif %}">
+              <span class="ranking-posicao {% if forloop.counter <= 3 %}ranking-posicao--podio{% endif %}" aria-label="{{ forloop.counter }}º lugar">{{ forloop.counter }}</span>
+              <img src="{% static perfil.avatar_arquivo %}" class="profile-pic" alt="Avatar de {{ perfil.user.username }}">
+              <span class="ranking-identidade"><strong>{{ perfil.user.username }}</strong></span>
+              <strong class="xp-cell"><span aria-hidden="true">⚡</span> {{ perfil.xp }} <small>XP</small></strong>
+            </li>
+            {% empty %}
+            <li class="ranking-vazio">Você ainda não tem amigos no ranking.</li>
+            {% endfor %}
+          </ol>
+        </section>
+      </div>
+
+      <aside class="ranking-lateral">
+        <section class="divisoes-ranking" aria-label="Divisões do ranking">
+          <h2>Divisões</h2>
+          <div class="divisoes-lista">
+            {% for divisao in divisoes reversed %}
+            <div class="divisao-item {% if perfil.divisao_id == divisao.id %}divisao-atual{% elif divisao.bloqueada %}divisao-bloqueada{% endif %}">
+              <img src="{% static divisao.imagem %}" alt="" class="trofeu-divisao">
+              <span>{{ divisao.nome }}</span>
+              {% if perfil.divisao_id == divisao.id %}<strong class="divisao-indicador">Sua divisão</strong>{% endif %}
             </div>
-        </aside>
-        </div>
-
-    {%else%}
-
-        <div class="div1">
-            <h2>Ranking</h2>
-            <p>Faça login para participar do ranking!</p>
-            
-            <div class="div2">
-                
-                <div class="div3">
-                    <div class="forma f1"></div>
-                    <div class="forma f2"></div>
-                    <div class="forma f3"></div>
-                    <div class="forma f4"></div>
-                </div>
-                <div class="div3">
-                    <div class="forma f1"></div>
-                    <div class="forma f2"></div>
-                    <div class="forma f3"></div>
-                    <div class="forma f4"></div>
-                </div>
-                <div class="div3">
-                    <div class="forma f1"></div>
-                    <div class="forma f2"></div>
-                    <div class="forma f3"></div>
-                    <div class="forma f4"></div>
-                </div>
-                <div class="div3">
-                    <div class="forma f1"></div>
-                    <div class="forma f2"></div>
-                    <div class="forma f3"></div>
-                    <div class="forma f4"></div>
-                </div>
-                
-            </div>
-
-        </div>
-
-    {%endif%}
-
+            {% endfor %}
+          </div>
+        </section>
+      </aside>
+    </div>
+    {% else %}
+    <section class="ranking-convite">
+      <span class="ranking-convite__icone" aria-hidden="true">♛</span>
+      <h2>Faça parte do ranking</h2>
+      <p>Entre na sua conta para acompanhar suas conquistas e descobrir sua posição.</p>
+    </section>
+    {% endif %}
+  </div>
+</main>
 
 <script>
-    function mostrarRanking(tipo) {
-        const btns = document.querySelectorAll('.btn-ranking');
-        btns.forEach(btn => btn.classList.remove('ativo'));
-
-        const globalDiv = document.getElementById('ranking-global');
-        const amigosDiv = document.getElementById('ranking-amigos');
-
-        if (tipo === 'global') {
-            globalDiv.style.display = 'block';
-            amigosDiv.style.display = 'none';
-            btns[0].classList.add('ativo');
-        } else {
-            globalDiv.style.display = 'none';
-            amigosDiv.style.display = 'block';
-            btns[1].classList.add('ativo');
-        }
-    }
+function mostrarRanking(tipo) {
+  const globalAtivo = tipo === 'global';
+  document.getElementById('ranking-global').hidden = !globalAtivo;
+  document.getElementById('ranking-amigos').hidden = globalAtivo;
+  for (const [id, ativo] of [['aba-global', globalAtivo], ['aba-amigos', !globalAtivo]]) {
+    const aba = document.getElementById(id);
+    aba.classList.toggle('ativo', ativo);
+    aba.setAttribute('aria-selected', String(ativo));
+  }
+}
 </script>
-
 {% endblock %}

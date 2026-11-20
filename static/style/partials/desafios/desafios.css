@@ -201,3 +201,27 @@
 }
 .missao-recompensa { display: block; margin: -2px 0 8px; color: #735293; font-size: .82rem; font-weight: 700; }
 .missao-concluida { border: 1px solid #b7dfbd; background: #f0faf1; }
+
+/* Ilustração das missões ao lado do painel. */
+.desafios-layout {
+  width: min(100%, 1220px);
+  margin: 100px auto 0;
+  padding: 20px 32px;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(36px, 7vw, 100px);
+}
+.desafios-layout .left-section { flex: 0 1 600px; min-width: 0; }
+.desafios-layout .missoes-card { width: 100%; box-sizing: border-box; }
+.desafios-layout .right-section { flex: 0 1 260px; min-width: 0; }
+.desafios-ilustracao img { display: block; width: 100%; max-height: 270px; object-fit: contain; }
+@media (max-width: 992px) {
+  .desafios-layout { margin-top: 70px; padding: 20px 24px 90px; gap: 28px; }
+  .desafios-layout .left-section, .desafios-layout .right-section { flex: none; width: 100%; }
+  .desafios-ilustracao img { width: min(100%, 200px); max-height: 200px; margin: 0 auto; }
+}
+@media (max-width: 600px) {
+  .desafios-layout { padding: 14px 12px 90px; }
+  .desafios-ilustracao img { width: min(100%, 155px); max-height: 155px; }
+}

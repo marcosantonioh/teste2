@@ -4,7 +4,7 @@
   rel="stylesheet"
   href="{% static 'style/partials/desafios/desafios.css' %}"
 />
-<div class="container">
+<div class="container desafios-layout">
   <!-- Lado Esquerdo: Desafios Diários -->
   <div class="left-section">
     <div class="missoes-card">
@@ -24,7 +24,7 @@
             alt="Ícone do desafio"
           />
           <div class="missao-info">
-            <p>{{ du.titulo }}</p><small class="missao-recompensa">{% if du.concluida_em %}Concluída · +{{ du.cristais_recompensa }} cristais recebidos{% else %}Recompensa: {{ du.cristais_recompensa }} cristais{% endif %}</small>
+            <p>{{ du.titulo }}</p>
             <div class="progress-bar">
               <div class="progress-fill" style="width: {{ du.porcentagem }}%;"></div>
               <span class="progress-text">{{ du.progresso }} / {{ du.meta }}</span>
@@ -44,9 +44,8 @@
     
   </div>
 
-  <!-- Lado Direito: Conquistas -->
-  <div class="right-section">
-    
-  </div>
+  <aside class="right-section desafios-ilustracao" aria-label="Mascote Cventure com recompensas">
+    <img src="{% static 'img/mascote/robo_missions.png' %}" alt="Mascote Cventure ao lado de um alvo e um baú de cristais">
+  </aside>
 </div>
 {% endblock %}

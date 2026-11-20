@@ -53,6 +53,12 @@ def ranking(request):
             divisao.nome,
         )
     )
+    divisao_atual_indice = next(
+        (indice for indice, divisao in enumerate(divisoes) if perfil and divisao.id == perfil.divisao_id),
+        -1,
+    )
+    for indice, divisao in enumerate(divisoes):
+        divisao.bloqueada = indice > divisao_atual_indice
 
     context = {
         'perfil': perfil,

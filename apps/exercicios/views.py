@@ -969,6 +969,7 @@ def estacao_concluida_view(request, estacao_id):
         "total_xp_estacao": total_xp_estacao,
         "perfil": perfil,
         "modulo_id": estacao.secao.modulo.id,
+        "estacao_refeita": bool(tentativa and not tentativa.primeira_conclusao),
         "resumo_estacao": {
             "acertos": acertos,
             "erros": erros,
