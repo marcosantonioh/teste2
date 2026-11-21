@@ -189,6 +189,24 @@ class ResumoExercicioInformativoTests(TestCase):
             resposta_correta="1",
         )
 
+    def test_aula_de_repeticao_exibe_conceitos_codigo_e_fluxo(self):
+        self.exercicio_info.enunciado = (
+            "Uma estrutura de repetição normalmente possui: "
+            "Inicialização, Condição e Atualização."
+        )
+        self.exercicio_info.save(update_fields=["enunciado"])
+        self.client.force_login(self.user)
+
+        response = self.client.get(
+            reverse("exercicios:resolver_exercicio", args=[self.exercicio_info.id])
+        )
+
+        self.assertContains(response, "Como um laço funciona?")
+        self.assertContains(response, "while")
+        self.assertContains(response, "Cuidado com o loop infinito!")
+        self.assertContains(response, "info_repeticao.js")
+        self.assertContains(response, "Continuar")
+
     def test_exercicio_informativo_entra_no_resumo_da_estacao(self):
         self.client.force_login(self.user)
 
@@ -212,7 +230,7 @@ class ResumoExercicioInformativoTests(TestCase):
         resposta_final = self.client.get(
             reverse("exercicios:estacao_concluida", args=[self.exercicio_info.estacao_id])
         )
-        self.assertContains(resposta_final, "⚡ 17")
+        self.assertContains(resposta_final, "17 XP")
         self.assertContains(resposta_final, "100%")
 
     def test_ultimo_exercicio_informativo_leva_para_conclusao_da_estacao(self):
@@ -351,16 +369,16 @@ class PercursoPorSecaoTests(TestCase):
         response = self.client.get(reverse("exercicios:percurso", args=[self.modulo.id]))
         self.assertContains(response, "Introdução")
         self.assertContains(response, "While")
-        self.assertNotContains(response, 'class="section-title">While</h1>')
+        self.assertContains(response, 'class="percurso-navegacao__secao">Loops / Introdução</span>')
 
         self.concluir_estacoes(0, 1, inicio=4)
         response = self.client.get(reverse("exercicios:percurso", args=[self.modulo.id]))
-        self.assertContains(response, 'class="section-title">While</h1>')
+        self.assertContains(response, 'class="percurso-navegacao__secao">Loops / While</span>')
         self.assertContains(response, "Do-while")
         self.assertNotContains(response, ">For<", html=False)
 
         response = self.client.get(reverse("exercicios:percurso", args=[self.modulo.id]))
-        self.assertContains(response, 'class="section-title">While</h1>')
+        self.assertContains(response, 'class="percurso-navegacao__secao">Loops / While</span>')
 
     def test_desbloqueio_e_por_usuario_e_bloqueia_acesso_direto(self):
         self.concluir_estacoes(0, 5)
@@ -369,17 +387,31 @@ class PercursoPorSecaoTests(TestCase):
         self.client.force_login(self.outro_usuario)
         response = self.client.get(reverse("exercicios:percurso", args=[self.modulo.id]))
         self.assertContains(response, "Introdução")
-        self.assertNotContains(response, 'class="section-title">While</h1>')
+        self.assertContains(response, 'class="percurso-navegacao__secao">Loops / Introdução</span>')
         self.assertEqual(
             self.client.get(
                 reverse("exercicios:iniciar_estacao", args=[exercicio_while.id])
             ).status_code,
             403,
         )
+        self.assertEqual(
+            self.client.get(
+                reverse("exercicios:estacao_concluida", args=[self.estacoes[1][0][0].id])
+            ).status_code,
+            403,
+        )
+        self.assertEqual(
+            self.client.post(
+                reverse("exercicios:reportar_problema", args=[exercicio_while.id]),
+                {"motivo": "resposta_incorreta"},
+            ).status_code,
+            403,
+        )
+        self.assertFalse(ReporteExercicio.objects.exists())
 
         self.client.force_login(self.user)
         response = self.client.get(reverse("exercicios:percurso", args=[self.modulo.id]))
-        self.assertContains(response, 'class="section-title">While</h1>')
+        self.assertContains(response, 'class="percurso-navegacao__secao">Loops / While</span>')
 
     def test_mapa_exibe_todas_as_secoes_sem_desbloquear_as_bloqueadas(self):
         self.client.force_login(self.user)
@@ -390,7 +422,7 @@ class PercursoPorSecaoTests(TestCase):
             {"visualizacao": "todas"},
         )
 
-        self.assertContains(response, "Todas as seções")
+        self.assertContains(response, "Percurso principal")
         self.assertContains(response, 'data-estado="concluida"')
         self.assertContains(response, 'data-estado="atual"')
         self.assertContains(response, 'data-estado="bloqueada"')

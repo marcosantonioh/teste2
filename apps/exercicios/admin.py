@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib import admin
 from django.core.exceptions import ValidationError
+from django.db.models import Count
 from django.urls import reverse
 from django.utils.html import format_html, format_html_join
 from .models import BauEstacaoUsuario, Exercicio, ExercicioUsuario, Modulo, Secao, Estacao, ReporteExercicio, TentativaEstacao
@@ -174,8 +175,31 @@ class SecaoAdmin(admin.ModelAdmin):
     list_filter = ("modulo",)
     search_fields = ("nome",)
     list_editable = ("ordem",)
-    fields = ["nome", "modulo", "ordem", "link_adicionar_estacao_form"]
-    readonly_fields = ["link_adicionar_estacao_form"]
+    fields = ["nome", "modulo", "ordem", "estacoes_da_secao", "link_adicionar_estacao_form"]
+    readonly_fields = ["estacoes_da_secao", "link_adicionar_estacao_form"]
+
+    def estacoes_da_secao(self, obj):
+        if not obj.pk:
+            return "Salve a seção primeiro para visualizar suas estações."
+
+        estacoes = list(obj.estacoes.annotate(total_exercicios=Count("exercicios")).order_by("id"))
+        if not estacoes:
+            return "Esta seção ainda não possui estações."
+
+        return format_html_join(
+            "",
+            '<div style="margin: 0 0 8px"><a href="{}">{}</a> <span style="color: var(--body-quiet-color)">— {} exercício(s)</span></div>',
+            (
+                (
+                    reverse("admin:exercicios_estacao_change", args=(estacao.pk,)),
+                    estacao.nome,
+                    estacao.total_exercicios,
+                )
+                for estacao in estacoes
+            ),
+        )
+
+    estacoes_da_secao.short_description = "Estações desta Seção"
 
     def link_adicionar_estacao_form(self, obj):
         if obj.pk:

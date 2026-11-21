@@ -559,6 +559,11 @@ body { background: #090821; }
   transition: background .15s ease, border-color .15s ease, transform .15s ease;
 }
 .percurso-pagina .percurso-navegacao__voltar span { margin-right: 8px; font-size: 1.3rem; line-height: .8; }
+.percurso-pagina .percurso-navegacao__voltar .percurso-navegacao__secao {
+  margin-right: 0;
+  font-size: .92rem;
+  line-height: 1.2;
+}
 .percurso-pagina .percurso-navegacao__link:hover {
   border-color: #d0a5ff;
   background: #4a187e;
@@ -570,4 +575,5 @@ body { background: #090821; }
 @media (max-width: 700px) {
   .percurso-pagina .percurso-navegacao { gap: 8px; padding: 0 4px; margin-bottom: 14px; }
   .percurso-pagina .percurso-navegacao__link { min-height: 40px; padding: 8px 10px; font-size: .8rem; text-align: center; }
+  .percurso-pagina .percurso-navegacao__voltar .percurso-navegacao__secao { font-size: .8rem; }
 }

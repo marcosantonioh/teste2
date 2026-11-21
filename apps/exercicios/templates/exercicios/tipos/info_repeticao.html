@@ -1,0 +1,43 @@
+<article class="aula-repeticao" aria-labelledby="aula-repeticao-titulo">
+  <header class="aula-repeticao__cabecalho">
+    <span class="aula-repeticao__selo">Aula rápida · Laços de repetição</span>
+    <h1 id="aula-repeticao-titulo">Como um laço funciona?</h1>
+    <p>Um laço repete uma tarefa enquanto uma condição for verdadeira. Conheça as três partes que fazem tudo acontecer.</p>
+  </header>
+
+  <div class="aula-repeticao__cards" aria-label="As três partes do laço">
+    <section class="aula-card aula-card--inicio">
+      <span class="aula-card__icone" aria-hidden="true">①</span>
+      <div><h2>Inicialização</h2><p>Escolhe o ponto de partida.</p><code>i = 0</code></div>
+    </section>
+    <section class="aula-card aula-card--condicao">
+      <span class="aula-card__icone" aria-hidden="true">②</span>
+      <div><h2>Condição</h2><p>Decide se o laço continua.</p><code>i &lt; 3</code></div>
+    </section>
+    <section class="aula-card aula-card--atualizacao">
+      <span class="aula-card__icone" aria-hidden="true">③</span>
+      <div><h2>Atualização</h2><p>Muda o valor para a próxima volta.</p><code>i = i + 1</code></div>
+    </section>
+  </div>
+
+  <section class="aula-codigo" aria-labelledby="aula-codigo-titulo">
+    <div class="aula-codigo__barra"><span class="aula-codigo__pontos" aria-hidden="true">● ● ●</span><h2 id="aula-codigo-titulo">As peças trabalhando juntas</h2><span>Python</span></div>
+    <div class="aula-codigo__linhas" role="group" aria-label="Exemplo de código Python com anotações">
+      <div class="aula-codigo__linha"><code><span class="aula-codigo__variavel">i</span> = <span class="aula-codigo__numero">0</span></code><span class="aula-codigo__etiqueta aula-codigo__etiqueta--inicio">① Inicialização</span></div>
+      <div class="aula-codigo__linha"><code><span class="aula-codigo__palavra">while</span> i &lt; <span class="aula-codigo__numero">3</span>:</code><span class="aula-codigo__etiqueta aula-codigo__etiqueta--condicao">② Condição</span></div>
+      <div class="aula-codigo__linha"><code>    <span class="aula-codigo__funcao">print</span>(i)</code><span class="aula-codigo__etiqueta">Executa a tarefa</span></div>
+      <div class="aula-codigo__linha"><code>    i = i + <span class="aula-codigo__numero">1</span></code><span class="aula-codigo__etiqueta aula-codigo__etiqueta--atualizacao">③ Atualização</span></div>
+    </div>
+    <p class="aula-codigo__saida">Na tela aparece: <strong>0, 1, 2</strong></p>
+  </section>
+
+  <section class="aula-fluxo" aria-labelledby="aula-fluxo-titulo">
+    <div class="aula-fluxo__cabecalho"><div><h2 id="aula-fluxo-titulo">Acompanhe uma volta</h2><p>Avance para ver o que o computador faz.</p></div><button type="button" class="aula-fluxo__botao" data-proximo-passo>Próxima etapa <span aria-hidden="true">→</span></button></div>
+    <ol class="aula-fluxo__etapas" aria-label="Etapas do laço">
+      <li data-passo="0" class="ativo">Início</li><li data-passo="1">Condição</li><li data-passo="2">Executa</li><li data-passo="3">Atualiza</li><li data-passo="4">Volta à condição</li>
+    </ol>
+    <p class="aula-fluxo__estado" role="status" aria-live="polite" data-descricao-passo>Começamos com i = 0.</p>
+  </section>
+
+  <aside class="aula-alerta" aria-label="Cuidado com laços infinitos"><span aria-hidden="true">⚠</span><p><strong>Cuidado com o loop infinito!</strong> Se a condição nunca deixar de ser verdadeira, o laço não termina. Atualize a variável de controle a cada volta.</p></aside>
+</article>

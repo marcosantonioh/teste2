@@ -6,10 +6,13 @@
   href="{% static 'style/partials/exercicios/resolver_exercicio.css' %}"
 />
 <link rel="stylesheet" href="{% static 'style/botoes.css' %}" />
+{% if info_estrutura_repeticao %}
+<link rel="stylesheet" href="{% static 'style/partials/exercicios/info_repeticao.css' %}" />
+{% endif %}
 
 {% block content %}
 
-<div class="container-exercicio">
+<div class="container-exercicio{% if info_estrutura_repeticao %} container-exercicio--aula{% endif %}">
   {% if request.GET.reportado %}
     <p class="report-feedback" role="status">Obrigado. Seu reporte foi enviado.</p>
   {% endif %}
@@ -343,5 +346,6 @@
 {% include "exercicios/partials/modais.html" %}
 
 <script src="{% static 'js/resolver_exercicio.js' %}"></script>
+{% if info_estrutura_repeticao %}<script src="{% static 'js/info_repeticao.js' %}"></script>{% endif %}
 
 {% endblock %}

@@ -817,6 +817,10 @@ def resolver_exercicio(request, exercicio_id):
 
     context = {
         "exercicio": exercicio,
+        "info_estrutura_repeticao": (
+            exercicio.tipo == "info"
+            and all(termo in (exercicio.enunciado or "").lower() for termo in ("inicialização", "condição", "atualização"))
+        ),
         "resultado": resultado,
         "correta": correta,
         "perfil": perfil,
@@ -842,6 +846,8 @@ def resolver_exercicio(request, exercicio_id):
 @require_POST
 def reportar_problema(request, exercicio_id):
     exercicio = get_object_or_404(Exercicio, id=exercicio_id)
+    if mecanicas_services.obter_status_estacao(exercicio.estacao, request.user) == "bloqueado":
+        raise PermissionDenied("Esta estação ainda está bloqueada.")
     motivo = request.POST.get("motivo")
     motivos_validos = {valor for valor, _ in ReporteExercicio.MOTIVO_CHOICES}
 
@@ -896,6 +902,8 @@ def iniciar_exercicios(request, exercicio_id):
 @login_required
 def estacao_concluida_view(request, estacao_id):
     estacao = get_object_or_404(Estacao, id=estacao_id)
+    if mecanicas_services.obter_status_estacao(estacao, request.user) == "bloqueado":
+        raise PermissionDenied("Esta estação ainda está bloqueada.")
     perfil = get_or_create_perfil(request.user)
 
     total_xp_estacao = (

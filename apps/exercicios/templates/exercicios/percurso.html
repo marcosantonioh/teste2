@@ -18,7 +18,14 @@
     {% endif %}
 
     <nav class="percurso-navegacao" aria-label="Navegação do percurso">
-      <a href="{% url 'exercicios:modulos' %}" class="percurso-navegacao__link percurso-navegacao__voltar"><span aria-hidden="true">←</span> Voltar aos módulos</a>
+      <a href="{% url 'exercicios:modulos' %}" class="percurso-navegacao__link percurso-navegacao__voltar" aria-label="Voltar aos módulos{% if not visualizar_todas_secoes and secao_atual %}; seção atual: {{ secao_atual.nome }}{% endif %}">
+        <span aria-hidden="true">←</span>
+        {% if not visualizar_todas_secoes and secao_atual %}
+          <span class="percurso-navegacao__secao">{{ modulo.nome }} / {{ secao_atual.nome }}</span>
+        {% else %}
+          <span>Voltar aos módulos</span>
+        {% endif %}
+      </a>
       {% if visualizar_todas_secoes %}
         <a href="{% url 'exercicios:percurso' modulo.id %}" class="percurso-navegacao__link">Percurso principal</a>
       {% else %}
@@ -61,7 +68,6 @@
       </section>
 
     {% elif secao_atual %}
-
       <div class="module-description">
         <div class="stations">
           <svg class="percurso-conectores" aria-hidden="true"></svg>

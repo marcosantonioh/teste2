@@ -1,3 +1,6 @@
+{% if info_estrutura_repeticao %}
+  {% include "exercicios/tipos/info_repeticao.html" %}
+{% else %}
 <div class="exercicio-info-layout">
   <div class="exercicio-info-conteudo">
     {% if exercicio.enunciado %}
@@ -14,3 +17,4 @@
     {% endif %}
   </div>
 </div>
+{% endif %}
