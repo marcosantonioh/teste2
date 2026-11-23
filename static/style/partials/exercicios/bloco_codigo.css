@@ -1,0 +1,20 @@
+.ide-editor { width: 100%; max-width: 100%; }
+.ide-editor__codigo.exercicio-codigo { max-width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; tab-size: 4; }
+.ide-editor__codigo code { display: block; min-width: max-content; font: inherit; }
+.ide-editor__copiar { min-height: 44px; margin-left: .4rem; padding: 7px 12px; border: 1px solid #8a73aa; border-radius: 7px; background: #332744; color: #fff; font-family: inherit; font-size: .78rem; font-weight: 700; cursor: pointer; }
+.ide-editor__copiar:hover { background: #4a365f; }
+.ide-editor__copiar:focus-visible { outline: 3px solid #d8b6ff; outline-offset: 2px; }
+.ide-code__linha { min-height: 1.75em; }
+.ide-code__numero { color: #b5a8c7; }
+.ide-token--palavra, .demo-token-palavra { color: #d9b4fa; }
+.ide-token--numero, .demo-token-numero { color: #ffb98f; }
+.demo-token-string { color: #c9e99f; }
+.demo-token-funcao { color: #a7c8ff; }
+.demo-token-comentario { color: #b7abbf; }
+@media (max-width: 600px) {
+  .ide-editor__cabecalho, .ide-editor__rodape { padding-inline: .75rem; }
+  .ide-editor__codigo.exercicio-codigo { font-size: .86rem; }
+  .ide-code__numero { width: 2.5rem; flex-basis: 2.5rem; padding-right: .6rem; }
+  .ide-editor__arquivo { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ide-editor__copiar { margin-left: auto; }
+}

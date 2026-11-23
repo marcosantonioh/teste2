@@ -1,0 +1,10 @@
+<section class="ide-editor" aria-label="{% if editor_lacuna %}Código C com lacuna para completar{% else %}Exemplo de código C{% endif %}">
+  <header class="ide-editor__cabecalho">
+    <div class="ide-editor__controles" aria-hidden="true"><span></span><span></span><span></span></div>
+    <span class="ide-editor__arquivo"><b>C</b> main.c</span>
+    <span class="ide-editor__linguagem">C</span>
+    {% if not editor_lacuna %}<button type="button" class="ide-editor__copiar" data-copiar-codigo aria-label="Copiar código">Copiar</button>{% endif %}
+  </header>
+  <pre class="exercicio-codigo ide-editor__codigo"><code>{{ codigo_editor }}</code></pre>
+  <footer class="ide-editor__rodape"><span>C</span><span>UTF-8</span>{% if editor_lacuna %}<span>Complete a linha destacada</span>{% else %}<span>Exemplo de código</span>{% endif %}</footer>
+</section>

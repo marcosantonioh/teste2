@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ exercicio.titulo }} | Cventure</title>
   <link rel="stylesheet" href="{% static 'style/partials/exercicios/demonstracao.css' %}">
+  <link rel="stylesheet" href="{% static 'style/partials/exercicios/bloco_codigo.css' %}">
 </head>
 <body>
 <main class="demo-pagina">
@@ -22,17 +23,9 @@
       <section class="demo-card">
         <h1>{{ exercicio.titulo }}</h1>
         {% if exercicio.enunciado %}<p class="demo-enunciado">{{ exercicio.enunciado }}</p>{% endif %}
-        {% if exercicio.tipo == 'lacuna' and codigo_lacuna %}
-          <section class="ide-editor" aria-label="Editor de código C">
-            <header class="ide-editor__cabecalho">
-              <div class="ide-editor__controles" aria-hidden="true"><span></span><span></span><span></span></div>
-              <span class="ide-editor__arquivo"><b>C</b> main.c</span>
-              <span class="ide-editor__linguagem">C</span>
-            </header>
-            <pre class="exercicio-codigo ide-editor__codigo">{{ codigo_lacuna }}</pre>
-            <footer class="ide-editor__rodape"><span>C</span><span>UTF-8</span><span>Complete a linha destacada</span></footer>
-          </section>
-        {% elif exercicio.codigo %}<pre class="demo-codigo"><code>{{ codigo_colorido }}</code></pre>{% endif %}
+        {% if exercicio.codigo %}
+          {% include "exercicios/tipos/bloco_codigo.html" with editor_lacuna=codigo_lacuna %}
+        {% endif %}
         {% if exercicio.tipo != 'info' and exercicio.tipo != 'lacuna' %}
           <fieldset class="demo-alternativas" {% if correta != None %}disabled{% endif %}>
             <legend class="sr-only">Escolha uma resposta</legend>
@@ -63,5 +56,6 @@
     </footer>
   </form>
 </main>
+<script src="{% static 'js/bloco_codigo.js' %}"></script>
 </body>
 </html>

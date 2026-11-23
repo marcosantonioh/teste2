@@ -1,6 +1,10 @@
 import json
+from concurrent.futures import ThreadPoolExecutor
+from threading import Barrier
+from unittest import skipUnless
 
-from django.test import TestCase
+from django.db import close_old_connections, connection
+from django.test import SimpleTestCase, TestCase, TransactionTestCase
 from django.urls import reverse
 
 from apps.exercicios.models import (
@@ -15,6 +19,61 @@ from apps.exercicios.models import (
 from apps.usuarios.models import Divisao, Perfil
 from django.contrib.auth import get_user_model
 from apps.mecanicas_jogo import services as mecanicas_services
+from apps.exercicios.views import _renderizar_codigo_ide, _renderizar_codigo_leitura
+
+
+class BlocoCodigoTests(SimpleTestCase):
+    def test_codigo_de_leitura_tem_linhas_realce_e_html_escapado(self):
+        html = str(_renderizar_codigo_leitura('int i = 0;\n// <script>alert(1)</script>'))
+
+        self.assertIn('class="ide-code__numero">1</span>', html)
+        self.assertIn('class="ide-code__numero">2</span>', html)
+        self.assertIn('class="demo-token-palavra">int</span>', html)
+        self.assertNotIn('<script>', html)
+        self.assertIn('&lt;script&gt;', html)
+
+    def test_lacuna_permanece_editavel_sem_expor_resposta(self):
+        exercicio = Exercicio(codigo='int i = __LACUNA__;', resposta_texto_codigo='42')
+        html = str(_renderizar_codigo_ide(exercicio))
+
+        self.assertIn('class="lacuna-marker"', html)
+        self.assertIn('class="ide-code__numero">1</span>', html)
+        self.assertNotIn('value="42"', html)
+
+
+@skipUnless(connection.vendor == "postgresql", "Bloqueio de linha exige PostgreSQL")
+class ConcessaoXpConcorrenteTests(TransactionTestCase):
+    def test_duas_respostas_simultaneas_concedem_xp_uma_vez(self):
+        usuario = get_user_model().objects.create_user(username="aluno-concorrente")
+        Perfil.objects.create(user=usuario)
+        modulo = Modulo.objects.create(nome="Loops", descricao="Teste")
+        secao = Secao.objects.create(nome="Introdução", modulo=modulo)
+        estacao = Estacao.objects.create(nome="Estação", secao=secao)
+        exercicio = Exercicio.objects.create(
+            modulo=modulo, estacao=estacao, tipo="mcq", xp=20,
+            resposta_correta="1",
+        )
+        largada = Barrier(2)
+
+        def responder():
+            close_old_connections()
+            try:
+                perfil = Perfil.objects.get(user=usuario)
+                largada.wait(timeout=10)
+                mecanicas_services.atualizar_estado_do_perfil_e_exercicio(
+                    perfil, exercicio, usuario, correta=True
+                )
+            finally:
+                connection.close()
+
+        with ThreadPoolExecutor(max_workers=2) as executor:
+            resultados = [executor.submit(responder) for _ in range(2)]
+            for resultado in resultados:
+                resultado.result(timeout=20)
+
+        progresso = ExercicioUsuario.objects.get(usuario=usuario, exercicio=exercicio)
+        self.assertTrue(progresso.xp_concedido)
+        self.assertEqual(Perfil.objects.get(user=usuario).xp, 20)
 
 
 class ReporteExercicioTests(TestCase):
@@ -99,6 +158,19 @@ class ResolverExercicioResumoEstacaoTests(TestCase):
             alternativa_4="D",
             resposta_correta="3",
         )
+
+    def test_codigo_da_multipla_escolha_usa_editor_compartilhado(self):
+        self.exercicio_1.codigo = 'int i = 0;\nprintf("oi");'
+        self.exercicio_1.save(update_fields=["codigo"])
+        self.client.force_login(self.user)
+
+        response = self.client.get(
+            reverse("exercicios:resolver_exercicio", args=[self.exercicio_1.id])
+        )
+
+        self.assertContains(response, 'class="ide-editor"')
+        self.assertContains(response, 'class="ide-code__numero">2</span>')
+        self.assertContains(response, 'class="demo-token-funcao">printf</span>')
 
     def test_resumo_da_estacao_eh_enviado_no_ajax_quando_a_estacao_termina(self):
         self.client.force_login(self.user)

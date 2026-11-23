@@ -290,22 +290,15 @@ def _marcador_lacuna(exercicio, resposta_submetida=None):
 
 
 def _renderizar_codigo_ide(exercicio, resposta_submetida=None):
-    """Renderiza código C seguro, com realce simples e linhas para o mini-editor."""
+    """Renderiza código C seguro com uma lacuna editável."""
     marcador = _marcador_lacuna(exercicio, resposta_submetida)
     trechos = exercicio.codigo.split("__LACUNA__")
+    codigo = marcador.join(str(_realcar_codigo_demonstracao(trecho)) for trecho in trechos)
+    return _adicionar_numeros_linha(codigo)
 
-    def realcar(trecho):
-        trecho = str(escape(trecho))
-        trecho = re.sub(
-            r"\b(int|char|float|double|void|while|for|do|if|else|return)\b",
-            r'<span class="ide-token--palavra">\1</span>',
-            trecho,
-        )
-        return re.sub(
-            r"\b(\d+)\b", r'<span class="ide-token--numero">\1</span>', trecho
-        )
 
-    codigo = marcador.join(realcar(trecho) for trecho in trechos)
+def _adicionar_numeros_linha(codigo):
+    """Adiciona números de linha ao HTML já escapado e realçado."""
     linhas = codigo.splitlines() or [""]
     codigo_com_linhas = "".join(
         '<span class="ide-code__linha">'
@@ -315,6 +308,11 @@ def _renderizar_codigo_ide(exercicio, resposta_submetida=None):
         for numero, linha in enumerate(linhas, start=1)
     )
     return mark_safe(codigo_com_linhas)
+
+
+def _renderizar_codigo_leitura(codigo):
+    """Renderiza blocos de código sem campo de resposta, no mesmo editor."""
+    return _adicionar_numeros_linha(str(_realcar_codigo_demonstracao(codigo)))
 
 
 def _realcar_codigo_demonstracao(codigo):
@@ -455,7 +453,7 @@ def resolver_demonstracao(request, exercicio_id):
         {
             "estacao": estacao,
             "exercicio": exercicio,
-            "codigo_colorido": _realcar_codigo_demonstracao(exercicio.codigo or ""),
+            "codigo_editor": _renderizar_codigo_leitura(exercicio.codigo or "") if exercicio.codigo and exercicio.tipo != "lacuna" else codigo_lacuna,
             "codigo_lacuna": codigo_lacuna,
             "alternativas": alternativas,
             "campo_resposta": campo_resposta,
@@ -808,6 +806,8 @@ def resolver_exercicio(request, exercicio_id):
     codigo_renderizado = None
     if exercicio.tipo == "lacuna" and exercicio.codigo:
         codigo_renderizado = _renderizar_codigo_ide(exercicio, resposta_submetida)
+    elif exercicio.codigo:
+        codigo_renderizado = _renderizar_codigo_leitura(exercicio.codigo)
 
     # Nova lógica para decidir se o modal de saída deve ser mostrado
     mostrar_modal_confirmacao_saida = progresso_percentual > 0

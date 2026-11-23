@@ -1,4 +1,5 @@
 from django.db.models import Sum
+from django.db import transaction
 from apps.exercicios.models import (
     BauEstacaoUsuario,
     Exercicio,
@@ -7,7 +8,7 @@ from apps.exercicios.models import (
     Estacao,
     ExercicioUsuario,
 )
-from apps.usuarios.models import Divisao
+from apps.usuarios.models import Divisao, Perfil
 
 
 def obter_status_exercicio(exercicio, usuario):
@@ -186,48 +187,47 @@ def estacao_esta_concluida(estacao, usuario):
 
 def atualizar_estado_do_perfil_e_exercicio(perfil, exercicio, usuario, correta):
     if correta:
-        progresso = obter_ou_criar_progresso(exercicio, usuario)
-        if progresso and progresso.status != "concluido":
-            progresso.status = "concluido"
-            deve_conceder_xp = not progresso.xp_concedido
+        conquistas_novas = []
+        # O bloqueio do perfil serializa respostas simultâneas do mesmo jogador.
+        # A segunda transação só consulta xp_concedido após a primeira confirmar.
+        with transaction.atomic():
+            perfil_atual = Perfil.objects.select_for_update().get(user=usuario)
+            progresso = obter_ou_criar_progresso(exercicio, usuario)
+            if progresso and progresso.status != "concluido":
+                progresso.status = "concluido"
+                deve_conceder_xp = not progresso.xp_concedido
 
-            if deve_conceder_xp:
-                progresso.xp_concedido = True
-            progresso.save(update_fields=["status", "xp_concedido", "atualizado_em"])
+                if deve_conceder_xp:
+                    progresso.xp_concedido = True
+                progresso.save(update_fields=["status", "xp_concedido", "atualizado_em"])
 
-            # Ao reiniciar uma estação, o status volta a "livre" para treino,
-            # mas xp_concedido permanece verdadeiro. Assim, o mesmo exercício
-            # nunca entrega XP duas vezes para o mesmo usuário.
-            conquistas_novas = []
-            if deve_conceder_xp:
-                perfil.xp += exercicio.xp
-                if perfil.divisao is None and perfil.xp > 0:
-                    try:
-                        divisao_bronze = Divisao.objects.get(nome="Bronze")
-                        perfil.divisao = divisao_bronze
-                    except Divisao.DoesNotExist:
-                        pass
-                perfil.save()
-                from apps.usuarios.services import sincronizar_conquistas
+                # Ao reiniciar uma estação, o status volta a "livre" para treino,
+                # mas xp_concedido permanece verdadeiro.
+                if deve_conceder_xp:
+                    perfil_atual.xp += exercicio.xp
+                    if perfil_atual.divisao is None and perfil_atual.xp > 0:
+                        try:
+                            perfil_atual.divisao = Divisao.objects.get(nome="Bronze")
+                        except Divisao.DoesNotExist:
+                            pass
+                    perfil_atual.save()
+                    from apps.usuarios.services import sincronizar_conquistas
 
-                conquistas_novas = sincronizar_conquistas(usuario)
+                    conquistas_novas = sincronizar_conquistas(usuario)
 
-            # A ofensiva é contabilizada somente ao concluir toda a estação,
-            # e o próprio perfil limita o ganho a uma vez por dia.
-            estacao_concluida = estacao_esta_concluida(exercicio.estacao, usuario)
-            if estacao_concluida:
-                perfil.registrar_estacao_concluida()
+                estacao_concluida = estacao_esta_concluida(exercicio.estacao, usuario)
+                if estacao_concluida:
+                    perfil_atual.registrar_estacao_concluida()
 
-            from apps.desafios.services import registrar_exercicio_concluido
+                from apps.desafios.services import registrar_exercicio_concluido
 
-            registrar_exercicio_concluido(
-                usuario,
-                exercicio.xp if deve_conceder_xp else 0,
-                estacao_concluida=estacao_concluida,
-            )
-            perfil.refresh_from_db(fields=['cristal'])
-
-            return conquistas_novas
+                registrar_exercicio_concluido(
+                    usuario,
+                    exercicio.xp if deve_conceder_xp else 0,
+                    estacao_concluida=estacao_concluida,
+                )
+        perfil.refresh_from_db()
+        return conquistas_novas
     else:
         if perfil.vidas_atuais > 0:
             perfil.vidas_atuais -= 1

@@ -6,6 +6,7 @@
   href="{% static 'style/partials/exercicios/resolver_exercicio.css' %}"
 />
 <link rel="stylesheet" href="{% static 'style/botoes.css' %}" />
+<link rel="stylesheet" href="{% static 'style/partials/exercicios/bloco_codigo.css' %}" />
 {% if info_estrutura_repeticao %}
 <link rel="stylesheet" href="{% static 'style/partials/exercicios/info_repeticao.css' %}" />
 {% endif %}
@@ -346,6 +347,7 @@
 {% include "exercicios/partials/modais.html" %}
 
 <script src="{% static 'js/resolver_exercicio.js' %}"></script>
+<script src="{% static 'js/bloco_codigo.js' %}"></script>
 {% if info_estrutura_repeticao %}<script src="{% static 'js/info_repeticao.js' %}"></script>{% endif %}
 
 {% endblock %}

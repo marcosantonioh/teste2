@@ -1,6 +1,7 @@
 <div class="exercicio-vf-layout">
   <div class="exercicio-vf-conteudo">
     <p class="exercicio-enunciado">{{ exercicio.enunciado }}</p>
+    {% if exercicio.codigo %}{% include "exercicios/tipos/bloco_codigo.html" with codigo_editor=codigo_renderizado %}{% endif %}
 
     <div class="exercicio-vf-alternativas">
       <div class="alternativas-vf">
