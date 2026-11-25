@@ -21,7 +21,7 @@ from apps.exercicios.models import (
 )
 from apps.mecanicas_jogo import services as mecanicas_services
 from apps.desafios.services import missoes_do_dia
-from django.http import JsonResponse
+from django.http import Http404, JsonResponse
 from django.views.decorators.cache import never_cache
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse
@@ -168,12 +168,29 @@ def percurso(request, modulo_id):
     if secao_atual is None and secoes:
         secao_atual = secoes[-1]
 
+    secao_solicitada_id = request.GET.get("secao")
+    if secao_solicitada_id is not None:
+        secao_solicitada = next(
+            (secao for secao in secoes if str(secao.id) == secao_solicitada_id),
+            None,
+        )
+        if secao_solicitada is None:
+            raise Http404("Seção não encontrada neste módulo.")
+        if (
+            secao_solicitada != secao_atual
+            and not mecanicas_services.secao_esta_concluida(
+                secao_solicitada, request.user
+            )
+        ):
+            raise PermissionDenied("Esta seção ainda está bloqueada.")
+        secao_atual = secao_solicitada
+
     proxima_secao = None
     estacoes = []
     estacao_animada_id = None
     if secao_atual:
         indice_atual = secoes.index(secao_atual)
-        if indice_atual + 1 < len(secoes):
+        if secao_solicitada_id is None and indice_atual + 1 < len(secoes):
             proxima_secao = secoes[indice_atual + 1]
 
         estacoes = list(secao_atual.estacoes.prefetch_related("exercicios").all())
@@ -306,7 +323,15 @@ def _marcador_lacuna(exercicio, resposta_submetida=None):
 def _renderizar_codigo_ide(exercicio, resposta_submetida=None):
     """Renderiza código C seguro com uma lacuna editável."""
     marcador = _marcador_lacuna(exercicio, resposta_submetida)
-    trechos = exercicio.codigo.split("__LACUNA__")
+    codigo_original = exercicio.codigo or ""
+    if "__LACUNA__" in codigo_original:
+        codigo_com_lacuna = codigo_original
+    elif "___" in codigo_original:
+        codigo_com_lacuna = codigo_original.replace("___", "__LACUNA__", 1)
+    else:
+        # Dados antigos sem marcador ainda precisam oferecer um campo de resposta.
+        codigo_com_lacuna = f"{codigo_original}\n__LACUNA__"
+    trechos = codigo_com_lacuna.split("__LACUNA__", 1)
     codigo = marcador.join(str(_realcar_codigo_demonstracao(trecho)) for trecho in trechos)
     return _adicionar_numeros_linha(codigo)
 

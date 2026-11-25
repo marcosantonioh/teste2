@@ -57,7 +57,9 @@
                   <span style="width: {{ item.progresso_percentual }}%"></span>
                 </div>
               </div>
-              {% if item.estado == 'atual' %}
+              {% if item.estado == 'concluida' %}
+                <a href="{% url 'exercicios:percurso' modulo.id %}?secao={{ item.secao.id }}" class="mapa-secoes__continuar mapa-secoes__revisar" aria-label="Revisar seção {{ item.secao.nome }}">Revisar</a>
+              {% elif item.estado == 'atual' %}
                 <a href="{% url 'exercicios:percurso' modulo.id %}" class="mapa-secoes__continuar">Continuar</a>
               {% endif %}
             </li>
@@ -182,7 +184,8 @@
       item.style.left = `${posicoes[indice % posicoes.length]}%`;
       item.style.top = `${indice * passo + (compacto ? 40 : 48)}px`;
     });
-    percurso.style.height = `${itens.length * passo + 65}px`;
+    // Reserva espaço para abrir o painel da última estação sem cobri-lo.
+    percurso.style.height = `${itens.length * passo + 220}px`;
     const limites = percurso.getBoundingClientRect();
     svg.setAttribute('viewBox', `0 0 ${limites.width} ${limites.height}`);
     svg.replaceChildren();
@@ -237,6 +240,7 @@
     const allCircles = document.querySelectorAll('.station-circle');
     allCircles.forEach(circle => {
         circle.classList.remove('station-circle-active');
+        circle.querySelector('.station-acionador')?.setAttribute('aria-expanded', 'false');
     });
 
     // Se o dropdown alvo não estava visível (ou era um diferente que estava visível), abre-o e ativa seu círculo
@@ -245,7 +249,26 @@
         targetDropdown.style.display = 'block';
         if (stationCircle) { // Garante que stationCircle foi encontrado
             stationCircle.classList.add('station-circle-active');
+            stationCircle.querySelector('.station-acionador')?.setAttribute('aria-expanded', 'true');
         }
+        targetDropdown.style.marginLeft = '0px';
+        requestAnimationFrame(() => {
+            const limites = targetDropdown.getBoundingClientRect();
+            const margem = 16;
+            const deslocamento = limites.left < margem
+                ? margem - limites.left
+                : limites.right > window.innerWidth - margem
+                    ? window.innerWidth - margem - limites.right
+                    : 0;
+            targetDropdown.style.marginLeft = `${deslocamento}px`;
+            const painel = targetDropdown.getBoundingClientRect();
+            if (painel.bottom > window.innerHeight - margem) {
+                window.scrollBy({
+                    top: painel.bottom - window.innerHeight + margem,
+                    behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+                });
+            }
+        });
     }
 }
 
@@ -265,8 +288,20 @@ window.addEventListener('click', function(event) {
         const allCircles = document.querySelectorAll('.station-circle');
         allCircles.forEach(circle => {
             circle.classList.remove('station-circle-active');
+            circle.querySelector('.station-acionador')?.setAttribute('aria-expanded', 'false');
         });
     }
+});
+
+window.addEventListener('keydown', function(event) {
+    if (event.key !== 'Escape') return;
+    const aberta = document.querySelector('.station-circle-active');
+    if (!aberta) return;
+    aberta.querySelector('.station-dropdown').style.display = 'none';
+    aberta.classList.remove('station-circle-active');
+    const acionador = aberta.querySelector('.station-acionador');
+    acionador.setAttribute('aria-expanded', 'false');
+    acionador.focus();
 });
 </script>
 

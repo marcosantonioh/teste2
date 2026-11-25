@@ -7,6 +7,7 @@
     <p class="exercicio-enunciado">{{ exercicio.enunciado|linebreaksbr }}</p>
     {% endif %}
     {% if exercicio.codigo %}{% include "exercicios/tipos/bloco_codigo.html" with codigo_editor=codigo_renderizado %}{% endif %}
+    {% if exercicio.explicacao %}<p class="exercicio-enunciado">{{ exercicio.explicacao|linebreaksbr }}</p>{% endif %}
   </div>
   <div class="exercicio-info-imagem-container">
     {% if exercicio.imagem %}

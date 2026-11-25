@@ -47,6 +47,15 @@ class ExercicioAdminForm(forms.ModelForm):
             raise ValidationError("Informe pelo menos uma resposta aceita.")
         return respostas
 
+    def clean(self):
+        dados = super().clean()
+        if dados.get("tipo") == "lacuna":
+            codigo = dados.get("codigo") or ""
+            marcadores = codigo.count("__LACUNA__") + codigo.count("___")
+            if marcadores != 1:
+                self.add_error("codigo", "Use exatamente um marcador __LACUNA__ ou ___ no código.")
+        return dados
+
 
 @admin.register(ReporteExercicio)
 class ReporteExercicioAdmin(admin.ModelAdmin):

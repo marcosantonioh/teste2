@@ -172,7 +172,9 @@ def verificar_resposta(exercicio, resposta_usuario):
 def normalizar_resposta_lacuna(resposta):
     """Compara código de lacuna sem diferenças irrelevantes de formato."""
     resposta = str(resposta or "").strip().lower()
-    resposta = resposta.rstrip(";").strip()
+    # Um ponto e vírgula isolado pode ser a própria resposta da lacuna.
+    if resposta != ";":
+        resposta = resposta.rstrip(";").strip()
     return "".join(resposta.split())
 
 

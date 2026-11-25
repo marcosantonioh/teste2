@@ -12,23 +12,23 @@
     {% else %}
       status-default {# Uma classe padrão caso haja outros status ou nenhum #}
     {% endif %}"
-  onclick="toggleDrop('{{ estacao.id }}')"
 >
-  <span class="station-numero">{{ forloop.counter }}</span>
-  <span class="station-tile">
-    {% if estacao.status == 'livre' %}
-      <img src="{% static 'img/play.svg' %}" alt="Jogar Estação" class="play-icon" />
-    {% elif estacao.status == 'completado' %}
-      <img src="{% static 'img/check-white.svg' %}" alt="Estação Concluída" class="play-icon" />
-    {% elif estacao.status == 'bloqueado' %}
-      <img src="{% static 'img/lock.svg' %}" alt="Estação Bloqueada" class="play-icon" />
-    {% else %}
-      <img src="{% static 'img/play-white.svg' %}" alt="Estação" class="play-icon" />
-    {% endif %}
-  </span>
-
-  <span class="station-nome">{{ estacao.nome }}</span>
-  <span class="station-progresso" role="progressbar" aria-label="Progresso da estação {{ estacao.nome }}" aria-valuenow="{{ estacao.progresso_percentual }}" aria-valuemin="0" aria-valuemax="100"><span style="width: {{ estacao.progresso_percentual }}%"></span></span>
+  <button type="button" class="station-acionador" aria-label="Abrir estação {{ estacao.nome }}" aria-controls="dropdown-{{ estacao.id }}" aria-expanded="false" onclick="toggleDrop('{{ estacao.id }}')">
+    <span class="station-numero">{{ forloop.counter }}</span>
+    <span class="station-tile">
+      {% if estacao.status == 'livre' %}
+        <img src="{% static 'img/play.svg' %}" alt="" class="play-icon" />
+      {% elif estacao.status == 'completado' %}
+        <img src="{% static 'img/check-white.svg' %}" alt="" class="play-icon" />
+      {% elif estacao.status == 'bloqueado' %}
+        <img src="{% static 'img/lock.svg' %}" alt="" class="play-icon" />
+      {% else %}
+        <img src="{% static 'img/play-white.svg' %}" alt="" class="play-icon" />
+      {% endif %}
+    </span>
+    <span class="station-nome">{{ estacao.nome }}</span>
+    <span class="station-progresso" role="progressbar" aria-label="Progresso da estação {{ estacao.nome }}" aria-valuenow="{{ estacao.progresso_percentual }}" aria-valuemin="0" aria-valuemax="100"><span style="width: {{ estacao.progresso_percentual }}%"></span></span>
+  </button>
   <!-- Círculo de estação -->
   <div class="station-dropdown" id="dropdown-{{ estacao.id }}">
     <span>{{ estacao.nome }}</span>

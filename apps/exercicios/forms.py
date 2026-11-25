@@ -126,6 +126,13 @@ class ExercicioLacunaForm(forms.ModelForm):
         respostas = self.cleaned_data["respostas_aceitas"].splitlines()
         return list(dict.fromkeys(resposta.strip() for resposta in respostas if resposta.strip()))
 
+    def clean_codigo(self):
+        codigo = self.cleaned_data["codigo"]
+        marcadores = codigo.count("__LACUNA__") + codigo.count("___")
+        if marcadores != 1:
+            raise forms.ValidationError("Use exatamente um marcador __LACUNA__ ou ___ no código.")
+        return codigo
+
 
 class ExercicioVerdadeiroFalsoForm(forms.ModelForm):
     class Meta:

@@ -350,7 +350,8 @@
 
   .texto-alternativa {
     flex-grow: 1; /* Faz o texto ocupar o espaço restante */
-    text-align: center; /* Centraliza o texto dentro deste span */
+    text-align: left;
+    white-space: pre-wrap; /* Preserva as linhas e a indentação das alternativas com código. */
   }
 
   input[type="radio"]:checked + .botao-alternativa {

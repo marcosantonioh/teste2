@@ -20,6 +20,7 @@ from apps.usuarios.models import Divisao, Perfil
 from django.contrib.auth import get_user_model
 from apps.mecanicas_jogo import services as mecanicas_services
 from apps.exercicios.views import _renderizar_codigo_ide, _renderizar_codigo_leitura
+from apps.exercicios.admin import ExercicioAdminForm
 
 
 class BlocoCodigoTests(SimpleTestCase):
@@ -40,9 +41,23 @@ class BlocoCodigoTests(SimpleTestCase):
         self.assertIn('class="ide-code__numero">1</span>', html)
         self.assertNotIn('value="42"', html)
 
+    def test_marcador_legado_de_tres_sublinhados_vira_campo(self):
+        exercicio = Exercicio(codigo='while (contador ___ 4) {', resposta_texto_codigo='<')
+        html = str(_renderizar_codigo_ide(exercicio))
+
+        self.assertEqual(html.count('class="lacuna-marker"'), 1)
+        self.assertNotIn('___', html)
+        self.assertNotIn('value="&lt;"', html)
+
     def test_resposta_vazia_nao_acerta_questao_sem_gabarito(self):
         exercicio = Exercicio(tipo="mcq", resposta_correta=None)
         self.assertFalse(mecanicas_services.verificar_resposta(exercicio, None))
+
+    def test_ponto_e_virgula_isolado_e_resposta_valida_da_lacuna(self):
+        exercicio = Exercicio(tipo="lacuna", resposta_texto_codigo=";")
+        self.assertTrue(mecanicas_services.verificar_resposta(exercicio, ";"))
+        self.assertFalse(mecanicas_services.verificar_resposta(exercicio, ""))
+        self.assertFalse(mecanicas_services.verificar_resposta(exercicio, "outro"))
 
 
 @skipUnless(connection.vendor == "postgresql", "Bloqueio de linha exige PostgreSQL")
@@ -210,6 +225,37 @@ class ResolverExercicioResumoEstacaoTests(TestCase):
         self.assertContains(response, 'class="ide-editor"')
         self.assertContains(response, 'class="ide-code__numero">2</span>')
         self.assertContains(response, 'class="demo-token-funcao">printf</span>')
+
+    def test_lacuna_legada_aparece_editavel_na_pagina_e_na_api(self):
+        exercicio = Exercicio.objects.create(
+            modulo=self.modulo,
+            estacao=self.estacao,
+            tipo="lacuna",
+            codigo="while (contador ___ 4) {\n    contador++;\n}",
+            resposta_texto_codigo="<",
+        )
+        self.client.force_login(self.user)
+
+        pagina = self.client.get(reverse("exercicios:resolver_exercicio", args=[exercicio.id]))
+        api = self.client.get(reverse("exercicios:api_get_exercicio_data", args=[exercicio.id]))
+
+        self.assertContains(pagina, 'class="lacuna-marker"')
+        self.assertContains(pagina, "Clique no campo destacado")
+        self.assertIn('class="lacuna-marker"', api.json()["codigo_renderizado"])
+        self.assertNotIn("___", api.json()["codigo_renderizado"])
+
+    def test_admin_rejeita_lacuna_sem_marcador(self):
+        form = ExercicioAdminForm(data={
+            "modulo": self.modulo.id,
+            "estacao": self.estacao.id,
+            "tipo": "lacuna",
+            "codigo": "while (contador < 4) {}",
+            "respostas_aceitas": "<",
+            "xp": 10,
+        })
+
+        self.assertFalse(form.is_valid())
+        self.assertIn("codigo", form.errors)
 
     def test_resposta_incorreta_ajax_nao_revela_gabarito(self):
         self.client.force_login(self.user)
@@ -494,6 +540,20 @@ class PercursoPorSecaoTests(TestCase):
                 usuario=self.user, exercicio=exercicio, status="concluido"
             )
 
+    def test_ultima_estacao_livre_tem_acionador_e_link_para_comecar(self):
+        self.client.force_login(self.user)
+        self.concluir_estacoes(0, 4)
+        BauEstacaoUsuario.objects.create(usuario=self.user, secao=self.secoes[0])
+        ultima_estacao, ultimo_exercicio = self.estacoes[0][4]
+
+        response = self.client.get(reverse("exercicios:percurso", args=[self.modulo.id]))
+
+        self.assertContains(response, f'aria-controls="dropdown-{ultima_estacao.id}"')
+        self.assertContains(response, 'aria-label="Abrir estação Estação 5"')
+        self.assertContains(
+            response, reverse("exercicios:iniciar_estacao", args=[ultimo_exercicio.id])
+        )
+
     def test_exibe_somente_secao_atual_e_proxima_bloqueada(self):
         self.client.force_login(self.user)
 
@@ -586,3 +646,30 @@ class PercursoPorSecaoTests(TestCase):
         self.assertContains(response, "5 de 5 estações concluídas")
         self.assertContains(response, "100%")
         self.assertContains(response, ">Continuar<", html=False)
+
+    def test_secao_concluida_pode_ser_revisitada_pelo_mapa(self):
+        self.client.force_login(self.user)
+        self.concluir_estacoes(0, 5)
+        url = reverse("exercicios:percurso", args=[self.modulo.id])
+
+        mapa = self.client.get(url, {"visualizacao": "todas"})
+        self.assertContains(mapa, f"?secao={self.secoes[0].id}")
+        self.assertContains(mapa, 'aria-label="Revisar seção Introdução"')
+
+        revisao = self.client.get(url, {"secao": self.secoes[0].id})
+        self.assertContains(
+            revisao,
+            'class="percurso-navegacao__secao">Loops / Introdução</span>',
+        )
+        self.assertContains(revisao, "status-completado", count=5)
+        self.assertContains(revisao, "Praticar Novamente", count=5)
+
+    def test_secoes_bloqueadas_nao_podem_ser_abertas_pelo_parametro(self):
+        self.client.force_login(self.user)
+        url = reverse("exercicios:percurso", args=[self.modulo.id])
+
+        self.assertEqual(
+            self.client.get(url, {"secao": self.secoes[1].id}).status_code,
+            403,
+        )
+        self.assertEqual(self.client.get(url, {"secao": 999999}).status_code, 404)

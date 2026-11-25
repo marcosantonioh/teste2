@@ -397,6 +397,7 @@ body { background: #090821; }
 .percurso-hero > p:last-child { margin: 5px 0 0; color: #a9a0dc; font-size: clamp(1.1rem, 2vw, 1.45rem); }
 .percurso-pagina .module-description {
   position: relative;
+  z-index: 2;
   display: block;
   width: 100%;
   margin: 0;
@@ -416,7 +417,6 @@ body { background: #090821; }
     linear-gradient(rgba(120, 78, 228, .045) 1px, transparent 1px),
     linear-gradient(90deg, rgba(120, 78, 228, .045) 1px, transparent 1px);
   background-size: 64px 64px;
-  mask-image: linear-gradient(transparent, #000 8%, #000 90%, transparent);
 }
 .percurso-pagina .stations > :not(.percurso-conectores) {
   position: absolute;
@@ -450,6 +450,26 @@ body { background: #090821; }
   margin: 0;
   text-align: center;
 }
+.percurso-pagina .station-acionador {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: center;
+  cursor: pointer;
+}
+.percurso-pagina .station-acionador:focus-visible {
+  outline: 3px solid #f3ccff;
+  outline-offset: 6px;
+  border-radius: 12px;
+}
 .percurso-pagina .station-tile { flex: 0 0 94px; }
 .percurso-pagina .station-numero {
   position: absolute;
@@ -470,7 +490,7 @@ body { background: #090821; }
 .percurso-pagina .status-bloqueado .station-tile { filter: grayscale(.5) brightness(.7); }
 .percurso-pagina .status-bloqueado .station-nome { color: #aca0d4; }
 .percurso-pagina .status-bloqueado .station-progresso span { background: #706397; box-shadow: none; }
-.percurso-pagina .station-dropdown { top: 140px; z-index: 12; border: 1px solid #7342bd; background: #fdfbff; }
+.percurso-pagina .station-dropdown { top: 140px; z-index: 12; max-width: calc(100vw - 32px); border: 1px solid #7342bd; background: #fdfbff; }
 .percurso-pagina .station-circle:hover { transform: translateX(-50%) translateY(-4px); }
 .percurso-pagina .station-circle--animada .station-tile { filter: drop-shadow(0 0 14px rgba(160, 58, 255, .9)); }
 .percurso-pagina .bau-estacao-linha { width: 170px; height: 160px; min-height: 0; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; z-index: 1; }
@@ -478,7 +498,7 @@ body { background: #090821; }
 .percurso-pagina .bau-estacao { width: 130px; min-height: 118px; }
 .percurso-pagina .bau-estacao__imagem { width: 106px; height: 106px; filter: drop-shadow(0 0 15px rgba(255, 160, 30, .62)); }
 .percurso-pagina .bau-estacao-linha::after { content: "RECOMPENSA"; padding: 5px 11px; border: 1px solid #d69231; border-radius: 99px; color: #ffd27a; font-size: .75rem; font-weight: 800; letter-spacing: .09em; }
-.percurso-pagina .header-wrapper.section-locked { margin: 8px 20px 0; border: 1px solid #67538c; background: rgba(38, 22, 75, .75); }
+.percurso-pagina .header-wrapper.section-locked { position: relative; z-index: 1; margin: 8px 20px 0; border: 1px solid #67538c; background: rgba(38, 22, 75, .75); }
 .percurso-pagina .mapa-secoes { padding: 20px; border: 0; background: transparent; }
 .percurso-pagina .mapa-secoes h1 { margin-bottom: 6px; color: #d1a9ff; font-size: clamp(2rem, 4vw, 3.5rem); text-transform: uppercase; }
 .percurso-pagina .mapa-secoes__intro { margin: 0 0 24px; color: #b2a3dc; }
@@ -488,6 +508,9 @@ body { background: #090821; }
 .percurso-pagina .mapa-secoes__item--bloqueada { opacity: .65; }
 .percurso-pagina .mapa-secoes__barra { background: #3d2d6d; }
 .percurso-pagina .mapa-secoes__barra span { background: #aa49ff; }
+.percurso-pagina .mapa-secoes__revisar { border: 1px solid #b45aff; background: transparent; color: #f0d9ff; }
+.percurso-pagina .mapa-secoes__revisar:hover { background: #38205d; }
+.percurso-pagina .mapa-secoes__continuar:focus-visible { outline: 3px solid #f3ccff; outline-offset: 3px; }
 @media (max-width: 700px) {
   .percurso-pagina { padding-inline: 10px; }
   .percurso-pagina .container { margin-top: 10px; }

@@ -4,5 +4,6 @@
   {% endif %} {% if exercicio.codigo %}
     {% include "exercicios/tipos/bloco_codigo.html" with codigo_editor=codigo_renderizado editor_lacuna=True %}
   {% endif %}
+  {% if exercicio.codigo %}<p class="lacuna-hint">Clique no campo destacado e digite a resposta.</p>{% endif %}
 
 </div>
