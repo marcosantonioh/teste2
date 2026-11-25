@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 from django.utils import timezone
 import datetime
+import math
 from apps.ranking.models import Divisao
 
 class Perfil(models.Model):
@@ -232,6 +233,10 @@ class Perfil(models.Model):
         
         # Garante que não retornamos um tempo negativo se a tarefa estiver atrasada
         return max(tempo_restante, datetime.timedelta(seconds=0))
+
+    @property
+    def segundos_para_proxima_vida(self):
+        return math.ceil(self.tempo_restante_para_proxima_vida.total_seconds())
 
     @property
     def posicao_no_ranking(self):

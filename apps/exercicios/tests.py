@@ -40,6 +40,10 @@ class BlocoCodigoTests(SimpleTestCase):
         self.assertIn('class="ide-code__numero">1</span>', html)
         self.assertNotIn('value="42"', html)
 
+    def test_resposta_vazia_nao_acerta_questao_sem_gabarito(self):
+        exercicio = Exercicio(tipo="mcq", resposta_correta=None)
+        self.assertFalse(mecanicas_services.verificar_resposta(exercicio, None))
+
 
 @skipUnless(connection.vendor == "postgresql", "Bloqueio de linha exige PostgreSQL")
 class ConcessaoXpConcorrenteTests(TransactionTestCase):
@@ -74,6 +78,41 @@ class ConcessaoXpConcorrenteTests(TransactionTestCase):
         progresso = ExercicioUsuario.objects.get(usuario=usuario, exercicio=exercicio)
         self.assertTrue(progresso.xp_concedido)
         self.assertEqual(Perfil.objects.get(user=usuario).xp, 20)
+
+    def test_duas_respostas_erradas_na_ultima_vida_descontam_uma_vez(self):
+        usuario = get_user_model().objects.create_user(username="aluno-ultima-vida")
+        Perfil.objects.create(user=usuario, vidas_atuais=1)
+        modulo = Modulo.objects.create(nome="Loops", descricao="Teste")
+        secao = Secao.objects.create(nome="Introdução", modulo=modulo)
+        estacao = Estacao.objects.create(nome="Estação", secao=secao)
+        exercicio = Exercicio.objects.create(
+            modulo=modulo, estacao=estacao, tipo="mcq", resposta_correta="2",
+        )
+        largada = Barrier(2)
+
+        def responder():
+            close_old_connections()
+            try:
+                perfil = Perfil.objects.get(user=usuario)
+                largada.wait(timeout=10)
+                try:
+                    mecanicas_services.processar_resposta_exercicio(
+                        "1", exercicio, perfil, usuario
+                    )
+                    return "processada"
+                except mecanicas_services.SemVidas:
+                    return "sem_vidas"
+            finally:
+                connection.close()
+
+        with ThreadPoolExecutor(max_workers=2) as executor:
+            resultados = [executor.submit(responder) for _ in range(2)]
+            estados = [resultado.result(timeout=20) for resultado in resultados]
+
+        self.assertCountEqual(estados, ["processada", "sem_vidas"])
+        perfil = Perfil.objects.get(user=usuario)
+        self.assertEqual(perfil.vidas_atuais, 0)
+        self.assertEqual(perfil.xp, 0)
 
 
 class ReporteExercicioTests(TestCase):
@@ -171,6 +210,48 @@ class ResolverExercicioResumoEstacaoTests(TestCase):
         self.assertContains(response, 'class="ide-editor"')
         self.assertContains(response, 'class="ide-code__numero">2</span>')
         self.assertContains(response, 'class="demo-token-funcao">printf</span>')
+
+    def test_resposta_incorreta_ajax_nao_revela_gabarito(self):
+        self.client.force_login(self.user)
+        response = self.client.post(
+            reverse("exercicios:resolver_exercicio", args=[self.exercicio_1.id]),
+            {"acao": "responder", "is_ajax_request": "1", "resposta": "1"},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.json()["correta"])
+        self.assertNotIn("resposta_correta", response.json())
+
+    def test_resposta_incorreta_no_html_nao_destaca_gabarito(self):
+        self.client.force_login(self.user)
+        response = self.client.post(
+            reverse("exercicios:resolver_exercicio", args=[self.exercicio_1.id]),
+            {"acao": "responder", "resposta": "1"},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, "alternativa-correta")
+
+    def test_sem_vidas_rejeita_resposta_correta_sem_conceder_xp(self):
+        self.perfil.vidas_atuais = 0
+        self.perfil.save(update_fields=["vidas_atuais"])
+        self.client.force_login(self.user)
+        url = reverse("exercicios:resolver_exercicio", args=[self.exercicio_1.id])
+
+        response = self.client.post(
+            url,
+            {"acao": "responder", "is_ajax_request": "1", "resposta": "2"},
+        )
+
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.json()["erro"], "sem_vidas")
+        self.assertFalse(ExercicioUsuario.objects.filter(usuario=self.user).exists())
+        self.perfil.refresh_from_db()
+        self.assertEqual(self.perfil.xp, 0)
+
+        response_normal = self.client.post(url, {"acao": "responder", "resposta": "2"}, follow=True)
+        self.assertContains(response_normal, "Você está sem vidas")
+        self.assertEqual(self.perfil.xp, 0)
 
     def test_resumo_da_estacao_eh_enviado_no_ajax_quando_a_estacao_termina(self):
         self.client.force_login(self.user)

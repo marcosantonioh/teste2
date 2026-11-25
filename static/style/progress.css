@@ -58,6 +58,8 @@
   align-items: center;
   gap: 6px;
 }
+.vidas-dados { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.1; }
+.vidas-tempo { margin-top: 3px; color: #5b2879; font-size: .72rem; font-weight: 700; white-space: nowrap; }
 
 .icone-vida {
   width: 30px; 

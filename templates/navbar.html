@@ -56,9 +56,9 @@
       <div class="user-profile">
         {% if user.is_authenticated and perfil %}
         <div class="user-stats">
-          <div class="group">
+          <div class="group" data-vidas-widget data-vidas-url="{% url 'exercicios:estado_vidas' %}" data-vidas-atuais="{{ perfil.vidas_atuais }}" data-max-vidas="{{ perfil.max_vidas }}" data-segundos-proxima-vida="{{ perfil.segundos_para_proxima_vida }}">
             <img src="{% static 'img/heart.svg' %}" />
-            <p>{{ perfil.vidas_atuais }}</p>
+            <span class="vidas-dados"><strong data-vidas-contador>{{ perfil.vidas_atuais }}</strong><small class="vidas-tempo" data-vidas-tempo {% if perfil.vidas_atuais >= perfil.max_vidas %}hidden{% endif %}></small></span>
           </div>
 
           <div class="group">
@@ -197,5 +197,6 @@
 
     <script src="{% static 'js/dropdown.js' %}"></script>
     <script src="{% static 'js/ofensiva_modal.js' %}"></script>
+    <script src="{% static 'js/lives_countdown.js' %}"></script>
   </body>
 </html>

@@ -22,6 +22,7 @@ from apps.exercicios.models import (
 from apps.mecanicas_jogo import services as mecanicas_services
 from apps.desafios.services import missoes_do_dia
 from django.http import JsonResponse
+from django.views.decorators.cache import never_cache
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse
 from django.template.defaultfilters import linebreaksbr  # Para formatar o enunciado
@@ -38,6 +39,19 @@ def get_or_create_perfil(user):
     if not user.is_authenticated:
         return None
     return Perfil.objects.get_or_create(user=user)[0]
+
+
+@login_required
+@never_cache
+def estado_vidas(request):
+    from apps.usuarios.services import restaurar_vidas_usuario
+
+    perfil = restaurar_vidas_usuario(request.user) or get_or_create_perfil(request.user)
+    return JsonResponse({
+        "vidas_atuais": perfil.vidas_atuais,
+        "max_vidas": perfil.max_vidas,
+        "segundos_proxima_vida": perfil.segundos_para_proxima_vida,
+    })
 
 
 def serializar_conquistas_novas(conquistas):
@@ -682,9 +696,19 @@ def resolver_exercicio(request, exercicio_id):
             resposta_usuario = _extrair_resposta_do_request(request, exercicio.tipo)
             ultima_estacao_ofensiva_antes = perfil.ultima_estacao_ofensiva
 
-            resultado, correta, conquistas_novas = mecanicas_services.processar_resposta_exercicio(
-                resposta_usuario, exercicio, perfil, request.user
-            )
+            try:
+                resultado, correta, conquistas_novas = mecanicas_services.processar_resposta_exercicio(
+                    resposta_usuario, exercicio, perfil, request.user
+                )
+            except mecanicas_services.SemVidas:
+                mensagem = "Você está sem vidas. Aguarde a recuperação para responder."
+                if is_ajax:
+                    return JsonResponse(
+                        {"erro": "sem_vidas", "mensagem": mensagem, "vidas_atuais": 0},
+                        status=403,
+                    )
+                messages.error(request, mensagem)
+                return redirect("exercicios:resolver_exercicio", exercicio_id=exercicio.id)
             ofensiva_obtida = (
                 correta
                 and perfil.ultima_estacao_ofensiva != ultima_estacao_ofensiva_antes
@@ -754,19 +778,6 @@ def resolver_exercicio(request, exercicio_id):
                         "concluidos": exercicios_concluidos_count,
                         "total": total_exercicios_modulo,
                     },
-                    "resposta_correta": (
-                        exercicio.resposta_correta
-                        if exercicio.tipo == "mcq"
-                        else (
-                            exercicio.resposta_vf_correta
-                            if exercicio.tipo == "vf"
-                            else (
-                                exercicio.resposta_texto_codigo
-                                if exercicio.tipo == "lacuna"
-                                else None
-                            )
-                        )
-                    ),
                     "resumo_estacao": {
                         "mostrar": mostrar_resumo_estacao,
                         "acertos": resumo_estacao["acertos"],

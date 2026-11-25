@@ -22,9 +22,9 @@
     </div>
     
 
-    <div class="vidas">        
+    <div class="vidas" data-vidas-widget data-vidas-url="{% url 'exercicios:estado_vidas' %}" data-vidas-atuais="{{ perfil.vidas_atuais }}" data-max-vidas="{{ perfil.max_vidas }}" data-segundos-proxima-vida="{{ perfil.segundos_para_proxima_vida }}">
         <img src="{% static 'img/heart.svg' %}" class="icone-vida">
-        <span class="contador-vida">{{ perfil.vidas_atuais }}</span>
+        <span class="vidas-dados"><span class="contador-vida" data-vidas-contador>{{ perfil.vidas_atuais }}</span><small class="vidas-tempo" data-vidas-tempo {% if perfil.vidas_atuais >= perfil.max_vidas %}hidden{% endif %}></small></span>
     </div>
 
 </div>

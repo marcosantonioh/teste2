@@ -161,6 +161,9 @@ body {
   font-size: 1rem;
   text-align: center;
 }
+.user-stats .vidas-dados { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.1; }
+.user-stats .vidas-dados strong { font-family: Arial, Helvetica, sans-serif; font-size: 1.5em; }
+.user-stats .vidas-tempo { margin-top: 3px; color: #5b2879; font-size: .72rem; font-weight: 700; white-space: nowrap; }
 
 button.grupo-ofensiva {
   background: transparent;

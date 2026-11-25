@@ -124,11 +124,24 @@ def pular_exercicio(exercicio, usuario):
     return exercicio
 
 
+class SemVidas(Exception):
+    """A tentativa foi recusada antes de corrigir ou alterar o progresso."""
+
+
 def processar_resposta_exercicio(resposta_usuario, exercicio, perfil, usuario):
-    correta = verificar_resposta(exercicio, resposta_usuario)
-    conquistas_novas = atualizar_estado_do_perfil_e_exercicio(
-        perfil, exercicio, usuario, correta
-    )
+    # Serializa também o consumo da última vida com as respostas corretas.
+    with transaction.atomic():
+        perfil_bloqueado = Perfil.objects.select_for_update().get(user=usuario)
+        from apps.usuarios.services import restaurar_vidas_do_perfil
+
+        restaurar_vidas_do_perfil(perfil_bloqueado)
+        if perfil_bloqueado.vidas_atuais <= 0:
+            raise SemVidas
+        correta = verificar_resposta(exercicio, resposta_usuario)
+        conquistas_novas = atualizar_estado_do_perfil_e_exercicio(
+            perfil_bloqueado, exercicio, usuario, correta
+        )
+    perfil.refresh_from_db()
     return "correto" if correta else "incorreto", correta, conquistas_novas
 
 
@@ -140,7 +153,7 @@ def verificar_resposta(exercicio, resposta_usuario):
     if exercicio.tipo == "mcq":
         resposta_usuario_str = str(resposta_usuario or "").strip()
         resposta_correta_str = str(exercicio.resposta_correta or "").strip()
-        return resposta_usuario_str == resposta_correta_str
+        return bool(resposta_usuario_str and resposta_correta_str) and resposta_usuario_str == resposta_correta_str
 
     elif exercicio.tipo == "vf":
         resposta_usuario_bool = resposta_usuario == "True"
@@ -230,8 +243,15 @@ def atualizar_estado_do_perfil_e_exercicio(perfil, exercicio, usuario, correta):
         return conquistas_novas
     else:
         if perfil.vidas_atuais > 0:
+            if perfil.vidas_atuais >= perfil.max_vidas:
+                from django.utils import timezone
+
+                perfil.ultima_restauracao_vida = timezone.now()
+                campos = ["vidas_atuais", "ultima_restauracao_vida"]
+            else:
+                campos = ["vidas_atuais"]
             perfil.vidas_atuais -= 1
-            perfil.save()
+            perfil.save(update_fields=campos)
     return []
 
 

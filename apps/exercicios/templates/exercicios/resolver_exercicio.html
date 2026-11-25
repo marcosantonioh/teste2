@@ -14,6 +14,10 @@
 {% block content %}
 
 <div class="container-exercicio{% if info_estrutura_repeticao %} container-exercicio--aula{% endif %}">
+  {% if sem_vidas %}<p class="exercicio-alerta" role="alert">Você está sem vidas. Aguarde a próxima vida para responder.</p>{% endif %}
+  {% if messages %}
+    {% for message in messages %}<p class="exercicio-alerta" role="alert">{{ message }}</p>{% endfor %}
+  {% endif %}
   {% if request.GET.reportado %}
     <p class="report-feedback" role="status">Obrigado. Seu reporte foi enviado.</p>
   {% endif %}
@@ -347,6 +351,7 @@
 {% include "exercicios/partials/modais.html" %}
 
 <script src="{% static 'js/resolver_exercicio.js' %}"></script>
+<script src="{% static 'js/lives_countdown.js' %}"></script>
 <script src="{% static 'js/bloco_codigo.js' %}"></script>
 {% if info_estrutura_repeticao %}<script src="{% static 'js/info_repeticao.js' %}"></script>{% endif %}
 

@@ -1,11 +1,135 @@
+import datetime
+from concurrent.futures import ThreadPoolExecutor
+from threading import Barrier
+from unittest import skipUnless
+
 from django.contrib.auth.models import User
-from django.test import TestCase
+from django.db import close_old_connections, connection
+from django.test import TestCase, TransactionTestCase
 from django.urls import reverse
+from django.utils import timezone
 
 from apps.exercicios.models import Estacao, Exercicio, ExercicioUsuario, Modulo, Secao
 
 from .models import Amizade, ConquistaUsuario, Perfil
-from .services import sincronizar_conquistas
+from .services import restaurar_vidas_usuario, sincronizar_conquistas
+
+
+class RestauracaoVidasTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="aluno-vidas")
+        self.perfil = Perfil.objects.create(user=self.user)
+
+    def test_restaura_uma_vida_por_intervalo_preservando_tempo_parcial(self):
+        agora = timezone.now()
+        self.perfil.vidas_atuais = 1
+        self.perfil.ultima_restauracao_vida = agora - datetime.timedelta(minutes=35)
+        self.perfil.save(update_fields=["vidas_atuais", "ultima_restauracao_vida"])
+
+        restaurar_vidas_usuario(self.user, agora=agora)
+        self.perfil.refresh_from_db()
+
+        self.assertEqual(self.perfil.vidas_atuais, 3)
+        self.assertEqual(
+            self.perfil.ultima_restauracao_vida,
+            agora - datetime.timedelta(minutes=5),
+        )
+        restaurar_vidas_usuario(self.user, agora=agora)
+        self.perfil.refresh_from_db()
+        self.assertEqual(self.perfil.vidas_atuais, 3)
+
+    def test_periodo_offline_longo_para_no_limite(self):
+        agora = timezone.now()
+        self.perfil.vidas_atuais = 0
+        self.perfil.ultima_restauracao_vida = agora - datetime.timedelta(days=1)
+        self.perfil.save(update_fields=["vidas_atuais", "ultima_restauracao_vida"])
+
+        restaurar_vidas_usuario(self.user, agora=agora)
+        self.perfil.refresh_from_db()
+
+        self.assertEqual(self.perfil.vidas_atuais, self.perfil.max_vidas)
+        self.assertEqual(self.perfil.ultima_restauracao_vida, agora)
+
+    def test_endpoint_restaura_vidas_e_informa_proximo_prazo(self):
+        self.perfil.vidas_atuais = 0
+        self.perfil.ultima_restauracao_vida = timezone.now() - datetime.timedelta(minutes=16)
+        self.perfil.save(update_fields=["vidas_atuais", "ultima_restauracao_vida"])
+        self.client.force_login(self.user)
+
+        response = self.client.get(reverse("exercicios:estado_vidas"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["vidas_atuais"], 1)
+        self.assertGreater(response.json()["segundos_proxima_vida"], 0)
+
+    def test_resposta_pode_ser_enviada_apos_vida_voltar(self):
+        modulo = Modulo.objects.create(nome="Loops", descricao="Teste")
+        secao = Secao.objects.create(nome="Introdução", modulo=modulo)
+        estacao = Estacao.objects.create(nome="Estação", secao=secao)
+        exercicio = Exercicio.objects.create(
+            modulo=modulo, estacao=estacao, tipo="mcq", resposta_correta="1", xp=10,
+        )
+        self.perfil.vidas_atuais = 0
+        self.perfil.ultima_restauracao_vida = timezone.now() - datetime.timedelta(minutes=16)
+        self.perfil.save(update_fields=["vidas_atuais", "ultima_restauracao_vida"])
+        self.client.force_login(self.user)
+
+        response = self.client.post(
+            reverse("exercicios:resolver_exercicio", args=[exercicio.id]),
+            {"acao": "responder", "is_ajax_request": "1", "resposta": "1"},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.perfil.refresh_from_db()
+        self.assertEqual(self.perfil.vidas_atuais, 1)
+        self.assertEqual(self.perfil.xp, 10)
+
+    def test_perda_da_primeira_vida_inicia_novo_prazo(self):
+        from apps.mecanicas_jogo.services import processar_resposta_exercicio
+
+        modulo = Modulo.objects.create(nome="Loops", descricao="Teste")
+        secao = Secao.objects.create(nome="Introdução", modulo=modulo)
+        estacao = Estacao.objects.create(nome="Estação", secao=secao)
+        exercicio = Exercicio.objects.create(
+            modulo=modulo, estacao=estacao, tipo="mcq", resposta_correta="2",
+        )
+        self.perfil.ultima_restauracao_vida = timezone.now() - datetime.timedelta(days=1)
+        self.perfil.save(update_fields=["ultima_restauracao_vida"])
+        antes = timezone.now()
+
+        processar_resposta_exercicio("1", exercicio, self.perfil, self.user)
+        self.perfil.refresh_from_db()
+
+        self.assertEqual(self.perfil.vidas_atuais, self.perfil.max_vidas - 1)
+        self.assertGreaterEqual(self.perfil.ultima_restauracao_vida, antes)
+        self.assertLessEqual(self.perfil.ultima_restauracao_vida, timezone.now())
+
+
+@skipUnless(connection.vendor == "postgresql", "Bloqueio de linha exige PostgreSQL")
+class RestauracaoVidasConcorrenteTests(TransactionTestCase):
+    def test_duas_consultas_simultaneas_restauram_uma_vida(self):
+        usuario = User.objects.create_user(username="aluno-vidas-concorrente")
+        perfil = Perfil.objects.create(user=usuario, vidas_atuais=0)
+        agora = timezone.now()
+        perfil.ultima_restauracao_vida = agora - datetime.timedelta(minutes=16)
+        perfil.save(update_fields=["ultima_restauracao_vida"])
+        largada = Barrier(2)
+
+        def consultar():
+            close_old_connections()
+            try:
+                largada.wait(timeout=10)
+                restaurar_vidas_usuario(usuario, agora=agora)
+            finally:
+                connection.close()
+
+        with ThreadPoolExecutor(max_workers=2) as executor:
+            resultados = [executor.submit(consultar) for _ in range(2)]
+            for resultado in resultados:
+                resultado.result(timeout=20)
+
+        perfil.refresh_from_db()
+        self.assertEqual(perfil.vidas_atuais, 1)
 
 
 class AvatarPerfilTests(TestCase):

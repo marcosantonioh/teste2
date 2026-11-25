@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const pathPercurso = form.dataset.percursoUrl || "/exercicios/percurso/";
   const semVidasInicial =
     form.dataset.semVidas === "True" || form.dataset.semVidas === "true";
+  window.addEventListener("vidas:restauradas", () => window.location.reload());
   const mascoteVerde = "/static/img/mascote/verde.svg";
   const mascoteVermelho = "/static/img/mascote/vermelho.svg";
   const modalConquista = document.getElementById("modalConquista");
@@ -138,6 +139,21 @@ document.addEventListener("DOMContentLoaded", function () {
         body: formData,
       });
 
+      if (response.status === 403) {
+        const data = await response.json();
+        if (data.erro === "sem_vidas") {
+          const aviso = document.createElement("p");
+          aviso.className = "exercicio-alerta";
+          aviso.setAttribute("role", "alert");
+          aviso.textContent = data.mensagem;
+          containerExercicio.querySelector(".exercicio-alerta")?.remove();
+          containerExercicio.prepend(aviso);
+          window.dispatchEvent(new Event("vidas:atualizar"));
+          delete form.dataset.respostaEnviada;
+          return;
+        }
+      }
+
       if (!response.ok) {
         const errorText = await response.text();
         console.error(
@@ -190,12 +206,21 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function processApiResponse(data) {
+    updateProgressBar(data.progresso, data.vidas_atuais);
+    window.dispatchEvent(new Event("vidas:atualizar"));
     if (data.sem_vidas) {
       const modalSemVidas = document.getElementById("modalSemVidas");
       if (modalSemVidas) modalSemVidas.style.display = "flex";
+      else {
+        const aviso = document.createElement("p");
+        aviso.className = "exercicio-alerta";
+        aviso.setAttribute("role", "alert");
+        aviso.textContent = "Você está sem vidas. Aguarde a próxima vida para responder.";
+        containerExercicio.querySelector(".exercicio-alerta")?.remove();
+        containerExercicio.prepend(aviso);
+      }
       return;
     }
-    updateProgressBar(data.progresso);
     renderFeedback(data);
   }
 
@@ -320,12 +345,12 @@ document.addEventListener("DOMContentLoaded", function () {
     mostrarModalConquistas(data.conquistas_novas);
   }
 
-  function updateProgressBar(progressData) {
+  function updateProgressBar(progressData, vidasAtuais) {
     const progressBar = document.querySelector(".barra-progresso-preenchida");
     const vidasContador = document.querySelector(".contador-vida");
     if (progressBar) progressBar.style.width = `${progressData.percentual}%`;
-    if (vidasContador && progressData.vidas_atuais !== undefined)
-      vidasContador.textContent = progressData.vidas_atuais;
+    if (vidasContador && vidasAtuais !== undefined)
+      vidasContador.textContent = vidasAtuais;
   }
 
   function highlightAnswers(data) {
@@ -334,8 +359,8 @@ document.addEventListener("DOMContentLoaded", function () {
       if (!input) return;
       const alternativeValue = input.value;
       if (
-        String(alternativeValue).toLowerCase() ==
-        String(data.resposta_correta).toLowerCase()
+        data.correta && String(alternativeValue).toLowerCase() ==
+        String(data.resposta_submetida).toLowerCase()
       ) {
         label.classList.add("alternativa-correta");
       }
