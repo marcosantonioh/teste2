@@ -1,5 +1,20 @@
 from django import forms
 from django.contrib.auth.models import User
+from .models import Perfil
+
+
+class LinksPerfilForm(forms.ModelForm):
+    class Meta:
+        model = Perfil
+        fields = ('link_site', 'link_github', 'link_linkedin')
+
+    def clean(self):
+        dados = super().clean()
+        for campo in self.Meta.fields:
+            url = dados.get(campo)
+            if url and not url.startswith('https://'):
+                self.add_error(campo, 'Use um endereço HTTPS.')
+        return dados
 
 
 class CadastroUsuarioForm(forms.Form):

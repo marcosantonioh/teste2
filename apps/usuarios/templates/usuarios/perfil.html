@@ -74,6 +74,14 @@
         </div>
       {% endif %}
 
+      {% if perfil.link_site or perfil.link_github or perfil.link_linkedin %}
+        <div class="perfil-links" aria-label="Links do perfil">
+          {% if perfil.link_site %}<a href="{{ perfil.link_site }}" target="_blank" rel="noopener noreferrer">Site pessoal</a>{% endif %}
+          {% if perfil.link_github %}<a href="{{ perfil.link_github }}" target="_blank" rel="noopener noreferrer">GitHub</a>{% endif %}
+          {% if perfil.link_linkedin %}<a href="{{ perfil.link_linkedin }}" target="_blank" rel="noopener noreferrer">LinkedIn</a>{% endif %}
+        </div>
+      {% endif %}
+
     </div> 
 
 

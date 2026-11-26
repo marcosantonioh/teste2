@@ -1,67 +1,63 @@
-  function isMobile() {
-    return window.innerWidth <= 768;
+function isMobile() {
+  return window.innerWidth <= 768;
+}
+
+function voltarParaSidebar() {
+  document.querySelector('.sidebar').classList.remove('oculta');
+  document.querySelector('.main-content').classList.remove('ativa');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const layout = document.querySelector('.account-layout');
+  const links = [...document.querySelectorAll('.sidebar .nav-link[data-section]')];
+  const secoes = [...document.querySelectorAll('.content-section')];
+  const sidebar = document.querySelector('.sidebar');
+  const conteudo = document.querySelector('.main-content');
+
+  function abrirSecao(nome, atualizarUrl = false) {
+    const destino = document.getElementById(`section-${nome}`);
+    if (!destino) return;
+
+    links.forEach(link => {
+      const ativa = link.dataset.section === nome;
+      link.classList.toggle('active', ativa);
+      if (ativa) link.setAttribute('aria-current', 'page');
+      else link.removeAttribute('aria-current');
+    });
+    secoes.forEach(secao => secao.classList.toggle('active', secao === destino));
+    if (isMobile()) {
+      sidebar.classList.add('oculta');
+      conteudo.classList.add('ativa');
+    }
+    if (atualizarUrl) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('secao', nome);
+      window.history.pushState({ secao: nome }, '', url);
+    }
   }
 
-  function setupAvatarPreview() {
-    const avatarInputs = document.querySelectorAll('input[name="avatar"]');
-    const previewImg = document.getElementById('preview-img');
+  links.forEach(link => link.addEventListener('click', event => {
+    event.preventDefault();
+    abrirSecao(link.dataset.section, true);
+  }));
 
-    avatarInputs.forEach(input => {
-      input.addEventListener('change', function () {
-        if (this.checked && this.dataset.avatarUrl) {
-          previewImg.src = this.dataset.avatarUrl;
-        }
-      });
-    });
-  }
-
-  function voltarParaSidebar() {
-    // Oculta todas as seções
-    document.querySelectorAll('.content-section').forEach(section => {
-      section.classList.remove('active');
-    });
-
-    // Mostra a sidebar e esconde o conteúdo principal (modo mobile)
-    document.querySelector('.sidebar').classList.remove('oculta');
-    document.querySelector('.main-content').classList.remove('ativa');
-  }
-
-  document.addEventListener('DOMContentLoaded', function () {
-    const navLinks = document.querySelectorAll('.nav-link');
-    const contentSections = document.querySelectorAll('.content-section');
-    const sidebar = document.querySelector('.sidebar');
-    const mainContent = document.querySelector('.main-content');
-
-    // Clique nos links da sidebar
-    navLinks.forEach(link => {
-      // O logout é uma navegação real; não deve ser tratado como aba de configuração.
-      if (link.classList.contains('nav-link-logout')) {
-        return;
-      }
-
-      link.addEventListener('click', function (e) {
-        e.preventDefault();
-
-        // Ativa o link clicado
-        navLinks.forEach(l => l.classList.remove('active'));
-        this.classList.add('active');
-
-        // Mostra apenas a seção correta
-        const sectionId = this.getAttribute('data-section');
-        contentSections.forEach(sec => sec.classList.remove('active'));
-        const targetSection = document.getElementById('section-' + sectionId);
-        if (targetSection) {
-          targetSection.classList.add('active');
-        }
-
-        // No mobile: esconde a sidebar e mostra o conteúdo
-        if (isMobile()) {
-          sidebar.classList.add('oculta');
-          mainContent.classList.add('ativa');
-        }
-      });
-    });
-
-    // Setup inicial
-    setupAvatarPreview();
+  window.addEventListener('popstate', () => {
+    abrirSecao(new URLSearchParams(window.location.search).get('secao') || 'informacoes');
   });
+
+  const abaInicial = layout.dataset.abaInicial || 'informacoes';
+  if (isMobile() && abaInicial === 'informacoes') {
+    links.find(link => link.dataset.section === abaInicial)?.classList.add('active');
+  } else {
+    abrirSecao(abaInicial);
+  }
+
+  const preview = document.getElementById('preview-img');
+  document.querySelectorAll('input[name="avatar"]').forEach(input => {
+    input.addEventListener('change', () => {
+      if (preview && input.checked && input.dataset.avatarUrl) {
+        preview.src = input.dataset.avatarUrl;
+      }
+    });
+  });
+});

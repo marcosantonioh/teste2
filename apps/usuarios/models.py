@@ -97,6 +97,9 @@ class Perfil(models.Model):
     seguidos = models.IntegerField(default=0)
     data_inicio = models.DateTimeField(default=timezone.now)
     tema = models.CharField(max_length=20, default='claro')
+    link_site = models.URLField(max_length=300, blank=True, default='')
+    link_github = models.URLField(max_length=300, blank=True, default='')
+    link_linkedin = models.URLField(max_length=300, blank=True, default='')
     cristal = models.IntegerField(default=0)
     meta_ofensiva = models.PositiveSmallIntegerField(
         null=True,

@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from django.contrib.auth.models import User
 from .models import Perfil, Amizade
@@ -10,7 +11,7 @@ from django.urls import reverse
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
-from .forms import CadastroUsuarioForm
+from .forms import CadastroUsuarioForm, LinksPerfilForm
 from .models import Conquista
 from .services import sincronizar_conquistas
 
@@ -73,8 +74,27 @@ def editar_perfil(request):
         perfil.user.conquistas.values_list("conquista__codigo", flat=True)
     )
 
+    action = request.POST.get('action') if request.method == 'POST' else None
+    abas = {'informacoes', 'preferencias', 'senha', 'links', 'conexoes', 'notificacoes'}
+    aba_ativa = request.GET.get('secao', 'informacoes')
+    if action:
+        aba_ativa = {
+            'salvar_perfil': 'informacoes',
+            'salvar_preferencias': 'preferencias',
+            'alterar_senha': 'senha',
+            'salvar_links': 'links',
+        }.get(action, aba_ativa)
+    if aba_ativa not in abas:
+        aba_ativa = 'informacoes'
+
+    senha_form = PasswordChangeForm(
+        request.user, request.POST if action == 'alterar_senha' else None
+    )
+    links_form = LinksPerfilForm(
+        request.POST if action == 'salvar_links' else None, instance=perfil
+    )
+
     if request.method == 'POST':
-        action = request.POST.get('action')
 
         if action == 'salvar_perfil':
             # Atualiza os dados
@@ -99,6 +119,23 @@ def editar_perfil(request):
 
             messages.success(request, "Perfil atualizado com sucesso!")
             return redirect('usuarios:editar_perfil') # Redireciona para a mesma página para ver as alterações.
+
+        if action == 'salvar_preferencias':
+            if _salvar_preferencias(perfil, request.POST):
+                messages.success(request, 'Preferências salvas com sucesso!')
+                return redirect(reverse('usuarios:editar_perfil') + '?secao=preferencias')
+            messages.error(request, 'Escolha um tema e uma visibilidade válidos.')
+
+        if action == 'alterar_senha' and senha_form.is_valid():
+            usuario = senha_form.save()
+            update_session_auth_hash(request, usuario)
+            messages.success(request, 'Senha alterada com sucesso!')
+            return redirect(reverse('usuarios:editar_perfil') + '?secao=senha')
+
+        if action == 'salvar_links' and links_form.is_valid():
+            links_form.save()
+            messages.success(request, 'Links salvos com sucesso!')
+            return redirect(reverse('usuarios:editar_perfil') + '?secao=links')
 
     
     conquistas = Conquista.objects.in_bulk(field_name="codigo")
@@ -125,7 +162,34 @@ def editar_perfil(request):
     return render(request, 'usuarios/editar_perfil.html', {
         'perfil': perfil,
         'grupos_avatar': grupos_avatar,
+        'aba_ativa': aba_ativa,
+        'senha_form': senha_form,
+        'links_form': links_form,
+        'amigos': [
+            relacao.outro_usuario(request.user)
+            for relacao in Amizade.objects.filter(
+                Q(remetente=request.user) | Q(destinatario=request.user),
+                status=Amizade.STATUS_ACEITA,
+            ).select_related('remetente__perfil', 'destinatario__perfil')
+        ],
+        'solicitacoes_recebidas': Amizade.objects.filter(
+            destinatario=request.user, status=Amizade.STATUS_PENDENTE
+        ).select_related('remetente__perfil'),
+        'solicitacoes_enviadas': Amizade.objects.filter(
+            remetente=request.user, status=Amizade.STATUS_PENDENTE
+        ).select_related('destinatario__perfil'),
     })
+
+
+def _salvar_preferencias(perfil, dados):
+    tema = dados.get('tema')
+    visibilidade = dados.get('visibilidade')
+    if tema not in {'claro', 'escuro'} or visibilidade not in {'publico', 'privado'}:
+        return False
+    perfil.tema = tema
+    perfil.visibilidade = visibilidade
+    perfil.save(update_fields=['tema', 'visibilidade'])
+    return True
 
 
 
@@ -363,16 +427,8 @@ def preferencias(request):
     perfil = get_object_or_404(Perfil, user=request.user)
 
     if request.method == 'POST':
-        tema = request.POST.get('tema')
-        visibilidade = request.POST.get('visibilidade')
-
-        perfil.tema = tema
-        perfil.visibilidade = visibilidade
-        perfil.save()
-
-        messages.success(request, 'Preferências salvas com sucesso!')
-        return redirect('usuarios:preferencias')
-
-    # Adiciona o perfil ao contexto para que o template possa exibir os valores atuais.
-    context = {'perfil': perfil}
-    return render(request, 'usuarios/preferencias.html', context)
+        if _salvar_preferencias(perfil, request.POST):
+            messages.success(request, 'Preferências salvas com sucesso!')
+        else:
+            messages.error(request, 'Escolha um tema e uma visibilidade válidos.')
+    return redirect(reverse('usuarios:editar_perfil') + '?secao=preferencias')

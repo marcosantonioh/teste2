@@ -1,0 +1,39 @@
+body.tema-escuro { background-color: #15101d; color: #f5effb; }
+body.tema-escuro .account-layout,
+body.tema-escuro .container:has(.account-layout) { background: #15101d; color: #f5effb; }
+body.tema-escuro .sidebar,
+body.tema-escuro .main-content,
+body.tema-escuro .preferencias-main,
+body.tema-escuro .content-perfil { background: #21192c; color: #f5effb; }
+body.tema-escuro .sidebar { border-color: #594a68; }
+body.tema-escuro .sidebar .nav-link { color: #f2e7fb; }
+body.tema-escuro .sidebar .nav-link:hover,
+body.tema-escuro .sidebar .nav-link.active { background: #3b2850; color: #f5d7ff; }
+body.tema-escuro .config-panel h1,
+body.tema-escuro .config-panel h2,
+body.tema-escuro .config-campo label,
+body.tema-escuro .preferencias-main h1,
+body.tema-escuro .preferencias-main label { color: #f5effb; }
+body.tema-escuro .config-panel > p,
+body.tema-escuro .config-campo small,
+body.tema-escuro .config-lista > p { color: #d3c5df; }
+body.tema-escuro .config-pessoa,
+body.tema-escuro .config-lista > p { border-color: #594a68; background: #30243d; color: #f5effb; }
+body.tema-escuro .config-pessoa a,
+body.tema-escuro .config-link { color: #edc0ff; }
+body.tema-escuro .config-campo input,
+body.tema-escuro .select-preferencias,
+body.tema-escuro .form-group input,
+body.tema-escuro .bio-section textarea { border-color: #8b799b; background: #2e233b; color: #fff; }
+body.tema-escuro .content-perfil .head,
+body.tema-escuro .content-perfil .section-estatisticas,
+body.tema-escuro .content-perfil .section-amigos { border-color: #594a68; }
+body.tema-escuro .content-perfil h2,
+body.tema-escuro .content-perfil h3,
+body.tema-escuro .content-perfil p { color: #f5effb; }
+body.tema-escuro .perfil-links a { color: #edc0ff; }
+body.tema-escuro .missoes-card,
+body.tema-escuro .missoes-card .missao-item { border-color: #594a68; background: #251b35; }
+body.tema-escuro .missoes-card .missoes-header h2,
+body.tema-escuro .missoes-card .missao-info p { color: #f5effb; }
+body.tema-escuro .missoes-card .progress-text { color: #d3c5df; }

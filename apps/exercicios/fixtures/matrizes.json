@@ -37,5 +37,954 @@
       "nome": "Aplicações e Algoritmos Simples",
       "ordem": 1
     }
+  },
+  {
+    "model": "exercicios.estacao",
+    "pk": 105,
+    "fields": {
+      "secao": 11,
+      "nome": "O que são matrizes?",
+      "disponivel_para_visitantes": false
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 381,
+    "fields": {
+      "modulo": 3,
+      "estacao": 105,
+      "titulo": "Organizando informações",
+      "tipo": "info",
+      "xp": 5,
+      "enunciado": "Imagine que precisamos armazenar as notas de três estudantes, cada um com duas avaliações. Podemos organizar essas informações em linhas e colunas.\n\nEstudante 1: avaliação 1 = 7; avaliação 2 = 8.\nEstudante 2: avaliação 1 = 6; avaliação 2 = 9.\nEstudante 3: avaliação 1 = 8; avaliação 2 = 10.",
+      "explicacao": "Uma matriz permite representar esse conjunto de informações utilizando uma estrutura bidimensional."
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 382,
+    "fields": {
+      "modulo": 3,
+      "estacao": 105,
+      "titulo": "Conhecendo as matrizes",
+      "tipo": "info",
+      "xp": 5,
+      "enunciado": "Uma matriz bidimensional em C permite armazenar elementos do mesmo tipo, organizados em linhas e colunas.",
+      "explicacao": "A matriz notas possui três linhas e duas colunas, armazenando seis elementos inteiros.",
+      "codigo": "int notas[3][2] = {\n    {7, 8},\n    {6, 9},\n    {8, 10}\n};"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 383,
+    "fields": {
+      "modulo": 3,
+      "estacao": 105,
+      "titulo": "Finalidade das matrizes",
+      "tipo": "mcq",
+      "xp": 10,
+      "enunciado": "Qual é a principal característica de uma matriz bidimensional?",
+      "explicacao": "Uma matriz bidimensional organiza seus elementos em duas dimensões: linhas e colunas.",
+      "alternativa_1": "Executar instruções repetidamente.",
+      "alternativa_2": "Armazenar somente um valor.",
+      "alternativa_3": "Organizar elementos em linhas e colunas.",
+      "alternativa_4": "Armazenar obrigatoriamente caracteres.",
+      "resposta_correta": "3"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 384,
+    "fields": {
+      "modulo": 3,
+      "estacao": 105,
+      "titulo": "Vetor ou matriz?",
+      "tipo": "info",
+      "xp": 5,
+      "enunciado": "Enquanto um vetor possui uma dimensão, uma matriz bidimensional possui duas dimensões.",
+      "explicacao": "Para acessar um elemento de um vetor, utilizamos um índice. Para acessar um elemento de uma matriz bidimensional, utilizamos dois índices.",
+      "codigo": "int vetor[4];\nint matriz[2][3];"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 385,
+    "fields": {
+      "modulo": 3,
+      "estacao": 105,
+      "titulo": "Identificando as dimensões",
+      "tipo": "mcq",
+      "xp": 10,
+      "enunciado": "Quantas linhas e colunas possui a matriz abaixo?",
+      "explicacao": "O primeiro tamanho representa a quantidade de linhas, enquanto o segundo representa a quantidade de colunas.",
+      "codigo": "int numeros[4][3];",
+      "alternativa_1": "3 linhas e 4 colunas.",
+      "alternativa_2": "4 linhas e 3 colunas.",
+      "alternativa_3": "4 linhas e 4 colunas.",
+      "alternativa_4": "3 linhas e 3 colunas.",
+      "resposta_correta": "2"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 386,
+    "fields": {
+      "modulo": 3,
+      "estacao": 105,
+      "titulo": "Quantidade de elementos",
+      "tipo": "info",
+      "xp": 5,
+      "enunciado": "Para determinar a quantidade total de elementos de uma matriz bidimensional, multiplicamos o número de linhas pelo número de colunas. Neste exemplo: 3 × 4 = 12 elementos.",
+      "explicacao": "Cada uma das três linhas possui quatro elementos, totalizando doze elementos.",
+      "codigo": "int valores[3][4];"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 387,
+    "fields": {
+      "modulo": 3,
+      "estacao": 105,
+      "titulo": "Calculando a capacidade",
+      "tipo": "mcq",
+      "xp": 10,
+      "enunciado": "Quantos elementos podem ser armazenados na matriz abaixo?",
+      "explicacao": "A matriz possui cinco linhas e quatro colunas, totalizando 20 elementos.",
+      "codigo": "int pontos[5][4];",
+      "alternativa_1": "9 elementos.",
+      "alternativa_2": "5 elementos.",
+      "alternativa_3": "16 elementos.",
+      "alternativa_4": "20 elementos.",
+      "resposta_correta": "4"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 388,
+    "fields": {
+      "modulo": 3,
+      "estacao": 105,
+      "titulo": "Elementos do mesmo tipo",
+      "tipo": "vf",
+      "xp": 10,
+      "enunciado": "Todos os elementos da matriz abaixo possuem o tipo float.",
+      "explicacao": "Assim como nos vetores, todos os elementos de uma matriz possuem o mesmo tipo, definido durante sua declaração.",
+      "codigo": "float temperaturas[3][2];",
+      "resposta_vf_correta": true
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 389,
+    "fields": {
+      "modulo": 3,
+      "estacao": 105,
+      "titulo": "Completando as dimensões",
+      "tipo": "lacuna",
+      "xp": 10,
+      "enunciado": "Complete a declaração para criar uma matriz de três linhas e cinco colunas.",
+      "explicacao": "O segundo tamanho informado determina a quantidade de colunas da matriz.",
+      "codigo": "int numeros[3][__LACUNA__];",
+      "resposta_texto_codigo": "5",
+      "respostas_aceitas": [
+        "2 + 3",
+        "3 + 2",
+        "6 - 1",
+        "10 / 2",
+        "1 + 4",
+        "4 + 1"
+      ]
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 390,
+    "fields": {
+      "modulo": 3,
+      "estacao": 105,
+      "titulo": "Identificando uma posição",
+      "tipo": "mcq",
+      "xp": 15,
+      "enunciado": "Qual valor está armazenado na primeira linha e na segunda coluna da matriz?",
+      "explicacao": "A primeira linha contém os valores 10, 20 e 30. Seu segundo elemento possui o valor 20.",
+      "codigo": "int numeros[2][3] = {\n    {10, 20, 30},\n    {40, 50, 60}\n};",
+      "alternativa_1": "20",
+      "alternativa_2": "40",
+      "alternativa_3": "50",
+      "alternativa_4": "10",
+      "resposta_correta": "1"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 391,
+    "fields": {
+      "modulo": 3,
+      "estacao": 105,
+      "titulo": "Desafio final",
+      "tipo": "mcq",
+      "xp": 20,
+      "enunciado": "Uma escola precisa armazenar quatro notas de cada um dos seus dez estudantes. Cada linha deve representar um estudante e cada coluna uma avaliação. Qual declaração é mais adequada?",
+      "explicacao": "São necessárias dez linhas para representar os estudantes e quatro colunas para representar as avaliações. O tipo float permite representar notas com casas decimais.",
+      "alternativa_1": "float notas[4][10];",
+      "alternativa_2": "int notas[10];",
+      "alternativa_3": "float notas[10][4];",
+      "alternativa_4": "float notas[10][10];",
+      "resposta_correta": "3"
+    }
+  },
+  {
+    "model": "exercicios.estacao",
+    "pk": 106,
+    "fields": {
+      "secao": 11,
+      "nome": "Declarando matrizes",
+      "disponivel_para_visitantes": false
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 401,
+    "fields": {
+      "modulo": 3,
+      "estacao": 106,
+      "titulo": "Estrutura da declaração",
+      "tipo": "info",
+      "xp": 5,
+      "enunciado": "Para declarar uma matriz bidimensional em C, precisamos informar o tipo dos elementos, o nome da matriz e suas duas dimensões.",
+      "explicacao": "Essa declaração cria uma matriz chamada numeros, com duas linhas e três colunas, capaz de armazenar seis números inteiros.",
+      "codigo": "int numeros[2][3];"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 402,
+    "fields": {
+      "modulo": 3,
+      "estacao": 106,
+      "titulo": "Identificando o nome",
+      "tipo": "mcq",
+      "xp": 10,
+      "enunciado": "Qual é o nome da matriz declarada abaixo?",
+      "explicacao": "O identificador temperaturas é o nome utilizado para referenciar a matriz.",
+      "codigo": "float temperaturas[7][3];",
+      "alternativa_1": "float",
+      "alternativa_2": "temperaturas",
+      "alternativa_3": "temperaturas[7]",
+      "alternativa_4": "7",
+      "resposta_correta": "2"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 403,
+    "fields": {
+      "modulo": 3,
+      "estacao": 106,
+      "titulo": "Diferentes tipos de dados",
+      "tipo": "info",
+      "xp": 5,
+      "enunciado": "Assim como os vetores, as matrizes podem ser declaradas utilizando diferentes tipos de dados. Exemplos: int pode armazenar 10, 20, 30 e 40; float pode armazenar 7.5, 8.2, 6.5 e 9.0; char pode armazenar A, B, C e D.",
+      "explicacao": "O tipo int armazena números inteiros, float armazena números de ponto flutuante e char pode armazenar caracteres individuais.",
+      "codigo": "int numeros[2][2];\nfloat notas[2][2];\nchar letras[2][2];"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 404,
+    "fields": {
+      "modulo": 3,
+      "estacao": 106,
+      "titulo": "Escolhendo o tipo adequado",
+      "tipo": "mcq",
+      "xp": 10,
+      "enunciado": "Qual declaração é mais adequada para armazenar os preços de produtos, incluindo valores com casas decimais, em uma matriz de três linhas e quatro colunas?",
+      "explicacao": "O tipo float permite representar valores com parte fracionária, e as duas dimensões correspondem às quantidades solicitadas.",
+      "alternativa_1": "int precos[3][4];",
+      "alternativa_2": "char precos[3][4];",
+      "alternativa_3": "float precos[3][4];",
+      "alternativa_4": "float precos[3];",
+      "resposta_correta": "3"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 405,
+    "fields": {
+      "modulo": 3,
+      "estacao": 106,
+      "titulo": "Completando o tipo",
+      "tipo": "lacuna",
+      "xp": 10,
+      "enunciado": "Complete a declaração utilizando o tipo char para armazenar caracteres individuais.",
+      "explicacao": "O tipo char pode ser utilizado para armazenar caracteres individuais.",
+      "codigo": "__LACUNA__ letras[3][3];",
+      "resposta_texto_codigo": "char",
+      "respostas_aceitas": []
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 406,
+    "fields": {
+      "modulo": 3,
+      "estacao": 106,
+      "titulo": "Sintaxe correta",
+      "tipo": "mcq",
+      "xp": 10,
+      "enunciado": "Qual alternativa apresenta uma declaração válida de uma matriz bidimensional de números inteiros?",
+      "explicacao": "Cada dimensão deve ser informada em um par de colchetes separado, após o nome da matriz.",
+      "alternativa_1": "int numeros[3,4];",
+      "alternativa_2": "int numeros(3)(4);",
+      "alternativa_3": "int[3][4] numeros;",
+      "alternativa_4": "int numeros[3][4];",
+      "resposta_correta": "4"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 407,
+    "fields": {
+      "modulo": 3,
+      "estacao": 106,
+      "titulo": "Comparando dimensões",
+      "tipo": "vf",
+      "xp": 10,
+      "enunciado": "As duas matrizes abaixo possuem a mesma quantidade total de elementos, mas diferentes quantidades de linhas e colunas.",
+      "explicacao": "Ambas possuem seis elementos, mas apresentam organizações diferentes: a possui 2 linhas e 3 colunas; b possui 3 linhas e 2 colunas.",
+      "codigo": "int a[2][3];\nint b[3][2];",
+      "resposta_vf_correta": true
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 408,
+    "fields": {
+      "modulo": 3,
+      "estacao": 106,
+      "titulo": "Completando as linhas",
+      "tipo": "lacuna",
+      "xp": 10,
+      "enunciado": "Complete a declaração para criar uma matriz de quatro linhas e três colunas.",
+      "explicacao": "A primeira dimensão determina a quantidade de linhas da matriz.",
+      "codigo": "int valores[__LACUNA__][3];",
+      "resposta_texto_codigo": "4",
+      "respostas_aceitas": [
+        "2 + 2",
+        "2 * 2",
+        "5 - 1",
+        "8 / 2",
+        "3 + 1",
+        "1 + 3"
+      ]
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 409,
+    "fields": {
+      "modulo": 3,
+      "estacao": 106,
+      "titulo": "Declarando uma matriz quadrada",
+      "tipo": "info",
+      "xp": 5,
+      "enunciado": "Uma matriz é chamada de quadrada quando possui a mesma quantidade de linhas e colunas.",
+      "explicacao": "Como as duas dimensões possuem o mesmo tamanho, essa matriz é quadrada: três linhas e três colunas.",
+      "codigo": "int numeros[3][3];"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 410,
+    "fields": {
+      "modulo": 3,
+      "estacao": 106,
+      "titulo": "Identificando uma matriz quadrada",
+      "tipo": "mcq",
+      "xp": 10,
+      "enunciado": "Qual das declarações abaixo representa uma matriz quadrada?",
+      "explicacao": "A matriz b possui cinco linhas e cinco colunas.",
+      "alternativa_1": "int a[2][4];",
+      "alternativa_2": "int b[5][5];",
+      "alternativa_3": "int c[3][2];",
+      "alternativa_4": "int d[4][1];",
+      "resposta_correta": "2"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 411,
+    "fields": {
+      "modulo": 3,
+      "estacao": 106,
+      "titulo": "Declarando uma matriz completa",
+      "tipo": "lacuna",
+      "xp": 15,
+      "enunciado": "Declare uma matriz do tipo int, chamada pontos, com três linhas e quatro colunas.",
+      "explicacao": "A declaração deve informar o tipo inteiro, o nome pontos e as duas dimensões solicitadas.",
+      "codigo": "__LACUNA__;",
+      "resposta_texto_codigo": "int pontos[3][4]",
+      "respostas_aceitas": [
+        "int pontos[1 + 2][4]",
+        "int pontos[3][2 + 2]",
+        "int pontos[3][2 * 2]",
+        "int pontos[6 / 2][4]",
+        "signed int pontos[3][4]",
+        "signed pontos[3][4]"
+      ]
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 412,
+    "fields": {
+      "modulo": 3,
+      "estacao": 106,
+      "titulo": "Encontrando o erro",
+      "tipo": "mcq",
+      "xp": 15,
+      "enunciado": "Qual é o problema da declaração abaixo?",
+      "explicacao": "As duas dimensões devem ser informadas entre colchetes. A declaração correta seria int numeros[3][4];.",
+      "codigo": "int numeros[3](4);",
+      "alternativa_1": "O nome numeros é inválido.",
+      "alternativa_2": "O tipo int não pode ser utilizado em matrizes.",
+      "alternativa_3": "A segunda dimensão deve estar entre colchetes.",
+      "alternativa_4": "As duas dimensões precisam possuir o mesmo tamanho.",
+      "resposta_correta": "3"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 413,
+    "fields": {
+      "modulo": 3,
+      "estacao": 106,
+      "titulo": "Desafio final",
+      "tipo": "mcq",
+      "xp": 20,
+      "enunciado": "Um cinema possui seis fileiras, cada uma com oito assentos. Uma matriz de inteiros será utilizada para representar os assentos, indicando com 0 os livres e com 1 os ocupados. Qual declaração é mais adequada, considerando cada fileira como uma linha?",
+      "explicacao": "A matriz precisa possuir seis linhas e oito colunas para representar os 48 assentos do cinema.",
+      "alternativa_1": "int assentos[6][8];",
+      "alternativa_2": "int assentos[8][6];",
+      "alternativa_3": "int assentos[6];",
+      "alternativa_4": "int assentos[8][8];",
+      "resposta_correta": "1"
+    }
+  },
+  {
+    "model": "exercicios.estacao",
+    "pk": 107,
+    "fields": {
+      "secao": 11,
+      "nome": "Inicializando matrizes",
+      "disponivel_para_visitantes": false
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 421,
+    "fields": {
+      "modulo": 3,
+      "estacao": 107,
+      "titulo": "Inicializando uma matriz",
+      "tipo": "info",
+      "xp": 5,
+      "enunciado": "Podemos fornecer valores a uma matriz no momento de sua declaração. Para organizar esses valores, utilizamos grupos de chaves que representam cada linha.",
+      "explicacao": "Cada grupo interno de chaves contém os valores iniciais de uma linha da matriz.",
+      "codigo": "int numeros[2][3] = {\n    {10, 20, 30},\n    {40, 50, 60}\n};"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 422,
+    "fields": {
+      "modulo": 3,
+      "estacao": 107,
+      "titulo": "Sintaxe de inicialização",
+      "tipo": "mcq",
+      "xp": 10,
+      "enunciado": "Qual alternativa inicializa corretamente uma matriz de duas linhas e duas colunas?",
+      "explicacao": "Os valores podem ser organizados em grupos internos de chaves, separados por vírgulas e envolvidos por um grupo externo de chaves.",
+      "alternativa_1": "int numeros[2][2] = ((1, 2), (3, 4));",
+      "alternativa_2": "int numeros[2][2] = {{1, 2}, {3, 4}};",
+      "alternativa_3": "int numeros[2][2] = [[1, 2], [3, 4]];",
+      "alternativa_4": "int numeros[2][2] = {1, 2}, {3, 4};",
+      "resposta_correta": "2"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 423,
+    "fields": {
+      "modulo": 3,
+      "estacao": 107,
+      "titulo": "Completando a primeira linha",
+      "tipo": "lacuna",
+      "xp": 10,
+      "enunciado": "Complete a inicialização para que a primeira linha contenha os valores 2, 4 e 6.",
+      "explicacao": "O segundo elemento da primeira linha deve receber o valor 4.",
+      "codigo": "int numeros[2][3] = {\n    {2, __LACUNA__, 6},\n    {8, 10, 12}\n};",
+      "resposta_texto_codigo": "4",
+      "respostas_aceitas": [
+        "2 + 2",
+        "2 * 2",
+        "8 / 2",
+        "6 - 2",
+        "3 + 1",
+        "1 + 3"
+      ]
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 424,
+    "fields": {
+      "modulo": 3,
+      "estacao": 107,
+      "titulo": "Identificando uma linha",
+      "tipo": "mcq",
+      "xp": 10,
+      "enunciado": "Quais valores estão armazenados na segunda linha da matriz?",
+      "explicacao": "O segundo grupo interno de chaves representa a segunda linha da matriz.",
+      "codigo": "int valores[3][2] = {\n    {5, 10},\n    {15, 20},\n    {25, 30}\n};",
+      "alternativa_1": "5, 10",
+      "alternativa_2": "25, 30",
+      "alternativa_3": "10, 20",
+      "alternativa_4": "15, 20",
+      "resposta_correta": "4"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 425,
+    "fields": {
+      "modulo": 3,
+      "estacao": 107,
+      "titulo": "Inicialização parcial",
+      "tipo": "info",
+      "xp": 5,
+      "enunciado": "Quando fornecemos apenas alguns valores durante a inicialização de uma matriz de inteiros, os elementos restantes são inicializados com zero.",
+      "explicacao": "Na primeira linha, apenas o último elemento recebe zero automaticamente. Na segunda linha, os dois últimos elementos recebem zero.",
+      "codigo": "int numeros[2][3] = {\n    {10, 20},\n    {30}\n};"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 426,
+    "fields": {
+      "modulo": 3,
+      "estacao": 107,
+      "titulo": "Interpretando a inicialização parcial",
+      "tipo": "mcq",
+      "xp": 15,
+      "enunciado": "Qual alternativa representa os valores armazenados na matriz abaixo?",
+      "explicacao": "Os elementos não informados em cada linha são inicializados com zero.",
+      "codigo": "int numeros[2][3] = {\n    {5},\n    {10, 20}\n};",
+      "alternativa_1": "5  0  0 / 10  20  0",
+      "alternativa_2": "5  5  5 / 10  20  20",
+      "alternativa_3": "5  10  20 / 0  0  0",
+      "alternativa_4": "5  0  0 / 10  0  20",
+      "resposta_correta": "1"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 427,
+    "fields": {
+      "modulo": 3,
+      "estacao": 107,
+      "titulo": "Inicializando com zero",
+      "tipo": "info",
+      "xp": 5,
+      "enunciado": "Podemos inicializar todos os elementos de uma matriz de inteiros com zero utilizando apenas um valor na lista de inicialização.",
+      "explicacao": "O primeiro elemento recebe zero explicitamente, enquanto todos os demais são inicializados automaticamente com zero.",
+      "codigo": "int numeros[3][3] = {0};"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 428,
+    "fields": {
+      "modulo": 3,
+      "estacao": 107,
+      "titulo": "Preenchendo com zero",
+      "tipo": "lacuna",
+      "xp": 10,
+      "enunciado": "Complete o código para inicializar todos os elementos da matriz com zero.",
+      "explicacao": "Podemos informar explicitamente todos os zeros ou aproveitar a inicialização automática dos elementos restantes.",
+      "codigo": "int numeros[2][2] = __LACUNA__;",
+      "resposta_texto_codigo": "{0}",
+      "respostas_aceitas": [
+        "{{0}}",
+        "{{0}, {0}}",
+        "{{0},{0}}",
+        "{0, 0, 0, 0}",
+        "{0,0,0,0}",
+        "{{0, 0}, {0, 0}}",
+        "{{0,0},{0,0}}"
+      ]
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 429,
+    "fields": {
+      "modulo": 3,
+      "estacao": 107,
+      "titulo": "Repetição de valores",
+      "tipo": "vf",
+      "xp": 10,
+      "enunciado": "A declaração abaixo inicializa todos os elementos da matriz com o valor 5.",
+      "explicacao": "Apenas o primeiro elemento da primeira linha recebe o valor 5. Todos os demais recebem zero.",
+      "codigo": "int numeros[2][3] = {5};",
+      "resposta_vf_correta": false
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 430,
+    "fields": {
+      "modulo": 3,
+      "estacao": 107,
+      "titulo": "Determinação automática das linhas",
+      "tipo": "info",
+      "xp": 5,
+      "enunciado": "Ao inicializar uma matriz bidimensional, podemos omitir a quantidade de linhas. Nesse caso, o compilador determina essa quantidade a partir da inicialização.",
+      "explicacao": "O compilador identifica três linhas, cada uma com duas colunas. A declaração é equivalente a int numeros[3][2] = {{10, 20}, {30, 40}, {50, 60}};. A quantidade de colunas precisa ser informada nesse tipo de declaração.",
+      "codigo": "int numeros[][2] = {\n    {10, 20},\n    {30, 40},\n    {50, 60}\n};"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 431,
+    "fields": {
+      "modulo": 3,
+      "estacao": 107,
+      "titulo": "Identificando as dimensões",
+      "tipo": "mcq",
+      "xp": 15,
+      "enunciado": "Quantas linhas e colunas possui a matriz abaixo?",
+      "explicacao": "Foram fornecidos dois grupos de valores, representando duas linhas. A quantidade de colunas foi definida como três.",
+      "codigo": "int valores[][3] = {\n    {1, 2, 3},\n    {4, 5, 6}\n};",
+      "alternativa_1": "3 linhas e 2 colunas.",
+      "alternativa_2": "3 linhas e 3 colunas.",
+      "alternativa_3": "2 linhas e 3 colunas.",
+      "alternativa_4": "2 linhas e 2 colunas.",
+      "resposta_correta": "3"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 432,
+    "fields": {
+      "modulo": 3,
+      "estacao": 107,
+      "titulo": "Inicializando caracteres",
+      "tipo": "lacuna",
+      "xp": 15,
+      "enunciado": "Complete a inicialização para que a segunda linha contenha os caracteres C e D.",
+      "explicacao": "Caracteres individuais são representados entre aspas simples na linguagem C.",
+      "codigo": "char letras[2][2] = {\n    {'A', 'B'},\n    {__LACUNA__, 'D'}\n};",
+      "resposta_texto_codigo": "'C'",
+      "respostas_aceitas": []
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 433,
+    "fields": {
+      "modulo": 3,
+      "estacao": 107,
+      "titulo": "Encontrando o erro",
+      "tipo": "mcq",
+      "xp": 15,
+      "enunciado": "Qual é o problema da inicialização abaixo?",
+      "explicacao": "A matriz possui duas colunas, mas foram fornecidos três valores para a primeira linha. O valor 30 excede a quantidade de elementos permitida na primeira linha.",
+      "codigo": "int numeros[2][2] = {\n    {10, 20, 30},\n    {40, 50}\n};",
+      "alternativa_1": "Os valores precisam começar com zero.",
+      "alternativa_2": "A primeira linha recebeu mais valores do que a quantidade de colunas permite.",
+      "alternativa_3": "A matriz deveria utilizar o tipo float.",
+      "alternativa_4": "A segunda linha deveria possuir apenas um elemento.",
+      "resposta_correta": "2"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 434,
+    "fields": {
+      "modulo": 3,
+      "estacao": 107,
+      "titulo": "Desafio final",
+      "tipo": "mcq",
+      "xp": 20,
+      "enunciado": "Analise a inicialização das duas matrizes e identifique a alternativa que representa corretamente seus valores.",
+      "explicacao": "A matriz a possui duas linhas e três colunas. A matriz b possui duas linhas determinadas automaticamente e duas colunas. Em ambas, os elementos não informados são inicializados com zero.",
+      "codigo": "int a[2][3] = {\n    {5},\n    {10, 15}\n};\n\nint b[][2] = {\n    {2, 4},\n    {6}\n};",
+      "alternativa_1": "a: 5 5 5 / 10 15 15; b: 2 4 / 6 6",
+      "alternativa_2": "a: 5 10 15 / 0 0 0; b: 2 4 / 6 0",
+      "alternativa_3": "a: 5 0 0 / 10 15 0; b: 2 4 / 0 6",
+      "alternativa_4": "a: 5 0 0 / 10 15 0; b: 2 4 / 6 0",
+      "resposta_correta": "4"
+    }
+  },
+  {
+    "model": "exercicios.estacao",
+    "pk": 108,
+    "fields": {
+      "secao": 11,
+      "nome": "Linhas, colunas e índices",
+      "disponivel_para_visitantes": false
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 441,
+    "fields": {
+      "modulo": 3,
+      "estacao": 108,
+      "titulo": "Conhecendo os índices",
+      "tipo": "info",
+      "xp": 5,
+      "enunciado": "Assim como nos vetores, os índices das matrizes em C começam em zero. O primeiro índice identifica a linha e o segundo identifica a coluna.",
+      "explicacao": "Cada elemento possui uma localização identificada por dois índices. Por exemplo, numeros[0][0] representa o primeiro elemento da primeira linha.",
+      "codigo": "int numeros[2][3] = {\n    {10, 20, 30},\n    {40, 50, 60}\n};"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 442,
+    "fields": {
+      "modulo": 3,
+      "estacao": 108,
+      "titulo": "Acessando um elemento",
+      "tipo": "info",
+      "xp": 5,
+      "enunciado": "Para acessar um elemento específico, informamos o índice da linha e o índice da coluna entre colchetes.",
+      "explicacao": "O índice 1 representa a segunda linha, enquanto o índice 2 representa a terceira coluna. O elemento localizado nessa posição possui o valor 60.",
+      "codigo": "int numeros[2][3] = {\n    {10, 20, 30},\n    {40, 50, 60}\n};\n\nprintf(\"%d\", numeros[1][2]);"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 443,
+    "fields": {
+      "modulo": 3,
+      "estacao": 108,
+      "titulo": "Identificando o valor",
+      "tipo": "mcq",
+      "xp": 10,
+      "enunciado": "Qual valor será exibido pelo código abaixo?",
+      "explicacao": "O índice 0 representa a primeira linha e o índice 1 representa a segunda coluna.",
+      "codigo": "int valores[2][2] = {\n    {5, 10},\n    {15, 20}\n};\n\nprintf(\"%d\", valores[0][1]);",
+      "alternativa_1": "5",
+      "alternativa_2": "10",
+      "alternativa_3": "15",
+      "alternativa_4": "20",
+      "resposta_correta": "2"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 444,
+    "fields": {
+      "modulo": 3,
+      "estacao": 108,
+      "titulo": "Completando o índice da linha",
+      "tipo": "lacuna",
+      "xp": 10,
+      "enunciado": "Complete o código para exibir o valor 30.",
+      "explicacao": "O valor 30 está localizado na segunda linha e na primeira coluna, correspondendo aos índices [1][0].",
+      "codigo": "int numeros[3][2] = {\n    {10, 20},\n    {30, 40},\n    {50, 60}\n};\n\nprintf(\"%d\", numeros[__LACUNA__][0]);",
+      "resposta_texto_codigo": "1",
+      "respostas_aceitas": [
+        "2 - 1",
+        "0 + 1",
+        "1 + 0",
+        "2 / 2",
+        "1 * 1"
+      ]
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 445,
+    "fields": {
+      "modulo": 3,
+      "estacao": 108,
+      "titulo": "A ordem dos índices",
+      "tipo": "mcq",
+      "xp": 10,
+      "enunciado": "Qual valor será exibido?",
+      "explicacao": "O primeiro índice indica a linha, e não a coluna. Portanto, numeros[1][0] acessa o primeiro elemento da segunda linha, cujo valor é 30. Trocar a ordem dos índices pode alterar o elemento acessado.",
+      "codigo": "int numeros[2][2] = {\n    {10, 20},\n    {30, 40}\n};\n\nprintf(\"%d\", numeros[1][0]);",
+      "alternativa_1": "20",
+      "alternativa_2": "40",
+      "alternativa_3": "30",
+      "alternativa_4": "10",
+      "resposta_correta": "3"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 446,
+    "fields": {
+      "modulo": 3,
+      "estacao": 108,
+      "titulo": "Limites dos índices",
+      "tipo": "info",
+      "xp": 5,
+      "enunciado": "Cada dimensão de uma matriz possui seus próprios limites. Os índices válidos começam em zero e terminam no tamanho da dimensão menos um. Neste exemplo, as linhas válidas são 0 e 1; as colunas válidas são 0, 1 e 2.",
+      "explicacao": "Acessar elementos fora dos limites de qualquer uma das dimensões provoca comportamento indefinido em C.",
+      "codigo": "int numeros[2][3];"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 447,
+    "fields": {
+      "modulo": 3,
+      "estacao": 108,
+      "titulo": "Identificando um acesso inválido",
+      "tipo": "mcq",
+      "xp": 10,
+      "enunciado": "Qual alternativa representa um acesso fora dos limites da matriz?",
+      "explicacao": "A matriz possui três linhas, cujos índices válidos são 0, 1 e 2. O índice 3 não representa uma linha válida.",
+      "codigo": "int numeros[3][4];",
+      "alternativa_1": "numeros[0][0]",
+      "alternativa_2": "numeros[2][3]",
+      "alternativa_3": "numeros[1][2]",
+      "alternativa_4": "numeros[3][1]",
+      "resposta_correta": "4"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 448,
+    "fields": {
+      "modulo": 3,
+      "estacao": 108,
+      "titulo": "Variáveis como índices",
+      "tipo": "info",
+      "xp": 5,
+      "enunciado": "Podemos utilizar variáveis inteiras para indicar a linha e a coluna de um elemento.",
+      "explicacao": "Os valores das variáveis determinam a posição acessada. Nesse exemplo, o programa acessa a linha de índice 1 e a coluna de índice 0, exibindo 20.",
+      "codigo": "int numeros[2][3] = {\n    {5, 10, 15},\n    {20, 25, 30}\n};\n\nint i = 1;\nint j = 0;\n\nprintf(\"%d\", numeros[i][j]);"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 449,
+    "fields": {
+      "modulo": 3,
+      "estacao": 108,
+      "titulo": "Interpretando variáveis",
+      "tipo": "mcq",
+      "xp": 10,
+      "enunciado": "Qual será a saída do código?",
+      "explicacao": "A variável i indica a primeira linha, enquanto j indica a terceira coluna. O elemento acessado possui o valor 6.",
+      "codigo": "int valores[2][3] = {\n    {2, 4, 6},\n    {8, 10, 12}\n};\n\nint i = 0;\nint j = 2;\n\nprintf(\"%d\", valores[i][j]);",
+      "alternativa_1": "6",
+      "alternativa_2": "8",
+      "alternativa_3": "10",
+      "alternativa_4": "12",
+      "resposta_correta": "1"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 450,
+    "fields": {
+      "modulo": 3,
+      "estacao": 108,
+      "titulo": "Expressões como índices",
+      "tipo": "mcq",
+      "xp": 15,
+      "enunciado": "Qual valor será exibido?",
+      "explicacao": "A expressão i + 1 resulta em 2, enquanto j possui o valor 1. Portanto, o elemento acessado é numeros[2][1], cujo valor é 8.",
+      "codigo": "int numeros[3][3] = {\n    {1, 2, 3},\n    {4, 5, 6},\n    {7, 8, 9}\n};\n\nint i = 1;\nint j = 1;\n\nprintf(\"%d\", numeros[i + 1][j]);",
+      "alternativa_1": "5",
+      "alternativa_2": "6",
+      "alternativa_3": "8",
+      "alternativa_4": "9",
+      "resposta_correta": "3"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 451,
+    "fields": {
+      "modulo": 3,
+      "estacao": 108,
+      "titulo": "Última coluna",
+      "tipo": "lacuna",
+      "xp": 15,
+      "enunciado": "Complete o código utilizando a variável colunas para acessar o último elemento da primeira linha.",
+      "explicacao": "O último índice válido de uma coluna corresponde à quantidade de colunas menos um. Nesse exemplo, o valor exibido será 40.",
+      "codigo": "int numeros[2][4] = {\n    {10, 20, 30, 40},\n    {50, 60, 70, 80}\n};\n\nint colunas = 4;\n\nprintf(\"%d\", numeros[0][__LACUNA__]);",
+      "resposta_texto_codigo": "colunas - 1",
+      "respostas_aceitas": [
+        "colunas-1",
+        "(colunas - 1)",
+        "colunas + (-1)",
+        "colunas+(-1)",
+        "colunas - 2 + 1"
+      ]
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 452,
+    "fields": {
+      "modulo": 3,
+      "estacao": 108,
+      "titulo": "Índices iguais",
+      "tipo": "vf",
+      "xp": 10,
+      "enunciado": "Os acessos numeros[0][1] e numeros[1][0] representam a mesma posição da matriz abaixo.",
+      "explicacao": "Embora os dois elementos possuam o mesmo valor, eles estão armazenados em posições diferentes.",
+      "codigo": "int numeros[2][2] = {\n    {5, 10},\n    {10, 20}\n};",
+      "resposta_vf_correta": false
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 453,
+    "fields": {
+      "modulo": 3,
+      "estacao": 108,
+      "titulo": "Somando elementos",
+      "tipo": "lacuna",
+      "xp": 15,
+      "enunciado": "Complete o código utilizando os elementos da matriz para somar o primeiro elemento da primeira linha com o último elemento da segunda linha.",
+      "explicacao": "O primeiro elemento possui o valor 10 e o último elemento da segunda linha possui o valor 60. A soma resulta em 70.",
+      "codigo": "int numeros[2][3] = {\n    {10, 20, 30},\n    {40, 50, 60}\n};\n\nint soma = __LACUNA__;",
+      "resposta_texto_codigo": "numeros[0][0] + numeros[1][2]",
+      "respostas_aceitas": [
+        "numeros[1][2] + numeros[0][0]",
+        "numeros[0][0]+numeros[1][2]",
+        "numeros[1][2]+numeros[0][0]",
+        "(numeros[0][0] + numeros[1][2])",
+        "(numeros[1][2] + numeros[0][0])"
+      ]
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 454,
+    "fields": {
+      "modulo": 3,
+      "estacao": 108,
+      "titulo": "Desafio final",
+      "tipo": "mcq",
+      "xp": 20,
+      "enunciado": "Analise o código e determine o resultado exibido.",
+      "explicacao": "O primeiro acesso corresponde à posição [1][0], cujo valor é 8. O segundo acesso corresponde à posição [2][1], cujo valor é 16. A soma resulta em 24.",
+      "codigo": "int numeros[3][3] = {\n    {2, 4, 6},\n    {8, 10, 12},\n    {14, 16, 18}\n};\n\nint i = 1;\nint j = 0;\n\nint resultado = numeros[i][j]\n              + numeros[i + 1][j + 1];\n\nprintf(\"%d\", resultado);",
+      "alternativa_1": "18",
+      "alternativa_2": "24",
+      "alternativa_3": "26",
+      "alternativa_4": "28",
+      "resposta_correta": "2"
+    }
   }
 ]

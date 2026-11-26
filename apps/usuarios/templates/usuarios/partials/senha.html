@@ -1,0 +1,18 @@
+<section class="config-panel" aria-labelledby="titulo-senha">
+  <h1 id="titulo-senha">Mudar senha</h1>
+  <p>Confirme sua senha atual e escolha uma nova senha.</p>
+  <form method="post" action="{% url 'usuarios:editar_perfil' %}" class="config-form">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="alterar_senha">
+    {% for erro in senha_form.non_field_errors %}<p class="config-erro" role="alert">{{ erro }}</p>{% endfor %}
+    {% for campo in senha_form %}
+      <div class="config-campo">
+        <label for="{{ campo.id_for_label }}">{{ campo.label }}</label>
+        {{ campo }}
+        {% if campo.help_text %}<small>{{ campo.help_text|safe }}</small>{% endif %}
+        {% for erro in campo.errors %}<p class="config-erro" role="alert">{{ erro }}</p>{% endfor %}
+      </div>
+    {% endfor %}
+    <button type="submit" class="btn-salvar">Alterar senha</button>
+  </form>
+</section>

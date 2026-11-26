@@ -11,11 +11,11 @@
 <body>
 <main class="demo-pagina">
   <header class="demo-progresso">
-    <a href="{% url 'landing' %}" class="demo-sair" aria-label="Sair da demonstração">×</a>
+    <a href="{% if previa_admin %}{% url 'admin:exercicios_estacao_change' estacao.id %}{% else %}{% url 'landing' %}{% endif %}" class="demo-sair" aria-label="Sair da demonstração">×</a>
     <div class="demo-progresso-corpo">
       <div class="demo-trilha" role="progressbar" aria-label="Progresso da demonstração" aria-valuenow="{{ progresso_percentual }}" aria-valuemin="0" aria-valuemax="100"><div style="width: {{ progresso_percentual }}%"></div></div>
     </div>
-    <div class="demo-vidas" aria-label="Total de 5 vidas"><img src="{% static 'img/heart.svg' %}" alt=""><strong>5</strong></div>
+    {% if previa_admin %}<div class="demo-vidas">Prévia Admin · {{ estacao.nome }}</div>{% else %}<div class="demo-vidas" aria-label="Total de 5 vidas"><img src="{% static 'img/heart.svg' %}" alt=""><strong>5</strong></div>{% endif %}
   </header>
   <form method="post" class="demo-layout">
     {% csrf_token %}
@@ -41,13 +41,13 @@
       <div class="demo-acoes-interior">
         {% if correta == True %}<p class="demo-feedback" role="status">✓ Resposta correta!</p>{% elif correta == False %}<p class="demo-feedback" role="status">Resposta incorreta. Tente novamente!</p>{% endif %}
         {% if correta == None and exercicio.tipo != 'info' %}
-          {% if proximo_exercicio %}<a class="demo-botao secundario demo-pular" href="{% url 'exercicios:resolver_demo' proximo_exercicio.id %}">Pular</a>{% else %}<span class="demo-botao secundario desabilitado demo-pular">Pular</span>{% endif %}
+          {% if proximo_exercicio %}<a class="demo-botao secundario demo-pular" href="{% if previa_admin %}{% url 'exercicios:resolver_previa_estacao' estacao.id proximo_exercicio.id %}{% else %}{% url 'exercicios:resolver_demo' proximo_exercicio.id %}{% endif %}">Pular</a>{% else %}<span class="demo-botao secundario desabilitado demo-pular">Pular</span>{% endif %}
         {% endif %}
         <div class="demo-botoes">
           {% if correta == True or exercicio.tipo == 'info' %}
-            {% if proximo_exercicio %}<a class="demo-botao principal" href="{% url 'exercicios:resolver_demo' proximo_exercicio.id %}">Continuar</a>{% else %}<a class="demo-botao principal" href="{% url 'exercicios:conclusao_demo' 1 %}">Continuar</a>{% endif %}
+            {% if proximo_exercicio %}<a class="demo-botao principal" href="{% if previa_admin %}{% url 'exercicios:resolver_previa_estacao' estacao.id proximo_exercicio.id %}{% else %}{% url 'exercicios:resolver_demo' proximo_exercicio.id %}{% endif %}">Continuar</a>{% elif previa_admin %}<a class="demo-botao principal" href="{% url 'admin:exercicios_estacao_change' estacao.id %}">Concluir prévia</a>{% else %}<a class="demo-botao principal" href="{% url 'exercicios:conclusao_demo' 1 %}">Continuar</a>{% endif %}
           {% elif correta == False %}
-            <a class="demo-botao principal" href="{% url 'exercicios:resolver_demo' exercicio.id %}">Tentar novamente</a>
+            <a class="demo-botao principal" href="{% if previa_admin %}{% url 'exercicios:resolver_previa_estacao' estacao.id exercicio.id %}{% else %}{% url 'exercicios:resolver_demo' exercicio.id %}{% endif %}">Tentar novamente</a>
           {% else %}
             <button class="demo-botao principal" type="submit">Responder</button>
           {% endif %}

@@ -23,6 +23,31 @@ from apps.exercicios.views import _renderizar_codigo_ide, _renderizar_codigo_lei
 from apps.exercicios.admin import ExercicioAdminForm
 
 
+class PreviaEstacaoAdminTests(TestCase):
+    def setUp(self):
+        self.admin = get_user_model().objects.create_user(username="admin_previa", password="teste", is_staff=True)
+        self.aluno = get_user_model().objects.create_user(username="aluno_previa", password="teste")
+        modulo = Modulo.objects.create(nome="Módulo de teste", descricao="Teste")
+        secao = Secao.objects.create(modulo=modulo, nome="Seção de teste")
+        self.estacao = Estacao.objects.create(secao=secao, nome="Estação bloqueada")
+        self.exercicio = Exercicio.objects.create(modulo=modulo, estacao=self.estacao, tipo="vf", titulo="Questão", resposta_vf_correta=True)
+
+    def test_admin_responde_estacao_bloqueada_sem_registrar_progresso(self):
+        self.client.force_login(self.admin)
+        inicio = self.client.get(reverse("exercicios:iniciar_previa_estacao", args=[self.estacao.id]))
+        self.assertRedirects(inicio, reverse("exercicios:resolver_previa_estacao", args=[self.estacao.id, self.exercicio.id]))
+        resposta = self.client.post(reverse("exercicios:resolver_previa_estacao", args=[self.estacao.id, self.exercicio.id]), {"resposta_vf": "True"})
+        self.assertEqual(resposta.status_code, 200)
+        self.assertContains(resposta, "Resposta correta!")
+        self.assertFalse(ExercicioUsuario.objects.filter(usuario=self.admin).exists())
+        self.assertNotIn("demo_concluida", self.client.session)
+
+    def test_aluno_nao_acessa_previa(self):
+        self.client.force_login(self.aluno)
+        resposta = self.client.get(reverse("exercicios:resolver_previa_estacao", args=[self.estacao.id, self.exercicio.id]))
+        self.assertEqual(resposta.status_code, 403)
+
+
 class BlocoCodigoTests(SimpleTestCase):
     def test_codigo_de_leitura_tem_linhas_realce_e_html_escapado(self):
         html = str(_renderizar_codigo_leitura('int i = 0;\n// <script>alert(1)</script>'))

@@ -12,12 +12,13 @@
       href="/static/img/favicon.svg"
     />
     <link rel="stylesheet" href="{% static 'style/navbar.css' %}" />
+    <link rel="stylesheet" href="{% static 'style/partials/usuarios/tema.css' %}" />
     <link
       href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
       rel="stylesheet"
     />
   </head>
-  <body>
+  <body class="{% if user.is_authenticated and user.perfil.tema == 'escuro' %}tema-escuro{% endif %}">
     <nav class="navbar">
       <div class="logo-container">
         <a href="{% url 'exercicios:modulos' %}"

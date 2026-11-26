@@ -250,3 +250,86 @@ class AmizadeTests(TestCase):
         Amizade.objects.create(remetente=self.bruno, destinatario=self.ana)
         self.client.post(reverse('usuarios:enviar_solicitacao', args=[self.bruno.id]))
         self.assertEqual(Amizade.objects.count(), 1)
+
+
+class EdicaoPerfilAbasTests(TestCase):
+    def setUp(self):
+        self.usuario = User.objects.create_user(username='perfil-abas', password='SenhaAntiga123!')
+        self.perfil = Perfil.objects.create(user=self.usuario)
+        self.client.force_login(self.usuario)
+        self.url = reverse('usuarios:editar_perfil')
+
+    def test_todas_as_abas_abrem_com_conteudo(self):
+        titulos = {
+            'informacoes': 'Informações',
+            'preferencias': 'Preferências',
+            'senha': 'Mudar senha',
+            'links': 'Seus links',
+            'conexoes': 'Conexões',
+            'notificacoes': 'Notificações',
+        }
+        for aba, titulo in titulos.items():
+            with self.subTest(aba=aba):
+                resposta = self.client.get(self.url, {'secao': aba})
+                self.assertEqual(resposta.status_code, 200)
+                self.assertEqual(resposta.context['aba_ativa'], aba)
+                self.assertContains(resposta, titulo)
+
+    def test_preferencias_salvam_e_rejeitam_valores_invalidos(self):
+        resposta = self.client.post(self.url, {
+            'action': 'salvar_preferencias', 'tema': 'escuro', 'visibilidade': 'privado',
+        })
+        self.assertRedirects(resposta, self.url + '?secao=preferencias')
+        self.perfil.refresh_from_db()
+        self.assertEqual((self.perfil.tema, self.perfil.visibilidade), ('escuro', 'privado'))
+        self.client.post(self.url, {
+            'action': 'salvar_preferencias', 'tema': 'invalido', 'visibilidade': 'publico',
+        })
+        self.perfil.refresh_from_db()
+        self.assertEqual((self.perfil.tema, self.perfil.visibilidade), ('escuro', 'privado'))
+
+    def test_troca_de_senha_preserva_sessao(self):
+        resposta = self.client.post(self.url, {
+            'action': 'alterar_senha', 'old_password': 'SenhaAntiga123!',
+            'new_password1': 'SenhaNova456!', 'new_password2': 'SenhaNova456!',
+        })
+        self.assertRedirects(resposta, self.url + '?secao=senha')
+        self.usuario.refresh_from_db()
+        self.assertTrue(self.usuario.check_password('SenhaNova456!'))
+        self.assertEqual(self.client.get(self.url).status_code, 200)
+
+    def test_formulario_de_senha_em_portugues(self):
+        resposta = self.client.get(self.url, {'secao': 'senha'})
+        self.assertContains(resposta, 'Senha antiga')
+        self.assertContains(resposta, 'Nova senha')
+        self.assertContains(resposta, 'Confirmação da nova senha')
+        self.assertNotContains(resposta, 'Old password')
+
+    def test_links_https_salvos_e_exibidos_no_perfil(self):
+        resposta = self.client.post(self.url, {
+            'action': 'salvar_links', 'link_site': 'http://exemplo.com',
+            'link_github': '', 'link_linkedin': '',
+        })
+        self.assertEqual(resposta.status_code, 200)
+        self.perfil.refresh_from_db()
+        self.assertEqual(self.perfil.link_site, '')
+        resposta = self.client.post(self.url, {
+            'action': 'salvar_links', 'link_site': 'https://exemplo.com',
+            'link_github': '', 'link_linkedin': '',
+        })
+        self.assertRedirects(resposta, self.url + '?secao=links')
+        self.assertContains(self.client.get(reverse('usuarios:perfil_usuario')), 'https://exemplo.com')
+
+    def test_notificacoes_permite_aceitar_solicitacao(self):
+        outro = User.objects.create_user(username='outro-aluno')
+        Perfil.objects.create(user=outro)
+        amizade = Amizade.objects.create(remetente=outro, destinatario=self.usuario)
+        self.assertContains(self.client.get(self.url, {'secao': 'notificacoes'}), 'outro-aluno')
+        resposta = self.client.post(
+            reverse('usuarios:aceitar_solicitacao', args=[amizade.pk]),
+            {'next': self.url + '?secao=notificacoes'},
+        )
+        self.assertRedirects(resposta, self.url + '?secao=notificacoes')
+        amizade.refresh_from_db()
+        self.assertEqual(amizade.status, Amizade.STATUS_ACEITA)
+        self.assertContains(self.client.get(self.url, {'secao': 'conexoes'}), 'outro-aluno')

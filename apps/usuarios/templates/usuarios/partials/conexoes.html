@@ -1,0 +1,23 @@
+<section class="config-panel" aria-labelledby="titulo-conexoes">
+  <h1 id="titulo-conexoes">Conexões</h1>
+  <p>Veja suas amizades e acompanhe solicitações.</p>
+  <a class="config-link" href="{% url 'usuarios:encontrar_amigos' %}">Encontrar pessoas</a>
+  <h2>Amigos</h2>
+  <div class="config-lista">
+    {% for amigo in amigos %}
+      <div class="config-pessoa">
+        <a href="{% url 'usuarios:ver_perfil_usuario' amigo.username %}">{{ amigo.username }}</a>
+        <form method="post" action="{% url 'usuarios:remover_amigo' amigo.id %}">{% csrf_token %}<input type="hidden" name="next" value="{% url 'usuarios:editar_perfil' %}?secao=conexoes"><button type="submit" class="config-botao-secundario">Remover</button></form>
+      </div>
+    {% empty %}<p>Você ainda não tem amigos. Encontre pessoas para se conectar.</p>{% endfor %}
+  </div>
+  {% if solicitacoes_enviadas %}
+    <h2>Solicitações enviadas</h2>
+    <div class="config-lista">
+      {% for solicitacao in solicitacoes_enviadas %}
+        <div class="config-pessoa"><span>{{ solicitacao.destinatario.username }} · aguardando resposta</span><form method="post" action="{% url 'usuarios:remover_amigo' solicitacao.destinatario_id %}">{% csrf_token %}<input type="hidden" name="next" value="{% url 'usuarios:editar_perfil' %}?secao=conexoes"><button type="submit" class="config-botao-secundario">Cancelar</button></form></div>
+      {% endfor %}
+    </div>
+  {% endif %}
+  {% if solicitacoes_recebidas %}<a class="config-link" href="{% url 'usuarios:editar_perfil' %}?secao=notificacoes">Ver solicitações recebidas ({{ solicitacoes_recebidas|length }})</a>{% endif %}
+</section>

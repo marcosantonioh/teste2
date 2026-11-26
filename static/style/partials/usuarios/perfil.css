@@ -12,6 +12,10 @@
   align-items: center;
   gap: 30px; /* Espaçamento entre as seções principais */
 }
+.perfil-links { display: flex; flex-wrap: wrap; gap: 10px; width: 100%; }
+.perfil-links a { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 14px; border: 1px solid #a769c7; border-radius: 999px; color: #5a0783; font-weight: 700; text-decoration: none; }
+.perfil-links a:hover { background: #f2e8f8; }
+.perfil-links a:focus-visible { outline: 3px solid #6a0dad; outline-offset: 2px; }
 
 /* --- Header Section --- */
 .head {

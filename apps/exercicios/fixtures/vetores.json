@@ -38,5 +38,1049 @@
       "nome": "Aplicações e Algoritmos Simples",
       "ordem": 1
     }
+  },
+  {
+    "model": "exercicios.estacao",
+    "pk": 100,
+    "fields": {
+      "secao": 8,
+      "nome": "O que são vetores?",
+      "disponivel_para_visitantes": false
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 301,
+    "fields": {
+      "modulo": 2,
+      "estacao": 100,
+      "titulo": "Armazenando vários valores",
+      "tipo": "info",
+      "xp": 5,
+      "enunciado": "Imagine que precisamos armazenar as notas de cinco estudantes. Utilizando variáveis individuais, poderíamos fazer da seguinte maneira:",
+      "explicacao": "Quanto maior a quantidade de dados, mais variáveis precisaríamos declarar. Os vetores permitem organizar esses valores em uma única estrutura.",
+      "codigo": "int nota1 = 7;\nint nota2 = 8;\nint nota3 = 6;\nint nota4 = 9;\nint nota5 = 10;"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 302,
+    "fields": {
+      "modulo": 2,
+      "estacao": 100,
+      "titulo": "Conhecendo os vetores",
+      "tipo": "info",
+      "xp": 5,
+      "enunciado": "Um vetor é uma estrutura que permite armazenar vários elementos do mesmo tipo, utilizando um único nome e diferentes posições.",
+      "explicacao": "O vetor notas armazena cinco valores inteiros.",
+      "codigo": "int notas[5] = {7, 8, 6, 9, 10};"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 303,
+    "fields": {
+      "modulo": 2,
+      "estacao": 100,
+      "titulo": "Finalidade dos vetores",
+      "tipo": "mcq",
+      "xp": 10,
+      "enunciado": "Qual é a principal finalidade de um vetor em C?",
+      "explicacao": "Os vetores permitem agrupar vários elementos do mesmo tipo utilizando um único nome.",
+      "alternativa_1": "Executar instruções repetidamente.",
+      "alternativa_2": "Armazenar vários elementos do mesmo tipo em uma única estrutura.",
+      "alternativa_3": "Armazenar somente um número inteiro.",
+      "alternativa_4": "Verificar condições automaticamente.",
+      "resposta_correta": "2"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 304,
+    "fields": {
+      "modulo": 2,
+      "estacao": 100,
+      "titulo": "Identificando o tamanho",
+      "tipo": "mcq",
+      "xp": 10,
+      "enunciado": "Quantos elementos podem ser armazenados no vetor abaixo?",
+      "explicacao": "O número entre colchetes indica a quantidade de elementos do vetor nessa declaração.",
+      "codigo": "int numeros[8];",
+      "alternativa_1": "1 elemento.",
+      "alternativa_2": "7 elementos.",
+      "alternativa_3": "9 elementos.",
+      "alternativa_4": "8 elementos.",
+      "resposta_correta": "4"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 305,
+    "fields": {
+      "modulo": 2,
+      "estacao": 100,
+      "titulo": "Elementos do mesmo tipo",
+      "tipo": "vf",
+      "xp": 10,
+      "enunciado": "Todos os elementos de um vetor declarado como int possuem o tipo inteiro.",
+      "explicacao": "Os elementos de um vetor possuem o mesmo tipo, definido em sua declaração.",
+      "resposta_vf_correta": true
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 306,
+    "fields": {
+      "modulo": 2,
+      "estacao": 100,
+      "titulo": "Conhecendo os índices",
+      "tipo": "info",
+      "xp": 5,
+      "enunciado": "Cada elemento de um vetor possui uma posição identificada por um índice. Na linguagem C, os índices começam em zero.",
+      "explicacao": "Um vetor de cinco elementos possui índices válidos de 0 a 4.",
+      "codigo": "int valores[5] = {10, 20, 30, 40, 50};"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 307,
+    "fields": {
+      "modulo": 2,
+      "estacao": 100,
+      "titulo": "Primeiro índice",
+      "tipo": "mcq",
+      "xp": 10,
+      "enunciado": "Qual é o índice do primeiro elemento de um vetor em C?",
+      "explicacao": "Na linguagem C, o primeiro elemento de um vetor possui índice zero.",
+      "alternativa_1": "0",
+      "alternativa_2": "1",
+      "alternativa_3": "-1",
+      "alternativa_4": "Depende do tamanho do vetor.",
+      "resposta_correta": "1"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 308,
+    "fields": {
+      "modulo": 2,
+      "estacao": 100,
+      "titulo": "Declarando um vetor",
+      "tipo": "lacuna",
+      "xp": 10,
+      "enunciado": "Complete a declaração para criar um vetor capaz de armazenar seis números inteiros.",
+      "explicacao": "O tamanho informado na declaração determina a quantidade de elementos do vetor.",
+      "codigo": "int numeros[__LACUNA__];",
+      "resposta_texto_codigo": "6",
+      "respostas_aceitas": [
+        "3 + 3",
+        "2 * 3",
+        "3 * 2",
+        "7 - 1",
+        "12 / 2",
+        "5 + 1"
+      ]
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 309,
+    "fields": {
+      "modulo": 2,
+      "estacao": 100,
+      "titulo": "Identificando um elemento",
+      "tipo": "mcq",
+      "xp": 15,
+      "enunciado": "Qual valor está armazenado no índice 2?",
+      "explicacao": "Como os índices começam em zero, o índice 2 corresponde ao terceiro elemento: 35. Índices 0, 1, 2 e 3 correspondem a 15, 25, 35 e 45.",
+      "codigo": "int numeros[4] = {15, 25, 35, 45};",
+      "alternativa_1": "15",
+      "alternativa_2": "25",
+      "alternativa_3": "35",
+      "alternativa_4": "45",
+      "resposta_correta": "3"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 310,
+    "fields": {
+      "modulo": 2,
+      "estacao": 100,
+      "titulo": "Desafio final",
+      "tipo": "mcq",
+      "xp": 20,
+      "enunciado": "Qual é o último índice válido do vetor abaixo?",
+      "explicacao": "Como os índices começam em zero, o último índice válido corresponde ao tamanho do vetor menos uma unidade: 10 - 1 = 9.",
+      "codigo": "int pontos[10];",
+      "alternativa_1": "10",
+      "alternativa_2": "9",
+      "alternativa_3": "11",
+      "alternativa_4": "8",
+      "resposta_correta": "2"
+    }
+  },
+  {
+    "model": "exercicios.estacao",
+    "pk": 101,
+    "fields": {
+      "secao": 8,
+      "nome": "Declarando vetores",
+      "disponivel_para_visitantes": false
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 311,
+    "fields": {
+      "modulo": 2,
+      "estacao": 101,
+      "titulo": "Estrutura da declaração",
+      "tipo": "info",
+      "xp": 5,
+      "enunciado": "Para declarar um vetor em C, precisamos informar o tipo dos elementos, o nome do vetor e seu tamanho.",
+      "explicacao": "Essa declaração cria um vetor chamado numeros, capaz de armazenar cinco elementos do tipo inteiro.",
+      "codigo": "int numeros[5];"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 312,
+    "fields": {
+      "modulo": 2,
+      "estacao": 101,
+      "titulo": "Identificando o nome",
+      "tipo": "mcq",
+      "xp": 10,
+      "enunciado": "Qual é o nome do vetor declarado abaixo?",
+      "explicacao": "O identificador idades é o nome utilizado para referenciar o vetor.",
+      "codigo": "int idades[10];",
+      "alternativa_1": "int",
+      "alternativa_2": "10",
+      "alternativa_3": "idades",
+      "alternativa_4": "idades[10]",
+      "resposta_correta": "3"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 313,
+    "fields": {
+      "modulo": 2,
+      "estacao": 101,
+      "titulo": "Diferentes tipos de dados",
+      "tipo": "info",
+      "xp": 5,
+      "enunciado": "Os vetores podem armazenar diferentes tipos de dados, dependendo do tipo informado na declaração. Exemplos: idades = {18, 20, 25, 30}; notas = {7.5, 8.2, 6.0, 9.5}; letras = {'A', 'B', 'C', 'D'}.",
+      "explicacao": "O tipo int armazena inteiros, float armazena números de ponto flutuante e char pode armazenar caracteres.",
+      "codigo": "int idades[4];\nfloat notas[4];\nchar letras[4];"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 314,
+    "fields": {
+      "modulo": 2,
+      "estacao": 101,
+      "titulo": "Escolhendo o tipo adequado",
+      "tipo": "mcq",
+      "xp": 10,
+      "enunciado": "Qual declaração é adequada para armazenar cinco notas com casas decimais?",
+      "explicacao": "O tipo float permite representar números com parte fracionária.",
+      "alternativa_1": "int notas[5];",
+      "alternativa_2": "float notas[5];",
+      "alternativa_3": "char notas[5];",
+      "alternativa_4": "int notas;",
+      "resposta_correta": "2"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 315,
+    "fields": {
+      "modulo": 2,
+      "estacao": 101,
+      "titulo": "Complete o tipo",
+      "tipo": "lacuna",
+      "xp": 10,
+      "enunciado": "Complete a declaração para armazenar quatro caracteres individuais.",
+      "explicacao": "O tipo char pode ser utilizado para armazenar caracteres individuais.",
+      "codigo": "__LACUNA__ letras[4];",
+      "resposta_texto_codigo": "char",
+      "respostas_aceitas": []
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 316,
+    "fields": {
+      "modulo": 2,
+      "estacao": 101,
+      "titulo": "Sintaxe correta",
+      "tipo": "mcq",
+      "xp": 10,
+      "enunciado": "Qual alternativa apresenta uma declaração válida de um vetor de cinco inteiros?",
+      "explicacao": "O tamanho do vetor deve ser informado entre colchetes após seu nome, nesse tipo de declaração.",
+      "alternativa_1": "int[5] numeros;",
+      "alternativa_2": "int numeros(5);",
+      "alternativa_3": "numeros int[5];",
+      "alternativa_4": "int numeros[5];",
+      "resposta_correta": "4"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 317,
+    "fields": {
+      "modulo": 2,
+      "estacao": 101,
+      "titulo": "Variável ou vetor?",
+      "tipo": "vf",
+      "xp": 10,
+      "enunciado": "As duas declarações abaixo criam vetores.",
+      "explicacao": "A primeira declaração cria uma variável inteira individual. A segunda cria um vetor de cinco inteiros.",
+      "codigo": "int numero;\nint numeros[5];",
+      "resposta_vf_correta": false
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 318,
+    "fields": {
+      "modulo": 2,
+      "estacao": 101,
+      "titulo": "Declarando um vetor completo",
+      "tipo": "lacuna",
+      "xp": 15,
+      "enunciado": "Declare um vetor chamado pontos capaz de armazenar oito números inteiros.",
+      "explicacao": "A declaração deve utilizar um tipo inteiro, o nome pontos e um tamanho equivalente a oito elementos.",
+      "codigo": "__LACUNA__;",
+      "resposta_texto_codigo": "int pontos[8]",
+      "respostas_aceitas": [
+        "int pontos[4 + 4]",
+        "int pontos[2 * 4]",
+        "int pontos[4 * 2]",
+        "int pontos[10 - 2]",
+        "int pontos[16 / 2]",
+        "signed int pontos[8]",
+        "signed pontos[8]"
+      ]
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 319,
+    "fields": {
+      "modulo": 2,
+      "estacao": 101,
+      "titulo": "Encontrando o erro",
+      "tipo": "mcq",
+      "xp": 15,
+      "enunciado": "Qual é o problema da declaração abaixo?",
+      "explicacao": "A declaração utiliza um parêntese para fechar o tamanho do vetor. O correto seria float temperaturas[7];.",
+      "codigo": "float temperaturas[7);",
+      "alternativa_1": "O tipo float não pode ser utilizado em vetores.",
+      "alternativa_2": "O tamanho deve ser maior que 7.",
+      "alternativa_3": "O parêntese deve ser substituído por um colchete.",
+      "alternativa_4": "O nome do vetor é inválido.",
+      "resposta_correta": "3"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 320,
+    "fields": {
+      "modulo": 2,
+      "estacao": 101,
+      "titulo": "Desafio final",
+      "tipo": "mcq",
+      "xp": 20,
+      "enunciado": "Um programa precisa armazenar as idades e as alturas de seis pessoas. Qual alternativa apresenta as declarações mais adequadas?",
+      "explicacao": "As idades podem ser armazenadas como números inteiros e as alturas como números de ponto flutuante. Cada vetor precisa possuir seis elementos.",
+      "alternativa_1": "int idades[6];\nfloat alturas[6];",
+      "alternativa_2": "int idades;\nfloat alturas;",
+      "alternativa_3": "int idades[6];\nchar alturas[6];",
+      "alternativa_4": "int idades[5];\nfloat alturas[5];",
+      "resposta_correta": "1"
+    }
+  },
+  {
+    "model": "exercicios.estacao",
+    "pk": 102,
+    "fields": {
+      "secao": 8,
+      "nome": "Inicializando vetores",
+      "disponivel_para_visitantes": false
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 321,
+    "fields": {
+      "modulo": 2,
+      "estacao": 102,
+      "titulo": "Inicializando um vetor",
+      "tipo": "info",
+      "xp": 5,
+      "enunciado": "Podemos fornecer valores a um vetor no momento de sua declaração. Para isso, utilizamos chaves e separamos os valores por vírgulas.",
+      "explicacao": "Os valores são armazenados nos elementos do vetor na mesma ordem em que foram informados.",
+      "codigo": "int numeros[4] = {10, 20, 30, 40};"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 322,
+    "fields": {
+      "modulo": 2,
+      "estacao": 102,
+      "titulo": "Sintaxe de inicialização",
+      "tipo": "mcq",
+      "xp": 10,
+      "enunciado": "Qual alternativa inicializa corretamente um vetor com três números inteiros?",
+      "explicacao": "Os valores iniciais devem ser informados entre chaves e separados por vírgulas.",
+      "alternativa_1": "int numeros[3] = (1, 2, 3);",
+      "alternativa_2": "int numeros[3] = {1, 2, 3};",
+      "alternativa_3": "int numeros[3] = [1, 2, 3];",
+      "alternativa_4": "int numeros[3] = 1, 2, 3;",
+      "resposta_correta": "2"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 323,
+    "fields": {
+      "modulo": 2,
+      "estacao": 102,
+      "titulo": "Completando a inicialização",
+      "tipo": "lacuna",
+      "xp": 10,
+      "enunciado": "Complete a inicialização para armazenar os números 5, 10 e 15, nessa ordem.",
+      "explicacao": "O segundo elemento deve receber o valor 10.",
+      "codigo": "int numeros[3] = {5, __LACUNA__, 15};",
+      "resposta_texto_codigo": "10",
+      "respostas_aceitas": [
+        "5 + 5",
+        "2 * 5",
+        "5 * 2",
+        "20 / 2",
+        "15 - 5"
+      ]
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 324,
+    "fields": {
+      "modulo": 2,
+      "estacao": 102,
+      "titulo": "Inicialização parcial",
+      "tipo": "info",
+      "xp": 5,
+      "enunciado": "Quando fornecemos menos valores do que o tamanho do vetor durante sua inicialização, os elementos restantes são inicializados com zero, no caso de vetores de inteiros.",
+      "explicacao": "Os dois primeiros elementos recebem os valores informados, enquanto os três restantes recebem zero. Resultado: {10, 20, 0, 0, 0}.",
+      "codigo": "int numeros[5] = {10, 20};"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 325,
+    "fields": {
+      "modulo": 2,
+      "estacao": 102,
+      "titulo": "Identificando os valores",
+      "tipo": "mcq",
+      "xp": 10,
+      "enunciado": "Quais valores estarão armazenados no vetor abaixo?",
+      "explicacao": "Os elementos que não receberam valores explícitos são inicializados com zero.",
+      "codigo": "int pontos[4] = {8, 6};",
+      "alternativa_1": "8, 6, 8, 6",
+      "alternativa_2": "8, 6, 1, 1",
+      "alternativa_3": "8, 6",
+      "alternativa_4": "8, 6, 0, 0",
+      "resposta_correta": "4"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 326,
+    "fields": {
+      "modulo": 2,
+      "estacao": 102,
+      "titulo": "Inicializando com zero",
+      "tipo": "lacuna",
+      "xp": 10,
+      "enunciado": "Complete o código para inicializar todos os elementos do vetor com zero, utilizando apenas um valor entre as chaves.",
+      "explicacao": "Ao informar zero como primeiro valor, todos os demais elementos também são inicializados com zero.",
+      "codigo": "int numeros[5] = {__LACUNA__};",
+      "resposta_texto_codigo": "0",
+      "respostas_aceitas": [
+        "1 - 1",
+        "2 - 2",
+        "0 * 5",
+        "0 + 0"
+      ]
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 327,
+    "fields": {
+      "modulo": 2,
+      "estacao": 102,
+      "titulo": "Repetição de valores",
+      "tipo": "vf",
+      "xp": 10,
+      "enunciado": "A declaração abaixo inicializa todos os elementos do vetor com o valor 7.",
+      "explicacao": "Apenas o primeiro elemento recebe o valor 7. Os demais recebem zero: {7, 0, 0, 0}.",
+      "codigo": "int numeros[4] = {7};",
+      "resposta_vf_correta": false
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 328,
+    "fields": {
+      "modulo": 2,
+      "estacao": 102,
+      "titulo": "Tamanho automático",
+      "tipo": "info",
+      "xp": 5,
+      "enunciado": "Quando fornecemos os valores iniciais de um vetor, podemos omitir seu tamanho. O compilador determina a quantidade de elementos.",
+      "explicacao": "Como foram fornecidos quatro valores, o vetor terá quatro elementos. Nesse exemplo, a declaração é equivalente a int numeros[4] = {10, 20, 30, 40};",
+      "codigo": "int numeros[] = {10, 20, 30, 40};"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 329,
+    "fields": {
+      "modulo": 2,
+      "estacao": 102,
+      "titulo": "Determinando o tamanho",
+      "tipo": "mcq",
+      "xp": 15,
+      "enunciado": "Quantos elementos possui o vetor abaixo?",
+      "explicacao": "O compilador determina o tamanho do vetor pela quantidade de valores fornecidos na lista de inicialização.",
+      "codigo": "int valores[] = {2, 4, 6, 8, 10, 12};",
+      "alternativa_1": "5 elementos.",
+      "alternativa_2": "12 elementos.",
+      "alternativa_3": "6 elementos.",
+      "alternativa_4": "Nenhum elemento.",
+      "resposta_correta": "3"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 330,
+    "fields": {
+      "modulo": 2,
+      "estacao": 102,
+      "titulo": "Inicializando caracteres",
+      "tipo": "lacuna",
+      "xp": 15,
+      "enunciado": "Complete a inicialização para armazenar os caracteres A, B e C, nessa ordem.",
+      "explicacao": "Na linguagem C, constantes de caracteres individuais são representadas entre aspas simples.",
+      "codigo": "char letras[3] = {__LACUNA__, 'B', 'C'};",
+      "resposta_texto_codigo": "'A'",
+      "respostas_aceitas": []
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 331,
+    "fields": {
+      "modulo": 2,
+      "estacao": 102,
+      "titulo": "Encontrando o erro",
+      "tipo": "mcq",
+      "xp": 15,
+      "enunciado": "Qual é o problema da inicialização abaixo?",
+      "explicacao": "O vetor possui três elementos, mas foram fornecidos quatro valores iniciais. O valor 40 excede o tamanho declarado.",
+      "codigo": "int numeros[3] = {10, 20, 30, 40};",
+      "alternativa_1": "Foram fornecidos mais valores do que o tamanho declarado.",
+      "alternativa_2": "Os valores precisam estar em ordem decrescente.",
+      "alternativa_3": "O tipo int não permite inicialização.",
+      "alternativa_4": "O vetor precisa começar com zero.",
+      "resposta_correta": "1"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 332,
+    "fields": {
+      "modulo": 2,
+      "estacao": 102,
+      "titulo": "Desafio final",
+      "tipo": "mcq",
+      "xp": 20,
+      "enunciado": "Quais serão os valores armazenados, respectivamente, nos vetores a e b?",
+      "explicacao": "O vetor a possui quatro elementos e foi inicializado parcialmente. O vetor b possui três elementos, conforme a quantidade de valores informados.",
+      "codigo": "int a[4] = {5};\nint b[] = {5, 5, 5};",
+      "alternativa_1": "a: 5, 5, 5, 5; b: 5, 5, 5",
+      "alternativa_2": "a: 5, 0, 0, 0; b: 5, 5, 5",
+      "alternativa_3": "a: 5, 0, 0, 0; b: 5, 0, 0",
+      "alternativa_4": "a: 5; b: 5, 5, 5",
+      "resposta_correta": "2"
+    }
+  },
+  {
+    "model": "exercicios.estacao",
+    "pk": 103,
+    "fields": {
+      "secao": 8,
+      "nome": "Índices e posições",
+      "disponivel_para_visitantes": false
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 341,
+    "fields": {
+      "modulo": 2,
+      "estacao": 103,
+      "titulo": "Acessando uma posição",
+      "tipo": "info",
+      "xp": 5,
+      "enunciado": "Para acessar um elemento de um vetor, utilizamos seu nome seguido do índice desejado entre colchetes.",
+      "explicacao": "O índice 2 corresponde ao terceiro elemento do vetor, cujo valor é 30.",
+      "codigo": "int numeros[5] = {10, 20, 30, 40, 50};\n\nprintf(\"%d\", numeros[2]);"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 342,
+    "fields": {
+      "modulo": 2,
+      "estacao": 103,
+      "titulo": "Identificando o elemento",
+      "tipo": "mcq",
+      "xp": 10,
+      "enunciado": "Qual valor será exibido?",
+      "explicacao": "O índice 1 corresponde ao segundo elemento do vetor.",
+      "codigo": "int valores[4] = {12, 24, 36, 48};\n\nprintf(\"%d\", valores[1]);",
+      "alternativa_1": "12",
+      "alternativa_2": "24",
+      "alternativa_3": "36",
+      "alternativa_4": "48",
+      "resposta_correta": "2"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 343,
+    "fields": {
+      "modulo": 2,
+      "estacao": 103,
+      "titulo": "Acessando o primeiro elemento",
+      "tipo": "lacuna",
+      "xp": 10,
+      "enunciado": "Complete o código para exibir o primeiro elemento do vetor.",
+      "explicacao": "O primeiro elemento de um vetor em C possui índice zero.",
+      "codigo": "int pontos[4] = {5, 10, 15, 20};\n\nprintf(\"%d\", pontos[__LACUNA__]);",
+      "resposta_texto_codigo": "0",
+      "respostas_aceitas": [
+        "1 - 1",
+        "2 - 2",
+        "0 + 0",
+        "0 * 4"
+      ]
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 344,
+    "fields": {
+      "modulo": 2,
+      "estacao": 103,
+      "titulo": "Limites de um vetor",
+      "tipo": "info",
+      "xp": 5,
+      "enunciado": "Em um vetor de tamanho N, os índices válidos começam em zero e terminam em N - 1. Neste exemplo, os índices válidos são 0, 1, 2 e 3; -1 e 4 estão fora dos limites.",
+      "explicacao": "Acessar uma posição fora dos limites do vetor provoca comportamento indefinido em C.",
+      "codigo": "int numeros[4] = {10, 20, 30, 40};"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 345,
+    "fields": {
+      "modulo": 2,
+      "estacao": 103,
+      "titulo": "Identificando um índice inválido",
+      "tipo": "mcq",
+      "xp": 10,
+      "enunciado": "Qual alternativa representa um acesso fora dos limites do vetor?",
+      "explicacao": "O último índice válido de um vetor de cinco elementos é 4.",
+      "codigo": "int notas[5] = {7, 8, 9, 6, 10};",
+      "alternativa_1": "notas[0]",
+      "alternativa_2": "notas[2]",
+      "alternativa_3": "notas[4]",
+      "alternativa_4": "notas[5]",
+      "resposta_correta": "4"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 346,
+    "fields": {
+      "modulo": 2,
+      "estacao": 103,
+      "titulo": "Utilizando variáveis como índices",
+      "tipo": "info",
+      "xp": 5,
+      "enunciado": "Além de números fixos, podemos utilizar variáveis inteiras para indicar o índice de um vetor.",
+      "explicacao": "Como a variável i possui o valor 3, o programa acessa o elemento de índice 3 e exibe 40.",
+      "codigo": "int numeros[4] = {10, 20, 30, 40};\nint i = 3;\n\nprintf(\"%d\", numeros[i]);"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 347,
+    "fields": {
+      "modulo": 2,
+      "estacao": 103,
+      "titulo": "Interpretando o índice",
+      "tipo": "mcq",
+      "xp": 10,
+      "enunciado": "Qual valor será exibido pelo programa?",
+      "explicacao": "A variável posicao possui o valor 2. Portanto, o elemento acessado é numeros[2], cujo valor é 6.",
+      "codigo": "int numeros[5] = {2, 4, 6, 8, 10};\nint posicao = 2;\n\nprintf(\"%d\", numeros[posicao]);",
+      "alternativa_1": "2",
+      "alternativa_2": "4",
+      "alternativa_3": "6",
+      "alternativa_4": "8",
+      "resposta_correta": "3"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 348,
+    "fields": {
+      "modulo": 2,
+      "estacao": 103,
+      "titulo": "Expressões como índices",
+      "tipo": "mcq",
+      "xp": 15,
+      "enunciado": "Qual será a saída do código?",
+      "explicacao": "A expressão i + 2 resulta em 3. O elemento de índice 3 possui o valor 20.",
+      "codigo": "int valores[5] = {5, 10, 15, 20, 25};\nint i = 1;\n\nprintf(\"%d\", valores[i + 2]);",
+      "alternativa_1": "20",
+      "alternativa_2": "15",
+      "alternativa_3": "10",
+      "alternativa_4": "25",
+      "resposta_correta": "1"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 349,
+    "fields": {
+      "modulo": 2,
+      "estacao": 103,
+      "titulo": "Acessando o último elemento",
+      "tipo": "lacuna",
+      "xp": 15,
+      "enunciado": "Complete o código utilizando a variável tamanho para acessar o último elemento do vetor.",
+      "explicacao": "O último índice válido corresponde ao tamanho do vetor menos uma unidade.",
+      "codigo": "int numeros[5] = {3, 6, 9, 12, 15};\nint tamanho = 5;\n\nprintf(\"%d\", numeros[__LACUNA__]);",
+      "resposta_texto_codigo": "tamanho - 1",
+      "respostas_aceitas": [
+        "(tamanho - 1)",
+        "tamanho + (-1)",
+        "tamanho - 2 + 1",
+        "tamanho + 1 - 2"
+      ]
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 350,
+    "fields": {
+      "modulo": 2,
+      "estacao": 103,
+      "titulo": "Índice e valor",
+      "tipo": "vf",
+      "xp": 10,
+      "enunciado": "No vetor abaixo, o elemento de índice 2 possui o valor 2.",
+      "explicacao": "O índice identifica a posição do elemento, não seu valor. Nesse exemplo, o elemento de índice 2 possui o valor 12.",
+      "codigo": "int numeros[4] = {8, 4, 12, 2};",
+      "resposta_vf_correta": false
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 351,
+    "fields": {
+      "modulo": 2,
+      "estacao": 103,
+      "titulo": "Operações entre elementos",
+      "tipo": "lacuna",
+      "xp": 15,
+      "enunciado": "Complete o código para somar o primeiro e o último elemento do vetor.",
+      "explicacao": "O primeiro elemento possui o valor 10 e o último possui o valor 40. A soma resulta em 50.",
+      "codigo": "int numeros[4] = {10, 20, 30, 40};\n\nint soma = __LACUNA__;",
+      "resposta_texto_codigo": "numeros[0] + numeros[3]",
+      "respostas_aceitas": [
+        "numeros[3] + numeros[0]",
+        "(numeros[0] + numeros[3])",
+        "(numeros[3] + numeros[0])",
+        "numeros[0] + numeros[4 - 1]",
+        "numeros[4 - 1] + numeros[0]"
+      ]
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 352,
+    "fields": {
+      "modulo": 2,
+      "estacao": 103,
+      "titulo": "Desafio final",
+      "tipo": "mcq",
+      "xp": 20,
+      "enunciado": "Qual será o valor exibido ao final da execução?",
+      "explicacao": "A primeira expressão acessa o índice 1, enquanto a segunda acessa o índice 3. Os valores encontrados são 8 e 16; a soma é 24.",
+      "codigo": "int numeros[5] = {4, 8, 12, 16, 20};\n\nint i = 1;\nint resultado = numeros[i] + numeros[i + 2];\n\nprintf(\"%d\", resultado);",
+      "alternativa_1": "16",
+      "alternativa_2": "20",
+      "alternativa_3": "28",
+      "alternativa_4": "24",
+      "resposta_correta": "4"
+    }
+  },
+  {
+    "model": "exercicios.estacao",
+    "pk": 104,
+    "fields": {
+      "secao": 8,
+      "nome": "Desafio introdutório",
+      "disponivel_para_visitantes": false
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 361,
+    "fields": {
+      "modulo": 2,
+      "estacao": 104,
+      "titulo": "Escolhendo a declaração",
+      "tipo": "mcq",
+      "xp": 10,
+      "enunciado": "Um programa precisa armazenar as temperaturas de sete dias da semana, incluindo valores com casas decimais. Qual declaração é mais adequada?",
+      "explicacao": "O tipo float permite representar temperaturas com casas decimais, e o vetor possui sete elementos.",
+      "alternativa_1": "int temperaturas[7];",
+      "alternativa_2": "float temperaturas[6];",
+      "alternativa_3": "float temperaturas[7];",
+      "alternativa_4": "float temperaturas;",
+      "resposta_correta": "3"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 362,
+    "fields": {
+      "modulo": 2,
+      "estacao": 104,
+      "titulo": "Inicialização completa",
+      "tipo": "lacuna",
+      "xp": 10,
+      "enunciado": "Complete a declaração para armazenar os números 2, 4, 6 e 8, nessa ordem.",
+      "explicacao": "Os valores iniciais devem ser informados entre chaves e separados por vírgulas. A linguagem C também permite uma vírgula após o último valor da lista.",
+      "codigo": "int numeros[4] = __LACUNA__;",
+      "resposta_texto_codigo": "{2, 4, 6, 8}",
+      "respostas_aceitas": [
+        "{2,4,6,8}",
+        "{2, 4, 6, 8,}",
+        "{2,4,6,8,}"
+      ]
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 363,
+    "fields": {
+      "modulo": 2,
+      "estacao": 104,
+      "titulo": "Identificando o tamanho",
+      "tipo": "mcq",
+      "xp": 10,
+      "enunciado": "Quantos elementos possui o vetor abaixo?",
+      "explicacao": "O tamanho declarado é oito, independentemente da quantidade de valores fornecidos na inicialização.",
+      "codigo": "int valores[8] = {10, 20, 30};",
+      "alternativa_1": "3 elementos.",
+      "alternativa_2": "8 elementos.",
+      "alternativa_3": "5 elementos.",
+      "alternativa_4": "7 elementos.",
+      "resposta_correta": "2"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 364,
+    "fields": {
+      "modulo": 2,
+      "estacao": 104,
+      "titulo": "Inicialização parcial",
+      "tipo": "mcq",
+      "xp": 15,
+      "enunciado": "Qual será o valor exibido?",
+      "explicacao": "Apenas os três primeiros elementos recebem os valores informados. Os demais são inicializados com zero. O elemento numeros[3] possui o valor zero.",
+      "codigo": "int numeros[5] = {4, 8, 12};\n\nprintf(\"%d\", numeros[3]);",
+      "alternativa_1": "12",
+      "alternativa_2": "8",
+      "alternativa_3": "4",
+      "alternativa_4": "0",
+      "resposta_correta": "4"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 365,
+    "fields": {
+      "modulo": 2,
+      "estacao": 104,
+      "titulo": "Verificando os limites",
+      "tipo": "vf",
+      "xp": 10,
+      "enunciado": "O índice 6 é válido para acessar um elemento do vetor abaixo.",
+      "explicacao": "Os índices válidos vão de 0 a 5. Acessar o elemento de índice 6 provoca comportamento indefinido.",
+      "codigo": "int pontos[6] = {1, 2, 3, 4, 5, 6};",
+      "resposta_vf_correta": false
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 366,
+    "fields": {
+      "modulo": 2,
+      "estacao": 104,
+      "titulo": "Acessando caracteres",
+      "tipo": "lacuna",
+      "xp": 15,
+      "enunciado": "Complete o código para exibir o caractere C.",
+      "explicacao": "O caractere C está armazenado no terceiro elemento, cujo índice é 2.",
+      "codigo": "char letras[] = {'A', 'B', 'C', 'D'};\n\nprintf(\"%c\", letras[__LACUNA__]);",
+      "resposta_texto_codigo": "2",
+      "respostas_aceitas": [
+        "1 + 1",
+        "3 - 1",
+        "4 / 2",
+        "2 * 1",
+        "4 - 2"
+      ]
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 367,
+    "fields": {
+      "modulo": 2,
+      "estacao": 104,
+      "titulo": "Interpretando expressões",
+      "tipo": "mcq",
+      "xp": 15,
+      "enunciado": "Qual será a saída do código?",
+      "explicacao": "A expressão i * 2 resulta em 4. O elemento de índice 4 possui o valor 25.",
+      "codigo": "int valores[] = {5, 10, 15, 20, 25};\nint i = 2;\n\nprintf(\"%d\", valores[i * 2]);",
+      "alternativa_1": "25",
+      "alternativa_2": "20",
+      "alternativa_3": "15",
+      "alternativa_4": "10",
+      "resposta_correta": "1"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 368,
+    "fields": {
+      "modulo": 2,
+      "estacao": 104,
+      "titulo": "Encontrando o erro",
+      "tipo": "mcq",
+      "xp": 15,
+      "enunciado": "O objetivo é exibir o último elemento do vetor. Qual alteração deve ser realizada?",
+      "explicacao": "O último elemento de um vetor de tamanho quatro possui índice 3.",
+      "codigo": "int numeros[4] = {10, 20, 30, 40};\n\nprintf(\"%d\", numeros[4]);",
+      "alternativa_1": "Substituir numeros[4] por numeros[0] no printf.",
+      "alternativa_2": "Substituir numeros[4] por numeros[1] no printf.",
+      "alternativa_3": "Substituir numeros[4] por numeros[3] no printf.",
+      "alternativa_4": "Substituir numeros[4] por numeros[5] no printf.",
+      "resposta_correta": "3"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 369,
+    "fields": {
+      "modulo": 2,
+      "estacao": 104,
+      "titulo": "Comparando inicializações",
+      "tipo": "vf",
+      "xp": 10,
+      "enunciado": "Os dois vetores abaixo possuem a mesma quantidade de elementos e os mesmos valores.",
+      "explicacao": "Os dois últimos elementos do vetor a são inicializados automaticamente com zero. O vetor b recebe esses mesmos valores explicitamente.",
+      "codigo": "int a[4] = {5, 10};\nint b[] = {5, 10, 0, 0};",
+      "resposta_vf_correta": true
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 370,
+    "fields": {
+      "modulo": 2,
+      "estacao": 104,
+      "titulo": "Operações entre elementos",
+      "tipo": "lacuna",
+      "xp": 20,
+      "enunciado": "Complete o código utilizando os elementos do vetor para multiplicar o segundo pelo quarto elemento.",
+      "explicacao": "O segundo elemento possui índice 1 e o quarto possui índice 3. A multiplicação resulta em 32.",
+      "codigo": "int numeros[4] = {2, 4, 6, 8};\n\nint resultado = __LACUNA__;",
+      "resposta_texto_codigo": "numeros[1] * numeros[3]",
+      "respostas_aceitas": [
+        "numeros[3] * numeros[1]",
+        "(numeros[1] * numeros[3])",
+        "(numeros[3] * numeros[1])",
+        "numeros[2 - 1] * numeros[4 - 1]",
+        "numeros[4 - 1] * numeros[2 - 1]"
+      ]
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 371,
+    "fields": {
+      "modulo": 2,
+      "estacao": 104,
+      "titulo": "Acompanhando os índices",
+      "tipo": "mcq",
+      "xp": 20,
+      "enunciado": "Qual será o valor exibido ao final da execução?",
+      "explicacao": "Inicialmente, i vale 1 e a variável a recebe 20. Após o incremento, i vale 2 e a variável b recebe 30. A soma é 50.",
+      "codigo": "int numeros[5] = {10, 20, 30, 40, 50};\n\nint i = 1;\nint a = numeros[i];\n\ni++;\n\nint b = numeros[i];\n\nprintf(\"%d\", a + b);",
+      "alternativa_1": "30",
+      "alternativa_2": "40",
+      "alternativa_3": "70",
+      "alternativa_4": "50",
+      "resposta_correta": "4"
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 372,
+    "fields": {
+      "modulo": 2,
+      "estacao": 104,
+      "titulo": "Desafio final",
+      "tipo": "mcq",
+      "xp": 25,
+      "enunciado": "Analise o código e determine o valor exibido.",
+      "explicacao": "A variável i recebe o valor armazenado no índice 0, que é 2. Em seguida, o programa soma os elementos dos índices 2 e 3, resultando em 14.",
+      "codigo": "int numeros[] = {2, 4, 6, 8, 10};\n\nint i = numeros[0];\nint resultado = numeros[i] + numeros[i + 1];\n\nprintf(\"%d\", resultado);",
+      "alternativa_1": "6",
+      "alternativa_2": "14",
+      "alternativa_3": "18",
+      "alternativa_4": "10",
+      "resposta_correta": "2"
+    }
   }
 ]

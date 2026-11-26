@@ -1,0 +1,13 @@
+<section class="config-panel" aria-labelledby="titulo-links">
+  <h1 id="titulo-links">Seus links</h1>
+  <p>Adicione endereços HTTPS para compartilhar no seu perfil público.</p>
+  <form method="post" action="{% url 'usuarios:editar_perfil' %}" class="config-form">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="salvar_links">
+    {% for erro in links_form.non_field_errors %}<p class="config-erro" role="alert">{{ erro }}</p>{% endfor %}
+    <div class="config-campo"><label for="{{ links_form.link_site.id_for_label }}">Site pessoal</label>{{ links_form.link_site }}{% for erro in links_form.link_site.errors %}<p class="config-erro" role="alert">{{ erro }}</p>{% endfor %}</div>
+    <div class="config-campo"><label for="{{ links_form.link_github.id_for_label }}">GitHub</label>{{ links_form.link_github }}{% for erro in links_form.link_github.errors %}<p class="config-erro" role="alert">{{ erro }}</p>{% endfor %}</div>
+    <div class="config-campo"><label for="{{ links_form.link_linkedin.id_for_label }}">LinkedIn</label>{{ links_form.link_linkedin }}{% for erro in links_form.link_linkedin.errors %}<p class="config-erro" role="alert">{{ erro }}</p>{% endfor %}</div>
+    <button type="submit" class="btn-salvar">Salvar links</button>
+  </form>
+</section>

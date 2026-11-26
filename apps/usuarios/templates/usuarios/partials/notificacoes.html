@@ -1,0 +1,15 @@
+<section class="config-panel" aria-labelledby="titulo-notificacoes">
+  <h1 id="titulo-notificacoes">Notificações</h1>
+  <p>Solicitações de amizade recebidas.</p>
+  <div class="config-lista">
+    {% for solicitacao in solicitacoes_recebidas %}
+      <div class="config-pessoa config-pessoa--notificacao">
+        <span><strong>{{ solicitacao.remetente.username }}</strong> quer se conectar com você.</span>
+        <div class="config-acoes">
+          <form method="post" action="{% url 'usuarios:aceitar_solicitacao' solicitacao.id %}">{% csrf_token %}<input type="hidden" name="next" value="{% url 'usuarios:editar_perfil' %}?secao=notificacoes"><button type="submit" class="config-botao-primario">Aceitar</button></form>
+          <form method="post" action="{% url 'usuarios:recusar_solicitacao' solicitacao.id %}">{% csrf_token %}<input type="hidden" name="next" value="{% url 'usuarios:editar_perfil' %}?secao=notificacoes"><button type="submit" class="config-botao-secundario">Recusar</button></form>
+        </div>
+      </div>
+    {% empty %}<p>Você não tem solicitações pendentes.</p>{% endfor %}
+  </div>
+</section>

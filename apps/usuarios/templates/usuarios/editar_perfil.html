@@ -17,16 +17,16 @@
 {% endif %}
 
 <div class="container">
-  <div class="account-layout">
+  <div class="account-layout" data-aba-inicial="{{ aba_ativa }}">
     <!-- Sidebar -->
     <div class="sidebar">
       <ul class="nav">
-        <li class="nav-item"><a class="nav-link active" href="#" data-section="informacoes">Informações</a></li>
-        <li class="nav-item"><a class="nav-link" href="#" data-section="preferencias">Preferência</a></li>
-        <li class="nav-item"><a class="nav-link" href="#" data-section="senha">Mudar Senha</a></li>
-        <li class="nav-item"><a class="nav-link" href="#" data-section="links">Links</a></li>
-        <li class="nav-item"><a class="nav-link" href="#" data-section="conexoes">Conecções</a></li>
-        <li class="nav-item"><a class="nav-link" href="#" data-section="notificacoes">Notificações</a></li>
+        <li class="nav-item"><a class="nav-link{% if aba_ativa == 'informacoes' %} active{% endif %}" href="?secao=informacoes" data-section="informacoes">Informações</a></li>
+        <li class="nav-item"><a class="nav-link{% if aba_ativa == 'preferencias' %} active{% endif %}" href="?secao=preferencias" data-section="preferencias">Preferências</a></li>
+        <li class="nav-item"><a class="nav-link{% if aba_ativa == 'senha' %} active{% endif %}" href="?secao=senha" data-section="senha">Mudar senha</a></li>
+        <li class="nav-item"><a class="nav-link{% if aba_ativa == 'links' %} active{% endif %}" href="?secao=links" data-section="links">Links</a></li>
+        <li class="nav-item"><a class="nav-link{% if aba_ativa == 'conexoes' %} active{% endif %}" href="?secao=conexoes" data-section="conexoes">Conexões</a></li>
+        <li class="nav-item"><a class="nav-link{% if aba_ativa == 'notificacoes' %} active{% endif %}" href="?secao=notificacoes" data-section="notificacoes">Notificações{% if solicitacoes_recebidas %} ({{ solicitacoes_recebidas|length }}){% endif %}</a></li>
         <li class="nav-item nav-logout">
           <a class="nav-link nav-link-logout" href="{% url 'usuarios:logout_usuario' %}">Sair da conta</a>
         </li>
@@ -36,30 +36,34 @@
     <!-- Conteúdo principal -->
     <div class="main-content">
 
-      <div class="content-section active" id="section-informacoes">
+      <div class="content-section{% if aba_ativa == 'informacoes' %} active{% endif %}" id="section-informacoes">
         {% include "usuarios/components/voltar.html" %}
         {% include 'usuarios/partials/informacoes.html' %}
       </div>
 
-      <div class="content-section" id="section-preferencias" >
+      <div class="content-section{% if aba_ativa == 'preferencias' %} active{% endif %}" id="section-preferencias" >
         {% include "usuarios/components/voltar.html" %}
         {% include 'usuarios/partials/preferencias.html' %}
       </div>
 
-      <div class="content-section" id="section-senha" >
-        
+      <div class="content-section{% if aba_ativa == 'senha' %} active{% endif %}" id="section-senha" >
+        {% include "usuarios/components/voltar.html" %}
+        {% include 'usuarios/partials/senha.html' %}
       </div>
 
-      <div class="content-section" id="section-links" >
-        
+      <div class="content-section{% if aba_ativa == 'links' %} active{% endif %}" id="section-links" >
+        {% include "usuarios/components/voltar.html" %}
+        {% include 'usuarios/partials/links.html' %}
       </div>
 
-      <div class="content-section" id="section-conexoes" >
-        
+      <div class="content-section{% if aba_ativa == 'conexoes' %} active{% endif %}" id="section-conexoes" >
+        {% include "usuarios/components/voltar.html" %}
+        {% include 'usuarios/partials/conexoes.html' %}
       </div>
 
-      <div class="content-section" id="section-notificacoes" >
-        
+      <div class="content-section{% if aba_ativa == 'notificacoes' %} active{% endif %}" id="section-notificacoes" >
+        {% include "usuarios/components/voltar.html" %}
+        {% include 'usuarios/partials/notificacoes.html' %}
       </div>
 
     </div>

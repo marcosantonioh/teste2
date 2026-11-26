@@ -234,7 +234,7 @@ class SecaoAdmin(admin.ModelAdmin):
 
 @admin.register(Estacao)
 class EstacaoAdmin(admin.ModelAdmin):
-    list_display = ("nome", "secao", "disponivel_para_visitantes")
+    list_display = ("nome", "secao", "disponivel_para_visitantes", "link_previa")
     list_filter = ("secao__modulo", "secao", "disponivel_para_visitantes")
     search_fields = ("nome",)
     list_editable = ("secao",)
@@ -242,10 +242,17 @@ class EstacaoAdmin(admin.ModelAdmin):
         "nome",
         "secao",
         "disponivel_para_visitantes",
+        "link_previa",
         "exercicios_da_estacao",
         "link_adicionar_exercicio_form",
     ]
-    readonly_fields = ["exercicios_da_estacao", "link_adicionar_exercicio_form"]
+    readonly_fields = ["exercicios_da_estacao", "link_adicionar_exercicio_form", "link_previa"]
+
+    @admin.display(description="Prévia")
+    def link_previa(self, obj):
+        if not obj.pk:
+            return "Salve a estação para abrir a prévia."
+        return format_html('<a href="{}" target="_blank" rel="noopener">Demonstrar estação</a>', reverse("exercicios:iniciar_previa_estacao", args=(obj.pk,)))
 
     def exercicios_da_estacao(self, obj):
         """Exibe os exercícios vinculados à estação com acesso à edição."""

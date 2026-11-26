@@ -7,8 +7,9 @@
   <main class="preferencias-main">
     <h1 class="titulo-pagina">Preferências</h1>
 
-    <form method="post">
+    <form method="post" action="{% url 'usuarios:editar_perfil' %}">
       {% csrf_token %}
+      <input type="hidden" name="action" value="salvar_preferencias">
 
       <div class="form-group">
         <label for="tema">Tema:</label>

@@ -310,6 +310,29 @@ input[type="file"] {
 .content-section.active {
   display: block;
 }
+.config-panel { max-width: 640px; padding: 16px 0 36px; }
+.config-panel h1 { margin: 0 0 8px; color: #321447; font-size: clamp(1.5rem, 3vw, 2rem); }
+.config-panel h2 { margin: 28px 0 10px; color: #321447; font-size: 1.15rem; }
+.config-panel > p { margin: 0 0 20px; color: #51475b; line-height: 1.5; }
+.config-form { display: grid; gap: 18px; }
+.config-campo { display: grid; gap: 7px; }
+.config-campo label { color: #30263b; font-weight: 700; }
+.config-campo input { width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid #aa9db8; border-radius: 8px; font: inherit; }
+.config-campo input:focus-visible, .config-panel button:focus-visible, .config-panel a:focus-visible { outline: 3px solid #8a3cbe; outline-offset: 2px; }
+.config-campo small { color: #51475b; line-height: 1.45; }
+.config-campo small ul { margin: 6px 0 0 20px; }
+.config-erro { margin: 0; color: #a61932; font-size: .9rem; }
+.config-lista { display: grid; gap: 10px; }
+.config-lista > p { padding: 18px; border-radius: 10px; background: #f4f0f7; color: #51475b; }
+.config-pessoa { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; min-height: 56px; padding: 12px 15px; border: 1px solid #dfd5e8; border-radius: 12px; background: #faf8fc; }
+.config-pessoa a, .config-link { color: #5a0783; font-weight: 700; }
+.config-link { display: inline-flex; min-height: 44px; align-items: center; }
+.config-acoes { display: flex; flex-wrap: wrap; gap: 8px; }
+.config-botao-primario, .config-botao-secundario { min-height: 44px; padding: 9px 14px; border-radius: 8px; font: inherit; font-weight: 700; cursor: pointer; }
+.config-botao-primario { border: 1px solid #6a0dad; background: #6a0dad; color: #fff; }
+.config-botao-secundario { border: 1px solid #805c96; background: #fff; color: #4b1764; }
+.config-botao-primario:hover { background: #4b0a87; }
+.config-botao-secundario:hover { background: #f1e9f7; }
 /* Desktop esconde o botão */
 .voltar-mobile {
   display: none;

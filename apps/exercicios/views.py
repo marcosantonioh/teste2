@@ -448,6 +448,29 @@ def resolver_demonstracao(request, exercicio_id):
         return redirect("landing")
 
     estacao = _estacao_demonstracao()
+    return _renderizar_previa_estacao(request, estacao, exercicio_id)
+
+
+@login_required
+def iniciar_previa_estacao(request, estacao_id):
+    if not request.user.is_staff:
+        raise PermissionDenied
+    estacao = get_object_or_404(Estacao, pk=estacao_id)
+    primeiro = estacao.exercicios.order_by("id").first()
+    if primeiro is None:
+        raise Http404("Esta estação ainda não possui exercícios.")
+    return redirect("exercicios:resolver_previa_estacao", estacao_id=estacao.id, exercicio_id=primeiro.id)
+
+
+@login_required
+def resolver_previa_estacao(request, estacao_id, exercicio_id):
+    if not request.user.is_staff:
+        raise PermissionDenied
+    estacao = get_object_or_404(Estacao, pk=estacao_id)
+    return _renderizar_previa_estacao(request, estacao, exercicio_id, previa_admin=True)
+
+
+def _renderizar_previa_estacao(request, estacao, exercicio_id, previa_admin=False):
     exercicio = get_object_or_404(Exercicio, id=exercicio_id, estacao=estacao)
     exercicios = _exercicios_demonstracao(estacao)
     indice_atual = exercicios.index(exercicio)
@@ -460,7 +483,7 @@ def resolver_demonstracao(request, exercicio_id):
     if request.method == "POST" and exercicio.tipo != "info":
         resposta_submetida = _extrair_resposta_do_request(request, exercicio.tipo)
         correta = mecanicas_services.verificar_resposta(exercicio, resposta_submetida)
-        if correta and proximo_exercicio is None:
+        if correta and proximo_exercicio is None and not previa_admin:
             request.session["demo_concluida"] = True
 
     if exercicio.tipo == "mcq":
@@ -503,6 +526,7 @@ def resolver_demonstracao(request, exercicio_id):
             "indice_exercicio": indice_atual + 1,
             "total_exercicios": len(exercicios),
             "progresso_percentual": round((indice_atual + (1 if correta or exercicio.tipo == "info" else 0)) * 100 / len(exercicios)),
+            "previa_admin": previa_admin,
         },
     )
 
