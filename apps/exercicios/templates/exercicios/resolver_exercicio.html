@@ -53,7 +53,9 @@
       {% if exercicio.tipo == 'info' %}
         {# Para o tipo 'info', não há resposta, apenas o botão de continuar #}
         <div class="resultado">
-          {% if proximo_exercicio_id_para_continuar %}
+          {% if info_estrutura_repeticao and not aula_repeticao_codigo %}
+            <a href="{% url 'exercicios:resolver_exercicio' exercicio.id %}?parte=codigo" class="submit">Ver o código</a>
+          {% elif proximo_exercicio_id_para_continuar %}
             <a
               href="{% url 'exercicios:resolver_exercicio' proximo_exercicio_id_para_continuar %}"
               class="submit"

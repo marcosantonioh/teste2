@@ -13,10 +13,12 @@
 .container-exercicio--aula .barra-progresso-visual { flex: 1; width: auto; height: 12px; }
 .aula-repeticao { width: 100%; display: grid; gap: 20px; }
 .aula-repeticao__cabecalho { padding: 8px 0 0; }
-.aula-repeticao__selo { display: inline-block; padding: 6px 10px; border-radius: 999px; background: #efe2fa; color: #5a007f; font-size: .76rem; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; }
 .aula-repeticao__cabecalho h1 { margin: 12px 0 7px; color: #26133d; font-size: clamp(1.8rem, 5vw, 2.5rem); line-height: 1.12; }
 .aula-repeticao__cabecalho p { margin: 0; max-width: 60ch; color: #4a4154; line-height: 1.55; }
 .aula-repeticao__cards { display: grid; gap: 10px; }
+.aula-repeticao__voltar { width: fit-content; min-height: 44px; display: inline-flex; align-items: center; gap: 8px; color: #5a007f; font-weight: 700; text-decoration: none; }
+.aula-repeticao__voltar:hover { text-decoration: underline; }
+.aula-repeticao__voltar:focus-visible { outline: 3px solid #4d0b78; outline-offset: 3px; }
 .aula-card { display: flex; gap: 14px; align-items: flex-start; padding: 15px; border: 1px solid; border-left-width: 5px; border-radius: 14px; background: #fff; box-shadow: 0 5px 16px rgba(38, 19, 61, .05); animation: aula-entrada .45s both; }
 .aula-card:nth-child(2) { animation-delay: .1s; }
 .aula-card:nth-child(3) { animation-delay: .2s; }

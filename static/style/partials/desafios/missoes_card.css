@@ -1,0 +1,110 @@
+.missoes-card {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 420px;
+  padding: 20px;
+  border: 1px solid #e7e1ef;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(35, 19, 55, .08);
+}
+
+.missoes-card .missoes-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.missoes-card .missoes-header h2 {
+  margin: 0;
+  color: #271737;
+  font-size: clamp(1.15rem, 2vw, 1.35rem);
+  line-height: 1.2;
+}
+
+.missoes-card .ver-todas {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: #650092;
+  font-size: .85rem;
+  font-weight: 800;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.missoes-card .ver-todas:hover { text-decoration: underline; }
+.missoes-card .ver-todas:focus-visible { outline: 3px solid #650092; outline-offset: 3px; }
+
+.missoes-card .missoes-lista { display: grid; gap: 10px; }
+
+.missoes-card .missao-item {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) 48px;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 13px;
+  border: 1px solid #ebe5f1;
+  border-radius: 14px;
+  background: #faf9fc;
+  box-shadow: none;
+}
+
+.missoes-card .missao-concluida {
+  border-color: #d7b8ec;
+  background: #faf5ff;
+}
+
+.missoes-card .icone-missao {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+}
+
+.missoes-card .missao-info { min-width: 0; }
+.missoes-card .missao-info__topo { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; margin-bottom: 8px; }
+.missoes-card .missao-info p { margin: 0; color: #2f263b; font-size: .94rem; font-weight: 750; line-height: 1.3; }
+.missoes-card .missao-status { color: #6a238d; font-size: .72rem; font-weight: 800; }
+
+.missoes-card .progress-bar {
+  display: block;
+  height: 9px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e6deeb;
+}
+
+.missoes-card .progress-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #8500b8;
+  transition: width .3s ease;
+}
+
+.missoes-card .progress-text {
+  display: block;
+  margin-top: 6px;
+  color: #51445d;
+  font-size: .78rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.missoes-card .missao-premio { display: grid; justify-items: center; gap: 2px; color: #6b4215; font-size: .75rem; font-weight: 800; }
+.missoes-card .icone-bau { width: 42px; height: 42px; object-fit: contain; }
+.desafios-layout .missoes-card { max-width: 600px; }
+
+@media (max-width: 420px) {
+  .missoes-card { padding: 16px; }
+  .missoes-card .missao-item { grid-template-columns: 34px minmax(0, 1fr) 38px; gap: 9px; padding: 11px; }
+  .missoes-card .icone-missao { width: 32px; height: 32px; }
+  .missoes-card .icone-bau { width: 36px; height: 36px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .missoes-card .progress-fill { transition: none; }
+}

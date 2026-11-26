@@ -1,0 +1,97 @@
+[
+  {
+    "model": "exercicios.modulo",
+    "pk": 5,
+    "fields": {
+      "nome": "Demonstração",
+      "descricao": "Uma introdução curta à lógica de programação em C.",
+      "ordem": 0
+    }
+  },
+  {
+    "model": "exercicios.secao",
+    "pk": 16,
+    "fields": {
+      "status": "livre",
+      "modulo": 5,
+      "nome": "Experimente a Cventure",
+      "ordem": 0
+    }
+  },
+  {
+    "model": "exercicios.estacao",
+    "pk": 20,
+    "fields": {
+      "status": "completado",
+      "secao": 16,
+      "nome": "Primeiros passos em C",
+      "disponivel_para_visitantes": true
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 21,
+    "fields": {
+      "modulo": 5,
+      "estacao": 20,
+      "titulo": "O que é um algoritmo?",
+      "enunciado": "Um algoritmo é uma sequência de passos para resolver um problema. Vamos praticar esse conceito em C.",
+      "codigo": null,
+      "imagem": "",
+      "tipo": "info",
+      "xp": 0,
+      "explicacao": null,
+      "alternativa_1": null,
+      "alternativa_2": null,
+      "alternativa_3": null,
+      "alternativa_4": null,
+      "resposta_correta": null,
+      "resposta_texto_codigo": null,
+      "resposta_vf_correta": null
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 22,
+    "fields": {
+      "modulo": 5,
+      "estacao": 20,
+      "titulo": "Resultado de uma soma",
+      "enunciado": "Qual será o valor impresso pelo código?",
+      "codigo": "int resultado = 2 + 3;\nprintf(\"%d\", resultado);",
+      "imagem": "",
+      "tipo": "mcq",
+      "xp": 0,
+      "explicacao": null,
+      "alternativa_1": "2",
+      "alternativa_2": "3",
+      "alternativa_3": "5",
+      "alternativa_4": "23",
+      "resposta_correta": "3",
+      "resposta_texto_codigo": null,
+      "resposta_vf_correta": null
+    }
+  },
+  {
+    "model": "exercicios.exercicio",
+    "pk": 23,
+    "fields": {
+      "modulo": 5,
+      "estacao": 20,
+      "titulo": "Variáveis em C",
+      "enunciado": "A instrução \"int idade = 18;\" cria uma variável inteira chamada idade.",
+      "codigo": null,
+      "imagem": "",
+      "tipo": "vf",
+      "xp": 0,
+      "explicacao": null,
+      "alternativa_1": null,
+      "alternativa_2": null,
+      "alternativa_3": null,
+      "alternativa_4": null,
+      "resposta_correta": null,
+      "resposta_texto_codigo": null,
+      "resposta_vf_correta": true
+    }
+  }
+]

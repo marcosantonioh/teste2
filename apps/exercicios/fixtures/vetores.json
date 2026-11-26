@@ -1,0 +1,42 @@
+[
+  {
+    "model": "exercicios.modulo",
+    "pk": 2,
+    "fields": {
+      "nome": "Vetor",
+      "descricao": "Aprenda vetores em C",
+      "imagem": "img/modulos/vetores.svg",
+      "ordem": 0
+    }
+  },
+  {
+    "model": "exercicios.secao",
+    "pk": 8,
+    "fields": {
+      "status": "livre",
+      "modulo": 2,
+      "nome": "Introdução e Declaração",
+      "ordem": 1
+    }
+  },
+  {
+    "model": "exercicios.secao",
+    "pk": 9,
+    "fields": {
+      "status": "livre",
+      "modulo": 2,
+      "nome": "Operações Básicas",
+      "ordem": 1
+    }
+  },
+  {
+    "model": "exercicios.secao",
+    "pk": 10,
+    "fields": {
+      "status": "livre",
+      "modulo": 2,
+      "nome": "Aplicações e Algoritmos Simples",
+      "ordem": 1
+    }
+  }
+]

@@ -388,23 +388,33 @@ class ResumoExercicioInformativoTests(TestCase):
             resposta_correta="1",
         )
 
-    def test_aula_de_repeticao_exibe_conceitos_codigo_e_fluxo(self):
+    def test_aula_de_repeticao_separa_cards_e_codigo(self):
+        self.exercicio_info.titulo = "Partes de uma repetição"
         self.exercicio_info.enunciado = (
             "Uma estrutura de repetição normalmente possui: "
             "Inicialização, Condição e Atualização."
         )
-        self.exercicio_info.save(update_fields=["enunciado"])
+        self.exercicio_info.save(update_fields=["titulo", "enunciado"])
         self.client.force_login(self.user)
 
-        response = self.client.get(
-            reverse("exercicios:resolver_exercicio", args=[self.exercicio_info.id])
-        )
+        url = reverse("exercicios:resolver_exercicio", args=[self.exercicio_info.id])
+        cards = self.client.get(url)
 
-        self.assertContains(response, "Como um laço funciona?")
-        self.assertContains(response, "while")
-        self.assertContains(response, "Cuidado com o loop infinito!")
-        self.assertContains(response, "info_repeticao.js")
-        self.assertContains(response, "Continuar")
+        self.assertContains(cards, "Como um laço funciona?")
+        self.assertContains(cards, "Inicialização")
+        self.assertContains(cards, "Ver o código")
+        self.assertNotContains(cards, "Aula rápida · Laços de repetição")
+        self.assertNotContains(cards, "As peças trabalhando juntas")
+        self.assertFalse(ExercicioUsuario.objects.filter(usuario=self.user, exercicio=self.exercicio_info).exists())
+
+        codigo = self.client.get(url, {"parte": "codigo"})
+        self.assertContains(codigo, "Veja o laço em ação")
+        self.assertContains(codigo, "As peças trabalhando juntas")
+        self.assertContains(codigo, "Cuidado com o loop infinito!")
+        self.assertContains(codigo, "info_repeticao.js")
+        self.assertContains(codigo, "Continuar")
+        self.assertNotContains(codigo, "aula-repeticao__cards")
+        self.assertTrue(ExercicioUsuario.objects.filter(usuario=self.user, exercicio=self.exercicio_info, status="concluido").exists())
 
     def test_exercicio_informativo_entra_no_resumo_da_estacao(self):
         self.client.force_login(self.user)

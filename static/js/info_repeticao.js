@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const etapas = [...aula.querySelectorAll('[data-passo]')];
   const descricao = aula.querySelector('[data-descricao-passo]');
   const botao = aula.querySelector('[data-proximo-passo]');
+  if (!botao) return;
   const mensagens = [
     'Começamos com i = 0.',
     'i é menor que 3? Sim. Vamos executar.',

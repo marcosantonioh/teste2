@@ -10,19 +10,20 @@ class Command(BaseCommand):
     help = "Carrega o conteúdo inicial de ensino sem duplicar a demonstração."
 
     def handle(self, *args, **options):
-        fixture_path = (
+        fixtures_dir = (
             settings.BASE_DIR
             / "apps"
             / "exercicios"
             / "fixtures"
-            / "conteudo_inicial.json"
         )
+        fixture_paths = sorted(fixtures_dir.glob("*.json"))
+        if not fixture_paths:
+            raise CommandError(f"Nenhuma fixture encontrada em: {fixtures_dir}")
 
-        if not fixture_path.exists():
-            raise CommandError(f"Fixture não encontrada: {fixture_path}")
-
-        with fixture_path.open(encoding="utf-8") as fixture_file:
-            registros = json.load(fixture_file)
+        registros = []
+        for fixture_path in fixture_paths:
+            with fixture_path.open(encoding="utf-8") as fixture_file:
+                registros.extend(json.load(fixture_file))
 
         modulos = {}
         secoes = {}

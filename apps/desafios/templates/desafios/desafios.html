@@ -4,6 +4,7 @@
   rel="stylesheet"
   href="{% static 'style/partials/desafios/desafios.css' %}"
 />
+<link rel="stylesheet" href="{% static 'style/partials/desafios/missoes_card.css' %}" />
 <div class="container desafios-layout">
   <!-- Lado Esquerdo: Desafios Diários -->
   <div class="left-section">
@@ -17,25 +18,7 @@
 
       <div class="missoes-lista">
         {% if desafios_usuario %} {% for du in desafios_usuario %}
-        <div class="missao-item {% if du.concluida_em %}missao-concluida{% endif %}">
-          <img
-            class="icone-missao"
-            src="{% static du.imagem %}"
-            alt="Ícone do desafio"
-          />
-          <div class="missao-info">
-            <p>{{ du.titulo }}</p>
-            <div class="progress-bar">
-              <div class="progress-fill" style="width: {{ du.porcentagem }}%;"></div>
-              <span class="progress-text">{{ du.progresso }} / {{ du.meta }}</span>
-            </div>
-          </div>
-          <img
-            class="icone-bau"
-            src="{% static du.bau_imagem %}"
-            alt="Baú de recompensa"
-          />
-        </div>
+        {% include "desafios/partials/missao_item.html" %}
         {% endfor %} {% else %}
         <p>Você ainda não possui missões ativas.</p>
         {% endif %}

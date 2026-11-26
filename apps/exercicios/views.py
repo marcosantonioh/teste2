@@ -649,6 +649,16 @@ def resolver_exercicio(request, exercicio_id):
     ):
         raise PermissionDenied("Esta estação ainda está bloqueada.")
 
+    info_estrutura_repeticao = (
+        exercicio.tipo == "info"
+        and exercicio.titulo == "Partes de uma repetição"
+        and all(
+            termo in (exercicio.enunciado or "").lower()
+            for termo in ("inicialização", "condição", "atualização")
+        )
+    )
+    aula_repeticao_codigo = request.GET.get("parte") == "codigo"
+
     alternativas = obter_alternativas(exercicio, request)
     resultado = None
     correta = None
@@ -668,7 +678,8 @@ def resolver_exercicio(request, exercicio_id):
     if exercicio.tipo == "info":
         # Marca o exercício informativo como concluído ao ser visualizado, para não ficar preso nele.
         if (
-            mecanicas_services.obter_status_exercicio(exercicio, request.user)
+            (not info_estrutura_repeticao or aula_repeticao_codigo)
+            and mecanicas_services.obter_status_exercicio(exercicio, request.user)
             == "livre"
         ):
             conquistas_novas = mecanicas_services.marcar_exercicio_concluido(
@@ -853,10 +864,8 @@ def resolver_exercicio(request, exercicio_id):
 
     context = {
         "exercicio": exercicio,
-        "info_estrutura_repeticao": (
-            exercicio.tipo == "info"
-            and all(termo in (exercicio.enunciado or "").lower() for termo in ("inicialização", "condição", "atualização"))
-        ),
+        "info_estrutura_repeticao": info_estrutura_repeticao,
+        "aula_repeticao_codigo": aula_repeticao_codigo,
         "resultado": resultado,
         "correta": correta,
         "perfil": perfil,

@@ -1,0 +1,41 @@
+[
+  {
+    "model": "exercicios.modulo",
+    "pk": 3,
+    "fields": {
+      "nome": "Matriz",
+      "descricao": "Conceitos e aprendizado pratico em matriz na linguagem C",
+      "ordem": 0
+    }
+  },
+  {
+    "model": "exercicios.secao",
+    "pk": 11,
+    "fields": {
+      "status": "livre",
+      "modulo": 3,
+      "nome": "Introdução e Declaração",
+      "ordem": 1
+    }
+  },
+  {
+    "model": "exercicios.secao",
+    "pk": 12,
+    "fields": {
+      "status": "livre",
+      "modulo": 3,
+      "nome": "Operações Básicas",
+      "ordem": 1
+    }
+  },
+  {
+    "model": "exercicios.secao",
+    "pk": 13,
+    "fields": {
+      "status": "livre",
+      "modulo": 3,
+      "nome": "Aplicações e Algoritmos Simples",
+      "ordem": 1
+    }
+  }
+]

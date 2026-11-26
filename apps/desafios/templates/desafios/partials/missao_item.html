@@ -1,0 +1,18 @@
+{% load static %}
+<div class="missao-item{% if du.concluida_em %} missao-concluida{% endif %}">
+  <img class="icone-missao" src="{% static du.imagem %}" alt="" aria-hidden="true">
+  <div class="missao-info">
+    <div class="missao-info__topo">
+      <p>{{ du.titulo }}</p>
+      {% if du.concluida_em %}<span class="missao-status">Concluída</span>{% endif %}
+    </div>
+    <div class="progress-bar" role="progressbar" aria-label="Progresso: {{ du.titulo }}" aria-valuemin="0" aria-valuemax="{{ du.meta }}" aria-valuenow="{{ du.progresso }}">
+      <span class="progress-fill" style="width: {{ du.porcentagem }}%"></span>
+    </div>
+    <span class="progress-text">{{ du.progresso }} de {{ du.meta }}{% if du.concluida_em %} concluídos{% endif %}</span>
+  </div>
+  <div class="missao-premio" aria-label="Recompensa: {{ du.cristais_recompensa }} cristais{% if du.concluida_em %}, recebida{% endif %}">
+    <img class="icone-bau" src="{% static du.bau_imagem %}" alt="">
+    <span>+{{ du.cristais_recompensa }}</span>
+  </div>
+</div>

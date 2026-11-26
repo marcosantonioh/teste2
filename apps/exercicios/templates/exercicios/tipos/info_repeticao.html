@@ -1,10 +1,15 @@
 <article class="aula-repeticao" aria-labelledby="aula-repeticao-titulo">
   <header class="aula-repeticao__cabecalho">
-    <span class="aula-repeticao__selo">Aula rápida · Laços de repetição</span>
-    <h1 id="aula-repeticao-titulo">Como um laço funciona?</h1>
-    <p>Um laço repete uma tarefa enquanto uma condição for verdadeira. Conheça as três partes que fazem tudo acontecer.</p>
+    {% if aula_repeticao_codigo %}
+      <h1 id="aula-repeticao-titulo">Veja o laço em ação</h1>
+      <p>Agora veja como as três partes trabalham juntas em um exemplo.</p>
+    {% else %}
+      <h1 id="aula-repeticao-titulo">Como um laço funciona?</h1>
+      <p>Um laço repete uma tarefa enquanto uma condição for verdadeira. Conheça as três partes que fazem tudo acontecer.</p>
+    {% endif %}
   </header>
 
+  {% if not aula_repeticao_codigo %}
   <div class="aula-repeticao__cards" aria-label="As três partes do laço">
     <section class="aula-card aula-card--inicio">
       <span class="aula-card__icone" aria-hidden="true">①</span>
@@ -19,6 +24,8 @@
       <div><h2>Atualização</h2><p>Muda o valor para a próxima volta.</p><code>i = i + 1</code></div>
     </section>
   </div>
+  {% else %}
+  <a class="aula-repeticao__voltar" href="{% url 'exercicios:resolver_exercicio' exercicio.id %}"><span aria-hidden="true">←</span> Revisar as três partes</a>
 
   <section class="aula-codigo" aria-labelledby="aula-codigo-titulo">
     <div class="aula-codigo__barra"><span class="aula-codigo__pontos" aria-hidden="true">● ● ●</span><h2 id="aula-codigo-titulo">As peças trabalhando juntas</h2><span>Python</span></div>
@@ -40,4 +47,5 @@
   </section>
 
   <aside class="aula-alerta" aria-label="Cuidado com laços infinitos"><span aria-hidden="true">⚠</span><p><strong>Cuidado com o loop infinito!</strong> Se a condição nunca deixar de ser verdadeira, o laço não termina. Atualize a variável de controle a cada volta.</p></aside>
+  {% endif %}
 </article>
